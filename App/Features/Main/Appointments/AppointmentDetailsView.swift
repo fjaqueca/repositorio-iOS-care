@@ -26,7 +26,11 @@ struct AppointmentDetailsView: View {
     @State private var popup: Popup?
     @State var now = Date()
     
-    let timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
+    // NUEVO: Estado para deshabilitar botón "Cancelar" según hora de la cita
+    @State private var isCancelButtonEnabledByTime = true
+    
+    // Timer cada 5 segundos para revisar estado de botones (videollamada + cancelar)
+    let timer = Timer.publish(every: 5, on: .current, in: .common).autoconnect()
     
     var isConfirmed: Bool {
         switch appointment.status{
@@ -71,6 +75,17 @@ struct AppointmentDetailsView: View {
             return false
         case .failure:
             return true
+        }
+    }
+    
+    /// NUEVO: Determina si el botón cancelar debe estar habilitado según el STATUS de la cita
+    /// LÓGICA ANDROID (Paso 1): Estado inicial según status de la cita
+    var isCancelButtonEnabledByStatus: Bool {
+        switch appointment.status {
+        case .programado, .aConfirmar, .confirmado:
+            return true // ✅ Estados activos: botón habilitado
+        case .cancelado, .reagendado, .realizado, .noRealizado, .failure, .noConfirmado:
+            return false // ❌ Estados inactivos: botón deshabilitado
         }
     }
     
@@ -153,6 +168,7 @@ struct AppointmentDetailsView: View {
                         .onReceive(timer) { _ in
                             now = Date()
                             updateVideoCallButtonStatus()
+                            checkAndUpdateCancelButton() // NUEVO: Revisar botón cancelar cada 5s
                         }
                     }
                 }
@@ -170,7 +186,12 @@ struct AppointmentDetailsView: View {
             buttonsView
         }
         .onAppear {
+            // 📝 NUEVO: Log de la cita cuando se abre el detalle
+            logAppointmentDetails()
+            
             updateVideoCallButtonStatus()
+            setupInitialCancelButtonState() // NUEVO: Estado inicial del botón cancelar
+            checkAndUpdateCancelButton() // NUEVO: Ejecutar inmediatamente al aparecer
         }
         .padding(.horizontal, .margin)
         .navigationLink(isActive: $showModifyAppointment) {
@@ -238,16 +259,60 @@ struct AppointmentDetailsView: View {
 //        .disabled(isCanceled || isLoading)
         
         TransparentButton(title: "Cancelar", UIStateBtn: UIStateAppoint.detaillAppointmentUIState.btnCancel) {
-            popup = cancellationConfirmationPopup
+            // PASO 6 ANDROID: Click listener respeta la bandera
+            if isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime {
+                popup = cancellationConfirmationPopup
+            }
         }
         .padding(.bottom, .margin)
-        .disabled(isCanceled || isLoading)
+        .disabled(isCanceled || isLoading || !isCancelButtonEnabledByStatus || !isCancelButtonEnabledByTime)
+        .opacity((isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime) ? 1.0 : 0.5)
     }
 }
 
 // MARK: - Actions
 
 extension AppointmentDetailsView {
+    /// 📝 NUEVO: Log detallado de la cita al abrir el detalle
+    func logAppointmentDetails() {
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📋 [AppointmentDetailsView] Datos de la cita")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("   • id: \(appointment.id)")
+        print("   • status: \(appointment.status.rawValue) (\(appointment.status.description))")
+        print("   • schedStartTime: \(appointment.schedStartTime)")
+        print("   • schedEndTime: \(appointment.schedEndTime)")
+        print("   • professionalName: \(appointment.professionalName)")
+        print("   • clinica: \(appointment.clinica)")
+        print("   • workTypeGroup: \(appointment.workTypeGroup)")
+        print("   • appointmentType: \(appointment.appointmentType.rawValue) (\(appointment.appointmentType.description))")
+        print("   • serviceTerritoryId: \(appointment.serviceTerritoryId)")
+        print("   • iconoAzul: \(appointment.iconoAzul)")
+        print("")
+        print("   📅 Fecha parseada (date property):")
+        print("      • \(appointment.date)")
+        print("")
+        print("   🔍 Computed properties:")
+        print("      • isConfirmed: \(isConfirmed)")
+        print("      • isCanceled: \(isCanceled)")
+        print("      • isCancelButtonEnabledByStatus: \(isCancelButtonEnabledByStatus)")
+        print("")
+        print("   📄 Representación completa del Appointment:")
+        print("      {")
+        print("        \"id\": \"\(appointment.id)\",")
+        print("        \"status\": \"\(appointment.status.rawValue)\",")
+        print("        \"schedStartTime\": \"\(appointment.schedStartTime)\",")
+        print("        \"schedEndTime\": \"\(appointment.schedEndTime)\",")
+        print("        \"professionalName\": \"\(appointment.professionalName)\",")
+        print("        \"clinica\": \"\(appointment.clinica)\",")
+        print("        \"workTypeGroup\": \"\(appointment.workTypeGroup)\",")
+        print("        \"appointmentType\": \"\(appointment.appointmentType.rawValue)\",")
+        print("        \"serviceTerritoryId\": \"\(appointment.serviceTerritoryId)\",")
+        print("        \"iconoAzul\": \"\(appointment.iconoAzul)\"")
+        print("      }")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
+    }
+    
     func updateVideoCallButtonStatus() {
         let currentDate = Date()
         let tenMinutesBeforeTargetTime = Calendar.current.date(byAdding: .minute, value: -3, to: appointment.date)!
@@ -257,6 +322,63 @@ extension AppointmentDetailsView {
             isVideoCallButtonEnabled = true
         } else {
             isVideoCallButtonEnabled = false
+        }
+    }
+    
+    // MARK: - NUEVO: Lógica Android para deshabilitar botón "Cancelar"
+    
+    /// PASO 1 ANDROID: Estado inicial según status de la cita (onCreate)
+    /// Se ejecuta en onAppear
+    func setupInitialCancelButtonState() {
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔧 [CancelButton] Setup inicial")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("   • Status: \(appointment.status.rawValue)")
+        print("   • schedStartTime: \(appointment.schedStartTime)")
+        
+        // Estado inicial según status (equivalente a when en Kotlin)
+        isCancelButtonEnabledByTime = isCancelButtonEnabledByStatus
+        
+        if isCancelButtonEnabledByStatus {
+            print("   ✅ Status permite cancelación (Programado/A Confirmar/Confirmado)")
+        } else {
+            print("   ❌ Status NO permite cancelación (Cancelado/Reagendado/Realizado/etc)")
+        }
+        
+        print("   • isCancelButtonEnabledByTime (inicial): \(isCancelButtonEnabledByTime)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
+    }
+    
+    /// PASO 4 & 5 ANDROID: Timer periódico + Comparación de hora (lógica central)
+    /// Se ejecuta cada 5 segundos (equivalente a CountDownTimer en Android)
+    func checkAndUpdateCancelButton() {
+        // Solo revisar si el status permite cancelación
+        guard isCancelButtonEnabledByStatus else {
+            return
+        }
+        
+        // PASO 2 & 3 ANDROID: Extracción de hora de la cita + offset
+        guard let correctedApptDate = Date.fromSchedStartTime(appointment.schedStartTime) else {
+            print("⚠️ [CancelButton] No se pudo parsear schedStartTime: \(appointment.schedStartTime)")
+            return
+        }
+        
+        // PASO 5 ANDROID: Comparación de hora (lógica central)
+        let nowMillis = Date().timeIntervalSince1970
+        let correctedApptMillis = correctedApptDate.timeIntervalSince1970
+        
+        print("⏰ [CancelButton] Check cada 5s:")
+        print("   • Now (UTC): \(Date()) (\(nowMillis))")
+        print("   • Appt corrected (UTC): \(correctedApptDate) (\(correctedApptMillis))")
+        print("   • Diferencia: \(correctedApptMillis - nowMillis)s")
+        
+        // LÓGICA ANDROID: if (nowMillis >= correctedApptMillis) → deshabilitar
+        if nowMillis >= correctedApptMillis {
+            print("   ❌ La hora de la cita ya pasó → Deshabilitando botón")
+            isCancelButtonEnabledByTime = false
+        } else {
+            print("   ✅ La cita aún no ha pasado → Botón habilitado")
+            isCancelButtonEnabledByTime = true
         }
     }
 }

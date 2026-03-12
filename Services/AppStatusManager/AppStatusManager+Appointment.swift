@@ -18,6 +18,44 @@ extension AppStatusManager {
         
         switch appointmentsResponse {
             case let .success(appointments):
+                // 📝 NUEVO: Log de la respuesta raw de appointments
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📦 [Appointments] Respuesta del servicio (parseada)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("   • Total appointments: \(appointments.count)")
+                print("")
+                
+                // Imprimir cada appointment con sus campos
+                for (index, appointment) in appointments.enumerated() {
+                    print("   📅 Appointment #\(index + 1):")
+                    print("      • id: \(appointment.id)")
+                    print("      • status: \(appointment.status.rawValue)")
+                    print("      • schedStartTime: \(appointment.schedStartTime)")
+                    print("      • schedEndTime: \(appointment.schedEndTime)")
+                    print("      • professionalName: \(appointment.professionalName)")
+                    print("      • clinica: \(appointment.clinica)")
+                    print("      • workTypeGroup: \(appointment.workTypeGroup)")
+                    print("      • appointmentType: \(appointment.appointmentType.rawValue)")
+                    print("      • serviceTerritoryId: \(appointment.serviceTerritoryId)")
+                    print("      • iconoAzul: \(appointment.iconoAzul)")
+                    print("")
+                    print("      📄 Representación JSON:")
+                    print("      {")
+                    print("        \"id\": \"\(appointment.id)\",")
+                    print("        \"status\": \"\(appointment.status.rawValue)\",")
+                    print("        \"schedStartTime\": \"\(appointment.schedStartTime)\",")
+                    print("        \"schedEndTime\": \"\(appointment.schedEndTime)\",")
+                    print("        \"professionalName\": \"\(appointment.professionalName)\",")
+                    print("        \"clinica\": \"\(appointment.clinica)\",")
+                    print("        \"workTypeGroup\": \"\(appointment.workTypeGroup)\",")
+                    print("        \"appointmentType\": \"\(appointment.appointmentType.rawValue)\",")
+                    print("        \"serviceTerritoryId\": \"\(appointment.serviceTerritoryId)\",")
+                    print("        \"iconoAzul\": \"\(appointment.iconoAzul)\"")
+                    print("      }")
+                    print("")
+                }
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
+                
                 let realm = try! Realm(queue: nil)
                 try! realm.write {
                     let oldItems = realm.objects(Appointment.self)
