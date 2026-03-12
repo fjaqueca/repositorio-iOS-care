@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "orientacion-medica.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
