@@ -43,6 +43,64 @@ struct Network {
         return await request(method: method, endpoint: endpoint, parameters: params, parametersDestination: parametersDestination, isAuthenticated: isAuthenticated)
     }
 
+    /// Request con body JSON crudo (Data) — preserva orden estricto de keys
+    func requestWithRawBody<Value: Decodable>(method: HTTPMethod = .post, endpoint: Endpoint, jsonData: Data, isAuthenticated: Bool = true) async -> Result<Value, AppError> {
+        var url = (isAuthenticated ? baseUrlAuthenticated : baseUrl) + endpoint.urlString
+        if endpoint.urlString.contains("http") {
+            url = endpoint.urlString
+        }
+
+        var headers: HTTPHeaders = .init([])
+        if isAuthenticated, let credentials = AppStatusManager.credentials {
+            headers.add(.authorization(credentials.AccessToken))
+        } else {
+            headers.add(.authorization(tokenUnauthenticated))
+        }
+        headers.add(.contentType("application/json"))
+
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = endpoint.keyEncodingStrategy
+
+        var urlRequest = try! URLRequest(url: url, method: method, headers: headers)
+        urlRequest.httpBody = jsonData
+
+        let response = await manager
+            .request(urlRequest)
+            .validate(statusCode: 200...299)
+            .serializingResponse(using: .decodable(of: Value.self, decoder: decoder))
+            .response
+
+        // LOG RAW RESPONSE
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📥 [Network] RAW RESPONSE - \(endpoint.urlString)")
+        print("   HTTP Status: \(response.response?.statusCode ?? -1)")
+        if let data = response.data {
+            print("   Response size: \(data.count) bytes")
+            if let rawJson = try? JSONSerialization.jsonObject(with: data, options: []),
+               let prettyData = try? JSONSerialization.data(withJSONObject: rawJson, options: [.prettyPrinted]),
+               let prettyString = String(data: prettyData, encoding: .utf8) {
+                print("   RAW JSON:")
+                print(prettyString)
+            } else if let rawString = String(data: data, encoding: .utf8) {
+                print("   RAW STRING: \(rawString.prefix(2000))")
+            }
+        } else {
+            print("   ⚠️ response.data es nil")
+        }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        switch response.result {
+        case .success(let value):
+            return .success(value)
+        case .failure(let error):
+            print("   ❌ Decode/Validation error: \(error.localizedDescription)")
+            if let data = response.data, let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                return .failure(AppError(id: "api.error.rawBody", name: "\(response.response?.statusCode ?? 0)", message: json["message"] as? String ?? error.localizedDescription))
+            }
+            return .failure(AppError(id: "api.error.rawBody", name: "Network", message: error.localizedDescription))
+        }
+    }
+
     func request<Value: Decodable>(method: HTTPMethod = .get, endpoint: Endpoint, parameters: Parameters? = nil, parametersDestination: ParametersDestination = .methodDependant, isAuthenticated: Bool = true) async -> Result<Value, AppError> {
 
         URLSessionConfiguration.default.urlCache = nil
@@ -86,7 +144,7 @@ struct Network {
         }
 
         // 🔎 LOG DEL REQUEST ENVIADO
-        if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") {
+        if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") || endpoint.urlString == "function_filter" || endpoint.urlString.contains("function_flows") {
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             print("📤 NETWORK REQUEST - \(method.rawValue)")
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -125,7 +183,7 @@ struct Network {
             .response
 
         // 🔎 LOG DE LA RESPUESTA DEL SERVIDOR
-        if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") {
+        if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") || endpoint.urlString == "function_filter" || endpoint.urlString.contains("function_flows") {
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             print("📥 NETWORK RESPONSE - \(endpoint.urlString)")
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -150,14 +208,14 @@ struct Network {
         switch response.result {
             case let .success(value):
                 // 🔎 LOG DE ÉXITO
-                if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") {
+                if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") || endpoint.urlString == "function_filter" || endpoint.urlString.contains("function_flows") {
                     print("✅ SUCCESS: \(endpoint.urlString) - Request completado exitosamente")
                     print("")
                 }
                 return .success(value)
             case let .failure(error):
                 // 🔎 LOG DE ERROR
-                if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") {
+                if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") || endpoint.urlString == "function_filter" || endpoint.urlString.contains("function_flows") {
                     print("❌ ERROR: \(endpoint.urlString)")
                     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                     print("🔹 Error Description: \(error.localizedDescription)")
@@ -172,6 +230,13 @@ struct Network {
                 
                 print(error)
                 if error.responseCode == 403 {
+                    // Endpoints que pueden devolver 403 legítimamente (no es error de auth)
+                    let nonAuthEndpoints = ["get_ver_url_privada"]
+                    let isNonAuthEndpoint = nonAuthEndpoints.contains(where: { endpoint.urlString.contains($0) })
+                    if isNonAuthEndpoint {
+                        print("⚠️ [Network] 403 en \(endpoint.urlString) - NO es error de auth, no se cierra sesión")
+                        return .failure(AppError(id: "forbidden", name: "Acceso denegado", message: "No tiene permisos para acceder a este recurso"))
+                    }
                     AppStatusManager.cleanup()
                     return .failure(AppError.unauthenticated)
                 }

@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A0676052F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A0676062F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A0676072F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A0676082F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A0676092F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A06760A2F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A06760B2F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A06760C2F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
+		7A06760D2F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
 		7A0E38FE2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */; };
 		7A0E38FF2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */; };
 		7A0E39002F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */; };
@@ -25,7 +34,6 @@
 		7A0E390E2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
 		7A0E390F2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
 		7A0E39102F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
-		7A15ED7B2F47926D00B252AF /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
 		7A2F7A8C2ED8DBA00095661C /* PrescriptionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67C8F742BBDFB1000FDAA1C /* PrescriptionView+Extension.swift */; };
 		7A2F7A8D2ED8DBA00095661C /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879C5B89289C1973005A140D /* Field.swift */; };
 		7A2F7A8E2ED8DBA00095661C /* VideoCallRoomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FB4F0C29B829E4003EE421 /* VideoCallRoomToolbar.swift */; };
@@ -458,6 +466,15 @@
 		7A84EA2E2F4F86C0006ABDD2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7A84EA2D2F4F86C0006ABDD2 /* FirebaseCrashlytics */; };
 		7A84EA302F4F86CE006ABDD2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7A84EA2F2F4F86CE006ABDD2 /* FirebaseCrashlytics */; };
 		7A84EA322F4F86D6006ABDD2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7A84EA312F4F86D6006ABDD2 /* FirebaseCrashlytics */; };
+		7A8A5D022F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D032F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D042F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D052F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D062F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D072F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D082F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D092F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
+		7A8A5D0A2F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */; };
 		7A9001782F43507B00993F1D /* Network+S3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9001772F43507B00993F1D /* Network+S3.swift */; };
 		7A9001792F43507B00993F1D /* Network+S3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9001772F43507B00993F1D /* Network+S3.swift */; };
 		7A90017A2F43507B00993F1D /* Network+S3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9001772F43507B00993F1D /* Network+S3.swift */; };
@@ -694,6 +711,114 @@
 		7AB6ECCB2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AB6ECC42F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md */; };
 		7AB6ECCC2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AB6ECC42F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md */; };
 		7AB6ECCD2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AB6ECC42F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md */; };
+		7AB87AB32F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB42F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB52F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB62F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB72F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB82F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87AB92F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87ABA2F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87ABB2F7AB07800B3866C /* PresignedURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */; };
+		7AB87ABD2F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87ABE2F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87ABF2F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC02F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC12F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC22F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC32F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC42F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC52F7AB71C00B3866C /* S3FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */; };
+		7AB87AC72F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87AC82F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87AC92F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACA2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACB2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACC2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACD2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACE2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87ACF2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */; };
+		7AB87AD12F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD22F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD32F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD42F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD52F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD62F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD72F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD82F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87AD92F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */; };
+		7AB87ADB2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87ADC2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87ADD2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87ADE2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87ADF2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87AE02F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87AE12F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87AE22F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87AE32F7AE05000B3866C /* AutomatedExamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */; };
+		7AB87AE52F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AE62F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AE72F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AE82F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AE92F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AEA2F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AEB2F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AEC2F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AED2F7AE1D600B3866C /* ExamPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */; };
+		7AB87AEF2F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF02F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF12F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF22F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF32F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF42F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF52F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF62F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF72F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */; };
+		7AB87AF92F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFA2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFB2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFC2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFD2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFE2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87AFF2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87B002F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87B012F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */; };
+		7AB87B032F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B042F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B052F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B062F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B072F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B082F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B092F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B0A2F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B0B2F7AE1DB00B3866C /* CarritoExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */; };
+		7AB87B0D2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B0E2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B0F2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B102F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B112F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B122F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B132F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B142F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AB87B152F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */; };
+		7AC23CF92F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFA2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFB2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFC2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFD2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFE2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23CFF2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23D002F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23D012F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */; };
+		7AC23D032F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D042F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D052F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D062F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D072F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D082F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D092F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D0A2F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
+		7AC23D0B2F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */; };
 		7AD3671B2F46294F002A4F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD3671A2F46294A002A4F1C /* AppDelegate.swift */; };
 		7AD3671C2F46294F002A4F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD3671A2F46294A002A4F1C /* AppDelegate.swift */; };
 		7AD3671D2F46294F002A4F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD3671A2F46294A002A4F1C /* AppDelegate.swift */; };
@@ -726,14 +851,6 @@
 		7AD778452F4C820B005C516D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778442F4C820B005C516D /* FirebaseMessaging */; };
 		7AD778472F4C8218005C516D /* MarketingCloudSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778462F4C8218005C516D /* MarketingCloudSDK */; };
 		7AD778492F4C8220005C516D /* SFMCSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778482F4C8220005C516D /* SFMCSDK */; };
-		7AD7784A2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD7784B2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD7784C2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD7784D2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD7784E2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD7784F2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD778502F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
-		7AD778512F4C84CF005C516D /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD367362F464997002A4F1C /* MarketingCloudManager.swift */; };
 		7AD778532F4C9989005C516D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778522F4C9989005C516D /* FirebaseCrashlytics */; };
 		7AD778552F4C998F005C516D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778542F4C998F005C516D /* FirebaseMessaging */; };
 		7AD778572F4C999B005C516D /* MarketingCloudSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7AD778562F4C999B005C516D /* MarketingCloudSDK */; };
@@ -837,6 +954,42 @@
 		7AE653152F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653162F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653172F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
+		7AFC12542F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC12552F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC12562F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC12572F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC12582F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC12592F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC125A2F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC125B2F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC125C2F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
+		7AFC125E2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC125F2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12602F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12612F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12622F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12632F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12642F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12652F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12662F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */; };
+		7AFC12682F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC12692F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126A2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126B2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126C2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126D2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126E2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC126F2F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC12702F6838E600F59763 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */; };
+		7AFC12722F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12732F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12742F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12752F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12762F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12772F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12782F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC12792F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
+		7AFC127A2F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */; };
 		7AFF3E5F2F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
 		7AFF3E602F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
 		7AFF3E612F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
@@ -2689,6 +2842,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7A0676042F7C1E480011747C /* ProfileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCache.swift; sourceTree = "<group>"; };
 		7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIREBASE_LOGGING_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMO_SOLUCIONAR_ERRORES_COMPILACION.md; sourceTree = "<group>"; };
 		7A2F7B7F2ED8DBA00095661C /* pruebatam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pruebatam.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2717,6 +2871,7 @@
 		7A6319E42F631B9000F6A38B /* Date+AppointmentTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+AppointmentTime.swift"; sourceTree = "<group>"; };
 		7A6319EE2F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md; sourceTree = "<group>"; };
 		7A6319F82F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LOGS_APPOINTMENTS_DOCUMENTATION.md; sourceTree = "<group>"; };
+		7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SOLUCION_BUG_LOGIN_NOTIFICACIONES.md; sourceTree = "<group>"; };
 		7A9001772F43507B00993F1D /* Network+S3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+S3.swift"; sourceTree = "<group>"; };
 		7A9001812F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIX_BACK_NAVIGATION_LOOP.md; sourceTree = "<group>"; };
 		7A90018B2F435DC200993F1D /* FIX_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIX_SUMMARY.md; sourceTree = "<group>"; };
@@ -2743,10 +2898,21 @@
 		7AB6ECB02F3D16F3009FC56D /* AUTONAVIGATION_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AUTONAVIGATION_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7AB6ECBA2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AUTONAVIGATION_FLOW_DIAGRAM.md; sourceTree = "<group>"; };
 		7AB6ECC42F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMPOSITE_KEY_FIX.md; sourceTree = "<group>"; };
+		7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresignedURLResponse.swift; sourceTree = "<group>"; };
+		7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S3FileHelper.swift; sourceTree = "<group>"; };
+		7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatedExamsUIState.swift; sourceTree = "<group>"; };
+		7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutomatedExams+Extension.swift"; sourceTree = "<group>"; };
+		7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatedExamsView.swift; sourceTree = "<group>"; };
+		7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamPopupView.swift; sourceTree = "<group>"; };
+		7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupConsentimientoView.swift; sourceTree = "<group>"; };
+		7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeleccionarExamenesView.swift; sourceTree = "<group>"; };
+		7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarritoExamView.swift; sourceTree = "<group>"; };
+		7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+AutomatedExams.swift"; sourceTree = "<group>"; };
+		7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupConfirmDatosView.swift; sourceTree = "<group>"; };
+		7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupConfirmEmailView.swift; sourceTree = "<group>"; };
 		7AD3671A2F46294A002A4F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AD367242F463622002A4F1C /* CareAssistance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CareAssistance.entitlements; sourceTree = "<group>"; };
 		7AD3672A2F4647F6002A4F1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7AD367362F464997002A4F1C /* MarketingCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCloudManager.swift; sourceTree = "<group>"; };
 		7AE652A02F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ELEMENTSVIEW_ANDROID_PARITY_FIX.md; sourceTree = "<group>"; };
 		7AE652AA2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ELEMENTSVIEW_FIX_SUMMARY.md; sourceTree = "<group>"; };
 		7AE652B42F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ELEMENTSVIEW_FLOW_DIAGRAM.md; sourceTree = "<group>"; };
@@ -2758,6 +2924,10 @@
 		7AE652F02F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_ELEMENTSVIEW_FIX.md; sourceTree = "<group>"; };
 		7AE652FA2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ANDROID_IOS_PARITY_VERIFICATION.md; sourceTree = "<group>"; };
 		7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = REVERT_INVISIBLE_FILTER_CHANGE.md; sourceTree = "<group>"; };
+		7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCloudManager.swift; sourceTree = "<group>"; };
+		7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MARKETING_CLOUD_IOS_IMPLEMENTATION.md; sourceTree = "<group>"; };
+		7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
+		7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SPLASH_PERMISSION_LOGIC_IOS.md; sourceTree = "<group>"; };
 		7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLogger.swift; sourceTree = "<group>"; };
 		8702544F28B372FD0038B753 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8702545128B373770038B753 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -3180,10 +3350,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7AB5632D2F76CE860044F9EE /* AutomatedExams 2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "AutomatedExams 2";
+			sourceTree = "<group>";
+		};
 		7AD367352F46498E002A4F1C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				7AD367362F464997002A4F1C /* MarketingCloudManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3343,6 +3519,16 @@
 				E6D694A72B975E43002EDC3B /* ExamsUIState.swift */,
 				E67C8F6C2BBDF8C800FDAA1C /* ExamsView+Extension.swift */,
 				E6799D802E2112DA00871886 /* ExamsView.swift */,
+				7AB5632D2F76CE860044F9EE /* AutomatedExams 2 */,
+				7AB87AC62F7ADEFA00B3866C /* AutomatedExamsUIState.swift */,
+				7AB87AD02F7ADF4500B3866C /* AutomatedExams+Extension.swift */,
+				7AB87ADA2F7AE05000B3866C /* AutomatedExamsView.swift */,
+				7AB87AE42F7AE1D600B3866C /* ExamPopupView.swift */,
+				7AB87AEE2F7AE1D800B3866C /* PopupConsentimientoView.swift */,
+				7AB87AF82F7AE1D900B3866C /* SeleccionarExamenesView.swift */,
+				7AB87B022F7AE1DB00B3866C /* CarritoExamView.swift */,
+				7AC23CF82F7AEB1D008A618E /* PopupConfirmDatosView.swift */,
+				7AC23D022F7AEB1F008A618E /* PopupConfirmEmailView.swift */,
 			);
 			path = MedicalExams;
 			sourceTree = "<group>";
@@ -3369,6 +3555,7 @@
 				E606D7772D5A9793007DDBA8 /* FunctionFilter.swift */,
 				E6D246A12DB08A1D007F70E1 /* PopupConsent.swift */,
 				E6CE3E4D2DC11A0A007DA57A /* BrandButtonTile.swift */,
+				7AB87AB22F7AB07700B3866C /* PresignedURLResponse.swift */,
 			);
 			path = Frontend;
 			sourceTree = "<group>";
@@ -3540,6 +3727,8 @@
 				E60FBEE52B76607400869F4A /* Network+EducationalMaterial.swift */,
 				E63AE2E02CDE464400E7A3C8 /* Network+Company.swift */,
 				E606D7702D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift */,
+				7AB87ABC2F7AB71C00B3866C /* S3FileHelper.swift */,
+				7AB87B0C2F7AE2EE00B3866C /* Network+AutomatedExams.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -3673,6 +3862,11 @@
 				7A6319E42F631B9000F6A38B /* Date+AppointmentTime.swift */,
 				7A6319EE2F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md */,
 				7A6319F82F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md */,
+				7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */,
+				7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */,
+				7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */,
+				7AFC12712F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md */,
+				7A8A5D012F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md */,
 			);
 			path = Appointments;
 			sourceTree = "<group>";
@@ -3707,6 +3901,7 @@
 			children = (
 				87A625F62902D49400E23470 /* Network */,
 				87A625F52902D48700E23470 /* AppStatusManager */,
+				7A0676042F7C1E480011747C /* ProfileCache.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -4169,6 +4364,7 @@
 				7AE652DE2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				7A2F7B682ED8DBA00095661C /* Assets.xcassets in Resources */,
 				7AD367302F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12742F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB1452F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				7A2F7B692ED8DBA00095661C /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9732EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4205,6 +4401,7 @@
 				7AB6ECC82F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378C2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39002F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12662F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653012F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBD2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EB2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4215,6 +4412,7 @@
 				7A2F7B712ED8DBA00095661C /* firasans_bold.ttf in Resources */,
 				7AE652C02F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C42F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D0A2F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390A2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1322F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AF2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4241,6 +4439,7 @@
 				7AE652DD2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				87D3AEEC2897E1D30089A2C8 /* Assets.xcassets in Resources */,
 				7AD3672B2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12732F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB1462F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F7F89C2BA9BCEA00683013 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9762EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4277,6 +4476,7 @@
 				7AB6ECCA2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378B2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39062F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12642F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653032F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBE2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EC2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4287,6 +4487,7 @@
 				879C5B7D289BA1CE005A140D /* firasans_bold.ttf in Resources */,
 				7AE652C22F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C02F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D082F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390B2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1382F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AA2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4313,6 +4514,7 @@
 				7AE652E02F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E636EFB72BA8C81900A51A87 /* Assets.xcassets in Resources */,
 				7AD367312F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12752F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB14D2F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F7F8A02BA9BCEA00683013 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A96F2EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4349,6 +4551,7 @@
 				7AB6ECCB2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378F2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39012F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12652F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FC2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC22F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EA2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4359,6 +4562,7 @@
 				E636EFBD2BA8C81900A51A87 /* firasans_bold.ttf in Resources */,
 				7AE652C12F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C62F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D062F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390D2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1342F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001B12F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4385,6 +4589,7 @@
 				7AE652E32F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E643D4392B7170290058D227 /* Assets.xcassets in Resources */,
 				7AD3672F2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12792F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB1472F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F7F89E2BA9BCEA00683013 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A96E2EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4421,6 +4626,7 @@
 				7AB6ECCC2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378D2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39032F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12612F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FF2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBF2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E92F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4431,6 +4637,7 @@
 				E643D43E2B7170290058D227 /* firasans_bold.ttf in Resources */,
 				7AE652C52F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C22F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D042F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E39102F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1332F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AE2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4457,6 +4664,7 @@
 				7AE652E52F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E64AC5F82D8B04E600B3E521 /* Assets.xcassets in Resources */,
 				7AD367332F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12772F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB1482F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E64AC5F92D8B04E600B3E521 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9712EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4493,6 +4701,7 @@
 				7AB6ECC92F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237902F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39022F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12622F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FE2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC12F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EF2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4503,6 +4712,7 @@
 				E64AC5FF2D8B04E600B3E521 /* firasans_bold.ttf in Resources */,
 				7AE652C32F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C72F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D052F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390C2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1372F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AD2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4529,6 +4739,7 @@
 				7AE652E42F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E68DD8492DB7C8D500307982 /* Assets.xcassets in Resources */,
 				7AD3672C2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12782F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB1492F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E68DD84A2DB7C8D500307982 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9752EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4565,6 +4776,7 @@
 				7AB6ECC62F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378E2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39042F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12602F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FD2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC32F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EE2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4575,6 +4787,7 @@
 				E68DD8512DB7C8D500307982 /* firasans_bold.ttf in Resources */,
 				7AE652C62F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C52F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D072F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390F2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1312F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AC2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4601,6 +4814,7 @@
 				7AE652DF2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E69FED402BA47E61002ADADB /* Assets.xcassets in Resources */,
 				7AD367322F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC127A2F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB14A2F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F7F89F2BA9BCEA00683013 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9742EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4637,6 +4851,7 @@
 				7AB6ECCD2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237892F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E38FE2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC125E2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653022F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBC2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E72F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4647,6 +4862,7 @@
 				E69FED462BA47E61002ADADB /* firasans_bold.ttf in Resources */,
 				7AE652C42F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C12F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D022F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E39092F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1392F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001AB2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4673,6 +4889,7 @@
 				7AE652E22F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6DC59AE2B6C089C00EEC341 /* Assets.xcassets in Resources */,
 				7AD3672E2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12762F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB14B2F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F7F89D2BA9BCEA00683013 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9722EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4709,6 +4926,7 @@
 				7AB6ECC52F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378A2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39052F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC125F2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FB2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBB2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E82F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4719,6 +4937,7 @@
 				E6DC59B32B6C089C00EEC341 /* firasans_bold.ttf in Resources */,
 				7AE652BF2F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C82F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D032F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E39082F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1352F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001B22F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4745,6 +4964,7 @@
 				7AE652E12F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6F66CCA2C9478ED00B0CE60 /* Assets.xcassets in Resources */,
 				7AD3672D2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
+				7AFC12722F68392C00F59763 /* SPLASH_PERMISSION_LOGIC_IOS.md in Resources */,
 				7A9CB14C2F3E1D3C007FA976 /* PICKLIST_SMOOTH_TRANSITIONS.md in Resources */,
 				E6F66CCB2C9478ED00B0CE60 /* SplashViewVCContigo.storyboard in Resources */,
 				7A49A9702EFAEE57006F26BB /* FIX_ESTILO_VISUAL_CONCATENACION.md in Resources */,
@@ -4781,6 +5001,7 @@
 				7AB6ECC72F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237912F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E38FF2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AFC12632F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653002F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC02F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652ED2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
@@ -4791,6 +5012,7 @@
 				E6F66CD12C9478ED00B0CE60 /* firasans_bold.ttf in Resources */,
 				7AE652C72F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C32F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
+				7A8A5D092F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
 				7A0E390E2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1362F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
 				7A9001B02F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
@@ -4833,8 +5055,10 @@
 				7A2F7A8F2ED8DBA00095661C /* AppStatusManager+Appointment.swift in Sources */,
 				7A2F7A902ED8DBA00095661C /* HomeUIStateModel.swift in Sources */,
 				7A2F7A912ED8DBA00095661C /* CompanySelectionView.swift in Sources */,
+				7AB87B0D2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				7A2F7A922ED8DBA00095661C /* AppStatusManager+Program.swift in Sources */,
 				7A2F7A932ED8DBA00095661C /* PrescriptionDownloadView.swift in Sources */,
+				7AC23D012F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				7A2F7A942ED8DBA00095661C /* PrimaryButton.swift in Sources */,
 				7A2F7A952ED8DBA00095661C /* Label+Extensions.swift in Sources */,
 				7A2F7A962ED8DBA00095661C /* AppointmentsView.swift in Sources */,
@@ -4849,7 +5073,10 @@
 				7A2F7A9E2ED8DBA00095661C /* PrescriptionFilter.swift in Sources */,
 				7A2F7A9F2ED8DBA00095661C /* RutValidateResponse.swift in Sources */,
 				7A2F7AA02ED8DBA00095661C /* SecondTile.swift in Sources */,
+				7AFC125A2F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC12702F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				7A2F7AA12ED8DBA00095661C /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D092F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				7A2F7AA22ED8DBA00095661C /* Onboarding+Extension.swift in Sources */,
 				7A2F7AA32ED8DBA00095661C /* MedicalExamsRowView.swift in Sources */,
 				7A2F7AA42ED8DBA00095661C /* CustomTextEditor.swift in Sources */,
@@ -4867,17 +5094,21 @@
 				7A2F7AB02ED8DBA00095661C /* ChatbotView.swift in Sources */,
 				7A2F7AB12ED8DBA00095661C /* FamilyGroupView.swift in Sources */,
 				7A2F7AB22ED8DBA00095661C /* AppointmentsCalendarView.swift in Sources */,
+				7AB87ABD2F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				7A2F7AB32ED8DBA00095661C /* ProfileUpdateInformation.swift in Sources */,
 				7A2F7AB42ED8DBA00095661C /* Networkl+FunctionFilter.swift in Sources */,
 				7A2F7AB52ED8DBA00095661C /* ClinicDetailUIState.swift in Sources */,
+				7A0676082F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A52377C2F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				7A2F7AB62ED8DBA00095661C /* ProgramCard.swift in Sources */,
 				7A2F7AB72ED8DBA00095661C /* Attribute.swift in Sources */,
 				7A2F7AB82ED8DBA00095661C /* Home+Extension.swift in Sources */,
 				7A2F7AB92ED8DBA00095661C /* HorizontalTileView.swift in Sources */,
 				7A2F7ABA2ED8DBA00095661C /* CameraManager.swift in Sources */,
+				7AB87AEF2F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				7A2F7ABB2ED8DBA00095661C /* PatientExamRowView.swift in Sources */,
 				7A2F7ABC2ED8DBA00095661C /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACB2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				7A2F7ABD2ED8DBA00095661C /* URL+Extensions.swift in Sources */,
 				7A2F7ABE2ED8DBA00095661C /* LegalsResponse.swift in Sources */,
 				7AD3671B2F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -4891,6 +5122,7 @@
 				7A2F7AC52ED8DBA00095661C /* Network+Appointments.swift in Sources */,
 				7A2F7AC62ED8DBA00095661C /* Environment+RootPresentation.swift in Sources */,
 				7A2F7AC72ED8DBA00095661C /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AE72F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				7A2F7AC82ED8DBA00095661C /* String+Extensions.swift in Sources */,
 				7A2F7AC92ED8DBA00095661C /* WebView.swift in Sources */,
 				7A2F7ACA2ED8DBA00095661C /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -4909,6 +5141,7 @@
 				7A2F7AD72ED8DBA00095661C /* PickerButton.swift in Sources */,
 				7A2F7AD82ED8DBA00095661C /* User.swift in Sources */,
 				7A2F7AD92ED8DBA00095661C /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87AE12F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				7A2F7ADA2ED8DBA00095661C /* NewAppointmentSelectClinicView.swift in Sources */,
 				7A2F7ADB2ED8DBA00095661C /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				7A2F7ADC2ED8DBA00095661C /* ClinicContactButton.swift in Sources */,
@@ -4925,6 +5158,7 @@
 				7A2F7AE72ED8DBA00095661C /* Network+API.swift in Sources */,
 				7A2F7AE82ED8DBA00095661C /* BrandButtonTile.swift in Sources */,
 				7A2F7AE92ED8DBA00095661C /* CodeGenerateResponse.swift in Sources */,
+				7AB87B012F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				7A2F7AEA2ED8DBA00095661C /* TasksView.swift in Sources */,
 				7A2F7AEB2ED8DBA00095661C /* SignUpOtpView.swift in Sources */,
 				7A2F7AEC2ED8DBA00095661C /* PrescriptionRowView.swift in Sources */,
@@ -4934,6 +5168,7 @@
 				7A2F7AF02ED8DBA00095661C /* Endpoint.swift in Sources */,
 				7AFF3E642F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237812F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB42F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				7A2F7AF12ED8DBA00095661C /* StageRowView.swift in Sources */,
 				7A2F7AF22ED8DBA00095661C /* TransparentButton.swift in Sources */,
 				7A5D502F2F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -4973,13 +5208,13 @@
 				7A2F7B122ED8DBA00095661C /* SeeAllView.swift in Sources */,
 				7A2F7B132ED8DBA00095661C /* ClinicIconView.swift in Sources */,
 				7A2F7B142ED8DBA00095661C /* MainTabView.swift in Sources */,
-				7AD778512F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				7A2F7B152ED8DBA00095661C /* AppointmentSlot.swift in Sources */,
 				7A2F7B162ED8DBA00095661C /* ClinicDetail.swift in Sources */,
 				7A2F7B172ED8DBA00095661C /* Task.swift in Sources */,
 				7A2F7B182ED8DBA00095661C /* Network+SignUp.swift in Sources */,
 				7A2F7B192ED8DBA00095661C /* View+Extensions.swift in Sources */,
 				7A2F7B1A2ED8DBA00095661C /* SendNewExamView.swift in Sources */,
+				7AB87AD32F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				7A2F7B1B2ED8DBA00095661C /* SignInView.swift in Sources */,
 				7A2F7B1C2ED8DBA00095661C /* SignUpFormView.swift in Sources */,
 				7A9001792F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -5006,6 +5241,7 @@
 				7A2F7B302ED8DBA00095661C /* Network+Professionals.swift in Sources */,
 				7A2F7B312ED8DBA00095661C /* SignUpCreatePassword.swift in Sources */,
 				7A5237702F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B032F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				7A2F7B322ED8DBA00095661C /* AppStatusManager+Clinic.swift in Sources */,
 				7A2F7B332ED8DBA00095661C /* TextView.swift in Sources */,
 				7A2F7B342ED8DBA00095661C /* Color+Extensions.swift in Sources */,
@@ -5059,8 +5295,10 @@
 				875DF0B629183864008E7FF7 /* AppStatusManager+Appointment.swift in Sources */,
 				E683AC282B0664ED00C5A1B1 /* HomeUIStateModel.swift in Sources */,
 				87E666F428DC809B00AD390E /* CompanySelectionView.swift in Sources */,
+				7AB87B112F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E6D2E2FC2A6AD6E0003DF5F7 /* AppStatusManager+Program.swift in Sources */,
 				E6E1A6FC2AA7632400F4F332 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23CFA2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				879C5B86289BC017005A140D /* PrimaryButton.swift in Sources */,
 				8741E25E28C938EC00A15C06 /* Label+Extensions.swift in Sources */,
 				879C5B9A289E17B9005A140D /* AppointmentsView.swift in Sources */,
@@ -5075,7 +5313,10 @@
 				E6CA22302A9F97440059998E /* PrescriptionFilter.swift in Sources */,
 				8796B10D28D25B26004BA02B /* RutValidateResponse.swift in Sources */,
 				E67FC0A22B4F2BB90071A011 /* SecondTile.swift in Sources */,
+				7AFC12572F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126A2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E648E5642BC6CE900059460D /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D042F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E6D3CA6B2B693F1400310E54 /* Onboarding+Extension.swift in Sources */,
 				879269B729F0360300361152 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D02E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -5093,17 +5334,21 @@
 				87271BE3297090CB00754EDA /* ChatbotView.swift in Sources */,
 				E66D0C502C49BB4D00F50979 /* FamilyGroupView.swift in Sources */,
 				87F2284428B634810031199F /* AppointmentsCalendarView.swift in Sources */,
+				7AB87ABF2F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				87F898E7298C66C900EACC02 /* ProfileUpdateInformation.swift in Sources */,
 				E606D7742D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E648E55E2BC6CD4A0059460D /* ClinicDetailUIState.swift in Sources */,
+				7A06760C2F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A5237752F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				879269AE29F0360300361152 /* ProgramCard.swift in Sources */,
 				E6FCC7792ACF34F600C9E673 /* Attribute.swift in Sources */,
 				E6B144912B59716A00DADF6D /* Home+Extension.swift in Sources */,
 				8702546128B38A750038B753 /* HorizontalTileView.swift in Sources */,
 				87DCB021293EC00200AB75DB /* CameraManager.swift in Sources */,
+				7AB87AF32F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D952E21475800871886 /* PatientExamRowView.swift in Sources */,
 				87A0C5E72A4B046400AE63E6 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACC2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				87438E95294BA4DB007E4F6C /* URL+Extensions.swift in Sources */,
 				87364FA729555201004FFCA2 /* LegalsResponse.swift in Sources */,
 				7AD367202F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -5117,6 +5362,7 @@
 				87BBD57D2909F70E0000B7A6 /* Network+Appointments.swift in Sources */,
 				872398CB2917322B00D1786F /* Environment+RootPresentation.swift in Sources */,
 				E6A1144E2AF13F6E001A34A1 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AE82F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				879C5B8E289C1DBF005A140D /* String+Extensions.swift in Sources */,
 				87438E93294B9B8C007E4F6C /* WebView.swift in Sources */,
 				87A11642299C0110007EB0A6 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -5135,6 +5381,7 @@
 				873013D828EDE26D005A80BB /* PickerButton.swift in Sources */,
 				8702545028B372FD0038B753 /* User.swift in Sources */,
 				87AD0C69290AF923003C2858 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87ADF2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				87AD0C67290AF476003C2858 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469C2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				87438E91294A5ECB007E4F6C /* ClinicContactButton.swift in Sources */,
@@ -5151,6 +5398,7 @@
 				878859812963A68F00ABA985 /* Network+API.swift in Sources */,
 				E6CE3E552DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				87216B9D28D94A8C00B4CDB9 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AFE2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				879269B329F0360300361152 /* TasksView.swift in Sources */,
 				8796B10128CFBB4A004BA02B /* SignUpOtpView.swift in Sources */,
 				879269AA29F0360300361152 /* PrescriptionRowView.swift in Sources */,
@@ -5160,6 +5408,7 @@
 				8796B10728D24F3A004BA02B /* Endpoint.swift in Sources */,
 				7AFF3E612F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237862F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB62F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				879269B429F0360300361152 /* StageRowView.swift in Sources */,
 				8796B10328D247EC004BA02B /* TransparentButton.swift in Sources */,
 				7A5D50312F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -5199,13 +5448,13 @@
 				8702546528B428E20038B753 /* SeeAllView.swift in Sources */,
 				872398C929145B8600D1786F /* ClinicIconView.swift in Sources */,
 				8702545228B373770038B753 /* MainTabView.swift in Sources */,
-				7A15ED7B2F47926D00B252AF /* MarketingCloudManager.swift in Sources */,
 				87796C2B290A217700A5F9BF /* AppointmentSlot.swift in Sources */,
 				8728BC9E295F2FE000FD4A7B /* ClinicDetail.swift in Sources */,
 				E6341A9F2A730A34005E6607 /* Task.swift in Sources */,
 				8796B10B28D2578D004BA02B /* Network+SignUp.swift in Sources */,
 				870722B12911B125007AB753 /* View+Extensions.swift in Sources */,
 				E6799DA12E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD82F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				879C5B96289D730C005A140D /* SignInView.swift in Sources */,
 				879C5B9E289E24A8005A140D /* SignUpFormView.swift in Sources */,
 				7A90017A2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -5232,6 +5481,7 @@
 				87AD0C6F290C3DBA003C2858 /* Network+Professionals.swift in Sources */,
 				87E666EE28DB57FD00AD390E /* SignUpCreatePassword.swift in Sources */,
 				7A5237722F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B052F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				87A625FA2902D4B600E23470 /* AppStatusManager+Clinic.swift in Sources */,
 				874CF5EA2A1BAB84008796CE /* TextView.swift in Sources */,
 				879C5B7F289BA6C2005A140D /* Color+Extensions.swift in Sources */,
@@ -5285,8 +5535,10 @@
 				E636EEFF2BA8C81900A51A87 /* HomeUIStateModel.swift in Sources */,
 				E636EF002BA8C81900A51A87 /* CompanySelectionView.swift in Sources */,
 				E636EF012BA8C81900A51A87 /* AppStatusManager+Program.swift in Sources */,
+				7AB87B152F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E636EF022BA8C81900A51A87 /* PrescriptionDownloadView.swift in Sources */,
 				E636EF032BA8C81900A51A87 /* PrimaryButton.swift in Sources */,
+				7AC23CFC2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E636EF042BA8C81900A51A87 /* Label+Extensions.swift in Sources */,
 				E636EF052BA8C81900A51A87 /* AppointmentsView.swift in Sources */,
 				E636EF062BA8C81900A51A87 /* TaskTile.swift in Sources */,
@@ -5301,7 +5553,10 @@
 				E636EF0E2BA8C81900A51A87 /* RutValidateResponse.swift in Sources */,
 				E636EF0F2BA8C81900A51A87 /* SecondTile.swift in Sources */,
 				E636EF102BA8C81900A51A87 /* Onboarding+Extension.swift in Sources */,
+				7AFC125C2F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC12692F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E648E5682BC6CE900059460D /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D032F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E636EF112BA8C81900A51A87 /* MedicalExamsRowView.swift in Sources */,
 				E636EF122BA8C81900A51A87 /* HomeView.swift in Sources */,
 				E67AF9D12E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -5319,17 +5574,21 @@
 				E636EF1D2BA8C81900A51A87 /* AppointmentsCalendarView.swift in Sources */,
 				E66D0C542C49BB4D00F50979 /* FamilyGroupView.swift in Sources */,
 				E636EF1E2BA8C81900A51A87 /* ProfileUpdateInformation.swift in Sources */,
+				7AB87ABE2F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E636EF1F2BA8C81900A51A87 /* ProgramCard.swift in Sources */,
 				E606D7762D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E648E5622BC6CD4A0059460D /* ClinicDetailUIState.swift in Sources */,
+				7A0676062F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A5237762F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E67C8F7B2BBDFC3F00FDAA1C /* ExamsUIState.swift in Sources */,
 				E636EF202BA8C81900A51A87 /* Attribute.swift in Sources */,
 				E636EF212BA8C81900A51A87 /* Home+Extension.swift in Sources */,
 				E636EF222BA8C81900A51A87 /* HorizontalTileView.swift in Sources */,
 				E636EF232BA8C81900A51A87 /* CameraManager.swift in Sources */,
+				7AB87AF72F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D9B2E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E636EF242BA8C81900A51A87 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87AC82F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E636EF252BA8C81900A51A87 /* URL+Extensions.swift in Sources */,
 				E636EF262BA8C81900A51A87 /* LegalsResponse.swift in Sources */,
 				7AD367212F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -5343,6 +5602,7 @@
 				E636EF2D2BA8C81900A51A87 /* Network+Appointments.swift in Sources */,
 				E636EF2E2BA8C81900A51A87 /* Environment+RootPresentation.swift in Sources */,
 				E636EF2F2BA8C81900A51A87 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AEB2F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E636EF302BA8C81900A51A87 /* String+Extensions.swift in Sources */,
 				E636EF312BA8C81900A51A87 /* WebView.swift in Sources */,
 				E636EF322BA8C81900A51A87 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -5361,6 +5621,7 @@
 				E636EF3D2BA8C81900A51A87 /* PickerButton.swift in Sources */,
 				E636EF3E2BA8C81900A51A87 /* User.swift in Sources */,
 				E636EF3F2BA8C81900A51A87 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87AE22F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E636EF402BA8C81900A51A87 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469D2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E636EF412BA8C81900A51A87 /* ClinicContactButton.swift in Sources */,
@@ -5377,6 +5638,7 @@
 				E636EF4A2BA8C81900A51A87 /* CodeGenerateResponse.swift in Sources */,
 				E6CE3E502DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E636EF4B2BA8C81900A51A87 /* TasksView.swift in Sources */,
+				7AB87AFC2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E636EF4C2BA8C81900A51A87 /* SignUpOtpView.swift in Sources */,
 				E636EF4D2BA8C81900A51A87 /* PrescriptionRowView.swift in Sources */,
 				E636EF4E2BA8C81900A51A87 /* OverlayView.swift in Sources */,
@@ -5386,6 +5648,7 @@
 				E636EF522BA8C81900A51A87 /* StageRowView.swift in Sources */,
 				7AFF3E5F2F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A52377F2F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB72F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E636EF532BA8C81900A51A87 /* TransparentButton.swift in Sources */,
 				E636EF542BA8C81900A51A87 /* PromotionsTile.swift in Sources */,
 				7A5D50362F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -5425,13 +5688,13 @@
 				E636EF6C2BA8C81900A51A87 /* ClinicIconView.swift in Sources */,
 				E636EF6D2BA8C81900A51A87 /* MainTabView.swift in Sources */,
 				E636EF6E2BA8C81900A51A87 /* AppointmentSlot.swift in Sources */,
-				7AD7784D2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E636EF6F2BA8C81900A51A87 /* ClinicDetail.swift in Sources */,
 				E636EF702BA8C81900A51A87 /* Task.swift in Sources */,
 				E636EF712BA8C81900A51A87 /* Network+SignUp.swift in Sources */,
 				E636EF722BA8C81900A51A87 /* View+Extensions.swift in Sources */,
 				E636EF732BA8C81900A51A87 /* SignInView.swift in Sources */,
 				E6799DA42E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD52F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E636EF742BA8C81900A51A87 /* SignUpFormView.swift in Sources */,
 				E636EF752BA8C81900A51A87 /* PopupViewModifier.swift in Sources */,
 				7A90017F2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -5458,6 +5721,7 @@
 				E636EF852BA8C81900A51A87 /* Network+Professionals.swift in Sources */,
 				E636EF862BA8C81900A51A87 /* SignUpCreatePassword.swift in Sources */,
 				7A5237712F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B0A2F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E636EF872BA8C81900A51A87 /* AppStatusManager+Clinic.swift in Sources */,
 				E636EF882BA8C81900A51A87 /* TextView.swift in Sources */,
 				E636EF892BA8C81900A51A87 /* Color+Extensions.swift in Sources */,
@@ -5511,8 +5775,10 @@
 				E643D3852B7170290058D227 /* AppStatusManager+Appointment.swift in Sources */,
 				E643D3862B7170290058D227 /* HomeUIStateModel.swift in Sources */,
 				E643D3872B7170290058D227 /* CompanySelectionView.swift in Sources */,
+				7AB87B102F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E643D3882B7170290058D227 /* AppStatusManager+Program.swift in Sources */,
 				E643D3892B7170290058D227 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23D002F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E643D38A2B7170290058D227 /* PrimaryButton.swift in Sources */,
 				E643D38B2B7170290058D227 /* Label+Extensions.swift in Sources */,
 				E643D38C2B7170290058D227 /* AppointmentsView.swift in Sources */,
@@ -5527,7 +5793,10 @@
 				E643D3942B7170290058D227 /* PrescriptionFilter.swift in Sources */,
 				E643D3952B7170290058D227 /* RutValidateResponse.swift in Sources */,
 				E643D3962B7170290058D227 /* SecondTile.swift in Sources */,
+				7AFC12542F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126D2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E648E5662BC6CE900059460D /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D0A2F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E643D3972B7170290058D227 /* Onboarding+Extension.swift in Sources */,
 				E643D3982B7170290058D227 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D22E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -5545,17 +5814,21 @@
 				E643D3A32B7170290058D227 /* ChatbotView.swift in Sources */,
 				E66D0C522C49BB4D00F50979 /* FamilyGroupView.swift in Sources */,
 				E643D3A42B7170290058D227 /* AppointmentsCalendarView.swift in Sources */,
+				7AB87AC42F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E643D3A52B7170290058D227 /* ProfileUpdateInformation.swift in Sources */,
 				E606D7722D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E648E5602BC6CD4A0059460D /* ClinicDetailUIState.swift in Sources */,
+				7A0676092F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A52377B2F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E643D3A62B7170290058D227 /* ProgramCard.swift in Sources */,
 				E643D3A72B7170290058D227 /* Attribute.swift in Sources */,
 				E643D3A82B7170290058D227 /* Home+Extension.swift in Sources */,
 				E643D3A92B7170290058D227 /* HorizontalTileView.swift in Sources */,
 				E643D3AA2B7170290058D227 /* CameraManager.swift in Sources */,
+				7AB87AF62F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D972E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E643D3AB2B7170290058D227 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACD2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E643D3AC2B7170290058D227 /* URL+Extensions.swift in Sources */,
 				E643D3AD2B7170290058D227 /* LegalsResponse.swift in Sources */,
 				7AD367232F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -5569,6 +5842,7 @@
 				E643D3B32B7170290058D227 /* Network+Appointments.swift in Sources */,
 				E643D3B42B7170290058D227 /* Environment+RootPresentation.swift in Sources */,
 				E643D3B52B7170290058D227 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AE62F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E643D3B62B7170290058D227 /* String+Extensions.swift in Sources */,
 				E643D3B72B7170290058D227 /* WebView.swift in Sources */,
 				E643D3B82B7170290058D227 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -5587,6 +5861,7 @@
 				E643D3C32B7170290058D227 /* PickerButton.swift in Sources */,
 				E643D3C42B7170290058D227 /* User.swift in Sources */,
 				E643D3C52B7170290058D227 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87ADC2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E643D3C62B7170290058D227 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469A2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E643D3C72B7170290058D227 /* ClinicContactButton.swift in Sources */,
@@ -5603,6 +5878,7 @@
 				E643D3CF2B7170290058D227 /* Network+API.swift in Sources */,
 				E6CE3E4F2DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E643D3D02B7170290058D227 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AFD2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E643D3D12B7170290058D227 /* TasksView.swift in Sources */,
 				E643D3D22B7170290058D227 /* SignUpOtpView.swift in Sources */,
 				E643D3D32B7170290058D227 /* PrescriptionRowView.swift in Sources */,
@@ -5612,6 +5888,7 @@
 				E643D3D72B7170290058D227 /* Endpoint.swift in Sources */,
 				7AFF3E672F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237832F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB32F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E643D3D82B7170290058D227 /* StageRowView.swift in Sources */,
 				E643D3D92B7170290058D227 /* TransparentButton.swift in Sources */,
 				7A5D50322F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -5651,13 +5928,13 @@
 				E643D3EF2B7170290058D227 /* SeeAllView.swift in Sources */,
 				E643D3F02B7170290058D227 /* ClinicIconView.swift in Sources */,
 				E643D3F12B7170290058D227 /* MainTabView.swift in Sources */,
-				7AD7784B2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E643D3F22B7170290058D227 /* AppointmentSlot.swift in Sources */,
 				E643D3F32B7170290058D227 /* ClinicDetail.swift in Sources */,
 				E643D3F42B7170290058D227 /* Task.swift in Sources */,
 				E643D3F52B7170290058D227 /* Network+SignUp.swift in Sources */,
 				E643D3F62B7170290058D227 /* View+Extensions.swift in Sources */,
 				E6799DA02E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD42F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E643D3F72B7170290058D227 /* SignInView.swift in Sources */,
 				E643D3F82B7170290058D227 /* SignUpFormView.swift in Sources */,
 				7A90017C2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -5684,6 +5961,7 @@
 				E643D4092B7170290058D227 /* Network+Professionals.swift in Sources */,
 				E643D40A2B7170290058D227 /* SignUpCreatePassword.swift in Sources */,
 				7A52376E2F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B0B2F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E643D40B2B7170290058D227 /* AppStatusManager+Clinic.swift in Sources */,
 				E643D40C2B7170290058D227 /* TextView.swift in Sources */,
 				E643D40D2B7170290058D227 /* Color+Extensions.swift in Sources */,
@@ -5737,8 +6015,10 @@
 				E64AC52F2D8B04E600B3E521 /* AppStatusManager+Appointment.swift in Sources */,
 				E64AC5302D8B04E600B3E521 /* HomeUIStateModel.swift in Sources */,
 				E64AC5312D8B04E600B3E521 /* CompanySelectionView.swift in Sources */,
+				7AB87B142F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E64AC5322D8B04E600B3E521 /* AppStatusManager+Program.swift in Sources */,
 				E64AC5332D8B04E600B3E521 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23CF92F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E64AC5342D8B04E600B3E521 /* PrimaryButton.swift in Sources */,
 				E64AC5352D8B04E600B3E521 /* Label+Extensions.swift in Sources */,
 				E64AC5362D8B04E600B3E521 /* AppointmentsView.swift in Sources */,
@@ -5753,7 +6033,10 @@
 				E64AC53E2D8B04E600B3E521 /* PrescriptionFilter.swift in Sources */,
 				E64AC53F2D8B04E600B3E521 /* RutValidateResponse.swift in Sources */,
 				E64AC5402D8B04E600B3E521 /* SecondTile.swift in Sources */,
+				7AFC12562F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126E2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E64AC5412D8B04E600B3E521 /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D072F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E64AC5422D8B04E600B3E521 /* Onboarding+Extension.swift in Sources */,
 				E64AC5432D8B04E600B3E521 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9CF2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -5771,17 +6054,21 @@
 				E64AC54F2D8B04E600B3E521 /* ChatbotView.swift in Sources */,
 				E64AC5502D8B04E600B3E521 /* FamilyGroupView.swift in Sources */,
 				E64AC5512D8B04E600B3E521 /* AppointmentsCalendarView.swift in Sources */,
+				7AB87AC22F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E64AC5522D8B04E600B3E521 /* ProfileUpdateInformation.swift in Sources */,
 				E64AC5532D8B04E600B3E521 /* Networkl+FunctionFilter.swift in Sources */,
 				E64AC5542D8B04E600B3E521 /* ClinicDetailUIState.swift in Sources */,
+				7A06760B2F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A5237792F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E64AC5552D8B04E600B3E521 /* ProgramCard.swift in Sources */,
 				E64AC5562D8B04E600B3E521 /* Attribute.swift in Sources */,
 				E64AC5572D8B04E600B3E521 /* Home+Extension.swift in Sources */,
 				E64AC5582D8B04E600B3E521 /* HorizontalTileView.swift in Sources */,
 				E64AC5592D8B04E600B3E521 /* CameraManager.swift in Sources */,
+				7AB87AF12F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D982E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E64AC55A2D8B04E600B3E521 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACA2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E64AC55B2D8B04E600B3E521 /* URL+Extensions.swift in Sources */,
 				E64AC55C2D8B04E600B3E521 /* LegalsResponse.swift in Sources */,
 				7AD3671C2F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -5795,6 +6082,7 @@
 				E64AC5632D8B04E600B3E521 /* Network+Appointments.swift in Sources */,
 				E64AC5642D8B04E600B3E521 /* Environment+RootPresentation.swift in Sources */,
 				E64AC5652D8B04E600B3E521 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AEC2F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E64AC5662D8B04E600B3E521 /* String+Extensions.swift in Sources */,
 				E64AC5672D8B04E600B3E521 /* WebView.swift in Sources */,
 				E64AC5682D8B04E600B3E521 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -5813,6 +6101,7 @@
 				E64AC5752D8B04E600B3E521 /* PickerButton.swift in Sources */,
 				E64AC5762D8B04E600B3E521 /* User.swift in Sources */,
 				E64AC5772D8B04E600B3E521 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87ADB2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E64AC5782D8B04E600B3E521 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D246A02DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E64AC5792D8B04E600B3E521 /* ClinicContactButton.swift in Sources */,
@@ -5829,6 +6118,7 @@
 				E64AC5842D8B04E600B3E521 /* Network+API.swift in Sources */,
 				E6CE3E512DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E64AC5852D8B04E600B3E521 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AFA2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E64AC5862D8B04E600B3E521 /* TasksView.swift in Sources */,
 				E64AC5872D8B04E600B3E521 /* SignUpOtpView.swift in Sources */,
 				E64AC5882D8B04E600B3E521 /* PrescriptionRowView.swift in Sources */,
@@ -5838,6 +6128,7 @@
 				E64AC58C2D8B04E600B3E521 /* Endpoint.swift in Sources */,
 				7AFF3E632F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237852F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB92F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E64AC58D2D8B04E600B3E521 /* StageRowView.swift in Sources */,
 				E64AC58E2D8B04E600B3E521 /* TransparentButton.swift in Sources */,
 				7A5D50302F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -5877,13 +6168,13 @@
 				E64AC5AA2D8B04E600B3E521 /* SeeAllView.swift in Sources */,
 				E64AC5AB2D8B04E600B3E521 /* ClinicIconView.swift in Sources */,
 				E64AC5AC2D8B04E600B3E521 /* MainTabView.swift in Sources */,
-				7AD7784F2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E64AC5AD2D8B04E600B3E521 /* AppointmentSlot.swift in Sources */,
 				E64AC5AE2D8B04E600B3E521 /* ClinicDetail.swift in Sources */,
 				E64AC5AF2D8B04E600B3E521 /* Task.swift in Sources */,
 				E64AC5B02D8B04E600B3E521 /* Network+SignUp.swift in Sources */,
 				E64AC5B12D8B04E600B3E521 /* View+Extensions.swift in Sources */,
 				E6799D9F2E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD72F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E64AC5B22D8B04E600B3E521 /* SignInView.swift in Sources */,
 				E64AC5B32D8B04E600B3E521 /* SignUpFormView.swift in Sources */,
 				7A90017E2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -5910,6 +6201,7 @@
 				E64AC5C42D8B04E600B3E521 /* Network+Professionals.swift in Sources */,
 				E64AC5C52D8B04E600B3E521 /* SignUpCreatePassword.swift in Sources */,
 				7A52376C2F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B072F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E64AC5C62D8B04E600B3E521 /* AppStatusManager+Clinic.swift in Sources */,
 				E64AC5C72D8B04E600B3E521 /* TextView.swift in Sources */,
 				E64AC5C82D8B04E600B3E521 /* Color+Extensions.swift in Sources */,
@@ -5963,8 +6255,10 @@
 				E68DD77C2DB7C8D500307982 /* AppStatusManager+Appointment.swift in Sources */,
 				E68DD77D2DB7C8D500307982 /* HomeUIStateModel.swift in Sources */,
 				E68DD77E2DB7C8D500307982 /* CompanySelectionView.swift in Sources */,
+				7AB87B0E2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E68DD77F2DB7C8D500307982 /* AppStatusManager+Program.swift in Sources */,
 				E68DD7802DB7C8D500307982 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23CFE2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E68DD7812DB7C8D500307982 /* PrimaryButton.swift in Sources */,
 				E68DD7822DB7C8D500307982 /* Label+Extensions.swift in Sources */,
 				E68DD7832DB7C8D500307982 /* AppointmentsView.swift in Sources */,
@@ -5979,7 +6273,10 @@
 				E68DD78B2DB7C8D500307982 /* PrescriptionFilter.swift in Sources */,
 				E68DD78C2DB7C8D500307982 /* RutValidateResponse.swift in Sources */,
 				E68DD78D2DB7C8D500307982 /* SecondTile.swift in Sources */,
+				7AFC12552F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126F2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E68DD78E2DB7C8D500307982 /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D062F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E68DD78F2DB7C8D500307982 /* Onboarding+Extension.swift in Sources */,
 				E68DD7902DB7C8D500307982 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9CD2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -5997,17 +6294,21 @@
 				E68DD79C2DB7C8D500307982 /* ChatbotView.swift in Sources */,
 				E68DD79D2DB7C8D500307982 /* FamilyGroupView.swift in Sources */,
 				E68DD79E2DB7C8D500307982 /* AppointmentsCalendarView.swift in Sources */,
+				7AB87AC32F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E68DD79F2DB7C8D500307982 /* ProfileUpdateInformation.swift in Sources */,
 				E68DD7A02DB7C8D500307982 /* Networkl+FunctionFilter.swift in Sources */,
 				E68DD7A12DB7C8D500307982 /* ClinicDetailUIState.swift in Sources */,
+				7A06760D2F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A5237772F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E68DD7A22DB7C8D500307982 /* ProgramCard.swift in Sources */,
 				E68DD7A32DB7C8D500307982 /* Attribute.swift in Sources */,
 				E68DD7A42DB7C8D500307982 /* Home+Extension.swift in Sources */,
 				E68DD7A52DB7C8D500307982 /* HorizontalTileView.swift in Sources */,
 				E68DD7A62DB7C8D500307982 /* CameraManager.swift in Sources */,
+				7AB87AF42F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D9C2E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E68DD7A72DB7C8D500307982 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87AC92F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E68DD7A82DB7C8D500307982 /* URL+Extensions.swift in Sources */,
 				E68DD7A92DB7C8D500307982 /* LegalsResponse.swift in Sources */,
 				7AD3671D2F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -6021,6 +6322,7 @@
 				E68DD7B02DB7C8D500307982 /* Network+Appointments.swift in Sources */,
 				E68DD7B12DB7C8D500307982 /* Environment+RootPresentation.swift in Sources */,
 				E68DD7B22DB7C8D500307982 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AED2F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E68DD7B32DB7C8D500307982 /* String+Extensions.swift in Sources */,
 				E68DD7B42DB7C8D500307982 /* WebView.swift in Sources */,
 				E68DD7B52DB7C8D500307982 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -6039,6 +6341,7 @@
 				E68DD7C22DB7C8D500307982 /* PickerButton.swift in Sources */,
 				E68DD7C32DB7C8D500307982 /* User.swift in Sources */,
 				E68DD7C42DB7C8D500307982 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87ADD2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E68DD7C52DB7C8D500307982 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E68DD7C62DB7C8D500307982 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E68DD7C72DB7C8D500307982 /* ClinicContactButton.swift in Sources */,
@@ -6055,6 +6358,7 @@
 				E68DD7D22DB7C8D500307982 /* Network+API.swift in Sources */,
 				E6CE3E542DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E68DD7D32DB7C8D500307982 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AFB2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E68DD7D42DB7C8D500307982 /* TasksView.swift in Sources */,
 				E68DD7D52DB7C8D500307982 /* SignUpOtpView.swift in Sources */,
 				E68DD7D62DB7C8D500307982 /* PrescriptionRowView.swift in Sources */,
@@ -6064,6 +6368,7 @@
 				E68DD7DA2DB7C8D500307982 /* Endpoint.swift in Sources */,
 				7AFF3E622F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237822F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB82F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E68DD7DB2DB7C8D500307982 /* StageRowView.swift in Sources */,
 				E68DD7DC2DB7C8D500307982 /* TransparentButton.swift in Sources */,
 				7A5D50332F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -6103,13 +6408,13 @@
 				E68DD7F92DB7C8D500307982 /* SeeAllView.swift in Sources */,
 				E68DD7FA2DB7C8D500307982 /* ClinicIconView.swift in Sources */,
 				E68DD7FB2DB7C8D500307982 /* MainTabView.swift in Sources */,
-				7AD778502F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E68DD7FC2DB7C8D500307982 /* AppointmentSlot.swift in Sources */,
 				E68DD7FD2DB7C8D500307982 /* ClinicDetail.swift in Sources */,
 				E68DD7FE2DB7C8D500307982 /* Task.swift in Sources */,
 				E68DD7FF2DB7C8D500307982 /* Network+SignUp.swift in Sources */,
 				E68DD8002DB7C8D500307982 /* View+Extensions.swift in Sources */,
 				E6799DA22E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD92F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E68DD8012DB7C8D500307982 /* SignInView.swift in Sources */,
 				E68DD8022DB7C8D500307982 /* SignUpFormView.swift in Sources */,
 				7A9001782F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -6136,6 +6441,7 @@
 				E68DD8142DB7C8D500307982 /* Network+Professionals.swift in Sources */,
 				E68DD8152DB7C8D500307982 /* SignUpCreatePassword.swift in Sources */,
 				7A52376F2F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B062F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E68DD8162DB7C8D500307982 /* AppStatusManager+Clinic.swift in Sources */,
 				E68DD8172DB7C8D500307982 /* TextView.swift in Sources */,
 				E68DD8182DB7C8D500307982 /* Color+Extensions.swift in Sources */,
@@ -6189,8 +6495,10 @@
 				E69FEC882BA47E61002ADADB /* HomeUIStateModel.swift in Sources */,
 				E69FEC892BA47E61002ADADB /* CompanySelectionView.swift in Sources */,
 				E69FEC8A2BA47E61002ADADB /* AppStatusManager+Program.swift in Sources */,
+				7AB87B132F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E69FEC8B2BA47E61002ADADB /* PrescriptionDownloadView.swift in Sources */,
 				E69FEC8C2BA47E61002ADADB /* PrimaryButton.swift in Sources */,
+				7AC23CFD2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E69FEC8D2BA47E61002ADADB /* Label+Extensions.swift in Sources */,
 				E69FEC8E2BA47E61002ADADB /* AppointmentsView.swift in Sources */,
 				E69FEC8F2BA47E61002ADADB /* TaskTile.swift in Sources */,
@@ -6205,7 +6513,10 @@
 				E69FEC972BA47E61002ADADB /* RutValidateResponse.swift in Sources */,
 				E69FEC982BA47E61002ADADB /* SecondTile.swift in Sources */,
 				E69FEC992BA47E61002ADADB /* Onboarding+Extension.swift in Sources */,
+				7AFC12582F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC12682F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E648E5672BC6CE900059460D /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D052F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E69FEC9A2BA47E61002ADADB /* MedicalExamsRowView.swift in Sources */,
 				E69FEC9B2BA47E61002ADADB /* HomeView.swift in Sources */,
 				E67AF9CE2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -6223,17 +6534,21 @@
 				E69FECA62BA47E61002ADADB /* AppointmentsCalendarView.swift in Sources */,
 				E66D0C532C49BB4D00F50979 /* FamilyGroupView.swift in Sources */,
 				E69FECA72BA47E61002ADADB /* ProfileUpdateInformation.swift in Sources */,
+				7AB87AC52F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E69FECA82BA47E61002ADADB /* ProgramCard.swift in Sources */,
 				E606D7712D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E648E5612BC6CD4A0059460D /* ClinicDetailUIState.swift in Sources */,
+				7A0676052F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A52377A2F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E67C8F7A2BBDFC3E00FDAA1C /* ExamsUIState.swift in Sources */,
 				E69FECA92BA47E61002ADADB /* Attribute.swift in Sources */,
 				E69FECAA2BA47E61002ADADB /* Home+Extension.swift in Sources */,
 				E69FECAB2BA47E61002ADADB /* HorizontalTileView.swift in Sources */,
 				E69FECAC2BA47E61002ADADB /* CameraManager.swift in Sources */,
+				7AB87AF02F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D992E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E69FECAD2BA47E61002ADADB /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACE2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E69FECAE2BA47E61002ADADB /* URL+Extensions.swift in Sources */,
 				E69FECAF2BA47E61002ADADB /* LegalsResponse.swift in Sources */,
 				7AD367222F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -6247,6 +6562,7 @@
 				E69FECB62BA47E61002ADADB /* Network+Appointments.swift in Sources */,
 				E69FECB72BA47E61002ADADB /* Environment+RootPresentation.swift in Sources */,
 				E69FECB82BA47E61002ADADB /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AE52F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E69FECB92BA47E61002ADADB /* String+Extensions.swift in Sources */,
 				E69FECBA2BA47E61002ADADB /* WebView.swift in Sources */,
 				E69FECBB2BA47E61002ADADB /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -6265,6 +6581,7 @@
 				E69FECC62BA47E61002ADADB /* PickerButton.swift in Sources */,
 				E69FECC72BA47E61002ADADB /* User.swift in Sources */,
 				E69FECC82BA47E61002ADADB /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87AE02F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E69FECC92BA47E61002ADADB /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469E2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E69FECCA2BA47E61002ADADB /* ClinicContactButton.swift in Sources */,
@@ -6281,6 +6598,7 @@
 				E69FECD32BA47E61002ADADB /* CodeGenerateResponse.swift in Sources */,
 				E6CE3E4E2DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E69FECD42BA47E61002ADADB /* TasksView.swift in Sources */,
+				7AB87B002F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E69FECD52BA47E61002ADADB /* SignUpOtpView.swift in Sources */,
 				E69FECD62BA47E61002ADADB /* PrescriptionRowView.swift in Sources */,
 				E69FECD72BA47E61002ADADB /* OverlayView.swift in Sources */,
@@ -6290,6 +6608,7 @@
 				E69FECDB2BA47E61002ADADB /* StageRowView.swift in Sources */,
 				7AFF3E662F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237872F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87AB52F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E69FECDC2BA47E61002ADADB /* TransparentButton.swift in Sources */,
 				E69FECDD2BA47E61002ADADB /* PromotionsTile.swift in Sources */,
 				7A5D50342F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -6329,13 +6648,13 @@
 				E69FECF52BA47E61002ADADB /* ClinicIconView.swift in Sources */,
 				E69FECF62BA47E61002ADADB /* MainTabView.swift in Sources */,
 				E69FECF72BA47E61002ADADB /* AppointmentSlot.swift in Sources */,
-				7AD7784C2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E69FECF82BA47E61002ADADB /* ClinicDetail.swift in Sources */,
 				E69FECF92BA47E61002ADADB /* Task.swift in Sources */,
 				E69FECFA2BA47E61002ADADB /* Network+SignUp.swift in Sources */,
 				E69FECFB2BA47E61002ADADB /* View+Extensions.swift in Sources */,
 				E69FECFC2BA47E61002ADADB /* SignInView.swift in Sources */,
 				E6799DA32E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD62F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E69FECFD2BA47E61002ADADB /* SignUpFormView.swift in Sources */,
 				E69FECFE2BA47E61002ADADB /* PopupViewModifier.swift in Sources */,
 				7A90017B2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -6362,6 +6681,7 @@
 				E69FED0E2BA47E61002ADADB /* Network+Professionals.swift in Sources */,
 				E69FED0F2BA47E61002ADADB /* SignUpCreatePassword.swift in Sources */,
 				7A52376D2F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B092F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E69FED102BA47E61002ADADB /* AppStatusManager+Clinic.swift in Sources */,
 				E69FED112BA47E61002ADADB /* TextView.swift in Sources */,
 				E69FED122BA47E61002ADADB /* Color+Extensions.swift in Sources */,
@@ -6415,8 +6735,10 @@
 				E6DC58FA2B6C089C00EEC341 /* AppStatusManager+Appointment.swift in Sources */,
 				E6DC58FB2B6C089C00EEC341 /* HomeUIStateModel.swift in Sources */,
 				E6DC58FC2B6C089C00EEC341 /* CompanySelectionView.swift in Sources */,
+				7AB87B0F2F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E6DC58FD2B6C089C00EEC341 /* AppStatusManager+Program.swift in Sources */,
 				E6DC58FE2B6C089C00EEC341 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23CFB2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E6DC58FF2B6C089C00EEC341 /* PrimaryButton.swift in Sources */,
 				E6DC59002B6C089C00EEC341 /* Label+Extensions.swift in Sources */,
 				E6DC59012B6C089C00EEC341 /* AppointmentsView.swift in Sources */,
@@ -6431,7 +6753,10 @@
 				E6DC59092B6C089C00EEC341 /* PrescriptionFilter.swift in Sources */,
 				E6DC590A2B6C089C00EEC341 /* RutValidateResponse.swift in Sources */,
 				E6DC590B2B6C089C00EEC341 /* SecondTile.swift in Sources */,
+				7AFC12592F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126B2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E648E5652BC6CE900059460D /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D0B2F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E6DC590C2B6C089C00EEC341 /* Onboarding+Extension.swift in Sources */,
 				E6DC590D2B6C089C00EEC341 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D42E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -6449,17 +6774,21 @@
 				E6DC59182B6C089C00EEC341 /* ChatbotView.swift in Sources */,
 				E66D0C512C49BB4D00F50979 /* FamilyGroupView.swift in Sources */,
 				E6DC59192B6C089C00EEC341 /* AppointmentsCalendarView.swift in Sources */,
+				7AB87AC12F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E6DC591A2B6C089C00EEC341 /* ProfileUpdateInformation.swift in Sources */,
 				E606D7752D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E648E55F2BC6CD4A0059460D /* ClinicDetailUIState.swift in Sources */,
+				7A06760A2F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A5237782F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E6DC591B2B6C089C00EEC341 /* ProgramCard.swift in Sources */,
 				E6DC591C2B6C089C00EEC341 /* Attribute.swift in Sources */,
 				E6DC591D2B6C089C00EEC341 /* Home+Extension.swift in Sources */,
 				E6DC591E2B6C089C00EEC341 /* HorizontalTileView.swift in Sources */,
 				E6DC591F2B6C089C00EEC341 /* CameraManager.swift in Sources */,
+				7AB87AF22F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D9A2E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E6DC59202B6C089C00EEC341 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87AC72F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E6DC59212B6C089C00EEC341 /* URL+Extensions.swift in Sources */,
 				E6DC59222B6C089C00EEC341 /* LegalsResponse.swift in Sources */,
 				7AD3671E2F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -6473,6 +6802,7 @@
 				E6DC59282B6C089C00EEC341 /* Network+Appointments.swift in Sources */,
 				E6DC59292B6C089C00EEC341 /* Environment+RootPresentation.swift in Sources */,
 				E6DC592A2B6C089C00EEC341 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AEA2F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E6DC592B2B6C089C00EEC341 /* String+Extensions.swift in Sources */,
 				E6DC592C2B6C089C00EEC341 /* WebView.swift in Sources */,
 				E6DC592D2B6C089C00EEC341 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -6491,6 +6821,7 @@
 				E6DC59382B6C089C00EEC341 /* PickerButton.swift in Sources */,
 				E6DC59392B6C089C00EEC341 /* User.swift in Sources */,
 				E6DC593A2B6C089C00EEC341 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87ADE2F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E6DC593B2B6C089C00EEC341 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469F2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E6DC593C2B6C089C00EEC341 /* ClinicContactButton.swift in Sources */,
@@ -6507,6 +6838,7 @@
 				E6DC59442B6C089C00EEC341 /* Network+API.swift in Sources */,
 				E6CE3E522DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E6DC59452B6C089C00EEC341 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AFF2F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E6DC59462B6C089C00EEC341 /* TasksView.swift in Sources */,
 				E6DC59472B6C089C00EEC341 /* SignUpOtpView.swift in Sources */,
 				E6DC59482B6C089C00EEC341 /* PrescriptionRowView.swift in Sources */,
@@ -6516,6 +6848,7 @@
 				E6DC594C2B6C089C00EEC341 /* Endpoint.swift in Sources */,
 				7AFF3E652F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237842F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87ABB2F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E6DC594D2B6C089C00EEC341 /* StageRowView.swift in Sources */,
 				E6DC594E2B6C089C00EEC341 /* TransparentButton.swift in Sources */,
 				7A5D50372F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -6555,13 +6888,13 @@
 				E6DC59642B6C089C00EEC341 /* SeeAllView.swift in Sources */,
 				E6DC59652B6C089C00EEC341 /* ClinicIconView.swift in Sources */,
 				E6DC59662B6C089C00EEC341 /* MainTabView.swift in Sources */,
-				7AD7784A2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E6DC59672B6C089C00EEC341 /* AppointmentSlot.swift in Sources */,
 				E6DC59682B6C089C00EEC341 /* ClinicDetail.swift in Sources */,
 				E6DC59692B6C089C00EEC341 /* Task.swift in Sources */,
 				E6DC596A2B6C089C00EEC341 /* Network+SignUp.swift in Sources */,
 				E6DC596B2B6C089C00EEC341 /* View+Extensions.swift in Sources */,
 				E6799D9E2E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD22F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E6DC596C2B6C089C00EEC341 /* SignInView.swift in Sources */,
 				E6DC596D2B6C089C00EEC341 /* SignUpFormView.swift in Sources */,
 				7A90017D2F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -6588,6 +6921,7 @@
 				E6DC597E2B6C089C00EEC341 /* Network+Professionals.swift in Sources */,
 				E6DC597F2B6C089C00EEC341 /* SignUpCreatePassword.swift in Sources */,
 				7A5237732F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B082F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E6DC59802B6C089C00EEC341 /* AppStatusManager+Clinic.swift in Sources */,
 				E6DC59812B6C089C00EEC341 /* TextView.swift in Sources */,
 				E6DC59822B6C089C00EEC341 /* Color+Extensions.swift in Sources */,
@@ -6641,8 +6975,10 @@
 				E6F66C082C9478ED00B0CE60 /* AppStatusManager+Appointment.swift in Sources */,
 				E6F66C092C9478ED00B0CE60 /* HomeUIStateModel.swift in Sources */,
 				E6F66C0A2C9478ED00B0CE60 /* CompanySelectionView.swift in Sources */,
+				7AB87B122F7AE2EE00B3866C /* Network+AutomatedExams.swift in Sources */,
 				E6F66C0B2C9478ED00B0CE60 /* AppStatusManager+Program.swift in Sources */,
 				E6F66C0C2C9478ED00B0CE60 /* PrescriptionDownloadView.swift in Sources */,
+				7AC23CFF2F7AEB1D008A618E /* PopupConfirmDatosView.swift in Sources */,
 				E6F66C0D2C9478ED00B0CE60 /* PrimaryButton.swift in Sources */,
 				E6F66C0E2C9478ED00B0CE60 /* Label+Extensions.swift in Sources */,
 				E6F66C0F2C9478ED00B0CE60 /* AppointmentsView.swift in Sources */,
@@ -6657,7 +6993,10 @@
 				E6F66C172C9478ED00B0CE60 /* PrescriptionFilter.swift in Sources */,
 				E6F66C182C9478ED00B0CE60 /* RutValidateResponse.swift in Sources */,
 				E6F66C192C9478ED00B0CE60 /* SecondTile.swift in Sources */,
+				7AFC125B2F68373E00F59763 /* MarketingCloudManager.swift in Sources */,
+				7AFC126C2F6838E600F59763 /* NotificationPermissionView.swift in Sources */,
 				E6F66C1A2C9478ED00B0CE60 /* ClinicDetail+Extension.swift in Sources */,
+				7AC23D082F7AEB1F008A618E /* PopupConfirmEmailView.swift in Sources */,
 				E6F66C1B2C9478ED00B0CE60 /* Onboarding+Extension.swift in Sources */,
 				E6F66C1C2C9478ED00B0CE60 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D32E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
@@ -6675,17 +7014,21 @@
 				E6F66C282C9478ED00B0CE60 /* ChatbotView.swift in Sources */,
 				E6F66C292C9478ED00B0CE60 /* FamilyGroupView.swift in Sources */,
 				E6F66C2A2C9478ED00B0CE60 /* AppointmentsCalendarView.swift in Sources */,
+				7AB87AC02F7AB71C00B3866C /* S3FileHelper.swift in Sources */,
 				E6F66C2B2C9478ED00B0CE60 /* ProfileUpdateInformation.swift in Sources */,
 				E606D7732D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */,
 				E6F66C2C2C9478ED00B0CE60 /* ClinicDetailUIState.swift in Sources */,
+				7A0676072F7C1E480011747C /* ProfileCache.swift in Sources */,
 				7A52377D2F61A01D00679765 /* FormularioGeneralParser.swift in Sources */,
 				E6F66C2D2C9478ED00B0CE60 /* ProgramCard.swift in Sources */,
 				E6F66C2E2C9478ED00B0CE60 /* Attribute.swift in Sources */,
 				E6F66C2F2C9478ED00B0CE60 /* Home+Extension.swift in Sources */,
 				E6F66C302C9478ED00B0CE60 /* HorizontalTileView.swift in Sources */,
 				E6F66C312C9478ED00B0CE60 /* CameraManager.swift in Sources */,
+				7AB87AF52F7AE1D800B3866C /* PopupConsentimientoView.swift in Sources */,
 				E6799D962E21475800871886 /* PatientExamRowView.swift in Sources */,
 				E6F66C322C9478ED00B0CE60 /* SignUpContactInfoFormResponse.swift in Sources */,
+				7AB87ACF2F7ADEFA00B3866C /* AutomatedExamsUIState.swift in Sources */,
 				E6F66C332C9478ED00B0CE60 /* URL+Extensions.swift in Sources */,
 				E6F66C342C9478ED00B0CE60 /* LegalsResponse.swift in Sources */,
 				7AD3671F2F46294F002A4F1C /* AppDelegate.swift in Sources */,
@@ -6699,6 +7042,7 @@
 				E6F66C3B2C9478ED00B0CE60 /* Network+Appointments.swift in Sources */,
 				E6F66C3C2C9478ED00B0CE60 /* Environment+RootPresentation.swift in Sources */,
 				E6F66C3D2C9478ED00B0CE60 /* AppStatusManager+BrandAccount.swift in Sources */,
+				7AB87AE92F7AE1D600B3866C /* ExamPopupView.swift in Sources */,
 				E6F66C3E2C9478ED00B0CE60 /* String+Extensions.swift in Sources */,
 				E6F66C3F2C9478ED00B0CE60 /* WebView.swift in Sources */,
 				E6F66C402C9478ED00B0CE60 /* ClinicOnDemandVideoCall.swift in Sources */,
@@ -6717,6 +7061,7 @@
 				E6F66C4C2C9478ED00B0CE60 /* PickerButton.swift in Sources */,
 				E6F66C4D2C9478ED00B0CE60 /* User.swift in Sources */,
 				E6F66C4E2C9478ED00B0CE60 /* NewAppointmentSelectDetailsView.swift in Sources */,
+				7AB87AE32F7AE05000B3866C /* AutomatedExamsView.swift in Sources */,
 				E6F66C4F2C9478ED00B0CE60 /* NewAppointmentSelectClinicView.swift in Sources */,
 				E6D2469B2DB08939007F70E1 /* NewAppointmentSelectDetails+Extension.swift in Sources */,
 				E6F66C502C9478ED00B0CE60 /* ClinicContactButton.swift in Sources */,
@@ -6733,6 +7078,7 @@
 				E6F66C592C9478ED00B0CE60 /* Network+API.swift in Sources */,
 				E6CE3E532DC11A0A007DA57A /* BrandButtonTile.swift in Sources */,
 				E6F66C5A2C9478ED00B0CE60 /* CodeGenerateResponse.swift in Sources */,
+				7AB87AF92F7AE1D900B3866C /* SeleccionarExamenesView.swift in Sources */,
 				E6F66C5B2C9478ED00B0CE60 /* TasksView.swift in Sources */,
 				E6F66C5C2C9478ED00B0CE60 /* SignUpOtpView.swift in Sources */,
 				E6F66C5D2C9478ED00B0CE60 /* PrescriptionRowView.swift in Sources */,
@@ -6742,6 +7088,7 @@
 				E6F66C612C9478ED00B0CE60 /* Endpoint.swift in Sources */,
 				7AFF3E602F4F9094005A6333 /* FirebaseLogger.swift in Sources */,
 				7A5237802F61A07900679765 /* FormularioGeneralView.swift in Sources */,
+				7AB87ABA2F7AB07800B3866C /* PresignedURLResponse.swift in Sources */,
 				E6F66C622C9478ED00B0CE60 /* StageRowView.swift in Sources */,
 				E6F66C632C9478ED00B0CE60 /* TransparentButton.swift in Sources */,
 				7A5D50352F61CF880012523D /* Network+FichaClinicaGeneral.swift in Sources */,
@@ -6781,13 +7128,13 @@
 				E6F66C7E2C9478ED00B0CE60 /* SeeAllView.swift in Sources */,
 				E6F66C7F2C9478ED00B0CE60 /* ClinicIconView.swift in Sources */,
 				E6F66C802C9478ED00B0CE60 /* MainTabView.swift in Sources */,
-				7AD7784E2F4C84CF005C516D /* MarketingCloudManager.swift in Sources */,
 				E6F66C812C9478ED00B0CE60 /* AppointmentSlot.swift in Sources */,
 				E6F66C822C9478ED00B0CE60 /* ClinicDetail.swift in Sources */,
 				E6F66C832C9478ED00B0CE60 /* Task.swift in Sources */,
 				E6F66C842C9478ED00B0CE60 /* Network+SignUp.swift in Sources */,
 				E6F66C852C9478ED00B0CE60 /* View+Extensions.swift in Sources */,
 				E6799DA52E21A62B00871886 /* SendNewExamView.swift in Sources */,
+				7AB87AD12F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E6F66C862C9478ED00B0CE60 /* SignInView.swift in Sources */,
 				E6F66C872C9478ED00B0CE60 /* SignUpFormView.swift in Sources */,
 				7A9001802F43507B00993F1D /* Network+S3.swift in Sources */,
@@ -6814,6 +7161,7 @@
 				E6F66C982C9478ED00B0CE60 /* Network+Professionals.swift in Sources */,
 				E6F66C992C9478ED00B0CE60 /* SignUpCreatePassword.swift in Sources */,
 				7A52376B2F619FFC00679765 /* FormularioGeneralModels.swift in Sources */,
+				7AB87B042F7AE1DB00B3866C /* CarritoExamView.swift in Sources */,
 				E6F66C9A2C9478ED00B0CE60 /* AppStatusManager+Clinic.swift in Sources */,
 				E6F66C9B2C9478ED00B0CE60 /* TextView.swift in Sources */,
 				E6F66C9C2C9478ED00B0CE60 /* Color+Extensions.swift in Sources */,

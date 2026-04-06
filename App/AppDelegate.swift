@@ -2,6 +2,7 @@ import UIKit
 import UserNotifications
 import Firebase
 import FirebaseCrashlytics
+import FirebaseMessaging
 import SFMCSDK
 import MarketingCloudSDK
 
@@ -54,6 +55,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // 🔔 Push permissions
         UNUserNotificationCenter.current().delegate = self
+        
+        // 🎯 IMPLEMENTAR LÓGICA DE ANDROID: initApp() de SplashActivity
+        // En Android, se verifica si ya se concedió el permiso antes de solicitarlo
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            print("🧪 Estado actual de notificaciones: \(settings.authorizationStatus.rawValue)")
+            // 0 = notDetermined, 1 = denied, 2 = authorized, 3 = provisional, 4 = ephemeral
+            
+            switch settings.authorizationStatus {
+            case .authorized, .provisional, .ephemeral:
+                // ✅ Ya tiene permisos concedidos (como Android: POST_NOTIFICATIONS ya concedido)
+                print("✅ Permisos de notificación ya concedidos")
+                
+                // Registrar para remote notifications
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                    print("📲 registerForRemoteNotifications() llamado (usuario con permisos)")
+                }
+                
+                // enablePush() condicional (solo si ya está loggeado)
+                // Equivalente a: enablePush() + navigateToApp() de Android
+                MarketingCloudManager.shared.enablePushIfLoggedIn()
+                
+            case .notDetermined:
+                // ⚠️ Primera vez, usuario no ha decidido
+                // En Android: muestra showNotificationRationaleDialog() antes del sistema
+                // En iOS: vamos directo al diálogo del sistema (o podemos mostrar un rationale)
+                print("⚠️ Permisos de notificación no determinados, solicitando...")
+                
+                // OPCIÓN A: Solicitar directamente (actual)
+                self.requestNotificationPermission()
+                
+                // OPCIÓN B: Mostrar diálogo rationale primero (comentado, implementar si se desea)
+                // self.showNotificationRationaleDialog()
+                
+            case .denied:
+                // ❌ Usuario rechazó permisos
+                print("❌ Permisos de notificación denegados por el usuario")
+                
+                // En Android: igual llama enablePush() aunque esté denied
+                // (porque puede estar loggeado y los atributos deben persistir)
+                MarketingCloudManager.shared.enablePushIfLoggedIn()
+                
+            @unknown default:
+                print("⚠️ Estado de notificaciones desconocido")
+                self.requestNotificationPermission()
+            }
+        }
+
+        return true
+    }
+    
+    // MARK: - Request Notification Permission (lógica de Android)
+    
+    /// Solicita permisos de notificación y siempre llama enablePush() después (como Android)
+    private func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .sound, .badge]
         ) { granted, error in
@@ -62,6 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             if let error = error {
                 print("❌ Push permission error:", error)
+                // 📝 Log error en Firebase
+                FirebaseLogger.shared.recordError(error, userInfo: [
+                    "context": "notification_permission_request",
+                    "granted": "\(granted)"
+                ])
             }
 
             // 🧪 VER ESTADO REAL DEL SISTEMA
@@ -70,20 +131,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 // 0 = notDetermined
                 // 1 = denied
                 // 2 = authorized  ✅
+                
+                // 📝 Log estado final en Firebase
+                FirebaseLogger.shared.logPermissionIssue(
+                    permission: "push_notifications",
+                    status: granted ? "granted" : "denied"
+                )
             }
 
-            if granted {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                    print("📲 registerForRemoteNotifications() called")
-                }
+            // 🎯 IMPORTANTE: Como Android, SIEMPRE registramos (independiente de granted)
+            // El callback del permiso SIEMPRE llama enablePush() + navigateToApp()
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+                print("📲 registerForRemoteNotifications() called")
+            }
+            
+            // 🔒 SEGURIDAD: Agregar pequeño delay para evitar race conditions
+            // Esto previene conflictos si el usuario toca el login inmediatamente
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                // enablePush() condicional (solo si ya está loggeado)
+                MarketingCloudManager.shared.enablePushIfLoggedIn()
             }
         }
-
-        return true
+    }
+    
+    // MARK: - Notification Rationale Dialog (opcional, igual que Android)
+    
+    /// Muestra un diálogo explicativo ANTES del permiso del sistema (como Android)
+    /// Android: "Activar notificaciones" con mensaje de salud
+    private func showNotificationRationaleDialog() {
+        // Mostrar diálogo custom en SwiftUI
+        // En Android, este diálogo tiene:
+        // - Botón "Permitir" → lanza el diálogo del sistema
+        // - Botón "Ahora no" → llama enablePush() de todas formas y continúa
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.showNotificationRationaleDialog(
+                onAllow: {
+                    // Usuario tocó "Permitir" → mostrar diálogo del sistema
+                    print("✅ Usuario aceptó en diálogo rationale, mostrando diálogo del sistema...")
+                    self.requestNotificationPermission()
+                },
+                onDismiss: {
+                    // Usuario tocó "Ahora no" → continuar sin pedir permisos (como Android)
+                    print("⏭️ Usuario rechazó en diálogo rationale, continuando sin permisos...")
+                    
+                    // Android: llama enablePush() de todas formas
+                    MarketingCloudManager.shared.enablePushIfLoggedIn()
+                }
+            )
+        }
     }
 
-    // MARK: - APNs Token (ESTO ES LO QUE CAMBIA A OPTED IN)
+    // MARK: - APNs Token (DIFERIDO hasta después del login)
     func application(
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
@@ -94,12 +194,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // 📝 Log a Firebase (temporalmente comentado)
         // FirebaseLogger.shared.log("📲 APNs device token registered successfully")
 
-        // 🔥 CRÍTICO PARA PASAR A OPTED IN
-        SFMCSdk.mp.setDeviceToken(deviceToken)
-        print("✅ Device token sent to SFMC → SHOULD BE OPTED IN")
-        // FirebaseLogger.shared.log("✅ Device token sent to SFMC")
+        // 🔥 CAMBIO CRÍTICO: NO enviamos el token inmediatamente a SFMC
+        // Lo guardamos hasta que el usuario haga login (igual que Android)
+        MarketingCloudManager.shared.storePendingDeviceToken(deviceToken)
+        print("📦 Device token almacenado (esperando login para enviar a SFMC)")
+        
+        // ⚠️ IMPORTANTE: NO llamamos SFMCSdk.mp.setDeviceToken(deviceToken) aquí
+        // Eso se hará en sendContactToMarketingCloud() después del login
 
-        // Firebase (opcional)
+        // Firebase (opcional) - esto sí se puede enviar inmediatamente
         Messaging.messaging().apnsToken = deviceToken
         print("🔥 Device token sent to Firebase")
         // FirebaseLogger.shared.log("🔥 Device token sent to Firebase Messaging")

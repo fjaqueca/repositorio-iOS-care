@@ -23,9 +23,17 @@ extension Network {
                         ]
                     ],
                     "expected_fields": [
-                        "EmpresaActual__c",
+                        "FirstName",
+                        "LastName",
+                        "PersonBirthdate",
+                        "HealthCloudGA__Gender__pc",
+                        "PersonEmail",
+                        "IdentificationId__pc",
+                        "BillingStreet",
                         "Beneficio_Yapp_Activo__c",
-                        "Acompanamiento_Integral__c"
+                        "Acompanamiento_Integral__c",
+                        "EmpresaActual__c",
+                        "Oncologico_Activo__c"
                     ]
                 ]
             ]
@@ -34,6 +42,39 @@ extension Network {
         return await request(method: .post, endpoint: .functionFilter, parameters: parameters)
     }
     
+    // Obtiene datos del perfil del paciente (FirstName, LastName, PersonBirthdate, etc.)
+    // Réplica de getDefaultAgreement pero uso exclusivo para datos personales del paciente
+    func getProfileFields(rut: String) async -> Result<FunctionFilterResponse, AppError> {
+        let parameters: [String: Any] = [
+            "data": [
+                [
+                    "api_name": "Account",
+                    "filters": [
+                        [
+                            "IdentificationId__pc": rut,
+                            "match": "equal"
+                        ]
+                    ],
+                    "expected_fields": [
+                        "FirstName",
+                        "LastName",
+                        "PersonBirthdate",
+                        "HealthCloudGA__Gender__pc",
+                        "PersonEmail",
+                        "IdentificationId__pc",
+                        "BillingStreet",
+                        "Beneficio_Yapp_Activo__c",
+                        "Acompanamiento_Integral__c",
+                        "EmpresaActual__c",
+                        "Oncologico_Activo__c"
+                    ]
+                ]
+            ]
+        ]
+
+        return await request(method: .post, endpoint: .functionFilter, parameters: parameters)
+    }
+
     func getActivityCompletions(id_activity: String) async -> Result<FunctionFilterResponse2, AppError> {
         // Importante: este diccionario debe usar sintaxis válida de Swift (no JSON crudo)
         let parameters: [String: Any] = [

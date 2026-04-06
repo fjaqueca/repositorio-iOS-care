@@ -8,33 +8,37 @@
 import SwiftUI
 
 struct PrescriptionDownloadView: View {
-    @Binding var isLoadingAction: Bool
     @Binding var total: Double
     @Binding var count: Double
-    @Binding var progress: Double
-    @Binding var actionButton: ActionAuthPresAndExam?
-    @Binding var showSheetView: Bool
+
+    var isComplete: Bool { count >= total && total > 0 }
+
     var body: some View {
-        VStack{
-            if count < total {
-                Text("Descargando \(Int(count)) de \(Int(total)) recetas")
-                ProgressView(value: progress)
-                .padding()
-                Button("Cerrar") {
-                    isLoadingAction = false
-                }
-            }else{
-                Text("Descarga completa (\(Int(count))/\(Int(total)))")
-                ProgressView(value: progress)
-                .padding()
-                Button("Cerrar") {
-                    isLoadingAction = false
-                    if actionButton == .isShare {
-                        showSheetView.toggle()
-                    }
-                }
+        VStack(spacing: 16) {
+            if !isComplete {
+                ProgressView()
+                    .scaleEffect(1.4)
+                    .padding(.top, 8)
+
+                Text("Descargando \(Int(count) + 1) de \(Int(total))")
+                    .font(Font.custom("FiraSans-Medium", size: 16))
+                    .foregroundColor(.primary)
+
+                Text("Por favor espera...")
+                    .font(Font.custom("FiraSans-Regular", size: 13))
+                    .foregroundColor(.gray)
+            } else {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.green)
+                    .padding(.top, 8)
+
+                Text("Descarga completa")
+                    .font(Font.custom("FiraSans-Medium", size: 16))
+                    .foregroundColor(.primary)
             }
         }
-        .padding(.margin)
+        .padding(.horizontal, 24)
+        .padding(.vertical, 20)
     }
 }

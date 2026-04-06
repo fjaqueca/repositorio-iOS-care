@@ -10,100 +10,143 @@ import RealmSwift
 
 struct MedicalExamsRowView: View {
     @State private var isPresentingDetails = false
-    @Binding var isSelected: [String:Bool]
+    @Binding var isSelected: [String: Bool]
     let exam: MedicalExams.Exam
     @State var isFavorite: Bool = false
     @Binding var isLoadingFavorite: Bool
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
 
+    private var isItemSelected: Bool {
+        isSelected[exam.Id ?? ""] == true
+    }
+
+    private var accentColor: Color {
+        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    }
+
     var body: some View {
-        Button(action: {
-            isPresentingDetails = true
-        }) {
-            HStack(alignment: .center) {
-                Button(action: {
+        HStack(spacing: 0) {
+            // Left accent border
+            RoundedRectangle(cornerRadius: 2)
+                .fill(isItemSelected ? accentColor : accentColor.opacity(0.3))
+                .frame(width: 4)
+                .padding(.vertical, 4)
+
+            // Checkbox inside the card
+            ZStack {
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(isItemSelected ? accentColor : Color.gray.opacity(0.4), lineWidth: 1.5)
+                    .frame(width: 20, height: 20)
+                if isItemSelected {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(accentColor)
+                        .frame(width: 20, height: 20)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.white)
+                }
+            }
+            .padding(.horizontal, 10)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 0.2)) {
                     isSelected[exam.Id ?? ""]?.toggle()
-                }, label: {
-                    if isSelected[exam.Id ?? ""] == true {
-                        ZStack {
-                            Circle()
-                                .fill(Color(hex: UIState.examList.iconSelectColor))
-                                .frame(width: 25, height: 25)
-                            Image(systemName: "checkmark")
-                                .resizable()
-                                .frame(width: 16, height: 12)
-                                .tint(Color.white)
-                        }
-                    }else{
-                        ZStack {
-                            Circle()
-                                .fill(Color.grayLight)
-                                .frame(width: 25, height: 25)
-                            Image(systemName: "checkmark")
-                                .resizable()
-                                .frame(width: 16, height: 12)
-                                .foregroundColor(Color(hex: UIState.examList.iconSelectColor))
-                        }
-                    }
-                })
-                
-                VStack(alignment: .leading) {
-                    Text(exam.Name ?? "Sin nombre")
-                        .font(Font.custom(UIState.examList.itemTitle.font, size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIState.examList.itemTitle.color))
-                    Text("\(exam.desdeC ?? "")")
-                        .font(Font.custom(UIState.examList.itemSubTitle.font, size: CGFloat(Int(UIState.examList.itemSubTitle.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIState.examList.itemSubTitle.color))
                 }
-                Spacer()
-                Button(action: {
-                    changeFavorite()
-                }) {
-                    Image(systemName: isFavorite ? "star.fill" : "star")
-                        .foregroundColor(Color(hex: UIState.examList.iconSelectColor))
+            }
+
+            // Content area - navigates to detail
+            VStack(alignment: .leading, spacing: 8) {
+                Text(exam.Name ?? "Sin nombre")
+                    .font(Font.custom(
+                        UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
+                        size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
+                    ))
+                    .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+
+                if let descripcion = exam.descripcionC, !descripcion.isEmpty {
+                    Text(descripcion)
+                        .font(Font.custom("FiraSans-Regular", size: 13))
+                        .foregroundColor(.gray)
                 }
-                .onAppear{
-                    isFavorite = exam.favoritoAppC ?? false
+
+                if let dateStr = exam.desdeC, !dateStr.isEmpty {
+                    Text(formatDateForDisplay(dateStr))
+                        .font(Font.custom("FiraSans-Regular", size: 12))
+                        .foregroundColor(.gray.opacity(0.7))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.margin / 2)
-            .overlay(
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.grayLight, lineWidth: 1)
-                    .shadow(radius: 20)
-            )
-            .background(isSelected[exam.Id ?? ""] == true  ? Color(hex: UIState.examList.iconSelectColor).opacity(0.25) : Color.clear)
-            .cornerRadius(.cornerRadius)
-            .overlay(
-                RoundedRectangle(cornerRadius: .cornerRadius)
-                    .stroke(Color.grayLight, lineWidth: 1)
-                    .shadow(color: .shadowLight, radius: 1, x: 1,y: 1)
-            )
-            .padding(.margin / 2)
-            .navigationLink(isActive: $isPresentingDetails) {
-                MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isPresentingDetails = true
+            }
+
+            // Favorite star
+            Image(systemName: isFavorite ? "star.fill" : "star")
+                .font(.system(size: 18))
+                .foregroundColor(isFavorite ? .yellow : accentColor.opacity(0.4))
+                .padding(.horizontal, 10)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    changeFavorite()
+                }
+                .onAppear {
+                    isFavorite = exam.favoritoAppC ?? false
+                }
+        }
+        .padding(.vertical, 18)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isItemSelected ? accentColor.opacity(0.5) : Color(.systemGray5), lineWidth: isItemSelected ? 1.5 : 1)
+        )
+        .shadow(color: Color.black.opacity(0.04), radius: 3, x: 0, y: 1)
+        .contextMenu {
+            Button {
+                isPresentingDetails = true
+            } label: {
+                Label("Ver detalle", systemImage: "eye")
+            }
+            Button {
+                changeFavorite()
+            } label: {
+                Label(isFavorite ? "Quitar favorito" : "Marcar favorito", systemImage: isFavorite ? "star.slash" : "star.fill")
             }
         }
+        .navigationLink(isActive: $isPresentingDetails) {
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState)
+        }
     }
-    func changeFavorite(){
+
+    /// Convierte fecha de yyyy-MM-dd a dd/MM/yyyy para display
+    private func formatDateForDisplay(_ dateStr: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = inputFormatter.date(from: dateStr) else { return dateStr }
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "dd/MM/yyyy"
+        return outputFormatter.string(from: date)
+    }
+
+    func changeFavorite() {
         let data = !isFavorite
         self.isLoadingFavorite = true
         Task {
             let result = await Network.shared.postFavorite(registerId: exam.Id ?? "", objet: exam.attributes?.type ?? "", data: data)
             switch result {
-                case .success:
+            case .success:
                 self.isFavorite = data
-                print("success")
-                case let .failure(error):
-                    AppStatusManager.error(error)
+            case let .failure(error):
+                AppStatusManager.error(error)
             }
             self.isLoadingFavorite = false
             self.isLoadingExam = true
         }
     }
-    
 }
-
-

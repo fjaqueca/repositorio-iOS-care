@@ -388,27 +388,24 @@ struct CompanySelectionView: View {
         let empresaId = AppStatusManager.selectedEnterprise?.empresaC
         let convenioId = AppStatusManager.selectedEnterprise?.Id
 
-        let contactData = MarketingCloudManager.ContactData(
+        MarketingCloudManager.shared.sendContactToMarketingCloud(
             rut: rut,
-            nombre: nombre,
-            apellido: apellido,
+            firstName: nombre,
+            lastName: apellido,
             email: email,
-            telefono: telefono,
+            phone: telefono,
             accountId: accountId,
             personContactId: personContactId,
             empresaId: empresaId,
             convenioId: convenioId
-        )
-
-        MarketingCloudManager.sendContactToMarketingCloud(
-            contactData: contactData,
-            onSuccess: {
+        ) { result in
+            switch result {
+            case .success:
                 print("CompanySelectionView: Usuario sincronizado con Marketing Cloud: \(rut)")
-            },
-            onError: { error in
+            case .failure(let error):
                 print("CompanySelectionView: Error al sincronizar con Marketing Cloud: \(error)")
             }
-        )
+        }
     }
     
     func loadInitialUIState(){

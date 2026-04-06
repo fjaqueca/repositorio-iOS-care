@@ -33,102 +33,52 @@ struct SendNewExamView: View {
     @State private var showFilePicker = false
     @State private var popup: Popup?
 
-    
-    enum AlertAuthEvent: Identifiable{
-        var id: Int{
-            hashValue
-        }
+    enum AlertAuthEvent: Identifiable {
+        var id: Int { hashValue }
         case DownloadSucces
         case DownloadError
         case SuccessPostExam
         case SendFileError
     }
+
     @State var comment: String = ""
+
+    private var accentColor: Color {
+        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    }
+
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
                 Divider()
-                ScrollView{
-                    VStack(alignment: .leading) {
-                        
-                        VStack(alignment: .leading) {
-                            
-                            Text("Nombre del Examen *")
-                                .font(Font.custom(UIState.examDetail.medic.font, size: CGFloat(Int(UIState.examDetail.medic.size) ?? 12)))
-                                .foregroundColor(Color(hex: UIState.examDetail.medic.color))
-                            HStack{
-                                TextField("Ingrese el nombre del examen", text: $examName)
-                                    .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 12)))
-                                    .foregroundColor(Color(hex: UIState.examDetail.title.color))
-                                    .disabled(isPublished || fromOrderExam)
-                                    .textCase(.uppercase)
-                                    .autocapitalization(.allCharacters)
-                                    .onChange(of: examName) { nuevoTexto in
-                                        if nuevoTexto.count > 255 {
-                                            examName = String(nuevoTexto.prefix(255))
-                                        }
-                                    }
-                                Text("\(examName.count)/255")
-                                    .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 12)))
-                                    .foregroundColor(Color(hex: UIState.examDetail.title.color))
-                            }
-                            .padding(.margin)
-                            .background {
-                                Color.grayLight
-                            }
-                            .cornerRadius(10)
-                        }
-                        .task{
-                            self.isExamPublished()
-                        }
-                        
-                        infoView
-                            .padding(.leading, 1)
+
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Card 1: Nombre del Examen
+                        examNameCard
+
+                        // Card 2: Examenes enviados (file attachments)
+                        fileAttachmentCard
+
+                        // Card 3: Comentarios
+                        commentCard
                     }
-                    Spacer()
-                    
+                    .padding(.horizontal, .margin)
+                    .padding(.top, 20)
+                    .padding(.bottom, 30)
                 }
-                .padding(.margin)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(UIState.examDetail.title.text)
-                            .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 18)))
-                            .foregroundColor(Color(hex: UIState.examDetail.title.color))
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image("back")
-                                .renderingMode(.template)
-                                .tint(Color(hex: UIState.examDetail.title.color))
-                        }
-                    }
-                }
-                
+
+                // Save button
                 if !isPublished {
-                    Button {
-                        sendInfo()
-                    } label: {
-                        Text("Enviar")
-                            .foregroundColor(Color(hex: UIState.examFilter.btn2ColorText))
-                            .frame(maxWidth: .infinity)
-                            .tint(.gray)
-                            .frame(height: .buttonTitleHeight)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Color(hex: UIState.examFilter.btn2ColorBack))
-                    .font(.appBodyBold)
-                    .disabled(isSendButtonDisabled)
-                    .padding(.margin)
+                    saveButton
                 }
-                
             }
             .popup(item: $popup)
             .sheet(isPresented: $showSheetView, content: {
-                ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
+                ShareSheet(activityItems: ["\u{00A1}Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
             })
             .sheet(isPresented: $showWebView) {
                 if let url = urlToShare {
@@ -141,7 +91,6 @@ struct SendNewExamView: View {
                 if let id = selectedFileExamId,
                    let index = fileExams.firstIndex(where: { $0.id == id }),
                    let source = selectedSourceType {
-
                     switch source {
                     case .camera:
                         CameraPickerView(sourceType: .photoLibrary) { image in
@@ -151,7 +100,6 @@ struct SendNewExamView: View {
                             }
                             resetPickerState()
                         }
-
                     case .document:
                         DocumentPickerView { url in
                             do {
@@ -164,23 +112,45 @@ struct SendNewExamView: View {
                             resetPickerState()
                         }
                     }
-
                 } else {
                     Text("No se pudo cargar el archivo.")
                 }
             }
-            
-            .blur(radius: isLoading ? 3 : 0.000001)
-            if isLoading{
+
+            if isLoading {
+                Color.black.opacity(0.15)
+                    .ignoresSafeArea()
                 ProgressView()
-                    .padding()
+                    .scaleEffect(1.3)
+                    .tint(accentColor)
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Exámenes Médicos")
+                    .font(Font.custom("FiraSans-Bold", size: 18))
+                    .foregroundColor(.primary)
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image("back")
+                        .renderingMode(.template)
+                        .tint(.black)
+                }
+            }
+        }
+        .task {
+            self.isExamPublished()
+        }
         .background(
-            Group{
+            Group {
                 if UIState.examDetail.imageBackground != "" {
                     CachedAsyncImage(
-                        url: URL(string: UIState.examDetail.imageBackground ),
+                        url: URL(string: UIState.examDetail.imageBackground),
                         content: { image in
                             image
                                 .resizable()
@@ -195,16 +165,77 @@ struct SendNewExamView: View {
                 }
             }
         )
-        
     }
-    var infoView: some View{
-        VStack(alignment: .leading){
-            Text(isPublished ? UIState.examDetail.sendedExamText2 : UIState.examDetail.sendedExamText1 )
-                .font(Font.custom(UIState.examDetail.sendedExam.font, size: CGFloat(Int(UIState.examDetail.sendedExam.size) ?? 18)))
-                .foregroundColor(Color(hex: UIState.examDetail.sendedExam.color))
-                .padding(.top)
-            
+
+    // MARK: - Card 1: Nombre del Examen
+    private var examNameCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Title
+            Text("Nombre del Examen *")
+                .font(Font.custom("FiraSans-Bold", size: 15))
+                .foregroundColor(.primary)
+
+            // Subtitle
+            Text("Identifique el examen que desea subir")
+                .font(Font.custom("FiraSans-Regular", size: 12))
+                .foregroundColor(.gray)
+
+            // Input field with accent border and counter inside
             HStack {
+                TextField("Ingrese el nombre del examen", text: $examName)
+                    .font(Font.custom("FiraSans-Regular", size: 14))
+                    .foregroundColor(.primary)
+                    .disabled(isPublished || fromOrderExam)
+                    .textCase(.uppercase)
+                    .autocapitalization(.allCharacters)
+                    .onChange(of: examName) { nuevoTexto in
+                        if nuevoTexto.count > 255 {
+                            examName = String(nuevoTexto.prefix(255))
+                        }
+                    }
+
+                Spacer(minLength: 8)
+
+                Text("\(examName.count)/255")
+                    .font(Font.custom("FiraSans-Regular", size: 12))
+                    .foregroundColor(.gray)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(Color(.systemGray6).opacity(0.5))
+            .cornerRadius(8)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(accentColor.opacity(0.5), lineWidth: 1)
+            )
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+    }
+
+    // MARK: - Card 2: Examenes enviados
+    private var fileAttachmentCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Title in accent color
+            Text(isPublished ? (UIState.examDetail.sendedExamText2.isEmpty ? "Exámenes enviados" : UIState.examDetail.sendedExamText2) : (UIState.examDetail.sendedExamText1.isEmpty ? "Exámenes enviados" : UIState.examDetail.sendedExamText1))
+                .font(Font.custom("FiraSans-Bold", size: 15))
+                .foregroundColor(accentColor)
+
+            // Subtitle
+            Text("Para adjuntar sus exámenes oprima en los vínculos de arriba. Podrá adjuntar hasta 4 archivos.")
+                .font(Font.custom("FiraSans-Regular", size: 12))
+                .foregroundColor(.gray)
+                .fixedSize(horizontal: false, vertical: true)
+
+            // File cards grid (2x2)
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 ForEach($fileExams) { $fileExam in
                     FileRowExam(
                         fileExam: $fileExam,
@@ -230,16 +261,108 @@ struct SendNewExamView: View {
                     showFilePicker = true
                 }
             }
-            
-            Text("Para adjuntar sus exámenes oprima en los vinculos de arriba. Podrá adjuntar hasta 4 archivos.")
-                .font(.appCaption)
-                .foregroundColor(Color(hex: UIState.examDetail.sendedExam.color))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
-            
-            commentRow
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+    }
+
+    // MARK: - Card 3: Comentarios
+    private var commentCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Title
+            Text("Comentarios")
+                .font(Font.custom("FiraSans-Bold", size: 15))
+                .foregroundColor(.primary)
+
+            // Subtitle
+            Text("Agregue notas o instrucciones adicionales")
+                .font(Font.custom("FiraSans-Regular", size: 12))
+                .foregroundColor(.gray)
+
+            // Text area
+            ZStack(alignment: .topLeading) {
+                CustomTextEditor(
+                    text: $comment,
+                    isDisabled: isPublished,
+                    font: UIFont(name: "FiraSans-Regular", size: 14) ?? .systemFont(ofSize: 14),
+                    textColor: UIColor(.primary),
+                    textCase: .uppercase
+                )
+                .padding(12)
+                .frame(maxWidth: .infinity, minHeight: 100, maxHeight: 120, alignment: .topLeading)
+                .background(Color(.systemGray6).opacity(0.5))
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(accentColor.opacity(0.5), lineWidth: 1)
+                )
+
+                if comment.isEmpty {
+                    Text("Ingrese comentarios adicionales (opcional)")
+                        .padding(12)
+                        .foregroundColor(.gray.opacity(0.45))
+                        .font(Font.custom("FiraSans-Regular", size: 14))
+                        .allowsHitTesting(false)
+                }
+            }
+
+            // Counter
+            HStack {
+                Spacer()
+                Text("\(comment.count)/255")
+                    .font(Font.custom("FiraSans-Regular", size: 12))
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+        .onChange(of: comment) { newValue in
+            if newValue.count > 255 {
+                comment = String(newValue.prefix(255))
+            }
         }
     }
+
+    // MARK: - Save Button
+    private var saveButton: some View {
+        Button {
+            sendInfo()
+        } label: {
+            Text("Guardar")
+                .font(Font.custom("FiraSans-Bold", size: 16))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(isSendButtonDisabled ? Color.gray.opacity(0.4) : accentColor)
+                )
+        }
+        .disabled(isSendButtonDisabled)
+        .padding(.horizontal, .margin)
+        .padding(.top, 10)
+        .padding(.bottom, 14)
+        .background(
+            Color(.systemGroupedBackground)
+                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: -3)
+        )
+    }
+
+    // MARK: - Functions (unchanged logic)
     var successPopup: Popup {
         .init(
             image: UIState.popupSuccessSendExam.iconCheck,
@@ -258,103 +381,89 @@ struct SendNewExamView: View {
             UIStateCancelButton: nil
         )
     }
+
     private func resetPickerState() {
         selectedFileExamId = nil
         selectedSourceType = nil
         showFilePicker = false
     }
-    func downloadArchive(action : ActionButton, urlParameter: String? = nil){
+
+    func downloadArchive(action: ActionButton, urlParameter: String? = nil) {
         self.isLoading = true
-        var filterUrl: String?
-        if urlParameter == nil{
-            //filterUrl = exam.urlDeLaOrdenMedicaC
-        }else{
-            filterUrl = urlParameter
-        }
-        
-        if let url = filterUrl {
-            let pdfName = url.components(separatedBy: "/")
-            
-            // 🔥 FIREBASE LOGGING: Inicio de descarga de PDF
-            FirebaseLogger.shared.log("🔄 Descargando PDF: \(pdfName.last ?? "unknown")")
-            
-            Task{
-                let result = await Network.shared.getPdf(pdfName: pdfName.last ?? "")
-                self.isLoading = false
-                switch result {
-                case let .success(listPres):
-                    // 🔥 FIREBASE LOGGING: Descarga exitosa
-                    FirebaseLogger.shared.log("✅ PDF descargado exitosamente")
-                    createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf", action: action)
-                    
-                case let .failure(error):
-                    // 🔥 FIREBASE LOGGING: Error con contexto de red
-                    FirebaseLogger.shared.log("❌ Error al descargar PDF: \(error.localizedDescription)")
-                    FirebaseLogger.shared.recordNetworkError(
-                        error,
-                        endpoint: "/api/pdf/\(pdfName.last ?? "unknown")",
-                        httpCode: (error as? AppError)?.httpCode,
-                        method: "GET"
-                    )
-                    FirebaseLogger.shared.setCustomValues([
-                        "pdf_name": pdfName.last ?? "unknown",
-                        "error_context": "download_pdf"
-                    ])
-                    
-                    AppStatusManager.error(error)
-                }
-            }
-        }else{
-            // 🔥 FIREBASE LOGGING: Error de URL vacía
-            FirebaseLogger.shared.log("❌ Error: URL de PDF vacía")
-            FirebaseLogger.shared.logAlert(
-                title: "Error de Descarga",
-                message: "No se encontró la URL del archivo",
-                source: "SendNewExamView - downloadArchive"
-            )
-            
+        let rawUrl = urlParameter ?? ""
+
+        guard !rawUrl.isEmpty else {
+            FirebaseLogger.shared.log("Error: URL de PDF vacia")
             self.isLoading = false
             self.alertAuthEvent = .DownloadError
-            self.showAlert.toggle()
+            return
         }
-    }
-    
-    
-    func savePdf(urlString:String, fileName:String) {
-        DispatchQueue.global(qos: .background).async  {
-            if let url = URL(string: urlString) {
-                let pdfData = try? Data.init(contentsOf: url)
-                let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-                let pdfNameFromUrl = "\(examName)-\(fileName).pdf"
-                let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
-                self.isLoading = false
+
+        let fileName = S3FileHelper.extractFileNameFromUrl(rawUrl)
+        let objectKey = S3FileHelper.extractObjectKeyFromUrl(rawUrl)
+        FirebaseLogger.shared.log("Obteniendo URL pre-firmada: \(fileName), objectKey: \(objectKey)")
+
+        // Verificar caché local solo para "Ver PDF" (Descargar siempre re-descarga, igual que Android)
+        if action == .isOpen, let cachedFileUrl = S3FileHelper.getCachedFileUrl(fileName: fileName) {
+            FirebaseLogger.shared.log("Archivo encontrado en caché")
+            self.isLoading = false
+            handleLocalFile(cachedFileUrl, action: action)
+            return
+        }
+
+        Task {
+            let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
+            switch result {
+            case let .success(response):
+                guard let presignedUrl = response.url, !response.error else {
+                    FirebaseLogger.shared.log("Error: respuesta sin URL valida")
+                    self.isLoading = false
+                    self.alertAuthEvent = .DownloadError
+                    return
+                }
+                FirebaseLogger.shared.log("URL pre-firmada obtenida exitosamente")
                 do {
-                    try pdfData?.write(to: actualPath, options: .atomic)
-                    self.showAlert.toggle()
-                    self.alertAuthEvent = .DownloadSucces
+                    let localFileUrl = try await S3FileHelper.downloadAndSave(from: presignedUrl, fileName: fileName)
+                    self.isLoading = false
+                    handleLocalFile(localFileUrl, action: action)
                 } catch {
-                    self.showAlert.toggle()
+                    FirebaseLogger.shared.log("Error al descargar: \(error.localizedDescription)")
+                    self.isLoading = false
                     self.alertAuthEvent = .DownloadError
                 }
-            }else{
+            case let .failure(error):
+                FirebaseLogger.shared.log("Error getPresignedUrl: \(error.message)")
                 self.isLoading = false
                 self.alertAuthEvent = .DownloadError
-                self.showAlert.toggle()
             }
         }
     }
+
+    func handleLocalFile(_ fileURL: URL, action: ActionButton) {
+        switch action {
+        case .isOpen:
+            self.urlToShare = fileURL
+            self.showWebView.toggle()
+        case .isDownload:
+            self.urlToShare = fileURL
+            self.showWebView.toggle()
+        case .isShare:
+            self.urlToShare = fileURL
+            self.showSheetView.toggle()
+        }
+    }
+
     func sendInfo() {
         self.isLoading = true
-        
-        // 🔥 FIREBASE LOGGING: Inicio de subida de archivos
+
         let filesCount = fileExams.filter { !$0.imgData.isEmpty }.count
-        FirebaseLogger.shared.log("🔄 Iniciando subida de \(filesCount) archivo(s) a S3")
+        FirebaseLogger.shared.log("Iniciando subida de \(filesCount) archivo(s) a S3")
         FirebaseLogger.shared.setCustomValue(examName, forKey: "exam_name")
-        
+
         Task {
             var uploadedCount = 0
             var failedCount = 0
-            
+
             for index in fileExams.indices {
                 let file = fileExams[index]
                 guard !file.imgData.isEmpty else { continue }
@@ -364,19 +473,16 @@ struct SendNewExamView: View {
                 switch result {
                 case let .success(urlString):
                     if let url = urlString.data.first {
-                        // Como estamos en una Task, necesitamos actualizar en el main thread
                         await MainActor.run {
                             fileExams[index].urlImg = url
                         }
                         uploadedCount += 1
-                        // 🔥 FIREBASE LOGGING: Archivo subido exitosamente
-                        FirebaseLogger.shared.log("✅ Archivo \(index + 1) subido a S3")
+                        FirebaseLogger.shared.log("Archivo \(index + 1) subido a S3")
                     }
-                    
+
                 case let .failure(error):
                     failedCount += 1
-                    // 🔥 FIREBASE LOGGING: Error con contexto detallado
-                    FirebaseLogger.shared.log("❌ Error al subir archivo \(index + 1) a S3: \(error.localizedDescription)")
+                    FirebaseLogger.shared.log("Error al subir archivo \(index + 1) a S3: \(error.localizedDescription)")
                     FirebaseLogger.shared.recordNetworkError(
                         error,
                         endpoint: "/api/s3/upload",
@@ -389,28 +495,24 @@ struct SendNewExamView: View {
                         "exam_name": examName,
                         "error_context": "upload_to_s3"
                     ])
-                    
                     AppStatusManager.error(error)
                 }
             }
 
-            // 🔥 FIREBASE LOGGING: Resumen de subida
-            FirebaseLogger.shared.log("📊 Subida completada - Éxito: \(uploadedCount), Fallos: \(failedCount)")
+            FirebaseLogger.shared.log("Subida completada - Exito: \(uploadedCount), Fallos: \(failedCount)")
 
-            // Validación final: al menos una URL cargada
             let atLeastOneUploaded = fileExams.contains { !$0.urlImg.isEmpty }
 
             if atLeastOneUploaded {
                 postExam()
             } else {
-                // 🔥 FIREBASE LOGGING: Error - ningún archivo subido
-                FirebaseLogger.shared.log("❌ Error: Ningún archivo se subió correctamente")
+                FirebaseLogger.shared.log("Error: Ningun archivo se subio correctamente")
                 FirebaseLogger.shared.logErrorPopup(
                     title: "Error al Subir Archivos",
-                    message: "No se pudo subir ningún archivo",
+                    message: "No se pudo subir ningun archivo",
                     source: "SendNewExamView - sendInfo"
                 )
-                
+
                 await MainActor.run {
                     self.alertAuthEvent = .SendFileError
                     self.showAlert.toggle()
@@ -419,18 +521,18 @@ struct SendNewExamView: View {
             }
         }
     }
-    func postExam(){
+
+    func postExam() {
         let accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
-        
-        // 🔥 FIREBASE LOGGING: Inicio de envío de examen
-        FirebaseLogger.shared.log("🔄 Enviando examen: \(examName)")
+
+        FirebaseLogger.shared.log("Enviando examen: \(examName)")
         FirebaseLogger.shared.setCustomValues([
             "exam_name": examName,
             "has_comment": !comment.isEmpty,
             "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count
         ])
-        
-        Task{
+
+        Task {
             let result = await Network.shared.postExams(
                 examName: examName.uppercased(),
                 accountId: accountId,
@@ -441,23 +543,20 @@ struct SendNewExamView: View {
                 comment: comment.uppercased(),
                 id: exam?.idOrdenMedicaC ?? ""
             )
-            
+
             switch result {
             case .success:
-                // 🔥 FIREBASE LOGGING: Examen enviado exitosamente
-                FirebaseLogger.shared.log("✅ Examen enviado exitosamente: \(examName)")
+                FirebaseLogger.shared.log("Examen enviado exitosamente: \(examName)")
                 FirebaseLogger.shared.logEvent("exam_submitted_success", attributes: [
                     "exam_name": examName,
                     "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count,
                     "has_comment": !comment.isEmpty
                 ])
-                
                 popup = successPopup
                 self.isPublished = true
-                
+
             case let .failure(error):
-                // 🔥 FIREBASE LOGGING: Error al enviar examen
-                FirebaseLogger.shared.log("❌ Error al enviar examen: \(error.localizedDescription)")
+                FirebaseLogger.shared.log("Error al enviar examen: \(error.localizedDescription)")
                 FirebaseLogger.shared.recordNetworkError(
                     error,
                     endpoint: "/api/exams",
@@ -470,119 +569,32 @@ struct SendNewExamView: View {
                     "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count,
                     "error_context": "post_exam"
                 ])
-                
                 AppStatusManager.error(error)
             }
             self.isLoading = false
         }
     }
+
     var isSendButtonDisabled: Bool {
         fileExams.allSatisfy { $0.imgData.isEmpty } || isLoading || examName.isEmpty
     }
-    enum ActionButton: Identifiable{
-        var id: Int{
-            hashValue
-        }
+
+    enum ActionButton: Identifiable {
+        var id: Int { hashValue }
         case isDownload
         case isShare
         case isOpen
     }
-    /// Creates a PDF file from a Base64 encoded string
-    func createPDF(with base64Info: String, fileName: String, action: ActionButton) {
-        DispatchQueue.global(qos: .background).async {
-            // Decodificar la cadena Base64 a Data
-            guard let base64Data = Data(base64Encoded: base64Info, options: .ignoreUnknownCharacters) else {
-                print("Error: La cadena Base64 no es válida.")
-                return
-            }
-            
-            // Obtener la ruta de documentos
-            let documentsURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-            
-            // Usa un nombre de archivo seguro.
-            let pdfFileName = fileName.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: ":", with: "_").replacingOccurrences(of: " ", with: "_")
-            let fileURL = documentsURL.appendingPathComponent(pdfFileName)
-            
-            do {
-                // Intentar escribir los datos en la ruta especificada
-                try base64Data.write(to: fileURL, options: .atomic)
-                print("PDF creado exitosamente en: \(fileURL.path)")
-                switch action {
-                case .isDownload:
-                    self.alertAuthEvent = .DownloadSucces
-                    self.showAlert.toggle()
-                case .isShare:
-                    self.urlToShare = fileURL
-                    self.showSheetView.toggle()
-                case .isOpen:
-                    //createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf")
-                    self.urlToShare = fileURL
-                    self.showWebView.toggle()
-                }
-                
-            } catch let error {
-                print("Failed to write the PDF data due to: \(error.localizedDescription)")
-                self.alertAuthEvent = .DownloadError
-                self.showAlert.toggle()
-            }
-        }
-    }
-    func isExamPublished(){
-        if (self.isPublished)  {
+
+
+    func isExamPublished() {
+        if (self.isPublished) {
             self.examName = exam?.nombreDelExamenC ?? ""
             self.fileExams[0].urlImg = exam?.urlExamen1C ?? ""
             self.fileExams[1].urlImg = exam?.urlExamen2C ?? ""
             self.fileExams[2].urlImg = exam?.urlExamen3C ?? ""
             self.fileExams[3].urlImg = exam?.urlExamen4C ?? ""
             self.comment = exam?.comentariosC ?? ""
-        }
-    }
-    var commentRow: some View{
-        VStack{
-            VStack(alignment: .leading) {
-                Text("Comentarios")
-                    .font(Font.custom(UIState.examDetail.medic.font, size: CGFloat(Int(UIState.examDetail.medic.size) ?? 12)))
-                    .foregroundColor(Color(hex: UIState.examDetail.medic.color))
-                Group {
-                    ZStack(alignment: .topLeading) {
-                        
-                        CustomTextEditor(
-                            text: $comment,
-                            isDisabled: isPublished,
-                            font: UIFont(name: UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 12)) ?? .systemFont(ofSize: 12),
-                            textColor: UIColor(Color(hex: UIState.examDetail.title.color)),
-                            textCase: .uppercase
-                        )
-                        .padding(.margin / 2)
-                        .frame(maxWidth: .infinity, maxHeight: 100, alignment: .topLeading)
-                        .background{
-                            Color.grayLight
-                        }
-                        .cornerRadius(.cornerRadius)
-                        
-                        if comment.isEmpty {
-                            Text("Ingrese comentarios adicionales (opcional)")
-                                .padding(.margin / 2)
-                                .foregroundColor(.gray.opacity(0.5))
-                                .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 12)))
-                        }
-
-                    }
-                }
-                .frame(height: 100)
-                .cornerRadius(.cornerRadius)
-            }
-            
-            Text("\(comment.count)/255")
-                .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 12)))
-                .foregroundColor(Color(hex: UIState.examDetail.title.color))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            
-        }
-        .onChange(of: comment) { newValue in
-            if newValue.count > 255 {
-                comment = String(newValue.prefix(255))
-            }
         }
     }
 }
@@ -594,6 +606,3 @@ struct FileExam: Identifiable {
     var urlImg: String = ""
     var archiveExtension: String = ""
 }
-
-
-

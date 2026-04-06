@@ -148,8 +148,11 @@ struct MainTabView: View {
                 }
                 .onChange(of: selectedTab) { newValue in
                     if newValue == .more {
+                        // Restaurar el tab sin animación para evitar parpadeo
+                        UIView.setAnimationsEnabled(false)
                         selectedTab = previousSelectedTab
-                        withAnimation {
+                        UIView.setAnimationsEnabled(true)
+                        withAnimation(.easeInOut(duration: 0.2)) {
                             showMore.toggle()
                         }
                     } else {

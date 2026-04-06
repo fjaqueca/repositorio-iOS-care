@@ -7,87 +7,420 @@
 
 import SwiftUI
 import RealmSwift
+import CachedAsyncImage
+import SDWebImageSwiftUI
 
 struct ExamsView: View {
     @ObservedResults(BrandAccounts.self) var items
     @Environment(\.dismiss) var dismiss
-    @State var isPatientExam: Bool = false
-    @State var showFilterView: Bool = false
     @State var UIState: ExamUIState = ExamUIState()
+    @State var automatedExamsState = AutomatedExamsUIState()
+    @State private var currentBannerIndex = 0
+
+    // Navigation states
+    @State private var showMedicalExams = false
+    @State private var showPatientExams = false
+    @State private var showAutomatedExams = false
+
     var body: some View {
         NavigationViewCustom {
-            VStack (spacing: 0){
+            VStack(spacing: 0) {
                 Divider()
-                content
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Text(UIState.examList.title.text)
-                                .font(Font.custom(UIState.examList.title.font, size: CGFloat(Int(UIState.examList.title.size) ?? 18)))
-                                .foregroundColor(Color(hex: UIState.examList.title.color))
-                        }
+                hubContent
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    let headerTitulo = automatedExamsState.header.titulo
+                    let attr = automatedExamsState.header.tituloAttr
+                    Text(headerTitulo.isEmpty ? "Exámenes Médicos" : headerTitulo)
+                        .font(Font.custom(
+                            attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
+                            size: CGFloat(Int(attr.size) ?? 18)
+                        ))
+                        .foregroundColor(Color(hex: attr.color.isEmpty ? "#000000" : attr.color))
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image("back")
+                            .renderingMode(.template)
+                            .tint(Color(hex: UIState.examList.title.color.isEmpty ? "#000000" : UIState.examList.title.color))
                     }
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image("back")
-                                    .renderingMode(.template)
-                                    .tint(Color(hex: UIState.examList.title.color))
-                            }
-                            .disabled(showFilterView ? true : false)
-                        }
-                    }
-                    .task{
-                        loadUIState()
-                    }
+                }
+            }
+            .task {
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📱 [ExamsView] VISTA CARGADA - Exámenes Médicos (Hub)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("🔹 BrandAccounts items.count: \(items.count)")
+                if let first = items.first {
+                    print("🔹 Records en primer BrandAccounts: \(first.records.count)")
+                } else {
+                    print("⚠️ items.first es nil - no hay BrandAccounts cargados")
+                }
+                print("")
+                print("🔄 [ExamsView] Cargando UIState (ExamUIState desde 'SecMas')...")
+                loadUIState()
+                print("✅ [ExamsView] UIState cargado")
+                print("")
+                print("🔄 [ExamsView] Cargando AutomatedExamsConfig...")
+                automatedExamsState = loadAutomatedExamsConfig()
+                print("✅ [ExamsView] AutomatedExamsConfig cargado")
+                print("")
+
+                // Cargar datos del perfil del paciente y guardar en cache (UserDefaults)
+                await loadProfileFields()
             }
             .configureNavigation()
         }
     }
-    
-    var content: some View{
-        VStack{
-            HStack(spacing: 10){
-                Button {
-                    self.isPatientExam = false
-                } label: {
-                    VStack{
-                        Text(UIState.examWindows.titleOrderExam.text != "" ? UIState.examWindows.titleOrderExam.text : "Ordenes de Exámenes1111")
-                            .font(Font.custom(isPatientExam ? UIState.examWindows.titleOrderExam.fontInActive : UIState.examWindows.titleOrderExam.fontActive, size: CGFloat(Int(UIState.examWindows.titleOrderExam.size) ?? 18)))
-                            .foregroundColor(isPatientExam ? Color(hex: UIState.examWindows.titleOrderExam.colorInActive): Color(hex: UIState.examWindows.titleOrderExam.colorActive))
-                        Divider()
-                            .frame(height: 2)
-                            .overlay(Color(hex: UIState.examWindows.colorLine))
-                            .hidden(isPatientExam)
-                    }
-                    .padding(.vertical)
-                    
-                }
-                Button {
-                    self.isPatientExam = true
-                } label: {
-                    VStack{
-                        Text(UIState.examWindows.titlePatientExam.text != "" ? UIState.examWindows.titlePatientExam.text : "Mis Exámenes2222")
-                            .font(Font.custom(!isPatientExam ? UIState.examWindows.titlePatientExam.fontInActive : UIState.examWindows.titlePatientExam.fontActive, size: CGFloat(Int(UIState.examWindows.titlePatientExam.size) ?? 18)))
-                            .foregroundColor(!isPatientExam ? Color(hex: UIState.examWindows.titlePatientExam.colorInActive): Color(hex: UIState.examWindows.titlePatientExam.colorActive))
-                        Divider()
-                            .frame(height: 2)
-                            .overlay(Color(hex: UIState.examWindows.colorLine))
-                            .hidden(!isPatientExam)
-                    }
-                    .padding(.vertical)
-                }
 
-            }
-            if isPatientExam{
-                PatientExamsView(UIState: $UIState)
-            }else{
-                MedicalExamsView(UIState: $UIState)
+    // MARK: - Hub Content
+    private var hubContent: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 20) {
+                Spacer().frame(height: 1)
+
+                // Banner carousel (same pattern as PromotionsTile in HomeView)
+                bannerCarousel
+
+                // Descripcion / Instruccion
+                Text(automatedExamsState.header.descripcion.isEmpty
+                    ? "Por favor seleccione una opcion para poder continuar:"
+                    : automatedExamsState.header.descripcion)
+                    .font(Font.custom(
+                        automatedExamsState.header.descripcionAttr.font,
+                        size: CGFloat(Int(automatedExamsState.header.descripcionAttr.size) ?? 14)
+                    ))
+                    .foregroundColor(Color(hex: automatedExamsState.header.descripcionAttr.color))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, .margin)
+
+                // Option cards
+                optionCards
+
+                Spacer()
             }
         }
-        
-        
+        .fullScreenCover(isPresented: $showMedicalExams) {
+            NavigationViewCustom {
+                VStack(spacing: 0) {
+                    Divider()
+                    MedicalExamsView(UIState: $UIState)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        let sec = automatedExamsState.secciones.first(where: { $0.numero == 1 })
+                        let attr = sec?.tituloAttr ?? TextExamAttributes()
+                        Text(sec?.nombre ?? "Prescripciones Médicas")
+                            .font(Font.custom(
+                                attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
+                                size: CGFloat(Int(attr.size) ?? 20)
+                            ))
+                            .foregroundColor(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            showMedicalExams = false
+                        } label: {
+                            let attr = automatedExamsState.secciones.first(where: { $0.numero == 1 })?.tituloAttr ?? TextExamAttributes()
+                            Image("back")
+                                .renderingMode(.template)
+                                .tint(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                        }
+                    }
+                }
+                .configureNavigation()
+            }
+        }
+        .fullScreenCover(isPresented: $showPatientExams) {
+            NavigationViewCustom {
+                VStack(spacing: 0) {
+                    Divider()
+                    PatientExamsView(UIState: $UIState)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        let sec = automatedExamsState.secciones.first(where: { $0.numero == 2 })
+                        let attr = sec?.tituloAttr ?? TextExamAttributes()
+                        Text(sec?.nombre ?? "Mis archivos de Salud")
+                            .font(Font.custom(
+                                attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
+                                size: CGFloat(Int(attr.size) ?? 20)
+                            ))
+                            .foregroundColor(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            showPatientExams = false
+                        } label: {
+                            let attr = automatedExamsState.secciones.first(where: { $0.numero == 2 })?.tituloAttr ?? TextExamAttributes()
+                            Image("back")
+                                .renderingMode(.template)
+                                .tint(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                        }
+                    }
+                }
+                .configureNavigation()
+            }
+        }
+        .fullScreenCover(isPresented: $showAutomatedExams) {
+            AutomatedExamsView(config: $automatedExamsState)
+        }
+    }
+
+    // MARK: - Banner Carousel
+    private var bannerCarousel: some View {
+        VStack(spacing: 8) {
+            if automatedExamsState.bannersHub.isEmpty {
+                // Placeholder cuando no hay banners del BrandAccount
+                TabView {
+                    ForEach(0..<3, id: \.self) { index in
+                        RoundedRectangle(cornerRadius: .cornerRadius)
+                            .fill(Color.gray.opacity(0.15))
+                            .overlay(
+                                VStack {
+                                    Image(systemName: "photo")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.gray.opacity(0.4))
+                                    Text("Banner \(index + 1)")
+                                        .font(.caption)
+                                        .foregroundColor(.gray.opacity(0.4))
+                                }
+                            )
+                            .padding(.horizontal, .margin)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 120)
+            } else {
+                TabView(selection: $currentBannerIndex) {
+                    ForEach(Array(automatedExamsState.bannersHub.enumerated()), id: \.element.id) { index, banner in
+                        WebImage(url: URL(string: banner.imageURL)) { image in
+                            image.resizable()
+                                .scaledToFill()
+                                .frame(height: 120)
+                                .clipped()
+                                .cornerRadius(.cornerRadius)
+                        } placeholder: {
+                            RoundedRectangle(cornerRadius: .cornerRadius)
+                                .fill(Color.gray.opacity(0.15))
+                                .overlay(ProgressView())
+                        }
+                        .padding(.horizontal, .margin)
+                        .tag(index)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 120)
+
+                // Page indicators
+                if automatedExamsState.bannersHub.count > 1 {
+                    HStack(spacing: 6) {
+                        ForEach(0..<automatedExamsState.bannersHub.count, id: \.self) { index in
+                            Circle()
+                                .fill(index == currentBannerIndex
+                                    ? Color(hex: automatedExamsState.header.tituloAttr.color)
+                                    : Color.gray.opacity(0.3))
+                                .frame(width: 7, height: 7)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Option Cards
+    private var optionCards: some View {
+        Group {
+            if automatedExamsState.secciones.isEmpty {
+                // Fallback: 3 opciones por defecto
+                HStack(alignment: .top, spacing: 12) {
+                    examOptionCard(
+                        title: UIState.examWindows.titleOrderExam.text.isEmpty ? "Ordenes de Examenes" : UIState.examWindows.titleOrderExam.text,
+                        iconURL: nil,
+                        systemIcon: "doc.text.magnifyingglass"
+                    ) { showMedicalExams = true }
+
+                    examOptionCard(
+                        title: UIState.examWindows.titlePatientExam.text.isEmpty ? "Mis Examenes" : UIState.examWindows.titlePatientExam.text,
+                        iconURL: nil,
+                        systemIcon: "folder.fill"
+                    ) { showPatientExams = true }
+
+                    examOptionCard(
+                        title: "Examenes\nAutomatizados",
+                        iconURL: nil,
+                        systemIcon: "gearshape.2.fill"
+                    ) { showAutomatedExams = true }
+                }
+                .padding(.horizontal, .margin)
+            } else {
+                // Secciones dinamicas del BrandAccount
+                let alignment: HorizontalAlignment = {
+                    switch automatedExamsState.header.blockPosition.lowercased() {
+                    case "left": return .leading
+                    case "right": return .trailing
+                    default: return .center
+                    }
+                }()
+
+                HStack(alignment: .top, spacing: 12) {
+                    ForEach(automatedExamsState.secciones) { seccion in
+                        examOptionCard(
+                            title: seccion.nombre,
+                            iconURL: seccion.iconURL.isEmpty ? nil : seccion.iconURL,
+                            systemIcon: iconForSeccion(seccion.numero)
+                        ) {
+                            handleSeccionTap(seccion.numero)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : alignment == .trailing ? .trailing : .center)
+                .padding(.horizontal, .margin)
+            }
+        }
+    }
+
+    // MARK: - Single Option Card
+    private func examOptionCard(title: String, iconURL: String?, systemIcon: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            if let iconURL = iconURL, let url = URL(string: iconURL) {
+                WebImage(url: url) { image in
+                    image.resizable()
+                        .scaledToFit()
+                        .frame(width: 85, height: 105)
+                } placeholder: {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.12))
+                        .frame(width: 85, height: 105)
+                        .overlay(ProgressView().scaleEffect(0.7))
+                }
+            } else {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.gray.opacity(0.12))
+                    .frame(width: 85, height: 105)
+                    .overlay(
+                        Image(systemName: systemIcon)
+                            .font(.system(size: 28))
+                            .foregroundColor(.gray.opacity(0.5))
+                    )
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func iconForSeccion(_ numero: Int) -> String {
+        switch numero {
+        case 1: return "doc.text.magnifyingglass"
+        case 2: return "folder.fill"
+        case 3: return "gearshape.2.fill"
+        default: return "square.grid.2x2"
+        }
+    }
+
+    private func handleSeccionTap(_ numero: Int) {
+        print("👆 [ExamsView] Seccion tapped: numero=\(numero)")
+        switch numero {
+        case 1:
+            print("   → Navegando a: Órdenes de Exámenes (MedicalExamsView)")
+            showMedicalExams = true
+        case 2:
+            print("   → Navegando a: Mis Exámenes (PatientExamsView)")
+            showPatientExams = true
+        case 3:
+            print("   → Navegando a: Exámenes Automatizados (AutomatedExamsView)")
+            print("   → Config disponible: \(automatedExamsState.categorias.count) categorias")
+            showAutomatedExams = true
+        default:
+            print("   ⚠️ Seccion numero \(numero) no tiene acción asignada")
+            break
+        }
+    }
+
+    // MARK: - Profile Fields Cache
+
+    private func loadProfileFields() async {
+        let rut = AppStatusManager.rut ?? ""
+        guard !rut.isEmpty else {
+            print("⚠️ [ProfileFields] No se puede cargar perfil: RUT vacio (AppStatusManager.rut es nil)")
+            return
+        }
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔄 [ProfileFields] INICIO - Cargando getProfileFields")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("   RUT enviado: \"\(rut)\"")
+
+        // Log cache actual antes de la llamada
+        print("   Cache ANTES de la llamada:")
+        print("     firstName: \"\(ProfileCache.firstName)\"")
+        print("     lastName: \"\(ProfileCache.lastName)\"")
+        print("     birthdate: \"\(ProfileCache.birthdate)\"")
+        print("     email: \"\(ProfileCache.email)\"")
+        print("     address: \"\(ProfileCache.address)\"")
+        print("     gender: \"\(ProfileCache.gender)\"")
+        print("     rut: \"\(ProfileCache.rut)\"")
+
+        let result = await Network.shared.getProfileFields(rut: rut)
+
+        switch result {
+        case .success(let response):
+            print("✅ [ProfileFields] Response OK - statusCode: \(response.statusCode ?? -1)")
+            print("   data.count: \(response.data.count)")
+
+            if let accountFilter = response.data.first {
+                print("   Account array count: \(accountFilter.Account.count)")
+                if let account = accountFilter.Account.first ?? nil {
+                    print("   Account ID: \"\(account.Id ?? "nil")\"")
+                    print("   FirstName: \"\(account.FirstName ?? "nil")\"")
+                    print("   LastName: \"\(account.LastName ?? "nil")\"")
+                    print("   PersonBirthdate: \"\(account.PersonBirthdate ?? "nil")\"")
+                    print("   PersonEmail: \"\(account.PersonEmail ?? "nil")\"")
+                    print("   BillingStreet: \"\(account.BillingStreet ?? "nil")\"")
+                    print("   Gender: \"\(account.HealthCloudGA__Gender__pc ?? "nil")\"")
+                    print("   IdentificationId: \"\(account.IdentificationId__pc ?? "nil")\"")
+                    print("   EmpresaActual: \"\(account.empresaactualC ?? "nil")\"")
+                    print("   Oncologico: \(account.Oncologico_Activo__c ?? false)")
+
+                    ProfileCache.save(
+                        firstName: account.FirstName ?? "",
+                        lastName: account.LastName ?? "",
+                        birthdate: account.PersonBirthdate ?? "",
+                        email: account.PersonEmail ?? "",
+                        address: account.BillingStreet ?? "",
+                        gender: account.HealthCloudGA__Gender__pc ?? "",
+                        rut: account.IdentificationId__pc ?? rut
+                    )
+
+                    // Verificar que se guardo correctamente
+                    print("   Cache DESPUES de guardar:")
+                    print("     firstName: \"\(ProfileCache.firstName)\"")
+                    print("     lastName: \"\(ProfileCache.lastName)\"")
+                    print("     birthdate: \"\(ProfileCache.birthdate)\"")
+                    print("     email: \"\(ProfileCache.email)\"")
+                    print("     address: \"\(ProfileCache.address)\"")
+                    print("     gender: \"\(ProfileCache.gender)\"")
+                    print("     rut: \"\(ProfileCache.rut)\"")
+                } else {
+                    print("⚠️ [ProfileFields] Account array existe pero primer elemento es nil")
+                }
+            } else {
+                print("⚠️ [ProfileFields] data.first es nil - response sin AccountFilter")
+            }
+
+        case .failure(let error):
+            print("❌ [ProfileFields] Error en getProfileFields: \(error.message)")
+            print("   Se mantiene cache anterior (si existia)")
+        }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("")
     }
 }
-

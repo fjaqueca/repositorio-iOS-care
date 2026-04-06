@@ -39,6 +39,7 @@ struct MedicalExamsDetailsView: View {
     @Binding var UIState: ExamUIState
     @State private var urlToShare: URL?
     @State private var sendNewExam: Bool = false
+    @State private var showDownloadSuccessDialog: Bool = false
     var publisher = PassthroughSubject<Void, Never>()
     enum AlertAuthEvent: Identifiable{
         var id: Int{
@@ -49,85 +50,156 @@ struct MedicalExamsDetailsView: View {
         case SuccessPostExam
         case SendFileError
     }
+    private var accentColor: Color {
+        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    }
+
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 Divider()
-                ScrollView{
-                VStack(alignment: .leading) {
-                    
-                        VStack(alignment: .leading) {
-                            HStack{
-                                Button{
-                                    
-                                } label: {
-                                    Image("userdata")
-                                        .renderingMode(.template)
-                                        .tint(Color(hex:  UIState.examDetail.medic.color))
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Main card
+                        VStack(alignment: .leading, spacing: 0) {
+                            // Exam name & date
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(exam.Name ?? "Sin nombre")
+                                    .font(Font.custom("FiraSans-Bold", size: 16))
+                                    .foregroundColor(Color(hex: "#333333"))
+                                    .lineLimit(3)
+
+                                if let dateStr = exam.desdeC, !dateStr.isEmpty {
+                                    Text(dateStr)
+                                        .font(Font.custom("FiraSans-Regular", size: 13))
+                                        .foregroundColor(.gray)
                                 }
-                                Text(exam.profesionalResponsableR?.Name ?? "Dr.")
-                                    .font(Font.custom(UIState.examDetail.medic.font, size: CGFloat(Int(UIState.examDetail.medic.size) ?? 12)))
-                                    .foregroundColor(Color(hex: UIState.examDetail.medic.color))
                             }
-                            Text(exam.Name ?? "")
-                                .font(Font.custom(UIState.examDetail.prescription.font, size: CGFloat(Int(UIState.examDetail.prescription.size) ?? 18)))
-                                .foregroundColor(Color(hex: UIState.examDetail.prescription.color))
-                            Text(exam.etapaR?.programR?.Name ?? "")
-                                .font(Font.custom(UIState.examDetail.program.font, size: CGFloat(Int(UIState.examDetail.program.size) ?? 18)))
-                                .foregroundColor(Color(hex: UIState.examDetail.program.color))
+                            .padding(.horizontal, 16)
+                            .padding(.top, 16)
+                            .padding(.bottom, 12)
+
+                            Divider()
+                                .padding(.horizontal, 16)
+
+                            // Indicaciones
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Indicaciones")
+                                    .font(Font.custom("FiraSans-Bold", size: 15))
+                                    .foregroundColor(Color(hex: "#333333"))
+
+                                Text(exam.descripcionC ?? "Sin descripción")
+                                    .font(Font.custom("FiraSans-Regular", size: 14))
+                                    .foregroundColor(.gray)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.top, 12)
+                            .padding(.bottom, 12)
+
+                            Divider()
+                                .padding(.horizontal, 16)
+
+                            // Examen adjunto
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Examen adjunto")
+                                    .font(Font.custom("FiraSans-Medium", size: 14))
+                                    .foregroundColor(Color(hex: "#333333"))
+
+                                Button {
+                                    downloadArchive(action: .isOpen)
+                                } label: {
+                                    VStack {
+                                        if let url = URL(string: UIState.examDetail.svgIconShowArchive) {
+                                            WebImage(url: url) { image in
+                                                image.resizable()
+                                                    .scaledToFit()
+                                                    .frame(height: 42)
+                                            } placeholder: {
+                                                Image(systemName: "doc.richtext")
+                                                    .font(.system(size: 32, weight: .light))
+                                                    .foregroundColor(accentColor)
+                                            }
+                                        } else {
+                                            Image(systemName: "doc.richtext")
+                                                .font(.system(size: 32, weight: .light))
+                                                .foregroundColor(accentColor)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 14)
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.top, 12)
+                            .padding(.bottom, 14)
+
+                            // Download & Share buttons
+                            buttonsBottom
+                                .padding(.horizontal, 16)
+                                .padding(.bottom, 16)
                         }
-                    
-                    infoView
-                        .padding(.leading, 1)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.white)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(.systemGray5), lineWidth: 1)
+                        )
+                        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+                        .padding(.horizontal, .margin)
+
+                        // Subir Examen button
+                        subExamButton
+                            .padding(.horizontal, .margin)
+                    }
+                    .padding(.top, 20)
+                    .padding(.bottom, .margin)
                 }
-                .onAppear{
+                .onAppear {
                     isExamPublished()
                 }
-                    Spacer()
-                    
-                }.alert(item: $alertAuthEvent, content: { tipe in
-                    switch tipe{
-                    case .DownloadSucces:
-                        return Alert(title: Text("Descargar Completa"), message: Text("Archivo guardado en: Archivos > iPhone > \(UIState.examList.textToShare)"), dismissButton: .default(Text("OK")))
-                    case .DownloadError:
-                        return Alert(title: Text(""), message: Text("Error en la descarga"), dismissButton: .default(Text("OK")))
-                    case .SuccessPostExam:
-                        return Alert(title: Text(""), message: Text("Examenes subidos con éxito"), dismissButton: .default(Text("OK")))
-                    case .SendFileError:
-                        return Alert(title: Text(""), message: Text("La imagen excede el tamaño máximo"), dismissButton: .default(Text("OK")))
-                    }
-                    
-                })
-                .padding(.margin)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(UIState.examDetail.title.text)
-                            .font(Font.custom(UIState.examDetail.title.font, size: CGFloat(Int(UIState.examDetail.title.size) ?? 18)))
-                            .foregroundColor(Color(hex: UIState.examDetail.title.color))
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            changeFavorite()
-                        }) {
-                            Image(systemName: isFavorite ? "star.fill" : "star")
-                                .renderingMode(.template)
-                                .tint(Color(hex: UIState.examDetail.title.color))
-                        }
-
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image("back")
-                                .renderingMode(.template)
-                                .tint(Color(hex: UIState.examDetail.title.color))
-                        }
+            }
+            .alert(item: $alertAuthEvent, content: { tipe in
+                switch tipe {
+                case .DownloadSucces:
+                    return Alert(title: Text("Descarga Completa"), message: Text("Archivo guardado en: Archivos > iPhone > \(UIState.examList.textToShare)"), dismissButton: .default(Text("OK")))
+                case .DownloadError:
+                    return Alert(title: Text(""), message: Text("Error en la descarga"), dismissButton: .default(Text("OK")))
+                case .SuccessPostExam:
+                    return Alert(title: Text(""), message: Text("Exámenes subidos con éxito"), dismissButton: .default(Text("OK")))
+                case .SendFileError:
+                    return Alert(title: Text(""), message: Text("La imagen excede el tamaño máximo"), dismissButton: .default(Text("OK")))
+                }
+            })
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(UIState.examDetail.title.text.isEmpty ? "Exámenes Médicos" : UIState.examDetail.title.text)
+                        .font(Font.custom("FiraSans-Bold", size: 17))
+                        .foregroundColor(Color(hex: UIState.examDetail.title.color.isEmpty ? "#333333" : UIState.examDetail.title.color))
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        changeFavorite()
+                    }) {
+                        Image(systemName: isFavorite ? "star.fill" : "star")
+                            .foregroundColor(isFavorite ? .yellow : Color(hex: UIState.examDetail.title.color.isEmpty ? "#333333" : UIState.examDetail.title.color))
                     }
                 }
-                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(accentColor)
+                    }
+                }
             }
             .sheet(isPresented: $showSheetView, content: {
                 ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
@@ -135,224 +207,214 @@ struct MedicalExamsDetailsView: View {
             .sheet(isPresented: $showWebView) {
                 WebView(url: self.urlToShare!)
             }
-            .blur(radius: isLoading ? 3 : 0.000001)
-            if isLoading{
-                ProgressView()
-                    .padding()
-            }
-        }
-        .background(
-            Group{
-                if UIState.examDetail.imageBackground != "" {
-                    CachedAsyncImage(
-                        url: URL(string: UIState.examDetail.imageBackground ),
-                        content: { image in
-                            image
-                                .resizable()
-                                .edgesIgnoringSafeArea(.all)
-                                .aspectRatio(contentMode: .fill)
-                        },
-                        placeholder: {
-                            ProgressView()
-                        }
-                    )
-                    .eraseToAnyView()
-                }
-            }
-        )
-        
-    }
-    var infoView: some View{
-        VStack(alignment: .leading){
-            Text(UIState.examDetail.indicatorTitle.text)
-                .font(Font.custom(UIState.examDetail.indicatorTitle.font, size: CGFloat(Int(UIState.examDetail.indicatorTitle.size) ?? 16)))
-                .foregroundColor(Color(hex: UIState.examDetail.indicatorTitle.color))
-            Text(exam.descripcionC ?? "Sin descripcion")
-                .font(Font.custom(UIState.examDetail.indicatorDescription.font, size: CGFloat(Int(UIState.examDetail.indicatorDescription.size) ?? 16)))
-                .foregroundColor(Color(hex: UIState.examDetail.indicatorDescription.color))
-            Text("Examen adjunto")
-                .font(Font.custom(UIState.examDetail.indicatorTitle.font, size: CGFloat(Int(UIState.examDetail.indicatorTitle.size) ?? 16)))
-                .foregroundColor(Color(hex: UIState.examDetail.indicatorTitle.color))
-                .padding(.top)
-            
-            Button {
-                downloadArchive(action: .isOpen)
-            } label: {
-                
-                VStack{
-                    if let url = URL(string: UIState.examDetail.svgIconShowArchive){
-                        WebImage(url: url) { image in
-                                image.resizable() // Control layout like SwiftUI.AsyncImage, you must use this modifier or the view will use the image
-                                .scaledToFit()
-                                .frame(height: 42)
-                                .padding(.margin)
-                            } placeholder: {
-                                Image("searchImage")
-                                    .renderingMode(.template)
-                                    .tint(Color(hex: UIState.examDetail.indicatorTitle.color))
-                                    .padding(.margin)
-                                    .frame(maxWidth: .infinity)
-                                    .background(UIState.examDetail.svgIconShowArchiveBackground != "" ? Color(hex: UIState.examDetail.svgIconShowArchiveBackground) : Color.grayLight)
-                                    .cornerRadius(.cornerRadius)
-                            }
-                        
-                    }else{
-                        Image("searchImage")
-                            .renderingMode(.template)
-                            .tint(Color(hex: UIState.examDetail.indicatorTitle.color))
-                            .padding(.margin)
-                            .frame(maxWidth: .infinity)
-                            .background(UIState.examDetail.svgIconShowArchiveBackground != "" ? Color(hex: UIState.examDetail.svgIconShowArchiveBackground) : Color.grayLight)
-                            .cornerRadius(.cornerRadius)
+            .alert("Examen descargado correctamente", isPresented: $showDownloadSuccessDialog) {
+                Button("Aceptar") {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        self.showWebView = true
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .background(UIState.examDetail.svgIconShowArchiveBackground != "" ? Color(hex: UIState.examDetail.svgIconShowArchiveBackground) : Color.grayLight)
-                .cornerRadius(.cornerRadius)
+            } message: {
+                Text("Tu examen quedó guardado en la aplicación de archivos en la ruta: Archivos > iPhone > \(UIState.examList.textToShare)")
             }
-            .padding(.bottom)
-            buttonsBottom
-                .padding(.bottom)
-            if isExamPublish{
+            .blur(radius: isLoading ? 3 : 0.000001)
+
+            if isLoading {
+                ProgressView()
+                    .scaleEffect(1.2)
+                    .padding(24)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(12)
+            }
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+    // MARK: - Subir Examen Button
+    private var subExamButton: some View {
+        Group {
+            if isExamPublish {
                 Button {
                     sendNewExam = true
                 } label: {
-                    /*Text(UIState.btnAddSeeExam.btnSeeExam.textBtn != "" ? UIState.btnAddSeeExam.btnSeeExam.textBtn : "+ Subir Examen4444")*/
-                    Text("Subir Examen4444")
-                        .foregroundColor(Color(hex: UIState.btnAddSeeExam.btnSeeExam.colorTextBtn))
-                    .frame(maxWidth: .infinity)
-                    .tint(.gray)
-                    .frame(height: .buttonTitleHeight)
+                    Text("+ Subir Examen")
+                        .font(Font.custom("FiraSans-Bold", size: 16))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(hex: UIState.btnAddSeeExam.btnSeeExam.colorButton.isEmpty ? "#00BCD4" : UIState.btnAddSeeExam.btnSeeExam.colorButton))
+                        )
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Color(hex: UIState.btnAddSeeExam.btnSeeExam.colorButton))
-                .font(Font.custom(UIState.btnAddSeeExam.btnSeeExam.fontTextBtn, size: CGFloat(Int(UIState.btnAddSeeExam.btnSeeExam.sizeTextBtn) ?? 18)))
-            }else{
+            } else {
                 Button {
                     sendNewExam = true
                 } label: {
-                    /*Text(UIState.btnAddSeeExam.btnAddExam.textBtn != "" ? UIState.btnAddSeeExam.btnAddExam.textBtn : "+ Subir Examen55555")*/
-                    Text("Subir Examen5555")
-                        .foregroundColor(Color(hex: UIState.btnAddSeeExam.btnAddExam.colorTextBtn))
-                    .frame(maxWidth: .infinity)
-                    .tint(.gray)
-                    .frame(height: .buttonTitleHeight)
+                    Text("+ Subir Examen")
+                        .font(Font.custom("FiraSans-Bold", size: 16))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(hex: UIState.btnAddSeeExam.btnAddExam.colorButton.isEmpty ? "#00BCD4" : UIState.btnAddSeeExam.btnAddExam.colorButton))
+                        )
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Color(hex: UIState.btnAddSeeExam.btnAddExam.colorButton))
-                .font(Font.custom(UIState.btnAddSeeExam.btnAddExam.fontTextBtn, size: CGFloat(Int(UIState.btnAddSeeExam.btnAddExam.sizeTextBtn) ?? 18)))
             }
-            
-            
         }
         .onReceive(publisher, perform: { _ in
-                    DispatchQueue.main.async {
-                        dismiss()
-                    }
-                })
+            DispatchQueue.main.async {
+                dismiss()
+            }
+        })
         .navigationLink(isActive: $sendNewExam) {
             if isExamPublish {
                 SendNewExamView(UIState: $UIState, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
-            }else{
+            } else {
                 SendNewExamView(UIState: $UIState, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             }
         }
     }
-    var buttonsBottom: some View{
-        HStack{
+
+    // MARK: - Download & Share Buttons
+    var buttonsBottom: some View {
+        HStack(spacing: 12) {
             Button {
                 downloadArchive(action: .isDownload)
             } label: {
-                HStack{
-                    Text(UIState.examDetail.btnDownload.textBtn)
-                        .font(Font.custom(UIState.examDetail.btnDownload.fontTextBtn, size: CGFloat(Int(UIState.examDetail.btnDownload.sizeTextBtn) ?? 18)))
-                        .foregroundColor(Color(hex: UIState.examDetail.btnDownload.colorTextBtn))
-                    Image("pdf")
-                        .renderingMode(.template)
-                        .tint(Color(hex:  UIState.examDetail.btnDownload.colorTextBtn))
+                HStack(spacing: 6) {
+                    Text(UIState.examDetail.btnDownload.textBtn.isEmpty ? "Descargar" : UIState.examDetail.btnDownload.textBtn)
+                        .font(Font.custom("FiraSans-Medium", size: 14))
+                    Image(systemName: "square.and.arrow.down")
+                        .font(.system(size: 13, weight: .medium))
                 }
-            }
-            .padding(5)
-            .padding(.vertical)
-            .overlay(
-                RoundedRectangle(cornerRadius: .cornerRadius)
-                    .stroke(Color(hex: UIState.examDetail.btnDownload.colorTextBtn), lineWidth: 1)
+                .foregroundColor(Color(hex: "#333333"))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color(.systemGray4), lineWidth: 1)
                 )
+            }
+
             Button {
-//                showSheetView.toggle()
                 downloadArchive(action: .isShare)
             } label: {
-                HStack{
-                    Text(UIState.examDetail.btnShare.textBtn)
-                        .font(Font.custom(UIState.examDetail.btnShare.fontTextBtn, size: CGFloat(Int(UIState.examDetail.btnShare.sizeTextBtn) ?? 18)))
-                        .foregroundColor(Color(hex: UIState.examDetail.btnShare.colorTextBtn))
-                    Image("share")
-                        .renderingMode(.template)
-                        .tint(Color(hex:  UIState.examDetail.btnDownload.colorTextBtn))
+                HStack(spacing: 6) {
+                    Text(UIState.examDetail.btnShare.textBtn.isEmpty ? "Compartir" : UIState.examDetail.btnShare.textBtn)
+                        .font(Font.custom("FiraSans-Medium", size: 14))
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 13, weight: .medium))
                 }
-            }
-            .padding(5)
-            .padding(.vertical)
-            .overlay(
-                RoundedRectangle(cornerRadius: .cornerRadius)
-                    .stroke(Color(hex: UIState.examDetail.btnShare.colorTextBtn), lineWidth: 1)
+                .foregroundColor(Color(hex: "#333333"))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color(.systemGray4), lineWidth: 1)
                 )
+            }
         }
     }
   
-    func downloadArchive(action : ActionButton, urlParameter: String? = nil){
+    /// Flujo completo estilo Android (ExamenPreview):
+    /// 1. Verifica URL no vacía
+    /// 2. Extrae fileName y objectKey de la URL S3
+    /// 3. Verifica caché local
+    /// 4. Si existe en caché → abre directo
+    /// 5. Si NO existe → getPresignedUrl → descarga → guarda → abre
+    func downloadArchive(action: ActionButton, urlParameter: String? = nil) {
         self.isLoading = true
-        let fileName = UIState.examList.textToShare
-        var filterUrl: String?
-        if urlParameter == nil{
-            filterUrl = exam.urlDeLaOrdenMedicaC
-        }else{
-            filterUrl = urlParameter
-        }
-        
-        if let url = filterUrl {
-            let pdfName = url.components(separatedBy: "/")
-            Task{
-                let result = await Network.shared.getPdf(pdfName: pdfName.last ?? "")
-                self.isLoading = false
-                switch result {
-                    case let .success(listPres):
-                        createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf", action: action)
-                    case let .failure(error):
-                        AppStatusManager.error(error)
-                    
-                }
-            }
-        }else{
+        let rawUrl = urlParameter ?? exam.urlDeLaOrdenMedicaC ?? ""
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📥 [ExamPreview] CLICK downloadArchive")
+        print("📥 [ExamPreview] action: \(action)")
+        print("📥 [ExamPreview] urlParameter: \(urlParameter ?? "nil")")
+        print("📥 [ExamPreview] exam.urlDeLaOrdenMedicaC: \(exam.urlDeLaOrdenMedicaC ?? "nil")")
+        print("📥 [ExamPreview] rawUrl: \(rawUrl)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        guard !rawUrl.isEmpty else {
+            print("❌ [ExamPreview] URL vacía, abortando")
             self.isLoading = false
             self.alertAuthEvent = .DownloadError
-            self.showAlert.toggle()
-            
+            return
+        }
+
+        // Paso 1: Extraer fileName y objectKey (igual que Android)
+        let fileName = S3FileHelper.extractFileNameFromUrl(rawUrl)
+        let objectKey = S3FileHelper.extractObjectKeyFromUrl(rawUrl)
+
+        print("📥 [ExamPreview] fileName extraido: \(fileName)")
+        print("📥 [ExamPreview] objectKey extraido: \(objectKey)")
+
+        // Paso 2: Verificar caché local solo para "Ver PDF" (Android: isFileInDownloads solo en Ver, no en Descargar)
+        if action == .isOpen, let cachedFileUrl = S3FileHelper.getCachedFileUrl(fileName: fileName) {
+            print("✅ [ExamPreview] Archivo encontrado en caché, abriendo directamente")
+            self.isLoading = false
+            handleLocalFile(cachedFileUrl, action: action)
+            return
+        }
+
+        print("📥 [ExamPreview] Archivo NO en caché, llamando a getPresignedUrl...")
+        print("📥 [ExamPreview] POST body: {\"object_key\": \"\(objectKey)\", \"filename\": \"\(fileName)\"}")
+
+        // Paso 3: Obtener URL pre-firmada y descargar
+        Task {
+            let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
+            switch result {
+            case let .success(response):
+                print("✅ [ExamPreview] Respuesta del servicio:")
+                print("   - url: \(response.url?.prefix(80) ?? "nil")...")
+                print("   - error: \(response.error)")
+                print("   - message: \(response.message ?? "nil")")
+
+                guard let presignedUrl = response.url, !response.error else {
+                    print("❌ [ExamPreview] Respuesta con error o sin URL")
+                    self.isLoading = false
+                    self.alertAuthEvent = .DownloadError
+                    return
+                }
+
+                // Paso 4: Descargar desde URL pre-firmada y guardar
+                do {
+                    print("📥 [ExamPreview] Descargando archivo desde URL pre-firmada...")
+                    let localFileUrl = try await S3FileHelper.downloadAndSave(from: presignedUrl, fileName: fileName)
+                    print("✅ [ExamPreview] Archivo descargado y guardado: \(localFileUrl.path)")
+                    self.isLoading = false
+                    handleLocalFile(localFileUrl, action: action)
+                } catch {
+                    print("❌ [ExamPreview] Error al descargar archivo: \(error.localizedDescription)")
+                    self.isLoading = false
+                    self.alertAuthEvent = .DownloadError
+                }
+
+            case let .failure(error):
+                print("❌ [ExamPreview] Error en la peticion getPresignedUrl:")
+                print("   - id: \(error.id)")
+                print("   - name: \(error.name)")
+                print("   - message: \(error.message)")
+                self.isLoading = false
+                self.alertAuthEvent = .DownloadError
+            }
         }
     }
 
-
-    func savePdf(urlString:String, fileName:String) {
-        DispatchQueue.global(qos: .background).async  {
-            if let url = URL(string: urlString) {
-                let pdfData = try? Data.init(contentsOf: url)
-                let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-                let pdfNameFromUrl = "\(exam.Name ?? "Sin nombre")-\(fileName).pdf"
-                let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
-                self.isLoading = false
-                do {
-                    try pdfData?.write(to: actualPath, options: .atomic)
-                    self.showAlert.toggle()
-                    self.alertAuthEvent = .DownloadSucces
-                } catch {
-                    self.showAlert.toggle()
-                    self.alertAuthEvent = .DownloadError
-                }
-            }else{
-                self.isLoading = false
-                self.alertAuthEvent = .DownloadError
-                self.showAlert.toggle()
-            }
+    func handleLocalFile(_ fileURL: URL, action: ActionButton) {
+        print("📥 [ExamPreview] handleLocalFile -> action: \(action), fileURL: \(fileURL.path)")
+        switch action {
+        case .isOpen:
+            self.urlToShare = fileURL
+            self.showWebView.toggle()
+            print("✅ [ExamPreview] Abriendo archivo en WebView")
+        case .isDownload:
+            self.urlToShare = fileURL
+            self.showDownloadSuccessDialog = true
+            print("✅ [ExamPreview] Descarga completada, mostrando dialog de éxito")
+        case .isShare:
+            self.urlToShare = fileURL
+            self.showSheetView.toggle()
+            print("✅ [ExamPreview] Compartiendo archivo")
         }
     }
     func isExamPublished(){
@@ -394,46 +456,6 @@ struct MedicalExamsDetailsView: View {
         case isDownload
         case isShare
         case isOpen
-    }
-    /// Creates a PDF file from a Base64 encoded string
-    func createPDF(with base64Info: String, fileName: String, action: ActionButton) {
-        DispatchQueue.global(qos: .background).async {
-            // Decodificar la cadena Base64 a Data
-            guard let base64Data = Data(base64Encoded: base64Info, options: .ignoreUnknownCharacters) else {
-                print("Error: La cadena Base64 no es válida.")
-                return
-            }
-            
-            // Obtener la ruta de documentos
-            let documentsURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-            
-            // Usa un nombre de archivo seguro.
-            let pdfFileName = fileName.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: ":", with: "_").replacingOccurrences(of: " ", with: "_")
-            let fileURL = documentsURL.appendingPathComponent(pdfFileName)
-            
-            do {
-                // Intentar escribir los datos en la ruta especificada
-                try base64Data.write(to: fileURL, options: .atomic)
-                print("PDF creado exitosamente en: \(fileURL.path)")
-                switch action {
-                    case .isDownload:
-                        self.alertAuthEvent = .DownloadSucces
-                        self.showAlert.toggle()
-                    case .isShare:
-                        self.urlToShare = fileURL
-                        self.showSheetView.toggle()
-                    case .isOpen:
-                        //createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf")
-                        self.urlToShare = fileURL
-                        self.showWebView.toggle()
-                    }
-                
-            } catch let error {
-                print("Failed to write the PDF data due to: \(error.localizedDescription)")
-                self.alertAuthEvent = .DownloadError
-                self.showAlert.toggle()
-            }
-        }
     }
     func medicExamToPatientExam() -> FunctionFilterExamResponse.PatientExams{
         return FunctionFilterExamResponse.PatientExams(attributes: nil, pacienteC: exam.pacienteC, Id: nil, nombreDelExamenC: exam.Name, urlExamen1C: exam.url1C, urlExamen2C: exam.url2C, urlExamen3C: exam.url3C, urlExamen4C: exam.url4C, comentariosC: exam.comment, CreatedDate: nil, idOrdenMedicaC: exam.Id)

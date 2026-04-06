@@ -48,7 +48,8 @@ struct SignInWithPasswordView: View {
                 PrimaryButton(title: "Iniciar Sesion", UIStateBtn: UIState.loginUIState.btnLogin) {
                     signIn()
                 }
-                .disabled(((passwordField.value?.isEmpty) == nil))
+                .disabled(passwordField.value?.isEmpty ?? true || isLoading)  // 🔒 Deshabilitar si está cargando
+                .opacity(isLoading ? 0.6 : 1.0)  // 🎨 Feedback visual
                 .padding(.bottom, .margin)
             }
             .padding(.horizontal, .margin)
@@ -77,8 +78,33 @@ struct SignInWithPasswordView: View {
                 SignInPasswordRecovery(UIState: $UIState, isPresenting: $isPresenting)
             }
             
+            // 🔒 Overlay de loading para prevenir interacción durante login
+            if isLoading {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    VStack(spacing: 16) {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        
+                        Text("Iniciando sesión...")
+                            .foregroundColor(.white)
+                            .font(.appBodyBold)
+                    }
+                    .padding(30)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.black.opacity(0.8))
+                    )
+                }
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.3), value: isLoading)
+            }
             
         }
+        .allowsHitTesting(!isLoading)  // 🔒 Bloquear toda interacción durante login
     }
     public var title: some View {
         Text(UIState.loginUIState.title.text != "" ? UIState.loginUIState.title.text : "¡Hola de nuevo!")
@@ -105,16 +131,47 @@ struct SignInWithPasswordView: View {
         guard let password = passwordField.value else {
             return
         }
+        
+        // 🔒 SEGURIDAD: Prevenir múltiples intentos de login simultáneos
+        guard !isLoading else {
+            print("⚠️ [UI SECURITY] Login ya en progreso, ignorando tap del usuario")
+            return
+        }
+        
         isLoading = true
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔐 USUARIO INTENTA LOGIN DESDE UI")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("👤 RUT: \(rut)")
+        print("⏰ UI Timestamp: \(Date())")
+        
         Task {
             let result = await AppStatusManager.signIn(rut: rut.filter { $0.isLetter || $0.isNumber }, password: password)
-            isLoading = false
+            
+            // 🔒 IMPORTANTE: Asegurarse de actualizar isLoading en el thread principal
+            await MainActor.run {
+                isLoading = false
+            }
+            
             switch result {
                 case .success:
+                    print("✅ [UI] Login exitoso, guardando RUT")
                     UserDefaults.standard.set(rut, forKey: .signInRut)
+                    
                 case let .failure(error):
+                    print("❌ [UI] Login fallido: \(error.localizedDescription)")
+                    print("❌ [UI] HTTP Code: \(error.httpCode ?? -1)")
+                    
+                    // 📊 Registrar error específico en Firebase
+                    FirebaseLogger.shared.log("❌ [UI] Error de login mostrado al usuario: \(error.message)")
+                    
+                    // Mostrar error al usuario
                     AppStatusManager.error(.unauthorized)
             }
+            
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("🏁 FIN DEL PROCESO DE LOGIN DESDE UI")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         }
     }
 }

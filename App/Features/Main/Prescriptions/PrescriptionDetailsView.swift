@@ -67,7 +67,7 @@ struct PrescriptionDetailsView: View {
                 .alert(item: $alertAuthEvent, content: { tipe in
                     switch tipe{
                     case .DownloadSucces:
-                        return Alert(title: Text("Descargar Completa"), message: Text("Archivo guardado en: Archivos > iPhone > \(UIState.presList.textToShare)"), dismissButton: .default(Text("OK")))
+                        return Alert(title: Text("Descarga Completa"), message: Text("Archivo guardado en: Archivos > iPhone > \(UIState.presList.textToShare)"), dismissButton: .default(Text("OK")))
                     case .DownloadError:
                         return Alert(title: Text(""), message: Text("Error en la descarga"), dismissButton: .default(Text("OK")))
                     case .RepeatPrescription:
@@ -130,7 +130,7 @@ struct PrescriptionDetailsView: View {
         .sheet(isPresented: $showWebView) {
             WebView(url: self.urlToShare!)
         }
-        
+
     }
     var infoView: some View{
         VStack(alignment: .leading){
@@ -272,54 +272,67 @@ struct PrescriptionDetailsView: View {
             self.showWebView.toggle()
         }
     }
-    func downloadArchive(action : ActionButton){
+    func downloadArchive(action: ActionButton) {
         self.isLoading = true
-        if let url = prescription.urlDeLaRecetaC {
-            let pdfName = url.components(separatedBy: "/")
-            Task{
-                let result = await Network.shared.getPdf(pdfName: pdfName.last ?? "")
-                self.isLoading = false
-                switch result {
-                    case let .success(listPres):
-                        createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf", action: action)
-                    case let .failure(error):
-                        AppStatusManager.error(error)
-                    
-                }
-            }
-        }else{
+        let rawUrl = prescription.urlDeLaRecetaC ?? ""
+
+        guard !rawUrl.isEmpty else {
             self.isLoading = false
             self.alertAuthEvent = .DownloadError
-            self.showAlert.toggle()
-            
+            return
         }
-    }
-    
-    func savePdf(urlString:String, fileName:String) {
-        DispatchQueue.global(qos: .background).async  {
-            let url = URL(string: urlString)
-            let pdfData = try? Data.init(contentsOf: url!)
-            let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-            let pdfNameFromUrl = "\(prescription.Name ?? "Sin nombre")-\(fileName).pdf"
-            let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
+
+        let fileName = S3FileHelper.extractFileNameFromUrl(rawUrl)
+        let objectKey = S3FileHelper.extractObjectKeyFromUrl(rawUrl)
+
+        // Verificar caché local solo para "Ver PDF" (Descargar siempre re-descarga, igual que Android)
+        if action == .isOpen, let cachedFileUrl = S3FileHelper.getCachedFileUrl(fileName: fileName) {
             self.isLoading = false
-            do {
-                try pdfData?.write(to: actualPath, options: .atomic)
-                print("pdf successfully saved! ")
-                print(actualPath.path)
-                self.showAlert.toggle()
-                self.alertAuthEvent = .DownloadSucces
-                //                openFile(at: actualPath)
-                //file is downloaded in app data container, I can find file from x code > devices > MyApp > download Container >This container has the file
-            } catch {
-                print("PDF no guardado: \(error)")
-                self.showAlert.toggle()
+            handleLocalFile(cachedFileUrl, action: action)
+            return
+        }
+
+        Task {
+            let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
+            switch result {
+            case let .success(response):
+                guard let presignedUrl = response.url, !response.error else {
+                    self.isLoading = false
+                    self.alertAuthEvent = .DownloadError
+                    return
+                }
+                do {
+                    let localFileUrl = try await S3FileHelper.downloadAndSave(from: presignedUrl, fileName: fileName)
+                    self.isLoading = false
+                    handleLocalFile(localFileUrl, action: action)
+                } catch {
+                    self.isLoading = false
+                    self.alertAuthEvent = .DownloadError
+                }
+            case let .failure(error):
+                print("❌ [PrescriptionDetail] Error getPresignedUrl: \(error.message)")
+                self.isLoading = false
                 self.alertAuthEvent = .DownloadError
             }
         }
     }
-    func repeatPrescription(){
-        Task{
+
+    func handleLocalFile(_ fileURL: URL, action: ActionButton) {
+        switch action {
+        case .isOpen:
+            self.urlToShare = fileURL
+            self.showWebView.toggle()
+        case .isDownload:
+            self.urlToShare = fileURL
+            self.showWebView.toggle()
+        case .isShare:
+            self.urlToShare = fileURL
+            self.showSheetView.toggle()
+        }
+    }
+
+    func repeatPrescription() {
+        Task {
             let result = await Network.shared.postReceta(accountId: prescription.pacienteC ?? "", prescriptionId: prescription.Id ?? "")
             self.isLoading = false
             switch result {
@@ -329,57 +342,12 @@ struct PrescriptionDetailsView: View {
             case .failure(_):
                 self.showAlert.toggle()
                 self.alertAuthEvent = .RepeatFails
-                
-            }
-            
-        }
-    }
-    
-    /// Creates a PDF file from a Base64 encoded string
-    func createPDF(with base64Info: String, fileName: String, action: ActionButton) {
-        DispatchQueue.global(qos: .background).async {
-            // Decodificar la cadena Base64 a Data
-            guard let base64Data = Data(base64Encoded: base64Info, options: .ignoreUnknownCharacters) else {
-                print("Error: La cadena Base64 no es válida.")
-                return
-            }
-            
-            // Obtener la ruta de documentos
-            let documentsURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-            
-            // Usa un nombre de archivo seguro.
-            let pdfFileName = fileName.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: ":", with: "_").replacingOccurrences(of: " ", with: "_")
-            let fileURL = documentsURL.appendingPathComponent(pdfFileName)
-            
-            do {
-                // Intentar escribir los datos en la ruta especificada
-                try base64Data.write(to: fileURL, options: .atomic)
-                print("PDF creado exitosamente en: \(fileURL.path)")
-                switch action {
-                    case .isDownload:
-                        self.alertAuthEvent = .DownloadSucces
-                        self.showAlert.toggle()
-                    case .isShare:
-                        self.urlToShare = fileURL
-                        self.showSheetView.toggle()
-                    case .isOpen:
-                        //createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf")
-                        self.urlToShare = fileURL
-                        self.showWebView.toggle()
-                    }
-                
-            } catch let error {
-                print("Failed to write the PDF data due to: \(error.localizedDescription)")
-                self.alertAuthEvent = .DownloadError
-                self.showAlert.toggle()
             }
         }
     }
-    
-    enum ActionButton: Identifiable{
-        var id: Int{
-            hashValue
-        }
+
+    enum ActionButton: Identifiable {
+        var id: Int { hashValue }
         case isDownload
         case isShare
         case isOpen

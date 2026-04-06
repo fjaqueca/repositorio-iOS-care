@@ -138,8 +138,10 @@ struct PrescriptionsView: View {
                     }
                 }
                 if isLoadingAction{
+                    Color.black.opacity(0.15)
+                        .ignoresSafeArea()
                     withAnimation {
-                        PrescriptionDownloadView(isLoadingAction: $isLoadingAction, total: $total, count: $count, progress: $progress, actionButton: $actionButton, showSheetView: $showSheetView)
+                        PrescriptionDownloadView(total: $total, count: $count)
                             .background(.white)
                             .cornerRadius(.cornerRadius)
                             .shadow(radius: 10)
@@ -148,6 +150,19 @@ struct PrescriptionsView: View {
             }
             .task{
                 loadUIState()
+            }
+            .onChange(of: count) { newCount in
+                if newCount >= total && total > 0 && isLoadingAction {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        isLoadingAction = false
+                        if actionButton == .isShare {
+                            if let zipURL = createZip(from: urlsToZip, zipFileName: "DocumentosCompartidos") {
+                                urlShare = zipURL
+                                showSheetView = true
+                            }
+                        }
+                    }
+                }
             }
             .configureNavigation()
             .background(
@@ -408,64 +423,51 @@ struct PrescriptionsView: View {
             }
         }
     }
-    func downloadArchive(urlParameter: String?, action : ActionAuthPresAndExam){
-        if let url = urlParameter {
-            let pdfName = url.components(separatedBy: "/")
-            Task{
-                let result = await Network.shared.getPdf(pdfName: pdfName.last ?? "")
-                switch result {
-                    case let .success(listPres):
-                        createPDF(with: listPres.data, fileName: pdfName.last ?? ".pdf", action: action)
-                    case let .failure(error):
-                        AppStatusManager.error(error)
+    func downloadArchive(urlParameter: String?, action: ActionAuthPresAndExam) {
+        guard let rawUrl = urlParameter, !rawUrl.isEmpty else { return }
+        let fileName = S3FileHelper.extractFileNameFromUrl(rawUrl)
+        let objectKey = S3FileHelper.extractObjectKeyFromUrl(rawUrl)
+
+        Task {
+            let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
+            switch result {
+            case let .success(response):
+                guard let presignedUrl = response.url, !response.error,
+                      let remoteURL = URL(string: presignedUrl) else {
+                    self.count += 1
+                    self.progress = Double(self.count / self.total)
+                    return
                 }
+                downloadFromPresignedUrl(remoteURL, fileName: fileName, action: action)
+            case let .failure(error):
+                AppStatusManager.error(error)
+                self.count += 1
+                self.progress = Double(self.count / self.total)
             }
         }
     }
 
-    
-    /// Creates a PDF file from a Base64 encoded string
-    func createPDF(with base64Info: String, fileName: String, action: ActionAuthPresAndExam) {
-        DispatchQueue.global(qos: .background).async {
-            // Decodificar la cadena Base64 a Data
-            guard let base64Data = Data(base64Encoded: base64Info, options: .ignoreUnknownCharacters) else {
-                print("Error: La cadena Base64 no es válida.")
-                return
-            }
-            
-            // Obtener la ruta de documentos
-            let documentsURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
-            
-            // Usa un nombre de archivo seguro.
-            let pdfFileName = fileName.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: ":", with: "_").replacingOccurrences(of: " ", with: "_")
-            let fileURL = documentsURL.appendingPathComponent(pdfFileName)
-            
+    func downloadFromPresignedUrl(_ remoteURL: URL, fileName: String, action: ActionAuthPresAndExam) {
+        DispatchQueue.global(qos: .userInitiated).async {
             do {
-                // Intentar escribir los datos en la ruta especificada
-                try base64Data.write(to: fileURL, options: .atomic)
-                print("PDF creado exitosamente en: \(fileURL.path)")
-                switch action {
-                case .isDownload:
-                    self.count += 1
-                    self.progress = Double(self.count/self.total)
-                    print(self.progress)
-                case .isShare:
-                    self.urlsToZip.append(fileURL)
-                    self.count += 1
-                    self.progress = Double(self.count/self.total)
-                    if self.count >= self.total {
-                        if let zipURL = createZip(from: self.urlsToZip, zipFileName: "DocumentosCompartidos") {
-                            self.urlShare = zipURL // Actualiza con el archivo ZIP
-                            self.showSheetView.toggle()
-                        }
+                let data = try Data(contentsOf: remoteURL)
+                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+                let safeFileName = S3FileHelper.sanitizeFileName(fileName)
+                let fileURL = documentsURL.appendingPathComponent(safeFileName)
+                try data.write(to: fileURL, options: .atomic)
+
+                DispatchQueue.main.async {
+                    if action == .isShare {
+                        self.urlsToZip.append(fileURL)
                     }
+                    self.count += 1
+                    self.progress = Double(self.count / self.total)
                 }
-                
-            } catch let error {
-                print("Failed to write the PDF data due to: \(error.localizedDescription)")
-                self.count += 1
-                self.progress = self.count/self.total
-                print(self.progress)
+            } catch {
+                DispatchQueue.main.async {
+                    self.count += 1
+                    self.progress = self.count / self.total
+                }
             }
         }
     }

@@ -212,7 +212,13 @@ struct Endpoint {
     static var getFileFromS3: Self {
         .init("get_file_from_s3_other")
     }
+    static var getPresignedUrl: Self {
+        .init("get_ver_url_privada")
+    }
     static var functionFilter: Self {
-        .init("function_filter")
+        .init("function_filter", keyEncodingStrategy: .useDefaultKeys)
+    }
+    static var automatedExamsGenerate: Self {
+        .init("function_flows?api_name=Servicio_Generico__c")
     }
 }

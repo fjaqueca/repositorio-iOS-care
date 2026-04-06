@@ -16,12 +16,32 @@ struct FunctionFilterResponse: Codable {
         let Account: [CompanyFilter?]
     }
     
-    struct CompanyFilter: Codable{
-        let attributes: Attributes
-        let empresaactualC: String?
+    struct CompanyFilter: Codable {
+        let attributes: Attributes?
         let Id: String?
+        let empresaactualC: String?
         let beneficioYappActivoC: Bool?
         let acompanamientoIntegralC: Bool?
+        // Campos adicionales del Account para datos del paciente
+        let FirstName: String?
+        let LastName: String?
+        let PersonBirthdate: String?
+        let PersonEmail: String?
+        let BillingStreet: String?
+        let HealthCloudGA__Gender__pc: String?
+        let IdentificationId__pc: String?
+        let Oncologico_Activo__c: Bool?
+
+        enum CodingKeys: String, CodingKey {
+            case attributes, Id
+            case empresaactualC = "EmpresaActual__c"
+            case beneficioYappActivoC = "Beneficio_Yapp_Activo__c"
+            case acompanamientoIntegralC = "Acompanamiento_Integral__c"
+            case FirstName, LastName, PersonBirthdate, PersonEmail, BillingStreet
+            case HealthCloudGA__Gender__pc
+            case IdentificationId__pc
+            case Oncologico_Activo__c
+        }
     }
 
 }
@@ -153,13 +173,16 @@ struct Attributes3: Codable {
 
 struct FunctionFilterExamResponse: Codable, Hashable {
     let statusCode: Int?
-    let data: [PatientFilter]
-    
-    
+    let data: [PatientFilter]?
+
     struct PatientFilter: Codable, Hashable {
-        let examenesDelPacienteC: [PatientExams]
+        let examenesDelPacienteC: [PatientExams]?
+
+        enum CodingKeys: String, CodingKey {
+            case examenesDelPacienteC = "Examenes_del_Paciente__c"
+        }
     }
-    
+
     struct PatientExams: Codable, Hashable {
         let attributes: Attribute?
         let pacienteC: String?
@@ -172,7 +195,58 @@ struct FunctionFilterExamResponse: Codable, Hashable {
         let comentariosC: String?
         let CreatedDate: String?
         let idOrdenMedicaC: String?
-        
+
+        enum CodingKeys: String, CodingKey {
+            case attributes
+            case pacienteC = "Paciente__c"
+            case Id
+            case nombreDelExamenC = "Nombre_del_Examen__c"
+            case urlExamen1C = "URL_Examen_1__c"
+            case urlExamen2C = "URL_Examen_2__c"
+            case urlExamen3C = "URL_Examen_3__c"
+            case urlExamen4C = "URL_Examen_4__c"
+            case comentariosC = "Comentarios__c"
+            case CreatedDate
+            case idOrdenMedicaC = "Id_Orden_Medica__c"
+        }
+    }
+}
+
+/// Response del function_filter para ordenes de examenes automatizados
+/// Endpoint: POST /function_filter con api_name: "Examenes_Automatizados__c"
+/// Estructura: { "statusCode": 200, "data": [ { "Examenes_Automatizados__c": [...] } ] }
+struct FunctionFilterAutoExamOrderResponse: Codable {
+    let statusCode: Int?
+    let data: [AutoExamOrderFilter]?
+
+    struct AutoExamOrderFilter: Codable {
+        let examenesAutomatizadosC: [AutoExamOrderRecord]
+
+        enum CodingKeys: String, CodingKey {
+            case examenesAutomatizadosC = "Examenes_Automatizados__c"
+        }
+    }
+
+    struct AutoExamOrderRecord: Codable {
+        let Id: String?
+        let Name: String?
+        let nombreExamenC: String?
+        let profesionalResponsableC: String?
+        let CreatedById: String?
+        let descripcionC: String?
+        let CreatedDate: String?
+        let urlOrdenMedicaRealC: String?
+
+        enum CodingKeys: String, CodingKey {
+            case Id
+            case Name
+            case nombreExamenC = "Nombre_Examen__c"
+            case profesionalResponsableC = "Profesional_Responsable__c"
+            case CreatedById
+            case descripcionC = "Descripcion__c"
+            case CreatedDate
+            case urlOrdenMedicaRealC = "URL_Orden_Medica_Real__c"
+        }
     }
 }
 
