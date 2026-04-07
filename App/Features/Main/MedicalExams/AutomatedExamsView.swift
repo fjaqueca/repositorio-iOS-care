@@ -443,7 +443,7 @@ struct AutomatedExamsView: View {
                     } label: {
                         Image("back")
                             .renderingMode(.template)
-                            .tint(Color(hex: config.categoriasListaConfig.backArrowColor.isEmpty ? "#000000" : config.categoriasListaConfig.backArrowColor))
+                            .foregroundColor(Color(hex: config.backArrowColorSeccion))
                     }
                 }
             }
@@ -484,6 +484,7 @@ struct AutomatedExamsView: View {
             .fullScreenCover(isPresented: $showCart) {
                 CarritoExamView(
                     carritoConfig: config.carrito,
+                    backArrowColor: config.backArrowColorSeccion,
                     cartItems: $cartItems,
                     onVerResumen: {
                         print("🛒 [Paso 5→6] Carrito → VER RESUMEN / CONFIRMAR DATOS PERSONALES")

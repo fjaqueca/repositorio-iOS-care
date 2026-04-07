@@ -12,6 +12,9 @@ import ZIPFoundation
 
 struct MedicalExamsView: View {
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
+    var seleccionarTodosTexto: String = "Seleccionar Todos"
+    var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
@@ -98,7 +101,8 @@ struct MedicalExamsView: View {
                                         exam: exam,
                                         isLoadingFavorite: $isLoadingFav,
                                         isLoadingExam: $isLoading,
-                                        UIState: $UIState
+                                        UIState: $UIState,
+                                        backArrowColor: backArrowColor
                                     )
                                 }
                             }
@@ -272,9 +276,12 @@ struct MedicalExamsView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    Text("Seleccionar Todos")
-                        .font(Font.custom("FiraSans-Regular", size: 14))
-                        .foregroundColor(.primary)
+                    Text(seleccionarTodosTexto)
+                        .font(Font.custom(
+                            seleccionarTodosAttr.font.isEmpty ? "FiraSans-Regular" : seleccionarTodosAttr.font,
+                            size: CGFloat(Int(seleccionarTodosAttr.size) ?? 14)
+                        ))
+                        .foregroundColor(seleccionarTodosAttr.color.isEmpty ? .primary : Color(hex: seleccionarTodosAttr.color))
                 }
             }
             .buttonStyle(.plain)

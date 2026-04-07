@@ -47,7 +47,7 @@ struct ExamsView: View {
                     } label: {
                         Image("back")
                             .renderingMode(.template)
-                            .tint(Color(hex: UIState.examList.title.color.isEmpty ? "#000000" : UIState.examList.title.color))
+                            .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
                     }
                 }
             }
@@ -109,7 +109,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    MedicalExamsView(UIState: $UIState)
+                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -128,10 +128,9 @@ struct ExamsView: View {
                         Button {
                             showMedicalExams = false
                         } label: {
-                            let attr = automatedExamsState.secciones.first(where: { $0.numero == 1 })?.tituloAttr ?? TextExamAttributes()
                             Image("back")
                                 .renderingMode(.template)
-                                .tint(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                                .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
                         }
                     }
                 }
@@ -142,7 +141,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    PatientExamsView(UIState: $UIState)
+                    PatientExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -161,10 +160,9 @@ struct ExamsView: View {
                         Button {
                             showPatientExams = false
                         } label: {
-                            let attr = automatedExamsState.secciones.first(where: { $0.numero == 2 })?.tituloAttr ?? TextExamAttributes()
                             Image("back")
                                 .renderingMode(.template)
-                                .tint(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                                .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
                         }
                     }
                 }
@@ -237,7 +235,7 @@ struct ExamsView: View {
         }
     }
 
-    // MARK: - Option Cards
+    // MARK: - Option Cards (grilla dinámica según secciones visibles)
     private var optionCards: some View {
         Group {
             if automatedExamsState.secciones.isEmpty {
@@ -263,17 +261,12 @@ struct ExamsView: View {
                 }
                 .padding(.horizontal, .margin)
             } else {
-                // Secciones dinamicas del BrandAccount
-                let alignment: HorizontalAlignment = {
-                    switch automatedExamsState.header.blockPosition.lowercased() {
-                    case "left": return .leading
-                    case "right": return .trailing
-                    default: return .center
-                    }
-                }()
+                // Secciones dinámicas del BrandAccount — grilla adaptativa
+                let visibleSecciones = automatedExamsState.secciones.filter { $0.visible }
+                let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: min(visibleSecciones.count, 3))
 
-                HStack(alignment: .top, spacing: 12) {
-                    ForEach(automatedExamsState.secciones) { seccion in
+                LazyVGrid(columns: columns, alignment: .center, spacing: 12) {
+                    ForEach(visibleSecciones) { seccion in
                         examOptionCard(
                             title: seccion.nombre,
                             iconURL: seccion.iconURL.isEmpty ? nil : seccion.iconURL,
@@ -283,7 +276,6 @@ struct ExamsView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : alignment == .trailing ? .trailing : .center)
                 .padding(.horizontal, .margin)
             }
         }

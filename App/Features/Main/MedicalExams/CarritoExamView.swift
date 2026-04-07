@@ -10,6 +10,7 @@ import SwiftUI
 /// Vista del carrito de exámenes seleccionados
 struct CarritoExamView: View {
     let carritoConfig: CarritoExamConfig
+    var backArrowColor: String = "#00BBDC"
     @Binding var cartItems: [ExamenItem]
     var onVerResumen: () -> Void = {}
     var onLimpiarTodo: () -> Void = {}
@@ -217,7 +218,7 @@ struct CarritoExamView: View {
                     } label: {
                         Image("back")
                             .renderingMode(.template)
-                            .tint(Color(hex: carritoConfig.carritoColor))
+                            .foregroundColor(Color(hex: backArrowColor))
                     }
                 }
             }

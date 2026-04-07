@@ -30,6 +30,13 @@ struct AutomatedExamsUIState {
     // Custom Record - Elemento 7: Popup ver detalle/resumen carrito
     var popupDetalleCarrito = PopupDetalleCarritoConfig()
 
+    // Custom Record - Elemento 8: Color back arrow de toda la sección exámenes
+    var backArrowColorSeccion: String = "#00BBDC"
+
+    // Custom Record - Elemento 9: "Seleccionar Todos" en Prescripciones Médicas
+    var seleccionarTodosTexto: String = "Seleccionar Todos"
+    var seleccionarTodosAttr = TextExamAttributes()
+
     // Main Record - Elementos 1-2: Categorias (hasta 32)
     var categorias: [CategoriaExamen] = []
 
@@ -110,6 +117,7 @@ struct PopupExamConfig {
     var tituloAttr = TextExamAttributes()
     var descripcion: String = ""
     var descripcionAttr = TextExamAttributes()
+    var labelTexto: String = ""
     var labelAttr = TextExamAttributes()
     var respuestaAttr = TextExamAttributes()
     var btnAceptar = ButtonExamConfig()

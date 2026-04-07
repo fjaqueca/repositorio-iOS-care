@@ -16,6 +16,7 @@ struct MedicalExamsRowView: View {
     @Binding var isLoadingFavorite: Bool
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
 
     private var isItemSelected: Bool {
         isSelected[exam.Id ?? ""] == true
@@ -120,7 +121,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor)
         }
     }
 

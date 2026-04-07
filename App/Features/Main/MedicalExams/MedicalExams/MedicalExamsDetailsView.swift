@@ -37,6 +37,7 @@ struct MedicalExamsDetailsView: View {
     @Binding var isFavorite: Bool
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
     @State private var urlToShare: URL?
     @State private var sendNewExam: Bool = false
     @State private var showDownloadSuccessDialog: Bool = false
@@ -197,7 +198,7 @@ struct MedicalExamsDetailsView: View {
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(accentColor)
+                            .foregroundColor(Color(hex: backArrowColor))
                     }
                 }
             }
@@ -268,9 +269,9 @@ struct MedicalExamsDetailsView: View {
         })
         .navigationLink(isActive: $sendNewExam) {
             if isExamPublish {
-                SendNewExamView(UIState: $UIState, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             } else {
-                SendNewExamView(UIState: $UIState, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             }
         }
     }

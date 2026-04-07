@@ -12,6 +12,7 @@ struct PatientExamRowView: View {
     let exam: FunctionFilterExamResponse.PatientExams
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
@@ -90,7 +91,7 @@ struct PatientExamRowView: View {
         }
         .buttonStyle(.plain)
         .navigationLink(isActive: $isPresentingDetails) {
-            SendNewExamView(UIState: $UIState, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
         }
     }
 

@@ -256,6 +256,10 @@ extension ExamsView {
             print("      titulo: \"\(state.popupDetalleCarrito.titulo)\"")
             print("      btnAceptar: \"\(state.popupDetalleCarrito.btnAceptar.texto)\"")
             print("      btnCerrar: \"\(state.popupDetalleCarrito.btnCerrar.texto)\"")
+            loadBackArrowColorSeccion(from: custom, into: &state)
+            print("   🔙 BackArrowColorSeccion (Elemento 8): \(state.backArrowColorSeccion)")
+            loadSeleccionarTodosConfig(from: custom, into: &state)
+            print("   ✅ SeleccionarTodos (Elemento 9): texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom' NO encontrado")
         }
@@ -372,33 +376,33 @@ private func loadHeaderConfig(from record: BrandAccount, into state: inout Autom
 
 private func loadSeccionesIniciales(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
     // Elemento 3: Secciones iniciales + atributos de títulos
-    // 3.1-3.3: Secciones (Nombre;Icono)
+    // 3.1-3.3: Secciones (Nombre;Icono) — Si valor == "No"/"NO", la sección se oculta
     // 3.4-3.6: Atributos títulos de cada sección (TipoFuente;Size;ColorTexto;Posicion)
+
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [SeccionesIniciales] Cargando secciones del Elemento 3")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
     for i in 1...16 {
         guard let atributo = record.getAtributo(section: 3, field: i),
               !atributo.isEmpty else { continue }
         let valor = record.getValor(section: 3, field: i) ?? ""
         let attrLower = atributo.lowercased()
 
-        if valor.lowercased() == "no" { continue }
-
-        // Campos de atributos de título (3.4, 3.5, 3.6)
+        // Campos de atributos de título (3.4, 3.5, 3.6) — no aplica lógica de "No"
         if attrLower.contains("atributostituloprescripciones") {
-            // 3.4: AtributosTituloPrescripcionesMedicas → sección 1
             if let idx = state.secciones.firstIndex(where: { $0.numero == 1 }) {
                 state.secciones[idx].tituloAttr = parseTextAttributes(valor)
                 print("      [3.\(i)] ✅ tituloAttr sección 1 = font:\(state.secciones[idx].tituloAttr.font) size:\(state.secciones[idx].tituloAttr.size) color:\(state.secciones[idx].tituloAttr.color)")
             }
             continue
         } else if attrLower.contains("atributostituloMisarchivos") || attrLower.contains("atributostituloMisarchivos".lowercased()) {
-            // 3.5: AtributosTituloMisArchivosDeSalud → sección 2
             if let idx = state.secciones.firstIndex(where: { $0.numero == 2 }) {
                 state.secciones[idx].tituloAttr = parseTextAttributes(valor)
                 print("      [3.\(i)] ✅ tituloAttr sección 2 = font:\(state.secciones[idx].tituloAttr.font) size:\(state.secciones[idx].tituloAttr.size) color:\(state.secciones[idx].tituloAttr.color)")
             }
             continue
         } else if attrLower.contains("atributostituloexamenesautomatizados") {
-            // 3.6: AtributosTituloExamenesAutomatizados → sección 3
             if let idx = state.secciones.firstIndex(where: { $0.numero == 3 }) {
                 state.secciones[idx].tituloAttr = parseTextAttributes(valor)
                 print("      [3.\(i)] ✅ tituloAttr sección 3 = font:\(state.secciones[idx].tituloAttr.font) size:\(state.secciones[idx].tituloAttr.size) color:\(state.secciones[idx].tituloAttr.color)")
@@ -414,6 +418,12 @@ private func loadSeccionesIniciales(from record: BrandAccount, into state: inout
             if let n = Int(digits) { numero = n }
         }
 
+        // Si el valor es "No" o "NO", NO agregar la sección (se oculta dinámicamente)
+        if valor.lowercased() == "no" {
+            print("      [3.\(i)] 🚫 Sección \(numero) OCULTA (valor=\"\(valor)\")")
+            continue
+        }
+
         let parts = valor.components(separatedBy: ";")
         let nombre = parts.count >= 1 ? parts[0].trimmingCharacters(in: .whitespaces) : ""
         let iconURL = parts.count >= 2 ? parts[1].trimmingCharacters(in: .whitespaces) : ""
@@ -424,7 +434,15 @@ private func loadSeccionesIniciales(from record: BrandAccount, into state: inout
             iconURL: iconURL,
             visible: true
         ))
+        print("      [3.\(i)] ✅ Sección \(numero) VISIBLE → nombre:\"\(nombre)\"")
     }
+
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [SeccionesIniciales] RESULTADO: \(state.secciones.count) secciones visibles de las configuradas")
+    for sec in state.secciones {
+        print("   • Sección \(sec.numero): \"\(sec.nombre)\"")
+    }
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
 private func loadCategoriasListaConfig(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
@@ -708,6 +726,71 @@ private func loadPopupDetalleCarrito(from record: BrandAccount, into state: inou
             }
         }
     }
+}
+
+// MARK: - Elemento 8: Color Back Arrow de toda la sección exámenes
+
+private func loadBackArrowColorSeccion(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    // Elemento 8: ColorBackArrowSeccionCompleta
+    // 8.1: BackArrowColor → color hex del back arrow para toda la sección de exámenes
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [BackArrowColorSeccion] Cargando Elemento 8")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 8, field: i),
+              !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 8, field: i) ?? ""
+
+        switch atributo {
+        case "BackArrowColor":
+            if !valor.isEmpty {
+                state.backArrowColorSeccion = valor
+                print("      [8.\(i)] ✅ backArrowColorSeccion = \"\(valor)\"")
+            }
+        default:
+            print("      [8.\(i)] ⚠️ Atributo no reconocido: \"\(atributo)\" valor=\"\(valor)\"")
+        }
+    }
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
+// MARK: - Elemento 9: "Seleccionar Todos" en Prescripciones Médicas
+
+private func loadSeleccionarTodosConfig(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    // Elemento 9: SeleccionarTodosPrescripcionesMedicas
+    // 9.1: TextoSeleccionarTodasLasOrdenes → texto del checkbox
+    // 9.2: AtributosTextoSeleccionarTodasLasOrdenes → font;size;color;posicion
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [SeleccionarTodos] Cargando Elemento 9")
+    print("   Record Name: \(record.Name ?? "nil")")
+    print("   nombreElemento9C: \(record.nombreElemento9C ?? "nil")")
+    print("   atributo91C directo: \(record.atributo91C ?? "nil")")
+    print("   valor91C directo: \(record.valor91C ?? "nil")")
+    print("   atributo92C directo: \(record.atributo92C ?? "nil")")
+    print("   valor92C directo: \(record.valor92C ?? "nil")")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    for i in 1...16 {
+        let rawAtributo = record.getAtributo(section: 9, field: i)
+        print("      [9.\(i)] raw getAtributo → \(rawAtributo ?? "nil")")
+        guard let atributo = rawAtributo, !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 9, field: i) ?? ""
+        print("      [9.\(i)] atributo=\"\(atributo)\" valor=\"\(valor.prefix(80))\"")
+
+        switch atributo {
+        case "TextoSeleccionarTodasLasOrdenes":
+            if !valor.isEmpty {
+                state.seleccionarTodosTexto = valor
+                print("      [9.\(i)] ✅ texto = \"\(valor)\"")
+            }
+        case let attr where attr.contains("AtributosTextoSeleccionarTodasLasOrdenes"):
+            state.seleccionarTodosAttr = parseTextAttributes(valor)
+            print("      [9.\(i)] ✅ atributos = font:\(state.seleccionarTodosAttr.font) size:\(state.seleccionarTodosAttr.size) color:\(state.seleccionarTodosAttr.color)")
+        default:
+            print("      [9.\(i)] ⚠️ Atributo no reconocido: \"\(atributo)\" valor=\"\(valor)\"")
+        }
+    }
+    print("   📊 RESULTADO FINAL: texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
 // MARK: - Main Record Parsers
@@ -1037,8 +1120,10 @@ private func parsePopupEmail(from record: BrandAccount, section: Int) -> PopupEx
                 popup.descripcionAttr = parseTextAttributes(valor)
                 print("         ✅ descripcionAttr")
             } else if attrLower.contains("labels") && attrLower.contains("campo") {
-                // 7.6: LabelsCampoCorreoPopUpEnviarExamenEmail — no se parsea como struct, el label se usa directo
-                print("         ℹ️ label campo correo = \"\(valor)\"")
+                // 7.6: LabelsCampoCorreoPopUpEnviarExamenEmail(Correo) → texto del label
+                let parts = valor.components(separatedBy: ";")
+                popup.labelTexto = parts.first?.trimmingCharacters(in: .whitespaces) ?? valor
+                print("         ✅ labelTexto = \"\(popup.labelTexto)\"")
             } else if attrLower.hasPrefix("atributos") && attrLower.contains("nombres") && attrLower.contains("campos") {
                 popup.labelAttr = parseTextAttributes(valor)
                 print("         ✅ labelAttr = font:\(popup.labelAttr.font) size:\(popup.labelAttr.size) color:\(popup.labelAttr.color)")

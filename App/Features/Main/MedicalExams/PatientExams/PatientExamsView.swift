@@ -11,6 +11,7 @@ import CachedAsyncImage
 
 struct PatientExamsView: View {
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
     @State private var isLoading: Bool = true
@@ -47,7 +48,8 @@ struct PatientExamsView: View {
                                 PatientExamRowView(
                                     exam: exam,
                                     isLoadingExam: $isLoading,
-                                    UIState: $UIState
+                                    UIState: $UIState,
+                                    backArrowColor: backArrowColor
                                 )
                             }
                         }
@@ -83,7 +85,7 @@ struct PatientExamsView: View {
             getExamsForPatient()
         }
         .navigationLink(isActive: $sendNewExam) {
-            SendNewExamView(UIState: $UIState, isPublished: false, exam: nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, isPublished: false, exam: nil)
         }
         .background(
             Group {

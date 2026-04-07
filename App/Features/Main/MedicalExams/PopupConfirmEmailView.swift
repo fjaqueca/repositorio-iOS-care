@@ -73,9 +73,9 @@ struct PopupConfirmEmailView: View {
 
                 // 7.6-7.10: Campo email con label y estilos dinámicos
                 VStack(alignment: .leading, spacing: 4) {
-                    // 7.6: Label "Correo" + 7.7: labelAttr
+                    // 7.6: Label dinámico + 7.7: labelAttr
                     let labelAttr = config.labelAttr
-                    Text("Correo")
+                    Text(config.labelTexto.isEmpty ? "Correo" : config.labelTexto)
                         .font(Font.custom(
                             labelAttr.font.isEmpty ? "FiraSans-Bold" : labelAttr.font,
                             size: CGFloat(Int(labelAttr.size) ?? 14)

@@ -36,6 +36,17 @@ struct AppView: View {
             }else{
                 if iOSVersionApp >= iOSVersionBA {
                     mainView
+                        .onAppear {
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("✅ [ForceUpdate] VERSIÓN OK — No se requiere actualización")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("   iOSVersionApp (hardcoded): \(iOSVersionApp)")
+                            print("   iOSVersionBA (Salesforce Valor_12_3__c): \(iOSVersionBA)")
+                            print("   Condición: \(iOSVersionApp) >= \(iOSVersionBA) → true")
+                            print("   idAppStore: \(idAppStore)")
+                            print("   CFBundleShortVersionString: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A")")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        }
                         .overlayView(isLoading)
                         .transition(.opacity)
                         .animation(.default, value: status)
@@ -79,12 +90,25 @@ struct AppView: View {
                 }else{
                     EmptyView()
                         .blur(radius: 3)
+                        .onAppear {
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("🚨 [ForceUpdate] ACTUALIZACIÓN FORZADA — Mostrando popup")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("   iOSVersionApp (hardcoded): \(iOSVersionApp)")
+                            print("   iOSVersionBA (Salesforce Valor_12_3__c): \(iOSVersionBA)")
+                            print("   Condición: \(iOSVersionApp) >= \(iOSVersionBA) → false")
+                            print("   idAppStore: \(idAppStore)")
+                            print("   URL App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
+                            print("   CFBundleShortVersionString: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A")")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        }
                         .popup(item: .constant(
                             .init(
                                 title: "Actualizacion importante pendiente",
                                 message: "",
                                 actionTitle: "Actualizar",
                                 action: {
+                                    print("🚨 [ForceUpdate] Usuario presionó ACTUALIZAR → Abriendo App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
                                     if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(idAppStore)") {
                                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                                     }
@@ -94,6 +118,7 @@ struct AppView: View {
                                 UIStateButton: nil,
                                 UIStateCancelButton: nil,
                                 cancelAction: {
+                                    print("🚨 [ForceUpdate] Usuario presionó CANCELAR → Cerrando app con exit(0)")
                                     exit(0)
                                 }
                             )
@@ -198,52 +223,68 @@ struct AppView: View {
         self.isLoadingBrandAccount = true
         Task {
             var agreement = ""
+            var schemeName = ""
 #if CareAssistance
-    print("Using CareAssistance agreement")
     agreement = "a3yRN0000007kkTYAQ"
-            //agreement = "a3yRN000000MMBZYA4" pre login de testing 
+            //agreement = "a3yRN000000MMBZYA4" pre login de testing
             self.iOSVersionApp = 24
             self.idAppStore = "6449431471"
+            schemeName = "CareAssistance"
 #elseif Wellbeing
-    print("Using Wellbeing agreement")
     agreement = "a3yRN0000007S7dYAE"
             self.iOSVersionApp = 24
             self.idAppStore = "6477316325"
+            schemeName = "Wellbeing"
 #elseif BCI
-    print("Using BCI agreement") //DISFRUTA MAS SALUD
     agreement = "a3yRN000000YiWTYA0"
             self.iOSVersionApp = 24
             self.idAppStore = "6479409551"
+            schemeName = "BCI"
 #elseif PharmaBenefits
-    print("Using Pharma Benefits agreement")
     agreement = "a3yRN000000AxwTYAS"
             self.iOSVersionApp = 24
             self.idAppStore = "6479473964"
+            schemeName = "PharmaBenefits"
 #elseif VCContigo
-    print("Using Pharma Benefits agreement")
     agreement = "a3yRN000000Ch7dYAC"
             self.iOSVersionApp = 24
             self.idAppStore = "6479615108"
+            schemeName = "VCContigo"
 #elseif CareAssistanceMX
-    print("Using CareAssistanceMX agreement")
     agreement = "a3yRN000000gzQTYAY"
             self.iOSVersionApp = 24
             self.idAppStore = "6479615108"
+            schemeName = "CareAssistanceMX"
 #elseif Premedic
-    print("Using Premedic agreement")
     agreement = "a3yRN0000018NJpYAM"
             self.iOSVersionApp = 24
             self.idAppStore = "6743768129"
+            schemeName = "Premedic"
 #elseif ContigoSalud
-    print("Using Premedic agreement")
     agreement = "a3yRN0000017n8HYAQ"
             self.iOSVersionApp = 24
             self.idAppStore = "6744413095"
+            schemeName = "ContigoSalud"
 #endif
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("📋 [ForceUpdate] PASO 1 — Configuración hardcodeada del scheme")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("   Scheme: \(schemeName)")
+            print("   Agreement ID: \(agreement)")
+            print("   iOSVersionApp (hardcoded): \(iOSVersionApp)")
+            print("   idAppStore: \(idAppStore)")
+            print("   CFBundleShortVersionString: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A")")
+            print("   CFBundleVersion: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "N/A")")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             
+            print("📋 [ForceUpdate] PASO 2 — Consultando BrandAccount desde Salesforce (agreement: \(agreement))...")
             let result = await Network.shared.getBrandAccount(agreementId: agreement)
             switch result {
                 case let .success(response):
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📋 [ForceUpdate] PASO 2 — BrandAccount recibido OK")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("   Total records: \(response.records.count)")
                 let realm = try! Realm(queue: nil)
                 try! realm.write {
                     let oldItems = realm.objects(BrandAccounts.self)
@@ -252,18 +293,46 @@ struct AppView: View {
                     realm.add(response, update: .all)
                     for ba in response.records{
                         if ba.Name == "PreLogin"{
+                            let rawValor123C = ba.valor123C ?? "nil"
                             self.iOSVersionBA = Int(ba.valor123C ?? "1") ?? 1
-                            print(ba.valor121C)
                             UserDefaults.standard.set(ba.valor121C, forKey: "campanaC")
+
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("📋 [ForceUpdate] PASO 3 — Registro PreLogin encontrado")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("   valor123C (Valor_12_3__c) raw: \"\(rawValor123C)\"")
+                            print("   iOSVersionBA (parseado): \(self.iOSVersionBA)")
+                            print("   valor121C (campaña): \(ba.valor121C ?? "nil")")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("📋 [ForceUpdate] RESULTADO — Comparación de versiones")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("   iOSVersionApp (hardcoded): \(self.iOSVersionApp)")
+                            print("   iOSVersionBA (Salesforce):  \(self.iOSVersionBA)")
+                            if self.iOSVersionApp >= self.iOSVersionBA {
+                                print("   ✅ \(self.iOSVersionApp) >= \(self.iOSVersionBA) → Versión OK, flujo normal")
+                            } else {
+                                print("   🚨 \(self.iOSVersionApp) < \(self.iOSVersionBA) → FORCE UPDATE ACTIVADO")
+                                print("   📱 Se mostrará popup de actualización forzada")
+                                print("   🔗 URL: itms-apps://itunes.apple.com/app/id\(self.idAppStore)")
+                            }
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                         }
                     }
-                    print(iOSVersionBA)
                 }
                 case let .failure(error):
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("❌ [ForceUpdate] ERROR — Falló la carga de BrandAccount")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("   Agreement: \(agreement)")
+                    print("   Error: \(error)")
+                    print("   ⚠️ No se pudo verificar versión mínima, iOSVersionBA queda en: \(self.iOSVersionBA)")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                     // 📊 Log del error de Brand Account en Crashlytics
                     Crashlytics.crashlytics().log("❌ Error al cargar Brand Account: \(agreement)")
                     Crashlytics.crashlytics().setCustomValue(agreement, forKey: "agreement_id")
-                    
+
                     AppStatusManager.error(error)
             }
             self.isLoadingBrandAccount = false

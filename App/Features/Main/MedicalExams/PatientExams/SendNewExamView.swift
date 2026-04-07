@@ -20,6 +20,7 @@ struct SendNewExamView: View {
     @State var urlImg: [String] = []
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
+    var backArrowColor: String = "#00BBDC"
     @State private var urlToShare: URL?
     @State var examName: String = ""
     @State var isPublished: Bool = false
@@ -139,7 +140,7 @@ struct SendNewExamView: View {
                 } label: {
                     Image("back")
                         .renderingMode(.template)
-                        .tint(.black)
+                        .foregroundColor(Color(hex: backArrowColor))
                 }
             }
         }
