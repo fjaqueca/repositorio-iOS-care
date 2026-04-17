@@ -33,6 +33,10 @@ struct SendNewExamView: View {
     @State private var showSourceDialog = false
     @State private var showFilePicker = false
     @State private var popup: Popup?
+    // Estados del modal de éxito custom (con animación del check).
+    @State private var showSuccessModal: Bool = false
+    @State private var checkScale: CGFloat = 0.0
+    @State private var checkOpacity: Double = 0.0
 
     enum AlertAuthEvent: Identifiable {
         var id: Int { hashValue }
@@ -42,7 +46,8 @@ struct SendNewExamView: View {
         case SendFileError
     }
 
-    @State var comment: String = ""
+    @State private var selectedDocumentType: String = ""
+    private let documentTypeOptions = ["Examen de Laboratorio", "Examen de Imagen", "Receta Médica", "Orden de Exámenes", "Informe Médico", "Otros"]
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
@@ -57,26 +62,30 @@ struct SendNewExamView: View {
                 Divider()
 
                 ScrollView {
-                    VStack(spacing: 16) {
-                        // Card 1: Nombre del Examen
-                        examNameCard
-
-                        // Card 2: Examenes enviados (file attachments)
-                        fileAttachmentCard
-
-                        // Card 3: Comentarios
-                        commentCard
+                    if isPublished {
+                        publishedDocumentView
+                            .padding(.horizontal, .margin)
+                            .padding(.top, 20)
+                            .padding(.bottom, 30)
+                    } else {
+                        VStack(spacing: 16) {
+                            documentTypeCard
+                            fileAttachmentCard
+                        }
+                        .padding(.horizontal, .margin)
+                        .padding(.top, 20)
+                        .padding(.bottom, 30)
                     }
-                    .padding(.horizontal, .margin)
-                    .padding(.top, 20)
-                    .padding(.bottom, 30)
                 }
 
-                // Save button
-                if !isPublished {
+                if isPublished {
+                    publishedButtons
+                } else {
                     saveButton
                 }
             }
+            // Blur del contenido detrás del loading (mismo patrón que el resto de la app).
+            .blur(radius: isLoading ? 3 : 0.000001)
             .popup(item: $popup)
             .sheet(isPresented: $showSheetView, content: {
                 ShareSheet(activityItems: ["\u{00A1}Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
@@ -98,6 +107,9 @@ struct SendNewExamView: View {
                             if let data = image.jpegData(compressionQuality: 0.5) {
                                 fileExams[index].imgData = data.base64EncodedString()
                                 fileExams[index].archiveExtension = "jpg"
+                                // Galería no provee nombre original — generamos uno legible con timestamp.
+                                let ts = Int(Date().timeIntervalSince1970)
+                                fileExams[index].originalFileName = "imagen_\(ts).jpg"
                             }
                             resetPickerState()
                         }
@@ -107,6 +119,8 @@ struct SendNewExamView: View {
                                 let data = try Data(contentsOf: url)
                                 fileExams[index].imgData = data.base64EncodedString()
                                 fileExams[index].archiveExtension = url.pathExtension
+                                // Preservamos el nombre original del archivo (Campo_10__c).
+                                fileExams[index].originalFileName = url.lastPathComponent
                             } catch {
                                 print("Error al leer archivo: \(error.localizedDescription)")
                             }
@@ -118,12 +132,42 @@ struct SendNewExamView: View {
                 }
             }
 
+            // Loading estándar de la app (mismo estilo que AutomatedExamsView):
+            // overlay oscuro semi-transparente + spinner celeste grande centrado.
+            // Aparece al pulsar "Enviar" y se mantiene durante toda la cadena
+            // (N subidas a S3 + postExams). Se desactiva siempre en MainActor en
+            // success, en error y en abort por fallo de S3.
             if isLoading {
-                Color.black.opacity(0.15)
-                    .ignoresSafeArea()
-                ProgressView()
-                    .scaleEffect(1.3)
-                    .tint(accentColor)
+                ZStack {
+                    Color.black.opacity(0.5)
+                        .ignoresSafeArea()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color(hex: "#00BBDC")))
+                        .scaleEffect(1.8)
+                }
+                .zIndex(30)
+            }
+
+            // Modal de éxito custom (reemplaza el successPopup genérico).
+            if showSuccessModal {
+                successModalView
+                    .zIndex(40)
+                    .transition(.opacity)
+            }
+
+            // Modal de confirmación de eliminación
+            if showDeleteConfirmation {
+                DeleteConfirmationModal(
+                    onConfirm: {
+                        deleteExamFiles()
+                    },
+                    onCancel: {
+                        showDeleteConfirmation = false
+                    },
+                    isLoading: deletingLoading
+                )
+                .zIndex(50)
+                .transition(.opacity)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -168,47 +212,43 @@ struct SendNewExamView: View {
         )
     }
 
-    // MARK: - Card 1: Nombre del Examen
-    private var examNameCard: some View {
+    // MARK: - Card 1: ¿Qué vas a cargar?
+    private var documentTypeCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Title
-            Text("Nombre del Examen *")
+            Text("¿Qué vas a cargar? *")
                 .font(Font.custom("FiraSans-Bold", size: 15))
-                .foregroundColor(.primary)
+                .foregroundColor(Color(hex: "#333333"))
 
-            // Subtitle
-            Text("Identifique el examen que desea subir")
-                .font(Font.custom("FiraSans-Regular", size: 12))
-                .foregroundColor(.gray)
-
-            // Input field with accent border and counter inside
-            HStack {
-                TextField("Ingrese el nombre del examen", text: $examName)
-                    .font(Font.custom("FiraSans-Regular", size: 14))
-                    .foregroundColor(.primary)
-                    .disabled(isPublished || fromOrderExam)
-                    .textCase(.uppercase)
-                    .autocapitalization(.allCharacters)
-                    .onChange(of: examName) { nuevoTexto in
-                        if nuevoTexto.count > 255 {
-                            examName = String(nuevoTexto.prefix(255))
+            Menu {
+                ForEach(documentTypeOptions, id: \.self) { option in
+                    Button(action: {
+                        selectedDocumentType = option
+                        examName = option
+                    }) {
+                        HStack {
+                            Text(option)
+                            Spacer()
+                            if selectedDocumentType == option {
+                                Image(systemName: "checkmark")
+                            }
                         }
                     }
-
-                Spacer(minLength: 8)
-
-                Text("\(examName.count)/255")
-                    .font(Font.custom("FiraSans-Regular", size: 12))
-                    .foregroundColor(.gray)
+                }
+            } label: {
+                HStack {
+                    Text(selectedDocumentType.isEmpty ? "Selecciona una opción" : selectedDocumentType)
+                        .font(.system(size: 15))
+                        .foregroundColor(selectedDocumentType.isEmpty ? Color.gray.opacity(0.5) : Color(red: 0.2, green: 0.2, blue: 0.2))
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(Color(red: 0.0, green: 0.5, blue: 0.8))
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(8)
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(Color(.systemGray6).opacity(0.5))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(accentColor.opacity(0.5), lineWidth: 1)
-            )
         }
         .padding(16)
         .background(
@@ -221,18 +261,16 @@ struct SendNewExamView: View {
         )
     }
 
-    // MARK: - Card 2: Examenes enviados
+    // MARK: - Card 2: Adjuntar archivo
     private var fileAttachmentCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Title in accent color
-            Text(isPublished ? (UIState.examDetail.sendedExamText2.isEmpty ? "Exámenes enviados" : UIState.examDetail.sendedExamText2) : (UIState.examDetail.sendedExamText1.isEmpty ? "Exámenes enviados" : UIState.examDetail.sendedExamText1))
+            Text("Adjuntar archivo")
                 .font(Font.custom("FiraSans-Bold", size: 15))
-                .foregroundColor(accentColor)
+                .foregroundColor(Color(hex: "#333333"))
 
-            // Subtitle
-            Text("Para adjuntar sus exámenes oprima en los vínculos de arriba. Podrá adjuntar hasta 4 archivos.")
+            Text("Los formatos permitidos son PDF, JPG, PNG, con un máximo de 4 archivos")
                 .font(Font.custom("FiraSans-Regular", size: 12))
-                .foregroundColor(.gray)
+                .foregroundColor(Color(hex: "#4CAF50"))
                 .fixedSize(horizontal: false, vertical: true)
 
             // File cards grid (2x2)
@@ -262,6 +300,11 @@ struct SendNewExamView: View {
                     showFilePicker = true
                 }
             }
+
+            Text("Nota: Los archivos cargados serán respaldados en tu ficha de salud.")
+                .font(Font.custom("FiraSans-Regular", size: 11))
+                .foregroundColor(.gray)
+                .padding(.top, 8)
         }
         .padding(16)
         .background(
@@ -274,76 +317,146 @@ struct SendNewExamView: View {
         )
     }
 
-    // MARK: - Card 3: Comentarios
-    private var commentCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // Title
-            Text("Comentarios")
-                .font(Font.custom("FiraSans-Bold", size: 15))
-                .foregroundColor(.primary)
+    // MARK: - Published Document View (modo lectura)
+    private var publishedDocumentView: some View {
+        VStack(spacing: 16) {
+            // Card info del documento
+            VStack(alignment: .leading, spacing: 10) {
+                Text(exam?.nombreDelExamenC ?? examName)
+                    .font(Font.custom("FiraSans-Bold", size: 16))
+                    .foregroundColor(Color(hex: "#333333"))
 
-            // Subtitle
-            Text("Agregue notas o instrucciones adicionales")
-                .font(Font.custom("FiraSans-Regular", size: 12))
-                .foregroundColor(.gray)
+                // Badge "Cargado por el Paciente"
+                HStack(spacing: 6) {
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 11))
+                        .foregroundColor(.white)
+                    Text("Cargado por el Paciente")
+                        .font(Font.custom("FiraSans-Medium", size: 11))
+                        .foregroundColor(.white)
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(Color(hex: "#7B61FF")))
 
-            // Text area
-            ZStack(alignment: .topLeading) {
-                CustomTextEditor(
-                    text: $comment,
-                    isDisabled: isPublished,
-                    font: UIFont(name: "FiraSans-Regular", size: 14) ?? .systemFont(ofSize: 14),
-                    textColor: UIColor(.primary),
-                    textCase: .uppercase
-                )
-                .padding(12)
-                .frame(maxWidth: .infinity, minHeight: 100, maxHeight: 120, alignment: .topLeading)
-                .background(Color(.systemGray6).opacity(0.5))
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(accentColor.opacity(0.5), lineWidth: 1)
-                )
+                if let dateStr = exam?.CreatedDate, !dateStr.isEmpty {
+                    HStack(spacing: 6) {
+                        Image(systemName: "calendar")
+                            .font(.system(size: 13))
+                            .foregroundColor(.gray)
+                        Text(formatDisplayDate(dateStr))
+                            .font(Font.custom("FiraSans-Regular", size: 13))
+                            .foregroundColor(.gray)
+                    }
+                }
 
-                if comment.isEmpty {
-                    Text("Ingrese comentarios adicionales (opcional)")
-                        .padding(12)
-                        .foregroundColor(.gray.opacity(0.45))
-                        .font(Font.custom("FiraSans-Regular", size: 14))
-                        .allowsHitTesting(false)
+                if let comment = exam?.comentariosC, !comment.isEmpty {
+                    HStack(alignment: .top, spacing: 6) {
+                        Image(systemName: "text.bubble")
+                            .font(.system(size: 13))
+                            .foregroundColor(.gray)
+                        Text(comment)
+                            .font(Font.custom("FiraSans-Regular", size: 13))
+                            .foregroundColor(.gray)
+                    }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
 
-            // Counter
-            HStack {
-                Spacer()
-                Text("\(comment.count)/255")
-                    .font(Font.custom("FiraSans-Regular", size: 12))
-                    .foregroundColor(.gray)
+            // Card archivos adjuntos
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Archivos adjuntos")
+                    .font(Font.custom("FiraSans-Bold", size: 15))
+                    .foregroundColor(Color(hex: "#333333"))
+
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+                    ForEach($fileExams) { $fileExam in
+                        if !fileExam.urlImg.isEmpty {
+                            FileRowExam(
+                                fileExam: $fileExam,
+                                isExamPublish: $isPublished,
+                                UIState: $UIState,
+                                onSelect: { _ in },
+                                onDownload: {
+                                    downloadArchive(action: .isOpen, urlParameter: fileExam.urlImg)
+                                }
+                            )
+                        }
+                    }
+                }
             }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.systemGray5), lineWidth: 1)
-        )
-        .onChange(of: comment) { newValue in
-            if newValue.count > 255 {
-                comment = String(newValue.prefix(255))
-            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
         }
     }
 
-    // MARK: - Save Button
+    // MARK: - Published Buttons (Descargar + Eliminar)
+    @State private var showDeleteConfirmation = false
+    @State private var deletingLoading = false
+
+    private var publishedButtons: some View {
+        HStack(spacing: 10) {
+            // Eliminar
+            Button {
+                showDeleteConfirmation = true
+            } label: {
+                Text("Eliminar")
+                    .font(Font.custom("FiraSans-Bold", size: 16))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.red)
+                    )
+            }
+
+            // Descargar
+            Button {
+                downloadAllFiles()
+            } label: {
+                Text("Descargar")
+                    .font(Font.custom("FiraSans-Bold", size: 16))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color(hex: "#00BBDC"))
+                    )
+            }
+        }
+        .padding(.horizontal, .margin)
+        .padding(.top, 10)
+        .padding(.bottom, 14)
+        .background(
+            Color(.systemGroupedBackground)
+                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: -3)
+        )
+    }
+
+    // MARK: - Send Button
     private var saveButton: some View {
         Button {
             sendInfo()
         } label: {
-            Text("Guardar")
+            Text("Enviar")
                 .font(Font.custom("FiraSans-Bold", size: 16))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -381,6 +494,104 @@ struct SendNewExamView: View {
             UIStateButton: UIState.popupSuccessSendExam.btnAtr,
             UIStateCancelButton: nil
         )
+    }
+
+    // MARK: - Success Modal (custom redesign)
+
+    /// Modal de éxito que se muestra tras subir los exámenes correctamente.
+    /// Diseño: card blanca con check verde animado, título bold, mensaje y botón celeste.
+    private var successModalView: some View {
+        ZStack {
+            // Backdrop oscuro semi-transparente que cubre toda la pantalla.
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
+                .onTapGesture { /* bloquea toques fuera del card */ }
+
+            // Card blanca centrada
+            VStack(spacing: 20) {
+                // Círculo claro con check verde animado
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "#E8F5E9"))
+                        .frame(width: 78, height: 78)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundColor(Color(hex: "#4CAF50"))
+                        .scaleEffect(checkScale)
+                        .opacity(checkOpacity)
+                }
+                .padding(.top, 24)
+
+                Text("¡Exámenes Enviados!")
+                    .font(Font.custom("FiraSans-Bold", size: 18))
+                    .foregroundColor(Color(hex: "#222222"))
+                    .multilineTextAlignment(.center)
+
+                VStack(spacing: 12) {
+                    Text("Sus exámenes han sido cargados\ncorrectamente.")
+                        .font(Font.custom("FiraSans-Regular", size: 14))
+                        .foregroundColor(Color(hex: "#555555"))
+                        .multilineTextAlignment(.center)
+                    Text("Puedes revisarlos en cualquier\nmomento desde tu App.")
+                        .font(Font.custom("FiraSans-Regular", size: 14))
+                        .foregroundColor(Color(hex: "#555555"))
+                        .multilineTextAlignment(.center)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+
+                Button {
+                    dismissSuccessModal()
+                } label: {
+                    Text("Aceptar")
+                        .font(Font.custom("FiraSans-Bold", size: 16))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(hex: "#1A8FCB"))
+                        )
+                }
+                .padding(.top, 4)
+                .padding(.bottom, 20)
+            }
+            .padding(.horizontal, 24)
+            .frame(maxWidth: 320)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.white)
+            )
+            .padding(.horizontal, 32)
+            .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 6)
+        }
+    }
+
+    /// Muestra el modal y dispara la animación del check (spring scale + fade in).
+    private func presentSuccessModal() {
+        // Reset estado de animación antes de mostrar
+        checkScale = 0.0
+        checkOpacity = 0.0
+        withAnimation(.easeOut(duration: 0.2)) {
+            showSuccessModal = true
+        }
+        // Animación del check: aparece con un pequeño bounce desde escala 0.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.55)) {
+                checkScale = 1.0
+                checkOpacity = 1.0
+            }
+        }
+    }
+
+    /// Cierra el modal y propaga el evento de éxito (mismo callback que el popup viejo).
+    private func dismissSuccessModal() {
+        withAnimation(.easeIn(duration: 0.2)) {
+            showSuccessModal = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            dismiss()
+            self.publisher.send()
+        }
     }
 
     private func resetPickerState() {
@@ -462,8 +673,9 @@ struct SendNewExamView: View {
         FirebaseLogger.shared.setCustomValue(examName, forKey: "exam_name")
 
         Task {
+            // Atomicidad: si UNA sola subida a S3 falla, abortamos todo el flujo y NO
+            // llamamos al servicio genérico (paridad con web).
             var uploadedCount = 0
-            var failedCount = 0
 
             for index in fileExams.indices {
                 let file = fileExams[index]
@@ -482,8 +694,7 @@ struct SendNewExamView: View {
                     }
 
                 case let .failure(error):
-                    failedCount += 1
-                    FirebaseLogger.shared.log("Error al subir archivo \(index + 1) a S3: \(error.localizedDescription)")
+                    FirebaseLogger.shared.log("Error al subir archivo \(index + 1) a S3: \(error.localizedDescription) — abortando flujo")
                     FirebaseLogger.shared.recordNetworkError(
                         error,
                         endpoint: "/api/s3/upload",
@@ -494,90 +705,120 @@ struct SendNewExamView: View {
                         "file_index": index,
                         "file_extension": file.archiveExtension,
                         "exam_name": examName,
+                        "uploaded_before_failure": uploadedCount,
                         "error_context": "upload_to_s3"
                     ])
                     AppStatusManager.error(error)
+
+                    // Limpiar URLs ya cargadas para no dejar estado inconsistente
+                    // (si el usuario reintenta, se vuelven a subir todos).
+                    await MainActor.run {
+                        for i in fileExams.indices { fileExams[i].urlImg = "" }
+                        self.alertAuthEvent = .SendFileError
+                        self.showAlert.toggle()
+                        self.isLoading = false
+                    }
+                    return  // ← aborta el Task completo, no se llama postExam()
                 }
             }
 
-            FirebaseLogger.shared.log("Subida completada - Exito: \(uploadedCount), Fallos: \(failedCount)")
-
-            let atLeastOneUploaded = fileExams.contains { !$0.urlImg.isEmpty }
-
-            if atLeastOneUploaded {
-                postExam()
-            } else {
-                FirebaseLogger.shared.log("Error: Ningun archivo se subio correctamente")
-                FirebaseLogger.shared.logErrorPopup(
-                    title: "Error al Subir Archivos",
-                    message: "No se pudo subir ningun archivo",
-                    source: "SendNewExamView - sendInfo"
-                )
-
-                await MainActor.run {
-                    self.alertAuthEvent = .SendFileError
-                    self.showAlert.toggle()
-                    self.isLoading = false
-                }
-            }
+            FirebaseLogger.shared.log("Subida completada - Exito: \(uploadedCount)/\(filesCount)")
+            postExam()
         }
     }
 
     func postExam() {
         let accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
 
-        FirebaseLogger.shared.log("Enviando examen: \(examName)")
+        // --- Dos conceptos DISTINTOS, no confundir ---
+        //
+        // Campo_11__c "Tipo de Archivo": picklist RESTRINGIDO en Salesforce. Solo
+        //   acepta los valores del dropdown del usuario (selectedDocumentType):
+        //   "Examen de Laboratorio", "Examen de Imagen", "Receta Médica",
+        //   "Orden de Exámenes", "Informe Médico", "Otros".
+        //   ❌ NO acepta "Examen Automatizado" / "Orden médica" (esos son del padre).
+        //
+        // esExamenAutomatizado: SOLO discriminador interno para decidir si el ID
+        //   del registro padre va en Campo_9__c o en Campo_12__c. No viaja como
+        //   string al backend en ningún campo.
+        let tipoArchivoPicklist = selectedDocumentType
+        let esExamenAutomatizado = (exam?.tipoDocumento == .examenAutomatizado)
+
+        // Campo_3__c: nombre del registro padre (sin uppercase).
+        let nombreOrdenPadre: String = exam?.nombreOrdenPadre
+            ?? exam?.nombreDelExamenC
+            ?? examName
+
+        // Compactación: filtramos slots vacíos y armamos arrays paralelos de URLs y nombres.
+        // El backend espera Campo_4..7 con las primeras N URLs consecutivas y Campo_10__c
+        // con los nombres unidos por ";" en el mismo orden.
+        let archivosConUrl = fileExams.filter { !$0.urlImg.isEmpty }
+        let urls: [String] = archivosConUrl.map { $0.urlImg }
+        let nombresArchivos: [String] = archivosConUrl.map { archivo in
+            if !archivo.originalFileName.isEmpty { return archivo.originalFileName }
+            return S3FileHelper.extractFileNameFromUrl(archivo.urlImg)
+        }
+
+        FirebaseLogger.shared.log("Enviando examen: \(examName) — \(urls.count) archivo(s)")
         FirebaseLogger.shared.setCustomValues([
             "exam_name": examName,
-            "has_comment": !comment.isEmpty,
-            "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count
+            "files_count": urls.count,
+            "tipo_archivo": tipoArchivoPicklist,
+            "es_examen_automatizado": esExamenAutomatizado
         ])
 
         Task {
             let result = await Network.shared.postExams(
-                examName: examName.uppercased(),
                 accountId: accountId,
-                url1: fileExams[0].urlImg,
-                url2: fileExams[1].urlImg,
-                url3: fileExams[2].urlImg,
-                url4: fileExams[3].urlImg,
-                comment: comment.uppercased(),
-                id: exam?.idOrdenMedicaC ?? ""
+                nombreOrdenPadre: nombreOrdenPadre,
+                urls: urls,
+                nombresArchivos: nombresArchivos,
+                tipoDocumentoPicklist: tipoArchivoPicklist,
+                idOrdenExamen: exam?.idOrdenMedicaC ?? "",
+                esExamenAutomatizado: esExamenAutomatizado
             )
 
-            switch result {
-            case .success:
-                FirebaseLogger.shared.log("Examen enviado exitosamente: \(examName)")
-                FirebaseLogger.shared.logEvent("exam_submitted_success", attributes: [
-                    "exam_name": examName,
-                    "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count,
-                    "has_comment": !comment.isEmpty
-                ])
-                popup = successPopup
-                self.isPublished = true
+            await MainActor.run {
+                switch result {
+                case .success:
+                    FirebaseLogger.shared.log("Examen enviado exitosamente: \(examName)")
+                    FirebaseLogger.shared.logEvent("exam_submitted_success", attributes: [
+                        "exam_name": examName,
+                        "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count
+                    ])
+                    self.isPublished = true
+                    presentSuccessModal()
 
-            case let .failure(error):
-                FirebaseLogger.shared.log("Error al enviar examen: \(error.localizedDescription)")
-                FirebaseLogger.shared.recordNetworkError(
-                    error,
-                    endpoint: "/api/exams",
-                    httpCode: (error as? AppError)?.httpCode,
-                    method: "POST"
-                )
-                FirebaseLogger.shared.setCustomValues([
-                    "exam_name": examName,
-                    "account_id": accountId,
-                    "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count,
-                    "error_context": "post_exam"
-                ])
-                AppStatusManager.error(error)
+                case let .failure(error):
+                    FirebaseLogger.shared.log("Error al enviar examen: \(error.localizedDescription)")
+                    FirebaseLogger.shared.recordNetworkError(
+                        error,
+                        endpoint: "/api/exams",
+                        httpCode: (error as? AppError)?.httpCode,
+                        method: "POST"
+                    )
+                    FirebaseLogger.shared.setCustomValues([
+                        "exam_name": examName,
+                        "account_id": accountId,
+                        "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count,
+                        "error_context": "post_exam"
+                    ])
+                    AppStatusManager.error(error)
+                }
+                // Apagar loading SIEMPRE (success o failure) en el hilo principal.
+                self.isLoading = false
             }
-            self.isLoading = false
         }
     }
 
     var isSendButtonDisabled: Bool {
-        fileExams.allSatisfy { $0.imgData.isEmpty } || isLoading || examName.isEmpty
+        // selectedDocumentType es OBLIGATORIO siempre, incluso en fromOrderExam,
+        // porque su valor viaja en Campo_11__c (picklist restringido en Salesforce).
+        // Si está vacío, el backend rechazaría con INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST.
+        fileExams.allSatisfy { $0.imgData.isEmpty }
+            || isLoading
+            || examName.isEmpty
+            || selectedDocumentType.isEmpty
     }
 
     enum ActionButton: Identifiable {
@@ -591,11 +832,77 @@ struct SendNewExamView: View {
     func isExamPublished() {
         if (self.isPublished) {
             self.examName = exam?.nombreDelExamenC ?? ""
+            self.selectedDocumentType = exam?.nombreDelExamenC ?? ""
             self.fileExams[0].urlImg = exam?.urlExamen1C ?? ""
             self.fileExams[1].urlImg = exam?.urlExamen2C ?? ""
             self.fileExams[2].urlImg = exam?.urlExamen3C ?? ""
             self.fileExams[3].urlImg = exam?.urlExamen4C ?? ""
-            self.comment = exam?.comentariosC ?? ""
+
+            // Extraer extensiones desde las URLs para mostrar el tipo de archivo
+            for i in fileExams.indices {
+                if !fileExams[i].urlImg.isEmpty {
+                    let fileName = S3FileHelper.extractFileNameFromUrl(fileExams[i].urlImg)
+                    fileExams[i].archiveExtension = (fileName as NSString).pathExtension
+                }
+            }
+        }
+    }
+
+    private func formatDisplayDate(_ dateStr: String) -> String {
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "dd/MM/yyyy"
+
+        // Intentar ISO8601 con fracciones
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = isoFormatter.date(from: dateStr) {
+            return displayFormatter.string(from: date)
+        }
+        // Intentar ISO8601 sin fracciones
+        isoFormatter.formatOptions = [.withInternetDateTime]
+        if let date = isoFormatter.date(from: dateStr) {
+            return displayFormatter.string(from: date)
+        }
+        // Intentar yyyy-MM-dd (formato Salesforce)
+        let sfFormatter = DateFormatter()
+        sfFormatter.dateFormat = "yyyy-MM-dd"
+        if let date = sfFormatter.date(from: dateStr) {
+            return displayFormatter.string(from: date)
+        }
+        return dateStr
+    }
+
+    private func downloadAllFiles() {
+        let filesWithUrl = fileExams.filter { !$0.urlImg.isEmpty }
+        guard let first = filesWithUrl.first else { return }
+        downloadArchive(action: .isDownload, urlParameter: first.urlImg)
+    }
+
+    private func deleteExamFiles() {
+        guard let examId = exam?.Id, !examId.isEmpty else {
+            print("❌ [EliminarExamen] No se puede eliminar: exam.Id es nil o vacío")
+            showDeleteConfirmation = false
+            return
+        }
+
+        deletingLoading = true
+
+        Task {
+            let result = await Network.shared.deletePatientExam(examId: examId)
+
+            await MainActor.run {
+                deletingLoading = false
+                showDeleteConfirmation = false
+                switch result {
+                case .success:
+                    FirebaseLogger.shared.log("Examen eliminado exitosamente: \(examName) (id: \(examId))")
+                    dismiss()
+                    publisher.send()
+                case let .failure(error):
+                    FirebaseLogger.shared.log("Error al eliminar examen: \(error.localizedDescription)")
+                    AppStatusManager.error(error)
+                }
+            }
         }
     }
 }
@@ -606,4 +913,7 @@ struct FileExam: Identifiable {
     var imgData: String = ""
     var urlImg: String = ""
     var archiveExtension: String = ""
+    /// Nombre original del archivo (con extensión) tal como lo eligió el usuario.
+    /// Se envía al backend en Campo_10__c del nuevo contrato de subida de exámenes.
+    var originalFileName: String = ""
 }

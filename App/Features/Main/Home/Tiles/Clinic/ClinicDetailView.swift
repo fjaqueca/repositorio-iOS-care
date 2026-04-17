@@ -425,7 +425,7 @@ struct CustomPopupDinamicButton: View {
             }
             .padding()
         }
-        .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 400)
+        .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 400)
         .onChange(of: urlWebView, perform: { newValue in
             if newValue != ""{
                 self.showWebView.toggle()

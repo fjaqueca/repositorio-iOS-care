@@ -15,19 +15,69 @@ struct PatientExamsView: View {
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
     @State private var isLoading: Bool = true
+    /// Todos los exámenes del servicio (sin filtrar)
+    @State var allExams: [FunctionFilterExamResponse.PatientExams] = []
+    /// Exámenes visibles (filtrados o todos)
     @State var exams: [FunctionFilterExamResponse.PatientExams] = []
     @State private var sendNewExam = false
+    @State private var deleteConfirmExamId: String? = nil
+    @State private var deletingLoading: Bool = false
+
+    // Filter states
+    @State private var showFilterView: Bool = false
+    @State private var dateFrom: Date? = nil
+    @State private var dateUntil: Date? = nil
+    @State private var selectedDocumentType: String = ""
+
+    private let patientDocTypes = [
+        "Todos",
+        "Examen de Laboratorio",
+        "Examen de Imagen",
+        "Receta Médica",
+        "Orden de Exámenes",
+        "Informe Médico",
+        "Otros"
+    ]
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
     }
 
+    private var hasActiveFilters: Bool {
+        dateFrom != nil || dateUntil != nil || !selectedDocumentType.isEmpty
+    }
+
     var body: some View {
+        ZStack {
         VStack(spacing: 0) {
             // Search bar
             searchBar
                 .padding(.horizontal, .margin)
                 .padding(.top, 21)
+
+            // Badge "Limpiar filtros"
+            if hasActiveFilters {
+                HStack {
+                    Spacer()
+                    Button {
+                        clearAllFilters()
+                    } label: {
+                        Text("Limpiar filtros")
+                            .font(Font.custom("FiraSans-Medium", size: 12))
+                            .foregroundColor(Color(hex: "#00BBDC"))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(hex: "#00BBDC"), lineWidth: 1)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.opacity.combined(with: .scale(scale: 0.8)))
+                }
+                .padding(.horizontal, .margin)
+                .padding(.top, 10)
+            }
 
             // Exam list
             ScrollView {
@@ -49,7 +99,10 @@ struct PatientExamsView: View {
                                     exam: exam,
                                     isLoadingExam: $isLoading,
                                     UIState: $UIState,
-                                    backArrowColor: backArrowColor
+                                    backArrowColor: backArrowColor,
+                                    onDelete: { examId in
+                                        deleteConfirmExamId = examId
+                                    }
                                 )
                             }
                         }
@@ -64,8 +117,8 @@ struct PatientExamsView: View {
                             Text("No se encontraron exámenes")
                                 .font(Font.custom("FiraSans-Regular", size: 16))
                                 .foregroundColor(.gray)
-                            if !filterExams.isEmpty {
-                                Text("Intenta con otro término de búsqueda")
+                            if !filterExams.isEmpty || hasActiveFilters {
+                                Text("Intenta con otro término de búsqueda o ajusta los filtros")
                                     .font(Font.custom("FiraSans-Regular", size: 13))
                                     .foregroundColor(.gray.opacity(0.7))
                             }
@@ -81,6 +134,7 @@ struct PatientExamsView: View {
                 .padding(.horizontal, .margin)
                 .padding(.vertical, 16)
         }
+        .blur(radius: (deleteConfirmExamId != nil || showFilterView) ? 3 : 0.000001)
         .onAppear {
             getExamsForPatient()
         }
@@ -106,6 +160,42 @@ struct PatientExamsView: View {
                 }
             }
         )
+
+        // Modal de confirmación de eliminación
+        if deleteConfirmExamId != nil {
+            DeleteConfirmationModal(
+                onConfirm: {
+                    deletePatientExam()
+                },
+                onCancel: {
+                    deleteConfirmExamId = nil
+                },
+                isLoading: deletingLoading
+            )
+            .zIndex(50)
+            .transition(.opacity)
+        }
+
+        // Modal de filtro
+        if showFilterView {
+            PrescriptionFilter(
+                dateFrom: $dateFrom,
+                dateUntil: $dateUntil,
+                showFilterView: $showFilterView,
+                selectedDocumentType: $selectedDocumentType,
+                onApplyWithDates: { from, until in
+                    applyFilter()
+                },
+                onClear: {
+                    clearAllFilters()
+                },
+                UIState: UIState.examFilter,
+                documentTypes: patientDocTypes
+            )
+            .zIndex(40)
+            .transition(.opacity)
+        }
+        } // ZStack
     }
 
     // MARK: - Search Bar
@@ -125,6 +215,17 @@ struct PatientExamsView: View {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.gray.opacity(0.5))
                 }
+            }
+
+            Button {
+                withAnimation { showFilterView.toggle() }
+            } label: {
+                Image(systemName: "line.3.horizontal.decrease")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(accentColor)
+                    .frame(width: 32, height: 32)
+                    .background(Color.grayLight.opacity(0.5))
+                    .cornerRadius(8)
             }
         }
         .padding(.horizontal, 12)
@@ -167,7 +268,94 @@ struct PatientExamsView: View {
         }
     }
 
-    // MARK: - Functions
+    // MARK: - Filter Functions
+
+    /// Aplica filtro local por tipo de documento + fechas sobre allExams
+    func applyFilter() {
+        var results = allExams
+        let totalBefore = results.count
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔍 [MisExamenes] APLICAR FILTRO (local, sin servicio)")
+        print("   Total antes de filtrar: \(totalBefore)")
+        print("   selectedDocumentType: \"\(selectedDocumentType.isEmpty ? "(Todos)" : selectedDocumentType)\"")
+        print("   dateFrom: \(dateFrom != nil ? "\(dateFrom!)" : "nil")")
+        print("   dateUntil: \(dateUntil != nil ? "\(dateUntil!)" : "nil")")
+
+        // Filtro por tipo de documento (Tipo_de_Archivo__c)
+        if !selectedDocumentType.isEmpty {
+            let before = results.count
+            if selectedDocumentType == "Otros" {
+                // "Otros" = tipo vacío o no coincide con los 5 conocidos
+                let knownTypes = ["Examen de Laboratorio", "Examen de Imagen", "Receta Médica", "Orden de Exámenes", "Informe Médico"]
+                results = results.filter { exam in
+                    let tipo = exam.tipoArchivoC ?? ""
+                    return tipo.isEmpty || !knownTypes.contains(tipo)
+                }
+            } else {
+                results = results.filter { ($0.tipoArchivoC ?? "") == selectedDocumentType }
+            }
+            print("   📄 Filtro tipo \"\(selectedDocumentType)\": \(before) → \(results.count)")
+        }
+
+        // Filtro por rango de fechas (CreatedDate en ISO8601)
+        if let from = dateFrom, let until = dateUntil {
+            let before = results.count
+            let calendar = Calendar.current
+            let fromStart = calendar.startOfDay(for: from)
+            let untilEnd = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: until)) ?? until
+
+            results = results.filter { exam in
+                guard let dateStr = exam.CreatedDate, !dateStr.isEmpty else { return true }
+                if let date = formatter.date(from: dateStr) {
+                    return date >= fromStart && date < untilEnd
+                }
+                return true
+            }
+            print("   📅 Filtro fechas: \(before) → \(results.count)")
+        }
+
+        exams = results
+        print("   ✅ Resultado final: \(results.count) de \(totalBefore)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    }
+
+    /// Limpia todos los filtros y restaura la lista completa
+    func clearAllFilters() {
+        print("🧹 [MisExamenes] LIMPIAR TODOS LOS FILTROS")
+        dateFrom = nil
+        dateUntil = nil
+        selectedDocumentType = ""
+        exams = allExams
+    }
+
+    // MARK: - Service Functions
+    func deletePatientExam() {
+        guard let examId = deleteConfirmExamId, !examId.isEmpty else { return }
+        deletingLoading = true
+
+        Task {
+            let result = await Network.shared.deletePatientExam(examId: examId)
+
+            await MainActor.run {
+                deletingLoading = false
+                deleteConfirmExamId = nil
+                switch result {
+                case .success:
+                    print("🗑️ [MisExamenes] Examen eliminado exitosamente — id: \(examId)")
+                    getExamsForPatient()
+                case let .failure(error):
+                    print("❌ [MisExamenes] Error al eliminar examen: \(error.name) - \(error.message)")
+                    AppStatusManager.error(error)
+                }
+            }
+        }
+    }
+
     func getExamsForPatient() {
         let accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -180,22 +368,31 @@ struct PatientExamsView: View {
         self.isLoading = true
         Task {
             let result = await Network.shared.getExamsForPatient(accountId: accountId)
-            self.isLoading = false
-            switch result {
-            case .success(let listExam):
-                let records = listExam.data?.first?.examenesDelPacienteC ?? []
-                print("✅ [MisExamenes] Servicio OK - statusCode: \(listExam.statusCode ?? -1)")
-                print("   Exámenes recibidos: \(records.count)")
-                for (i, exam) in records.enumerated() {
-                    print("   [\(i)] Id=\(exam.Id ?? "") Nombre=\"\(exam.nombreDelExamenC ?? "")\" Fecha=\(exam.CreatedDate ?? "") URL1=\(exam.urlExamen1C?.prefix(50) ?? "(nil)")")
+            await MainActor.run {
+                self.isLoading = false
+                switch result {
+                case .success(let listExam):
+                    let records = listExam.data?.first?.examenesDelPacienteC ?? []
+                    print("✅ [MisExamenes] Servicio OK - statusCode: \(listExam.statusCode ?? -1)")
+                    print("   Exámenes recibidos: \(records.count)")
+                    for (i, exam) in records.enumerated() {
+                        print("   [\(i)] Id=\(exam.Id ?? "") Nombre=\"\(exam.nombreDelExamenC ?? "")\" Tipo=\"\(exam.tipoArchivoC ?? "")\" Fecha=\(exam.CreatedDate ?? "")")
+                    }
+                    let sorted = records.sorted(by: { $0.CreatedDate ?? "" > $1.CreatedDate ?? "" })
+                    self.allExams = sorted
+                    // Si hay filtros activos, re-aplicar sobre los nuevos datos
+                    if self.hasActiveFilters {
+                        self.applyFilter()
+                    } else {
+                        self.exams = sorted
+                    }
+                    print("   Exámenes visibles: \(self.exams.count)")
+                case let .failure(error):
+                    print("❌ [MisExamenes] Error: \(error.name) - \(error.message)")
+                    AppStatusManager.error(error)
                 }
-                self.exams = records.sorted(by: { $0.CreatedDate ?? "" > $1.CreatedDate ?? "" })
-                print("   Exámenes ordenados y asignados: \(self.exams.count)")
-            case let .failure(error):
-                print("❌ [MisExamenes] Error: \(error.name) - \(error.message)")
-                AppStatusManager.error(error)
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             }
-            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         }
     }
 }

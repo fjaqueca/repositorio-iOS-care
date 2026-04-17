@@ -330,26 +330,45 @@ extension Network {
     /// Paso 10: Genera una orden de examenes automatizados
     /// Campo_1 = "GENERAR ORDEN DE EXAMEN AUTOMATIZADO"
     /// Los examenes se envian agrupados por categoria en Campo_6..Campo_37
+    /// Fórmula: Categoria_N → Campo_(N+5)__c
+    /// Formato: "NombreCategoria;examId1;examId2;..."
     func generateAutomatedExams(
         accountId: String,
-        examCodes: String,
-        email: String,
-        rut: String,
-        paisExamen: String,
-        tipoExamen: String
+        cartItems: [ExamenItem]
     ) async -> Result<AutomatedExamGenerateResponse, AppError> {
         let convenioId = AppStatusManager.selectedEnterprise?.Id ?? ""
-        let params: [String: String] = [
+
+        // Agrupar items por categoriaNum
+        var grouped: [Int: (name: String, ids: [String])] = [:]
+        for item in cartItems {
+            let num = item.categoriaNum
+            if grouped[num] == nil {
+                grouped[num] = (name: item.categoria, ids: [])
+            }
+            grouped[num]!.ids.append(item.codigo)
+        }
+
+        // Construir params base
+        var params: [String: Any] = [
             "Campo_1__c": "GENERAR ORDEN DE EXAMEN AUTOMATIZADO",
             "Campo_2__c": accountId,
             "Paciente__c": accountId,
             "Campo_3__c": convenioId,
             "Campo_4__c": "App Mobile iOS",
-            "Campo_5__c": "CareAssistance",
-            "Campo_6__c": examCodes,
-            "Campo_7__c": email,
-            "Campo_8__c": rut
+            "Campo_5__c": "CareAssistance"
         ]
+
+        // Mapear Categoria_N → Campo_(N+5)__c (N=1..32 → Campo_6..37)
+        for n in 1...32 {
+            let campoKey = "Campo_\(n + 5)__c"
+            if let cat = grouped[n] {
+                // "NombreCategoria;id1;id2;..."
+                let value = ([cat.name] + cat.ids).joined(separator: ";")
+                params[campoKey] = value
+            } else {
+                params[campoKey] = NSNull()
+            }
+        }
 
         let fullUrl = baseUrlAuthenticated + "function_flows?api_name=Servicio_Generico__c"
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -357,17 +376,21 @@ extension Network {
         print("   URL: POST \(fullUrl)")
         print("   AccountId: \(accountId)")
         print("   ConvenioId: \(convenioId)")
-        print("   ExamCodes: \(examCodes)")
-        print("   Email: \(email)")
-        print("   RUT: \(rut)")
-        for (key, value) in params.sorted(by: { $0.key < $1.key }) {
-            print("   \(key): \"\(value)\"")
+        print("   CartItems: \(cartItems.count)")
+        print("   Categorias agrupadas: \(grouped.count)")
+        for (num, cat) in grouped.sorted(by: { $0.key < $1.key }) {
+            print("   Categoria_\(num) → Campo_\(num + 5)__c = \"\(cat.name);\(cat.ids.joined(separator: ";"))\"")
+        }
+        if let prettyData = try? JSONSerialization.data(withJSONObject: params, options: [.prettyPrinted, .sortedKeys]),
+           let prettyString = String(data: prettyData, encoding: .utf8) {
+            print("   REQUEST BODY (pretty):")
+            print(prettyString)
         }
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
         let result: Result<AutomatedExamGenerateResponse, AppError> = await request(
             method: .post,
-            endpoint: .automatedExamsGenerate,
+            endpoint: .functionFlows,
             parameters: params
         )
 

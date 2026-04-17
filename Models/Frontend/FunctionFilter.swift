@@ -195,6 +195,18 @@ struct FunctionFilterExamResponse: Codable, Hashable {
         let comentariosC: String?
         let CreatedDate: String?
         let idOrdenMedicaC: String?
+        /// FK al registro Examenes_Automatizados__c. Se llena cuando el upload se
+        /// hizo contra una orden automatizada (Campo_12__c). Permite el cruce
+        /// `linkedPatientExam` para órdenes automatizadas (paridad con web).
+        let idExamenesAutomatizadosC: String?
+        /// Tipo de archivo del registro Salesforce (Tipo_de_Archivo__c).
+        /// Valores posibles: "Receta Médica", "Examen de Laboratorio", "Examen de Imagen",
+        /// "Orden de Exámenes", "Informe Médico", "Otros".
+        let tipoArchivoC: String?
+        // Campos no provenientes de Salesforce — inyectados por el caller para
+        // poder armar el nuevo contrato de subida (Campo_3__c, Campo_11__c, mutex 9⇄12).
+        var tipoDocumento: TipoDocumento? = nil
+        var nombreOrdenPadre: String? = nil
 
         enum CodingKeys: String, CodingKey {
             case attributes
@@ -208,6 +220,9 @@ struct FunctionFilterExamResponse: Codable, Hashable {
             case comentariosC = "Comentarios__c"
             case CreatedDate
             case idOrdenMedicaC = "Id_Orden_Medica__c"
+            case idExamenesAutomatizadosC = "Id_Examenes_Automatizados__c"
+            case tipoArchivoC = "Tipo_de_Archivo__c"
+            // tipoDocumento y nombreOrdenPadre quedan fuera de codificación a propósito.
         }
     }
 }

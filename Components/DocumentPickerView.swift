@@ -77,8 +77,18 @@ struct DocumentPickerView: UIViewControllerRepresentable {
             _ controller: UIDocumentPickerViewController,
             didPickDocumentsAt urls: [URL]
         ) {
-            guard let url = urls.first else { return }
-            onPick(url)
+            // IMPORTANTE: dismiss PRIMERO y luego mutar @State en el completion.
+            // Si invocamos onPick antes del dismiss, la mutación de @State dispara
+            // un rebuild de la NavigationView padre mientras el sheet aún está
+            // presente, lo que provoca que el NavigationLink(isActive:) pierda su
+            // estado y la navegación pop-ee sola hacia el padre.
+            guard let url = urls.first else {
+                controller.dismiss(animated: true)
+                return
+            }
+            controller.dismiss(animated: true) { [weak self] in
+                self?.onPick(url)
+            }
         }
 
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {

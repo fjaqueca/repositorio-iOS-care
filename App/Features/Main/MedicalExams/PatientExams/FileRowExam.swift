@@ -42,11 +42,16 @@ struct FileRowExam: View {
             .frame(height: 90)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(hasFile ? accentColor.opacity(0.15) : accentColor.opacity(0.06))
+                    .fill(hasFile ? Color(hex: "#4CAF50").opacity(0.08) : Color.white)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(hasFile ? accentColor : accentColor.opacity(0.4), lineWidth: hasFile ? 1.5 : 1)
+                    .stroke(
+                        hasFile ? Color(hex: "#4CAF50") : Color(hex: "#4CAF50").opacity(0.5),
+                        style: hasFile
+                            ? StrokeStyle(lineWidth: 1.5)
+                            : StrokeStyle(lineWidth: 1.5, dash: [6, 4])
+                    )
             )
         }
         .buttonStyle(.plain)
@@ -54,9 +59,9 @@ struct FileRowExam: View {
 
     // MARK: - Empty State
     private var emptyContent: some View {
-        Image(systemName: "photo.on.rectangle.angled")
-            .font(.system(size: 26, weight: .light))
-            .foregroundColor(accentColor.opacity(0.4))
+        Image(systemName: "paperclip")
+            .font(.system(size: 28, weight: .light))
+            .foregroundColor(Color(hex: "#4CAF50").opacity(0.6))
     }
 
     // MARK: - File Attached State

@@ -96,10 +96,17 @@ struct CameraPickerView: UIViewControllerRepresentable {
             _ picker: UIImagePickerController,
             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
         ) {
-            if let image = info[.originalImage] as? UIImage {
-                onImagePicked(image)
+            // IMPORTANTE: dismiss PRIMERO y luego mutar @State en el completion.
+            // Si invocamos onImagePicked antes del dismiss, la mutación de @State
+            // dispara un rebuild de la NavigationView padre mientras el sheet aún
+            // está presente, lo que provoca que el NavigationLink(isActive:) pierda
+            // su estado y la navegación pop-ee sola hacia el padre.
+            let pickedImage = info[.originalImage] as? UIImage
+            picker.dismiss(animated: true) { [weak self] in
+                if let image = pickedImage {
+                    self?.onImagePicked(image)
+                }
             }
-            picker.dismiss(animated: true)
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

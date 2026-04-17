@@ -292,6 +292,7 @@ struct LoadingStandardizationExamples: View {
             }
             .navigationTitle("Loading Examples")
         }
+        .navigationViewStyle(.stack)
     }
 }
 

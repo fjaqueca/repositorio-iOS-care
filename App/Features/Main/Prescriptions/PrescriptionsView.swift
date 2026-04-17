@@ -17,13 +17,15 @@ struct PrescriptionsView: View {
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
-    @State var dateFrom: Date = Date().adding(days: -180)
-    @State var dateUntil: Date = .now
+    @State var dateFrom: Date? = nil
+    @State var dateUntil: Date? = nil
+    @State var selectedDocumentType: String = ""
     @State var filterPres: String = ""
+    @State private var isInitialLoad: Bool = true
     @State var total: Double = 1
     @State var count: Double = 0
     @State var progress: Double = 0.0
-    @State var isCurrent: Bool = true
+    @State var isCurrent: Bool = false
     @State private var isLoading: Bool = true
     @State var isLoadingAction: Bool = false
     @State var prescriptions: Prescriptions? = nil
@@ -79,8 +81,11 @@ struct PrescriptionsView: View {
                                 ProgressView()
                                     .padding()
                                     .onAppear{
-                                        dateToString()
-                                        getRecetas()
+                                        if isInitialLoad {
+                                            isInitialLoad = false
+                                            dateToString()
+                                            getRecetas()
+                                        }
                                     }
                             }else{
                                 VStack {
@@ -130,12 +135,20 @@ struct PrescriptionsView: View {
                 })
                 .blur(radius: showFilterView || isLoadingAction ? 3 : 0.000001)
                 if showFilterView{
-                    withAnimation {
-                        PrescriptionFilter(dateFrom: $dateFrom, dateUntil: $dateUntil, isCurrent: $isCurrent, showFilterView: $showFilterView, isLoading: $isLoading, UIState: UIState.presFilter)
-                            .background(.white)
-                            .cornerRadius(.cornerRadius)
-                            .shadow(radius: 10)
-                    }
+                    PrescriptionFilter(
+                        dateFrom: $dateFrom,
+                        dateUntil: $dateUntil,
+                        showFilterView: $showFilterView,
+                        selectedDocumentType: $selectedDocumentType,
+                        onApplyWithDates: { from, until in
+                            applyFilterWithDates(from: from, until: until)
+                        },
+                        onClear: {
+                            applyDefaultFilter()
+                        },
+                        UIState: UIState.presFilter
+                    )
+                    .transition(.opacity)
                 }
                 if isLoadingAction{
                     Color.black.opacity(0.15)
@@ -188,12 +201,49 @@ struct PrescriptionsView: View {
             
         }
     }
-    var searchPres: [Prescriptions.Prescription]?{
-        if filterPres.isEmpty{
+    var searchPres: [Prescriptions.Prescription]? {
+        if filterPres.isEmpty {
             return prescriptions?.records
-        }else {
-            return prescriptions?.records.filter{ $0.Name?.contains(filterPres) ?? false}
+        } else {
+            return prescriptions?.records.filter { $0.Name?.localizedCaseInsensitiveContains(filterPres) ?? false }
         }
+    }
+
+    /// CASO 3: Aplica filtro con fechas → llama servicio con esas fechas
+    func applyFilterWithDates(from: Date, until: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        self.from = formatter.string(from: from)
+        self.until = formatter.string(from: until)
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔍 [Prescripciones] CASO 3 — Filtro con fechas → llamando servicio")
+        print("   desde: \(self.from)")
+        print("   hasta: \(self.until)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        self.isLoading = true
+        getRecetas()
+    }
+
+    /// CASO 1: Sin fechas → llama servicio con default 90 días
+    func applyDefaultFilter() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let defaultFrom = Calendar.current.date(byAdding: .day, value: -90, to: Date()) ?? Date()
+        self.from = formatter.string(from: defaultFrom)
+        self.until = formatter.string(from: Date())
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔍 [Prescripciones] CASO 1 — Sin fechas → default 90 días → llamando servicio")
+        print("   desde: \(self.from)")
+        print("   hasta: \(self.until)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        self.dateFrom = nil
+        self.dateUntil = nil
+        self.isLoading = true
+        getRecetas()
     }
     private var CustomButtonsHeader: some View{
         
@@ -283,8 +333,10 @@ struct PrescriptionsView: View {
     func dateToString(){
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        self.from = formatter.string(from: dateFrom)
-        self.until = formatter.string(from: dateUntil)
+        // Default: 90 días hacia atrás (paridad web)
+        let defaultFrom = Calendar.current.date(byAdding: .day, value: -90, to: Date()) ?? Date()
+        self.from = formatter.string(from: dateFrom ?? defaultFrom)
+        self.until = formatter.string(from: dateUntil ?? Date())
     }
     func stringToDate(_ dateString: String) -> Date{
         let formatter = DateFormatter()

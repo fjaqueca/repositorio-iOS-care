@@ -109,7 +109,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr)
+                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {

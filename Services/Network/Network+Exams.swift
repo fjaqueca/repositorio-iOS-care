@@ -16,21 +16,88 @@ extension Network {
             "fecha_hasta": until
         ])
     }
-    func postExams(examName: String, accountId: String, url1: String, url2: String, url3: String, url4: String, comment: String, id: String) async -> Result<Empty, AppError> {
-        await request(
+    /// POST /function_flows?api_name=Servicio_Generico__c
+    /// Sube (o elimina si todas las URLs y nombres vienen vacíos) un examen del paciente.
+    ///
+    /// Contrato nuevo (12 campos), alineado con web/Android:
+    ///  - Campo_3__c  : nombre del registro padre (ej. "EXÁMENES AUTOMATIZADOS 23/03/2026_2") — sin uppercase.
+    ///  - Campo_4..7  : URLs S3 compactadas (los primeros N slots consecutivos, resto "").
+    ///  - Campo_9__c  : idOrdenExamen SOLO si NO es Examen Automatizado (mutex con 12).
+    ///  - Campo_10__c : nombres de los archivos unidos por ";" (mismo orden que las URLs), "" al eliminar.
+    ///  - Campo_11__c : tipo de documento (picklist tal cual, sin uppercase).
+    ///  - Campo_12__c : idOrdenExamen SOLO si SÍ es Examen Automatizado (mutex con 9).
+    ///
+    /// - Parameter urls: array compactado (sin huecos) de hasta 4 URLs S3.
+    /// - Parameter nombresArchivos: nombres en el mismo orden que `urls`. Debe tener igual count.
+    func postExams(
+        accountId: String,
+        nombreOrdenPadre: String,
+        urls: [String],
+        nombresArchivos: [String],
+        tipoDocumentoPicklist: String,
+        idOrdenExamen: String,
+        esExamenAutomatizado: Bool
+    ) async -> Result<Empty, AppError> {
+        // Mutex Campo_9__c ⇄ Campo_12__c
+        let campo9  = esExamenAutomatizado ? "" : idOrdenExamen
+        let campo12 = esExamenAutomatizado ? idOrdenExamen : ""
+
+        // Padding del array a 4 slots para mapear a Campo_4..7
+        var urlsPadded = urls
+        while urlsPadded.count < 4 { urlsPadded.append("") }
+        if urlsPadded.count > 4 {
+            print("⚠️ [SubirExamen] urls.count > 4 (\(urls.count)) — se truncará a 4.")
+            urlsPadded = Array(urlsPadded.prefix(4))
+        }
+
+        // Campo_10__c: nombres unidos por ";"
+        let campo10 = nombresArchivos.joined(separator: ";")
+
+        let parameters: [String: Any] = [
+            "Campo_1__c":  "SERVICIO GENERICO EXAMENES DEL PACIENTE",
+            "Campo_2__c":  accountId,
+            "Campo_3__c":  nombreOrdenPadre,
+            "Campo_4__c":  urlsPadded[0],
+            "Campo_5__c":  urlsPadded[1],
+            "Campo_6__c":  urlsPadded[2],
+            "Campo_7__c":  urlsPadded[3],
+            "Campo_8__c":  "",
+            "Campo_9__c":  campo9,
+            "Campo_10__c": campo10,
+            "Campo_11__c": tipoDocumentoPicklist,
+            "Campo_12__c": campo12
+        ]
+
+        // LOG estructurado del request (parity con Android tag SubirExamen)
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📤 [SubirExamen] postExams REQUEST")
+        print("   tipoDocumento (Campo_11__c): \"\(tipoDocumentoPicklist)\"")
+        print("   esExamenAutomatizado: \(esExamenAutomatizado)")
+        print("   nombreOrdenPadre (Campo_3__c): \"\(nombreOrdenPadre)\"")
+        print("   archivos count: \(urls.count)")
+        print("   nombresArchivos (Campo_10__c): \"\(campo10)\"")
+        print("   idOrdenExamen → \(esExamenAutomatizado ? "Campo_12__c" : "Campo_9__c") = \"\(idOrdenExamen)\"")
+        print("   urls compactadas: \(urls)")
+        if let prettyData = try? JSONSerialization.data(withJSONObject: parameters, options: [.prettyPrinted, .sortedKeys]),
+           let prettyString = String(data: prettyData, encoding: .utf8) {
+            print("   REQUEST BODY (pretty):")
+            print(prettyString)
+        }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        let result: Result<Empty, AppError> = await request(
             method: .post,
             endpoint: .functionFlows,
-            parameters: [
-                "Campo_1__c": "SERVICIO GENERICO EXAMENES DEL PACIENTE",
-                "Campo_2__c": accountId,
-                "Campo_3__c": examName,
-                "Campo_4__c": url1,
-                "Campo_5__c": url2,
-                "Campo_6__c": url3,
-                "Campo_7__c": url4,
-                "Campo_8__c": comment,
-                "Campo_9__c": id
-            ])
+            parameters: parameters
+        )
+
+        switch result {
+        case .success:
+            print("📤 [SubirExamen] postExams ✅ OK")
+        case .failure(let error):
+            print("📤 [SubirExamen] postExams ❌ \(error.name) - \(error.message)")
+        }
+        return result
     }
     func getPdf(pdfName: String) async -> Result<getPDFIn64, AppError> {
         await request(endpoint: .getFileFromS3, parameters: ["id": pdfName], parametersDestination: .urlQueryString)
@@ -118,6 +185,45 @@ extension Network {
         return result
     }
 
+    /// DELETE /function_flows?api_name=Servicio_Generico__c
+    /// Elimina un examen del paciente por su ID de Salesforce.
+    ///
+    /// Contrato (3 campos):
+    ///  - Campo_1__c: "ELIMINAR EXAMEN DEL PACIENTE" (literal fijo)
+    ///  - Campo_2__c: ID del registro Salesforce del examen a eliminar
+    ///  - Campo_3__c: "" (vacío, requerido por el tipo)
+    func deletePatientExam(examId: String) async -> Result<Empty, AppError> {
+        let parameters: [String: Any] = [
+            "Campo_1__c": "ELIMINAR EXAMEN DEL PACIENTE",
+            "Campo_2__c": examId,
+            "Campo_3__c": ""
+        ]
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🗑️ [EliminarExamen] deletePatientExam REQUEST")
+        print("   examId (Campo_2__c): \"\(examId)\"")
+        if let prettyData = try? JSONSerialization.data(withJSONObject: parameters, options: [.prettyPrinted, .sortedKeys]),
+           let prettyString = String(data: prettyData, encoding: .utf8) {
+            print("   REQUEST BODY (pretty):")
+            print(prettyString)
+        }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        let result: Result<Empty, AppError> = await request(
+            method: .post,
+            endpoint: .functionFlows,
+            parameters: parameters
+        )
+
+        switch result {
+        case .success:
+            print("🗑️ [EliminarExamen] deletePatientExam ✅ OK — examId: \(examId)")
+        case .failure(let error):
+            print("🗑️ [EliminarExamen] deletePatientExam ❌ \(error.name) - \(error.message)")
+        }
+        return result
+    }
+
     func getExamsForPatient(accountId: String) async -> Result<FunctionFilterExamResponse, AppError> {
         let filters: [AutomatedExamFilter] = [
             AutomatedExamFilter(fieldKey: "Paciente__c", fieldValue: accountId, match: "equal")
@@ -132,7 +238,9 @@ extension Network {
             "URL_Examen_4__c",
             "Comentarios__c",
             "CreatedDate",
-            "Id_Orden_Medica__c"
+            "Id_Orden_Medica__c",
+            "Id_Examenes_Automatizados__c",
+            "Tipo_de_Archivo__c"
         ]
 
         guard let jsonData = buildFunctionFilterJSON(

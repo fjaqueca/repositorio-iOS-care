@@ -11,8 +11,9 @@ import CachedAsyncImage
 struct SignInPasswordRecovery: View {
     @State private var identificationNumberField: Field = .identificationNumber
     @State private var isLoading: Bool = false
-    @State var navigation: (rut: String, response: CodeGenerateResponse)?
+    @State var navigation: (rut: String, response: CodeGenerateResponse, mail: String)?
     @State private var serverErrorMessage: String?
+    @State private var userMail: String = ""
     @Binding var UIState: PreLoginUIState
     @Binding var isPresenting: Bool
     var body: some View {
@@ -55,7 +56,7 @@ struct SignInPasswordRecovery: View {
                 }
         )
         .navigationLink(item: $navigation) { value in
-            SignInPasswordRecoveryOtpView(rut: value.rut, code: value.response, UIState: $UIState, isPresenting: $isPresenting)
+            SignInPasswordRecoveryOtpView(rut: value.rut, code: value.response, mail: value.mail, UIState: $UIState, isPresenting: $isPresenting)
         }
         .isLoading(isLoading)
     }
@@ -69,8 +70,8 @@ struct SignInPasswordRecovery: View {
             let result = await Network.shared.checkRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             isLoading = false
             switch result {
-                case .success:
-                    // TODO: Handle not validate user for now it goes through.
+                case let .success(response):
+                    userMail = response.mail ?? ""
                     sendOtp()
                 case let .failure(error):
                     if error.httpCode == 404 {
@@ -92,7 +93,7 @@ struct SignInPasswordRecovery: View {
             isLoading = false
             switch result {
                 case let.success(value):
-                    navigation = (rut, value)
+                    navigation = (rut, value, userMail)
                 case let .failure(error):
                     AppStatusManager.error(error)
             }

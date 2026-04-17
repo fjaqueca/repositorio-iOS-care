@@ -13,6 +13,7 @@ struct SignUpView: View {
     @State private var navigationInSingUp: NavigationInSignUp?
     @State private var isLoading: Bool = false
     @State private var serverErrorMessage: String?
+    @State private var userMail: String = ""
     @State private var showCustomPopup: Bool = false
     @State private var back: Bool = false
     @Binding var UIState: PreLoginUIState
@@ -95,7 +96,7 @@ struct SignUpView: View {
                 case let .registration(rut):
                 SignUpFormView(rut: rut, UIState: $UIState, navigation: $navigation)
                 case let .validation(rut, code):
-                    SignUpOtpView(rut: rut, recipient: code.recipient, navigation: $navigation, UIState: $UIState)
+                    SignUpOtpView(rut: rut, recipient: code.recipient, mail: userMail, navigation: $navigation, UIState: $UIState)
                 case .emailPhoneForm(rut: let rut):
                     SignUpContactInfoFormView(rut: rut, UIState: $UIState, navigation: $navigation)
             }
@@ -126,9 +127,8 @@ struct SignUpView: View {
             let result = await Network.shared.checkRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             isLoading = false
             switch result {
-                case .success:
-                    // TODO: Handle not validate user for now it goes through.
-                
+                case let .success(response):
+                    userMail = response.mail ?? ""
                     sendOtp()
                 
                     
@@ -195,7 +195,7 @@ struct SignUpView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     struct EmailValidationPopup: View {
@@ -242,7 +242,7 @@ struct SignUpView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
 }

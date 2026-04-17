@@ -48,6 +48,18 @@ struct PrescriptionDetailsView: View {
                         Text(prescription.Name ?? "Sin nombre")
                             .font(Font.custom(UIState.presDetail.title.font, size: CGFloat(Int(UIState.presDetail.title.size) ?? 18)))
                             .foregroundColor(Color(hex: UIState.presDetail.title.color))
+                        // Badge indicador de tipo de documento
+                        HStack(spacing: 6) {
+                            Image(systemName: "pills.fill")
+                                .font(.system(size: 11))
+                                .foregroundColor(.white)
+                            Text("Receta médica")
+                                .font(Font.custom("FiraSans-Medium", size: 11))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Capsule().fill(Color(hex: "#00B894")))
                         Text(prescription.especialidadDelResponsableC ?? "Sin especialidad")
                             .font(Font.custom(UIState.presDetail.specialty.font, size: CGFloat(Int(UIState.presDetail.specialty.size) ?? 18)))
                             .foregroundColor(Color(hex: UIState.presDetail.specialty.color))
@@ -127,8 +139,26 @@ struct PrescriptionDetailsView: View {
                 }
             }
         )
-        .sheet(isPresented: $showWebView) {
-            WebView(url: self.urlToShare!)
+        .navigationLink(isActive: $showWebView) {
+            WebView(url: self.urlToShare ?? URL(string: "about:blank")!)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text(UIState.presList.title.text)
+                            .font(Font.custom(UIState.presList.title.font, size: CGFloat(Int(UIState.presList.title.size) ?? 18)))
+                            .foregroundColor(Color(hex: UIState.presList.title.color))
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            showWebView = false
+                        } label: {
+                            Image("back")
+                                .renderingMode(.template)
+                                .tint(Color(hex: UIState.presList.title.color))
+                        }
+                    }
+                }
         }
 
     }

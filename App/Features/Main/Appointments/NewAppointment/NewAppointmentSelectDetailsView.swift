@@ -377,7 +377,7 @@ struct NewAppointmentSelectDetailsView: View {
                 )
         }
         .buttonStyle(.plain)
-        .frame(width: UIScreen.main.bounds.size.width * 0.9)
+        .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500))
     }
     
     @ViewBuilder
@@ -1173,7 +1173,7 @@ extension NewAppointmentSelectDetailsView {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 300)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 300)
         }
     }
     struct PopupConsentView: View {

@@ -7,11 +7,25 @@
 
 import Foundation
 
+enum TipoDocumento: String, Codable, Hashable {
+    case ordenMedica = "Orden médica"
+    case examenAutomatizado = "Examen automatizado"
+    case recetaMedica = "Receta médica"
+
+    var badgeColor: String {
+        switch self {
+        case .ordenMedica: return "#00BBDC"
+        case .examenAutomatizado: return "#7B61FF"
+        case .recetaMedica: return "#00B894"
+        }
+    }
+}
+
 struct MedicalExams: Codable, Hashable  {
     let totalSize: Int?
     let done: Bool?
     var records: [Exam]
-    
+
     struct Exam: Codable, Hashable {
         let attributes: Attribute?
         var examenMedicoR: MedicalExamR?
@@ -33,6 +47,7 @@ struct MedicalExams: Codable, Hashable  {
         var url3C: String?
         var url4C: String?
         var comment: String?
+        var tipoDocumento: TipoDocumento?
         
         
         struct MedicalExamR: Codable, Hashable {

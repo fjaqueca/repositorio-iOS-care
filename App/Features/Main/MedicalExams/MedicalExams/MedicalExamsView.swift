@@ -15,11 +15,14 @@ struct MedicalExamsView: View {
     var backArrowColor: String = "#00BBDC"
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
+    var badgeOrdenMedica: BadgeConfig = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
+    var badgeExamenAutomatizado: BadgeConfig = BadgeConfig(texto: "Examen automatizado", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#7B61FF")
+    var badgeRecetaMedica: BadgeConfig = BadgeConfig(texto: "Receta médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00B894")
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
-    @State var dateFrom: Date = Date().adding(days: -180)
-    @State var dateUntil: Date = .now
+    @State var dateFrom: Date? = nil
+    @State var dateUntil: Date? = nil
     @State var filterExams: String = ""
     @State var total: Double = 1
     @State var count: Double = 0
@@ -28,8 +31,20 @@ struct MedicalExamsView: View {
     @State private var isLoading: Bool = true
     @State var isLoadingAction: Bool = false
     @State var exams: MedicalExams? = nil
+    /// Source of truth para decidir el botón "Subir/Ver documento enviado" (paridad
+    /// con web). Se carga una vez vía getExamsForPatient(). El cruce por FK
+    /// (idOrdenMedicaC / idExamenesAutomatizadosC) ocurre client-side al pasar
+    /// linkedPatientExam a cada Row.
+    @State var allPatientExams: [FunctionFilterExamResponse.PatientExams] = []
+    /// Guard contra ejecución concurrente de getRecetas. Sin esto, al volver del
+    /// detalle tras un upload, dos triggers (Color.clear.onAppear + onChange de
+    /// listNeedsRefresh) disparan dos cadenas de servicios en paralelo, causando
+    /// que la lista parpadee con counts intermedios. Solo permitimos UNA cadena
+    /// de refresh activa a la vez.
+    @State private var isFetchingRecetas: Bool = false
     @State private var showDismissButton: Bool = true
     @State var showFilterView: Bool = false
+    @State var selectedFilterDocType: String = ""
     @State var showAlert: Bool = false
     @State private var isButtonDownloadEnable: Bool = false
     @State private var isButtonShareEnable: Bool = false
@@ -42,6 +57,10 @@ struct MedicalExamsView: View {
     @State var urlShare: URL?
     @State private var showWebView = false
     @State private var downloadedFileURL: URL?
+    /// Flag que el detalle setea cuando hay un upload exitoso. Al volver a la lista,
+    /// disparamos un getRecetas() para refrescar las URLs ya persistidas en backend
+    /// y que el botón "Subir" vs "Ver" del detalle refleje el estado real.
+    @State private var listNeedsRefresh: Bool = false
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
@@ -79,10 +98,22 @@ struct MedicalExamsView: View {
                         dateToString()
                         getRecetas()
                     }
+                    // Refresh propagado desde MedicalExamsDetailsView tras un upload exitoso.
+                    // NO reseteamos listNeedsRefresh aquí: el flag queda en true durante
+                    // toda la cadena de servicios y se resetea al final en getExamsForPatient
+                    // (junto con isLoading=false). Esto evita el flash de la lista cacheada.
+                    .onChange(of: listNeedsRefresh) { needs in
+                        guard needs else { return }
+                        print("🔄 [OrdenesExamen] Refresh solicitado desde detalle (post-upload)")
+                        getRecetas()
+                    }
 
                 // Exam list
                 ScrollView {
-                    if isLoading {
+                    // listNeedsRefresh también dispara el loading: cuando el detalle lo
+                    // setea a true, el body se re-evalúa y muestra el spinner SIN flash
+                    // de la lista cacheada. Permanece true hasta que getRecetas termina.
+                    if isLoading || listNeedsRefresh {
                         VStack(spacing: 12) {
                             ProgressView()
                                 .scaleEffect(1.1)
@@ -102,7 +133,12 @@ struct MedicalExamsView: View {
                                         isLoadingFavorite: $isLoadingFav,
                                         isLoadingExam: $isLoading,
                                         UIState: $UIState,
-                                        backArrowColor: backArrowColor
+                                        backArrowColor: backArrowColor,
+                                        badgeOrdenMedica: badgeOrdenMedica,
+                                        badgeExamenAutomatizado: badgeExamenAutomatizado,
+                                        badgeRecetaMedica: badgeRecetaMedica,
+                                        listNeedsRefresh: $listNeedsRefresh,
+                                        linkedPatientExam: linkedPatientExam(for: exam)
                                     )
                                 }
                             }
@@ -163,18 +199,29 @@ struct MedicalExamsView: View {
             .blur(radius: showFilterView || isLoadingAction || isLoadingFav ? 3 : 0.000001)
 
             if showFilterView {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation { showFilterView = false }
-                    }
-                withAnimation {
-                    PrescriptionFilter(dateFrom: $dateFrom, dateUntil: $dateUntil, isCurrent: $isCurrent, showFilterView: $showFilterView, isLoading: $isLoading, UIState: UIState.examFilter)
-                        .background(.white)
-                        .cornerRadius(16)
-                        .shadow(color: .black.opacity(0.15), radius: 20, x: 0, y: 8)
-                        .padding(.horizontal, 24)
-                }
+                PrescriptionFilter(
+                    dateFrom: $dateFrom,
+                    dateUntil: $dateUntil,
+                    showFilterView: $showFilterView,
+                    selectedDocumentType: $selectedFilterDocType,
+                    onApplyWithDates: { from, until in
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd"
+                        self.from = formatter.string(from: from)
+                        self.until = formatter.string(from: until)
+                        self.isLoading = true
+                        getRecetas()
+                    },
+                    onClear: {
+                        self.dateFrom = nil
+                        self.dateUntil = nil
+                        dateToString()
+                        self.isLoading = true
+                        getRecetas()
+                    },
+                    UIState: UIState.examFilter
+                )
+                .transition(.opacity)
             }
             if isLoadingAction {
                 withAnimation {
@@ -255,6 +302,11 @@ struct MedicalExamsView: View {
     }
 
     // MARK: - Select All Row
+
+    private var hasActiveFilters: Bool {
+        dateFrom != nil || dateUntil != nil || !selectedFilterDocType.isEmpty
+    }
+
     private var selectAllRow: some View {
         HStack {
             Button {
@@ -296,6 +348,25 @@ struct MedicalExamsView: View {
             }
 
             Spacer()
+
+            // Badge "Limpiar filtros" — solo visible con filtros activos
+            if hasActiveFilters {
+                Button {
+                    clearAllFilters()
+                } label: {
+                    Text("Limpiar filtros")
+                        .font(Font.custom("FiraSans-Medium", size: 12))
+                        .foregroundColor(Color(hex: "#00BBDC"))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color(hex: "#00BBDC"), lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+                .transition(.opacity.combined(with: .scale(scale: 0.8)))
+            }
         }
     }
 
@@ -390,11 +461,24 @@ struct MedicalExamsView: View {
     }
 
     // MARK: - Functions
+
+    /// Limpia todos los filtros y recarga la lista completa sin filtros
+    func clearAllFilters() {
+        print("🧹 [OrdenesExamen] LIMPIAR TODOS LOS FILTROS → recarga sin filtros")
+        dateFrom = nil
+        dateUntil = nil
+        selectedFilterDocType = ""
+        dateToString()
+        self.isLoading = true
+        getRecetas()
+    }
+
     func dateToString() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        self.from = formatter.string(from: dateFrom)
-        self.until = formatter.string(from: dateUntil)
+        let defaultFrom = Calendar.current.date(byAdding: .day, value: -180, to: Date()) ?? Date()
+        self.from = formatter.string(from: dateFrom ?? defaultFrom)
+        self.until = formatter.string(from: dateUntil ?? Date())
     }
     func stringToDate(_ dateString: String) -> Date {
         let formatter = DateFormatter()
@@ -406,38 +490,181 @@ struct MedicalExamsView: View {
         }
     }
     func getRecetas() {
+        // Guard: si ya hay una cadena en curso, ignoramos llamadas duplicadas
+        // (Color.clear.onAppear + onChange listNeedsRefresh suelen dispararse
+        // ambos al volver del detalle).
+        guard !isFetchingRecetas else {
+            print("⏸️ [OrdenesExamen] getRecetas() ignorado — ya hay una cadena en curso")
+            return
+        }
+        isFetchingRecetas = true
         self.isLoading = true
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        print("📋 [OrdenesExamen] INICIO - getRecetas()")
+        print("📋 [OrdenesExamen] INICIO - getRecetas() [PARALELO]")
         print("   accountId: \(accountId)")
         print("   from: \(from) until: \(until)")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        let startTime = Date()
+
         Task {
-            // Servicio 1: Ordenes basicas (GET /get_examenes_r1)
-            let result = await Network.shared.getExams(accountId: accountId, from: from, until: until)
-            switch result {
-            case let .success(listExams):
-                self.exams = listExams
-                print("✅ [OrdenesExamen] Servicio 1 OK - ordenes basicas: \(listExams.records.count)")
-                if let exams = exams {
-                    for exam in exams.records {
-                        examSelectedList[exam.Id ?? ""] = false
+            // Lanzar los 4 servicios EN PARALELO (antes eran secuenciales)
+            async let examsResult = Network.shared.getExams(accountId: accountId, from: from, until: until)
+            async let autoResult = Network.shared.getAutomatedExamOrders(accountId: accountId)
+            async let presResult = Network.shared.getRecetas(accountId: accountId, from: from, until: until)
+            async let patientResult = Network.shared.getExamsForPatient(accountId: accountId)
+
+            // Esperar todos los resultados (llegan en paralelo)
+            let (examsRes, autoRes, presRes, patientRes) = await (examsResult, autoResult, presResult, patientResult)
+
+            let elapsed = Date().timeIntervalSince(startTime)
+            print("⏱️ [OrdenesExamen] 4 servicios completados en \(String(format: "%.2f", elapsed))s")
+
+            await MainActor.run {
+                // --- Servicio 1: Ordenes básicas ---
+                var allRecords: [MedicalExams.Exam] = []
+                var selectionList: [String: Bool] = [:]
+
+                switch examsRes {
+                case var .success(listExams):
+                    for i in listExams.records.indices {
+                        listExams.records[i].tipoDocumento = .ordenMedica
+                    }
+                    allRecords.append(contentsOf: listExams.records)
+                    print("✅ [OrdenesExamen] Servicio 1 OK - ordenes basicas: \(listExams.records.count)")
+                case let .failure(error):
+                    print("❌ [OrdenesExamen] Servicio 1 ERROR: \(error.name) - \(error.message)")
+                }
+
+                let existingIds = Set(allRecords.compactMap { $0.Id })
+
+                // --- Servicio 2: Ordenes automatizadas ---
+                switch autoRes {
+                case .success(let response):
+                    let autoRecords = response.data?.first?.examenesAutomatizadosC ?? []
+                    var addedCount = 0
+                    for record in autoRecords {
+                        if let id = record.Id, existingIds.contains(id) { continue }
+                        let desdeC = self.convertISODateToYMD(record.CreatedDate)
+                        let autoExam = MedicalExams.Exam(
+                            attributes: nil, examenMedicoR: nil, profesionalResponsableR: nil, etapaR: nil,
+                            Id: record.Id,
+                            Name: record.nombreExamenC ?? record.Name,
+                            desdeC: desdeC, hastaC: desdeC,
+                            etapaC: nil, actividadC: nil, especialidadDelResponsableC: nil,
+                            pacienteC: self.accountId, favoritoAppC: false,
+                            urlDeLaOrdenMedicaC: record.urlOrdenMedicaRealC,
+                            descripcionC: record.descripcionC ?? "",
+                            url1C: nil, url2C: nil, url3C: nil, url4C: nil,
+                            comment: nil, tipoDocumento: .examenAutomatizado
+                        )
+                        allRecords.append(autoExam)
+                        addedCount += 1
+                    }
+                    print("✅ [OrdenesExamen] Servicio 2 OK - automatizados agregados: \(addedCount)")
+                case .failure(let error):
+                    print("⚠️ [OrdenesExamen] Servicio 2 ERROR: \(error.name) (continuamos)")
+                }
+
+                let existingIdsAfterAuto = Set(allRecords.compactMap { $0.Id })
+
+                // --- Servicio 3: Recetas médicas ---
+                switch presRes {
+                case .success(let prescriptionsResponse):
+                    var addedCount = 0
+                    for pres in prescriptionsResponse.records {
+                        if let id = pres.Id, existingIdsAfterAuto.contains(id) { continue }
+                        let presExam = MedicalExams.Exam(
+                            attributes: nil, examenMedicoR: nil,
+                            profesionalResponsableR: MedicalExams.Exam.ExamProfessional(Name: pres.profesionalResponsableR?.Name),
+                            etapaR: nil,
+                            Id: pres.Id, Name: pres.Name,
+                            desdeC: pres.desdeC, hastaC: pres.hastaC,
+                            etapaC: nil, actividadC: nil,
+                            especialidadDelResponsableC: pres.especialidadDelResponsableC,
+                            pacienteC: pres.pacienteC, favoritoAppC: false,
+                            urlDeLaOrdenMedicaC: pres.urlDeLaRecetaC,
+                            descripcionC: "\(pres.dosisC ?? "") - \(pres.indicacionesC ?? "")",
+                            url1C: nil, url2C: nil, url3C: nil, url4C: nil,
+                            comment: nil, tipoDocumento: .recetaMedica
+                        )
+                        allRecords.append(presExam)
+                        addedCount += 1
+                    }
+                    print("✅ [OrdenesExamen] Servicio 3 OK - recetas agregadas: \(addedCount)")
+                case .failure(let error):
+                    print("⚠️ [OrdenesExamen] Servicio 3 ERROR: \(error.name) (continuamos)")
+                }
+
+                // Construir selectionList
+                for record in allRecords {
+                    selectionList[record.Id ?? ""] = false
+                }
+
+                // --- Servicio 4: Patient Exams ---
+                switch patientRes {
+                case .success(let listExam):
+                    let patients = listExam.data?.first?.examenesDelPacienteC ?? []
+                    self.allPatientExams = patients
+                    print("✅ [OrdenesExamen] Servicio 4 OK - patient exams: \(patients.count)")
+                case .failure(let error):
+                    print("⚠️ [OrdenesExamen] Servicio 4 ERROR: \(error.name) (continuamos)")
+                }
+
+                // Filtro local por fechas (los servicios 2 y 4 no filtran por fecha)
+                var finalRecords = allRecords
+                if !self.from.isEmpty && !self.until.isEmpty {
+                    let beforeFilter = finalRecords.count
+                    finalRecords = finalRecords.filter { exam in
+                        guard let desdeC = exam.desdeC, !desdeC.isEmpty else { return true }
+                        return desdeC >= self.from && desdeC <= self.until
+                    }
+                    let filtered = beforeFilter - finalRecords.count
+                    if filtered > 0 {
+                        print("📅 [OrdenesExamen] Filtro local por fechas: \(beforeFilter) → \(finalRecords.count) (\(filtered) excluidos fuera de \(self.from)...\(self.until))")
                     }
                 }
 
-                // Servicio 2: Ordenes automatizadas (POST /function_filter → Examenes_Automatizados__c)
-                await getAutomatedExamOrders()
+                // Filtro local por tipo de documento
+                if !self.selectedFilterDocType.isEmpty {
+                    let beforeFilter = finalRecords.count
+                    finalRecords = finalRecords.filter { exam in
+                        switch self.selectedFilterDocType {
+                        case "Orden médica":
+                            return exam.tipoDocumento == .ordenMedica
+                        case "Examen automatizado":
+                            return exam.tipoDocumento == .examenAutomatizado
+                        case "Receta médica":
+                            return exam.tipoDocumento == .recetaMedica
+                        default:
+                            return true
+                        }
+                    }
+                    print("📄 [OrdenesExamen] Filtro local por tipo \"\(self.selectedFilterDocType)\": \(beforeFilter) → \(finalRecords.count)")
+                }
 
-                // Servicio 3: Mis Examenes del paciente (merge URLs)
-                getExamsForPatient()
-            case let .failure(error):
-                AppStatusManager.error(error)
+                // Reconstruir selectionList post-filtro
+                selectionList = [:]
+                for record in finalRecords {
+                    selectionList[record.Id ?? ""] = false
+                }
+
+                // Asignar todo de una vez (una sola actualización de UI)
+                self.exams = MedicalExams(totalSize: finalRecords.count, done: true, records: finalRecords)
+                self.examSelectedList = selectionList
                 self.isLoading = false
+                self.listNeedsRefresh = false
+                self.isFetchingRecetas = false
+
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📋 [OrdenesExamen] CARGA COMPLETA en \(String(format: "%.2f", elapsed))s")
+                print("   Total combinados (post-filtro): \(finalRecords.count)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             }
         }
     }
 
-    /// Servicio 2: Obtiene ordenes de examenes automatizados y las combina con las basicas
+    /// Servicio 2: Obtiene órdenes de exámenes automatizados y las combina con las básicas
     func getAutomatedExamOrders() async {
         let accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -490,7 +717,8 @@ struct MedicalExamsView: View {
                     url2C: nil,
                     url3C: nil,
                     url4C: nil,
-                    comment: nil
+                    comment: nil,
+                    tipoDocumento: .examenAutomatizado
                 )
 
                 exams?.records.append(autoExam)
@@ -509,6 +737,67 @@ struct MedicalExamsView: View {
         case .failure(let error):
             print("⚠️ [OrdenesExamen] Servicio 2 ERROR: \(error.name) - \(error.message)")
             print("   (continuamos con ordenes basicas solamente)")
+        }
+    }
+
+    /// Servicio 3: Obtiene recetas médicas y las combina con las órdenes de exámenes
+    func getPrescriptions() async {
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📋 [OrdenesExamen] Servicio 3 - getPrescriptions()")
+        print("   accountId: \(accountId)")
+        print("   from: \(from) until: \(until)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        let result = await Network.shared.getRecetas(accountId: accountId, from: from, until: until)
+        switch result {
+        case .success(let prescriptionsResponse):
+            let existingIds = Set(exams?.records.map { $0.Id ?? "" } ?? [])
+            var addedCount = 0
+
+            for pres in prescriptionsResponse.records {
+                if let id = pres.Id, existingIds.contains(id) {
+                    continue
+                }
+
+                let presExam = MedicalExams.Exam(
+                    attributes: nil,
+                    examenMedicoR: nil,
+                    profesionalResponsableR: MedicalExams.Exam.ExamProfessional(Name: pres.profesionalResponsableR?.Name),
+                    etapaR: nil,
+                    Id: pres.Id,
+                    Name: pres.Name,
+                    desdeC: pres.desdeC,
+                    hastaC: pres.hastaC,
+                    etapaC: nil,
+                    actividadC: nil,
+                    especialidadDelResponsableC: pres.especialidadDelResponsableC,
+                    pacienteC: pres.pacienteC,
+                    favoritoAppC: false,
+                    urlDeLaOrdenMedicaC: pres.urlDeLaRecetaC,
+                    descripcionC: "\(pres.dosisC ?? "") - \(pres.indicacionesC ?? "")",
+                    url1C: nil,
+                    url2C: nil,
+                    url3C: nil,
+                    url4C: nil,
+                    comment: nil,
+                    tipoDocumento: .recetaMedica
+                )
+
+                exams?.records.append(presExam)
+                examSelectedList[pres.Id ?? ""] = false
+                addedCount += 1
+            }
+
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("📋 [OrdenesExamen] Servicio 3 COMPLETADO")
+            print("   Total recetas recibidas: \(prescriptionsResponse.records.count)")
+            print("   Agregadas: \(addedCount)")
+            print("   Total ordenes combinadas: \(exams?.records.count ?? 0)")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        case .failure(let error):
+            print("⚠️ [OrdenesExamen] Servicio 3 ERROR: \(error.name) - \(error.message)")
+            print("   (continuamos sin recetas)")
         }
     }
 
@@ -665,28 +954,41 @@ struct MedicalExamsView: View {
         let accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
         Task {
             let result = await Network.shared.getExamsForPatient(accountId: accountId)
-            self.isLoading = false
             switch result {
             case .success(let listExam):
-                if let urlsExams = listExam.data?.first?.examenesDelPacienteC {
-                    if var exams = exams {
-                        exams.records = exams.records.map { exam in
-                            var updatedExam = exam
-                            if let match = urlsExams.first(where: { $0.idOrdenMedicaC == exam.Id }) {
-                                updatedExam.url1C = match.urlExamen1C
-                                updatedExam.url2C = match.urlExamen2C
-                                updatedExam.url3C = match.urlExamen3C
-                                updatedExam.url4C = match.urlExamen4C
-                                updatedExam.comment = match.comentariosC
-                            }
-                            return updatedExam
-                        }
-                        self.exams = exams
-                    }
+                // Source of truth: guardamos TODOS los PatientExams del paciente.
+                // El cruce por FK (idOrdenMedicaC / idExamenesAutomatizadosC) se hace
+                // en linkedPatientExam(for:) al pintar cada Row. No mutamos url1C..4
+                // de la orden — la decisión vive ahora en linkedPatientExam.
+                let patients = listExam.data?.first?.examenesDelPacienteC ?? []
+                await MainActor.run {
+                    self.allPatientExams = patients
+                    print("✅ [OrdenesExamen] Servicio 4 (PatientExams) cargados: \(patients.count)")
                 }
             case let .failure(error):
                 AppStatusManager.error(error)
             }
+            // Apagamos AMBOS flags al final (en MainActor) para que el body cambie de
+            // "loading" a "lista" en una sola transición — sin flashes intermedios.
+            // También liberamos el guard de concurrencia.
+            await MainActor.run {
+                self.isLoading = false
+                self.listNeedsRefresh = false
+                self.isFetchingRecetas = false
+            }
         }
+    }
+
+    /// Devuelve el PatientExam asociado a una orden, si existe (paridad con web).
+    /// El cruce depende del tipo de documento padre:
+    ///  - examenAutomatizado → match por idExamenesAutomatizadosC
+    ///  - resto              → match por idOrdenMedicaC
+    /// `nil` si no hay match → la orden aún no tiene archivos subidos.
+    func linkedPatientExam(for exam: MedicalExams.Exam) -> FunctionFilterExamResponse.PatientExams? {
+        guard let examId = exam.Id, !examId.isEmpty else { return nil }
+        if exam.tipoDocumento == .examenAutomatizado {
+            return allPatientExams.first { $0.idExamenesAutomatizadosC == examId }
+        }
+        return allPatientExams.first { $0.idOrdenMedicaC == examId }
     }
 }

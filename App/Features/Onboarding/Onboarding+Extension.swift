@@ -12,6 +12,128 @@ extension OnboardingView {
         if let record = self.items.first?.records{
             for brandAccount in record{
                 if brandAccount.Name == "PreLogin"{
+                    // RAW dump de todos los elementos del PreLogin
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("📋 [PreLogin] RAW BrandAccount - Todos los elementos")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    let elements: [(Int, String?, [(Int, String?)])] = [
+                        (1, brandAccount.nombreElemento1C, [
+                            (1, brandAccount.valor11C), (2, brandAccount.valor12C), (3, brandAccount.valor13C),
+                            (4, brandAccount.valor14C), (5, brandAccount.valor15C), (6, brandAccount.valor16C),
+                            (7, brandAccount.valor17C), (8, brandAccount.valor18C), (9, brandAccount.valor19C)
+                        ]),
+                        (2, brandAccount.nombreElemento2C, [
+                            (1, brandAccount.valor21C), (2, brandAccount.valor22C), (3, brandAccount.valor23C),
+                            (4, brandAccount.valor24C), (5, brandAccount.valor25C), (6, brandAccount.valor26C),
+                            (7, brandAccount.valor27C), (8, brandAccount.valor28C), (9, brandAccount.valor29C),
+                            (10, brandAccount.valor210C), (11, brandAccount.valor211C), (12, brandAccount.valor212C),
+                            (13, brandAccount.valor213C), (14, brandAccount.valor214C), (15, brandAccount.valor215C),
+                            (16, brandAccount.valor216C)
+                        ]),
+                        (3, brandAccount.nombreElemento3C, [
+                            (1, brandAccount.valor31C), (2, brandAccount.valor32C), (3, brandAccount.valor33C),
+                            (4, brandAccount.valor34C), (5, brandAccount.valor35C), (6, brandAccount.valor36C),
+                            (7, brandAccount.valor37C), (8, brandAccount.valor38C), (9, brandAccount.valor39C),
+                            (10, brandAccount.valor310C), (11, brandAccount.valor311C), (12, brandAccount.valor312C),
+                            (13, brandAccount.valor313C), (14, brandAccount.valor314C), (15, brandAccount.valor315C),
+                            (16, brandAccount.valor316C)
+                        ]),
+                        (4, brandAccount.nombreElemento4C, [
+                            (1, brandAccount.valor41C), (2, brandAccount.valor42C), (3, brandAccount.valor43C),
+                            (4, brandAccount.valor44C), (5, brandAccount.valor45C), (6, brandAccount.valor46C),
+                            (7, brandAccount.valor47C), (8, brandAccount.valor48C), (9, brandAccount.valor49C),
+                            (10, brandAccount.valor410C), (11, brandAccount.valor411C), (12, brandAccount.valor412C),
+                            (13, brandAccount.valor413C), (14, brandAccount.valor414C), (15, brandAccount.valor415C),
+                            (16, brandAccount.valor416C)
+                        ]),
+                        (5, brandAccount.nombreElemento5C, [
+                            (1, brandAccount.valor51C), (2, brandAccount.valor52C), (3, brandAccount.valor53C),
+                            (4, brandAccount.valor54C), (5, brandAccount.valor55C), (6, brandAccount.valor56C),
+                            (7, brandAccount.valor57C), (8, brandAccount.valor58C), (9, brandAccount.valor59C),
+                            (10, brandAccount.valor510C), (11, brandAccount.valor511C), (12, brandAccount.valor512C),
+                            (13, brandAccount.valor513C), (14, brandAccount.valor514C), (15, brandAccount.valor515C),
+                            (16, brandAccount.valor516C)
+                        ]),
+                        (6, brandAccount.nombreElemento6C, [
+                            (1, brandAccount.valor61C), (2, brandAccount.valor62C), (3, brandAccount.valor63C),
+                            (4, brandAccount.valor64C), (5, brandAccount.valor65C), (6, brandAccount.valor66C),
+                            (7, brandAccount.valor67C), (8, brandAccount.valor68C), (9, brandAccount.valor69C),
+                            (10, brandAccount.valor610C), (11, brandAccount.valor611C), (12, brandAccount.valor612C),
+                            (13, brandAccount.valor613C), (14, brandAccount.valor614C), (15, brandAccount.valor615C),
+                            (16, brandAccount.valor616C)
+                        ]),
+                        (7, brandAccount.nombreElemento7C, [
+                            (1, brandAccount.valor71C), (2, brandAccount.valor72C), (3, brandAccount.valor73C),
+                            (4, brandAccount.valor74C), (5, brandAccount.valor75C), (6, brandAccount.valor76C),
+                            (7, brandAccount.valor77C), (8, brandAccount.valor78C), (9, brandAccount.valor79C),
+                            (10, brandAccount.valor710C), (11, brandAccount.valor711C), (12, brandAccount.valor712C),
+                            (13, brandAccount.valor713C), (14, brandAccount.valor714C), (15, brandAccount.valor715C),
+                            (16, brandAccount.valor716C)
+                        ]),
+                        (8, brandAccount.nombreElemento8C, [
+                            (1, brandAccount.valor81C), (2, brandAccount.valor82C), (3, brandAccount.valor83C),
+                            (4, brandAccount.valor84C), (5, brandAccount.valor85C), (6, brandAccount.valor86C),
+                            (7, brandAccount.valor87C), (8, brandAccount.valor88C), (9, brandAccount.valor89C),
+                            (10, brandAccount.valor810C), (11, brandAccount.valor811C), (12, brandAccount.valor812C),
+                            (13, brandAccount.valor813C), (14, brandAccount.valor814C), (15, brandAccount.valor815C),
+                            (16, brandAccount.valor816C)
+                        ]),
+                        (9, brandAccount.nombreElemento9C, [
+                            (1, brandAccount.valor91C), (2, brandAccount.valor92C), (3, brandAccount.valor93C),
+                            (4, brandAccount.valor94C), (5, brandAccount.valor95C), (6, brandAccount.valor96C),
+                            (7, brandAccount.valor97C), (8, brandAccount.valor98C), (9, brandAccount.valor99C),
+                            (10, brandAccount.valor910C), (11, brandAccount.valor911C), (12, brandAccount.valor912C),
+                            (13, brandAccount.valor913C), (14, brandAccount.valor914C), (15, brandAccount.valor915C),
+                            (16, brandAccount.valor916C)
+                        ]),
+                        (10, brandAccount.nombreElemento10C, [
+                            (1, brandAccount.valor101C), (2, brandAccount.valor102C), (3, brandAccount.valor103C),
+                            (4, brandAccount.valor104C), (5, brandAccount.valor105C), (6, brandAccount.valor106C),
+                            (7, brandAccount.valor107C), (8, brandAccount.valor108C), (9, brandAccount.valor109C),
+                            (10, brandAccount.valor1010C), (11, brandAccount.valor1011C), (12, brandAccount.valor1012C),
+                            (13, brandAccount.valor1013C), (14, brandAccount.valor1014C), (15, brandAccount.valor1015C),
+                            (16, brandAccount.valor1016C)
+                        ]),
+                        (11, brandAccount.nombreElemento11C, [
+                            (1, brandAccount.Valor_11_1__c), (2, brandAccount.Valor_11_2__c), (3, brandAccount.Valor_11_3__c),
+                            (4, brandAccount.Valor_11_4__c), (5, brandAccount.Valor_11_5__c), (6, brandAccount.Valor_11_6__c),
+                            (7, brandAccount.Valor_11_7__c), (8, brandAccount.Valor_11_8__c), (9, brandAccount.Valor_11_9__c),
+                            (10, brandAccount.Valor_11_10__c), (11, brandAccount.Valor_11_11__c), (12, brandAccount.Valor_11_12__c),
+                            (13, brandAccount.Valor_11_13__c), (14, brandAccount.Valor_11_14__c), (15, brandAccount.Valor_11_15__c),
+                            (16, brandAccount.Valor_11_16__c)
+                        ]),
+                        (12, brandAccount.nombreElemento12C, [
+                            (1, brandAccount.valor121C), (2, brandAccount.valor122C), (3, brandAccount.valor123C),
+                            (4, brandAccount.valor124C), (5, brandAccount.valor125C), (6, brandAccount.valor126C),
+                            (7, brandAccount.valor127C), (8, brandAccount.valor128C), (9, brandAccount.valor129C),
+                            (10, brandAccount.valor1210C), (11, brandAccount.valor1211C), (12, brandAccount.valor1212C),
+                            (13, brandAccount.valor1213C), (14, brandAccount.valor1214C), (15, brandAccount.valor1215C),
+                            (16, brandAccount.valor1216C)
+                        ]),
+                        (13, brandAccount.nombreElemento13C, [
+                            (1, brandAccount.valor131C), (2, brandAccount.valor132C), (3, brandAccount.valor133C),
+                            (4, brandAccount.valor134C), (5, brandAccount.valor135C), (6, brandAccount.valor136C),
+                            (7, brandAccount.valor137C), (8, brandAccount.valor138C), (9, brandAccount.valor139C),
+                            (10, brandAccount.valor1310C), (11, brandAccount.valor1311C), (12, brandAccount.valor1312C),
+                            (13, brandAccount.valor1313C), (14, brandAccount.valor1314C), (15, brandAccount.valor1315C),
+                            (16, brandAccount.valor1316C)
+                        ])
+                    ]
+                    for (elemNum, elemName, valores) in elements {
+                        let name = elemName ?? "nil"
+                        let hasValues = valores.contains { $0.1 != nil }
+                        if hasValues || elemName != nil {
+                            print("┌─ Elemento \(elemNum): Nombre=\"\(name)\"")
+                            for (valNum, val) in valores {
+                                if let v = val {
+                                    print("│  [\(elemNum).\(valNum)] → \"\(v)\"")
+                                }
+                            }
+                            print("└────────────────────────────────────────────────")
+                        }
+                    }
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
                     //MARK: - OnboardingUIState
                     self.UIState.onboardingUIState.imageBackground = brandAccount.valor11C ?? ""
                     
@@ -280,7 +402,22 @@ extension OnboardingView {
                     
                     self.UIState.singUpOtpUIState.btnCancel.textBtn = brandAccount.valor611C ?? ""
                     self.UIState.singUpOtpUIState.btnCancel.colorTextBtn = brandAccount.valor612C ?? ""
-                    
+
+                    self.UIState.singUpOtpUIState.subtitle.text = brandAccount.valor613C ?? ""
+                    if let valor614 = brandAccount.valor614C?.components(separatedBy: ";"), valor614.count >= 2 {
+                        self.UIState.singUpOtpUIState.subtitle.colorText = valor614[0]
+                        self.UIState.singUpOtpUIState.subtitle.sizeText = valor614[1]
+                        if valor614.count >= 3 {
+                            let fontRaw = valor614[2].lowercased().trimmingCharacters(in: .whitespaces)
+                            switch fontRaw {
+                            case "firasans_bold":   self.UIState.singUpOtpUIState.subtitle.font = "FiraSans-Bold"
+                            case "firasans_italic": self.UIState.singUpOtpUIState.subtitle.font = "FiraSans-Italic"
+                            case "firasans_medium": self.UIState.singUpOtpUIState.subtitle.font = "FiraSans-Medium"
+                            default:                self.UIState.singUpOtpUIState.subtitle.font = "FiraSans-Regular"
+                            }
+                        }
+                    }
+
                     //MARK: - SingUpCreatePassUIState
                     self.UIState.singUpCreatePassUIState.imageBackground = brandAccount.valor71C ?? ""
                     
@@ -364,7 +501,46 @@ extension OnboardingView {
                     
                     self.UIState.singInPasswordRecoveryOtpUIState.btnCancel.textBtn = brandAccount.valor911C ?? ""
                     self.UIState.singInPasswordRecoveryOtpUIState.btnCancel.colorTextBtn = brandAccount.valor912C ?? ""
-                    
+
+                    self.UIState.singInPasswordRecoveryOtpUIState.subtitle.text = brandAccount.valor913C ?? ""
+                    if let valor914 = brandAccount.valor914C?.components(separatedBy: ";"), valor914.count >= 2 {
+                        self.UIState.singInPasswordRecoveryOtpUIState.subtitle.colorText = valor914[0]
+                        self.UIState.singInPasswordRecoveryOtpUIState.subtitle.sizeText = valor914[1]
+                        if valor914.count >= 3 {
+                            let fontRaw = valor914[2].lowercased().trimmingCharacters(in: .whitespaces)
+                            switch fontRaw {
+                            case "firasans_bold":   self.UIState.singInPasswordRecoveryOtpUIState.subtitle.font = "FiraSans-Bold"
+                            case "firasans_italic": self.UIState.singInPasswordRecoveryOtpUIState.subtitle.font = "FiraSans-Italic"
+                            case "firasans_medium": self.UIState.singInPasswordRecoveryOtpUIState.subtitle.font = "FiraSans-Medium"
+                            default:                self.UIState.singInPasswordRecoveryOtpUIState.subtitle.font = "FiraSans-Regular"
+                            }
+                        }
+                    }
+
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("📋 [PreLogin] Elemento 9 - SingInPasswordRecoveryOtp")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("   [9.1]  imageBackground: \(brandAccount.valor91C ?? "nil")")
+                    print("   [9.2]  image: \(brandAccount.valor92C ?? "nil")")
+                    print("   [9.3]  title.text: \(brandAccount.valor93C ?? "nil")")
+                    print("   [9.4]  title.atr (color;size): \(brandAccount.valor94C ?? "nil")")
+                    print("   [9.5]  msg.atr (color;size): \(brandAccount.valor95C ?? "nil")")
+                    print("   [9.6]  code.atr (color;size): \(brandAccount.valor96C ?? "nil")")
+                    print("   [9.7]  btnReSend.text: \(brandAccount.valor97C ?? "nil")")
+                    print("   [9.8]  btnReSend.atr (color;size): \(brandAccount.valor98C ?? "nil")")
+                    print("   [9.9]  btnContinue.text: \(brandAccount.valor99C ?? "nil")")
+                    print("   [9.10] btnContinue.atr (color;bg;bgPress): \(brandAccount.valor910C ?? "nil")")
+                    print("   [9.11] btnCancel.text: \(brandAccount.valor911C ?? "nil")")
+                    print("   [9.12] btnCancel.colorText: \(brandAccount.valor912C ?? "nil")")
+                    print("   [9.13] subtitle.text: \(brandAccount.valor913C ?? "nil")")
+                    print("   [9.14] subtitle.atr (color;size): \(brandAccount.valor914C ?? "nil")")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("   📌 Valores parseados del subtitle:")
+                    print("      text: \"\(self.UIState.singInPasswordRecoveryOtpUIState.subtitle.text)\"")
+                    print("      colorText: \"\(self.UIState.singInPasswordRecoveryOtpUIState.subtitle.colorText)\"")
+                    print("      sizeText: \"\(self.UIState.singInPasswordRecoveryOtpUIState.subtitle.sizeText)\"")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
                     //MARK: - SingInPasswordResetUIState
                     self.UIState.singInPasswordResetUIState.imageBackground = brandAccount.valor101C ?? ""
                     

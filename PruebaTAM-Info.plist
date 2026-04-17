@@ -56,13 +56,7 @@
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchScreen</key>
-	<dict>
-		<key>UILaunchScreen</key>
-		<dict>
-			<key>SplashView</key>
-			<string></string>
-		</dict>
-	</dict>
+	<dict/>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashViewPruebaTAM</string>
 	<key>UISupportedInterfaceOrientations</key>

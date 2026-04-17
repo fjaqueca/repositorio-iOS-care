@@ -158,3 +158,21 @@ Log at 3 levels: (1) config loading, (2) before service calls with parameters, (
 | PRD | `https://huudh3ythg.execute-api.us-east-1.amazonaws.com/prd-initial-auth/` | `https://o5neq91ecd.execute-api.us-east-1.amazonaws.com/prd-cognito-auth/` |
 
 Currently hardcoded to PRD in `Network.swift`.
+
+## Clean Transitions (Loading States)
+
+When reloading a list or applying a filter, **ALWAYS** activate loading BEFORE hiding current content. There must never be a frame where neither the list nor the loading spinner is visible.
+
+### Correct order — Starting a load:
+1. `isLoading = true` — activate loading/spinner
+2. Show the ProgressView (spinner becomes visible)
+3. List/content hides (SwiftUI `if isLoading` branch switches)
+
+### Correct order — Receiving the response:
+1. Update data (`self.exams = ...`, `self.prescriptions = ...`)
+2. `isLoading = false` — spinner hides, list with new data appears
+
+### The anti-pattern to avoid:
+Setting content to empty/nil first, then setting loading to true. In that order, SwiftUI renders an intermediate frame with neither list nor spinner — the user sees a white flash. By setting `isLoading = true` first, the spinner is already visible when the list disappears, making the transition seamless.
+
+This applies to every flow that replaces visible content: filters, refresh, back navigation, deletion, pagination, etc.

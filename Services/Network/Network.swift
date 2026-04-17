@@ -182,6 +182,34 @@ struct Network {
             .serializingResponse(using: .decodable(of: Value.self, decoder: decoder))
             .response
 
+        // 🔎 LOG: Verificar campos de Atributos y Valores 9.7-9.8 en BrandAccount
+        if endpoint.urlString == "get_brand_account_r1" {
+            if let data = response.data, let rawString = String(data: data, encoding: .utf8) {
+                let hasA97 = rawString.contains("Atributo_9_7__c")
+                let hasA98 = rawString.contains("Atributo_9_8__c")
+                let hasV97 = rawString.contains("Valor_9_7__c")
+                let hasV98 = rawString.contains("Valor_9_8__c")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("🔍 [BrandAccount] Verificación campos 9.7-9.8 en RAW JSON")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("   Atributo_9_7__c presente: \(hasA97)")
+                print("   Atributo_9_8__c presente: \(hasA98)")
+                print("   Valor_9_7__c presente: \(hasV97)")
+                print("   Valor_9_8__c presente: \(hasV98)")
+                if hasA97, let range = rawString.range(of: "Atributo_9_7__c") {
+                    let start = rawString.index(range.lowerBound, offsetBy: -1, limitedBy: rawString.startIndex) ?? range.lowerBound
+                    let end = rawString.index(range.upperBound, offsetBy: 80, limitedBy: rawString.endIndex) ?? rawString.endIndex
+                    print("   Contexto Atributo_9_7: ...\(rawString[start..<end])...")
+                }
+                if hasA98, let range = rawString.range(of: "Atributo_9_8__c") {
+                    let start = rawString.index(range.lowerBound, offsetBy: -1, limitedBy: rawString.startIndex) ?? range.lowerBound
+                    let end = rawString.index(range.upperBound, offsetBy: 80, limitedBy: rawString.endIndex) ?? rawString.endIndex
+                    print("   Contexto Atributo_9_8: ...\(rawString[start..<end])...")
+                }
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            }
+        }
+
         // 🔎 LOG DE LA RESPUESTA DEL SERVIDOR
         if endpoint.urlString == "post_completado" || endpoint.urlString.contains("post_") || endpoint.urlString == "function_filter" || endpoint.urlString.contains("function_flows") {
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")

@@ -288,6 +288,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
     @Persisted var atributo94C: String?
     @Persisted var atributo95C: String?
     @Persisted var atributo96C: String?
+    @Persisted var atributo97C: String?
+    @Persisted var atributo98C: String?
+    @Persisted var atributo99C: String?
+    @Persisted var atributo910C: String?
+    @Persisted var atributo911C: String?
+    @Persisted var atributo912C: String?
+    @Persisted var atributo913C: String?
+    @Persisted var atributo914C: String?
+    @Persisted var atributo915C: String?
+    @Persisted var atributo916C: String?
     @Persisted var parametrosFront9C: String?
     @Persisted var valor91C: String?
     @Persisted var valor92C: String?
@@ -682,6 +692,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
         case atributo94C = "Atributo_9_4__c"
         case atributo95C = "Atributo_9_5__c"
         case atributo96C = "Atributo_9_6__c"
+        case atributo97C = "Atributo_9_7__c"
+        case atributo98C = "Atributo_9_8__c"
+        case atributo99C = "Atributo_9_9__c"
+        case atributo910C = "Atributo_9_10__c"
+        case atributo911C = "Atributo_9_11__c"
+        case atributo912C = "Atributo_9_12__c"
+        case atributo913C = "Atributo_9_13__c"
+        case atributo914C = "Atributo_9_14__c"
+        case atributo915C = "Atributo_9_15__c"
+        case atributo916C = "Atributo_9_16__c"
         case parametrosFront9C = "Parametros_Front_9__c"
         case valor91C = "Valor_9_1__c"
         case valor92C = "Valor_9_2__c"

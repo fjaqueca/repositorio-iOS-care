@@ -18,6 +18,8 @@ struct AppView: View {
     @State var iOSVersionApp: Int = 1
     @State var iOSVersionBA: Int = 1
     @State var idAppStore: String = ""
+    @State private var showPostLoginLoading: Bool = false
+    @State private var postLoginLoadingComplete: Bool = false
     var body: some View {
         ZStack{
             if isLoadingBrandAccount{
@@ -143,10 +145,29 @@ struct AppView: View {
     var mainView: some View {
         switch status {
             case .signedIn:
-                MainTabView()
-                    .task {
-                        await AppStatusManager.fetchData()
+                ZStack {
+                    MainTabView()
+
+                    if showPostLoginLoading {
+                        ConvenioLoadingDialog(
+                            isPresented: $showPostLoginLoading,
+                            shouldComplete: $postLoginLoadingComplete
+                        )
+                        .zIndex(100)
+                        .transition(.opacity)
                     }
+                }
+                .animation(.easeInOut(duration: 0.25), value: showPostLoginLoading)
+                .task {
+                    // Mostrar dialog del engranaje durante la carga post-login
+                    // (paridad Android: ProgressBarDialog tras login/registro)
+                    postLoginLoadingComplete = false
+                    showPostLoginLoading = true
+
+                    await AppStatusManager.fetchData()
+
+                    postLoginLoadingComplete = true
+                }
             case .onboarding:
                 OnboardingView()
             case .selectingEnterprise:

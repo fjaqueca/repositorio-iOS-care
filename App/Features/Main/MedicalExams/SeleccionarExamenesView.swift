@@ -17,6 +17,7 @@ struct ExamenItem: Identifiable, Hashable {
     var edadInicio: Int = 0
     var edadFin: Int = 999
     var categoria: String = ""    // Nombre de la categoria de origen
+    var categoriaNum: Int = 0     // Numero de categoria (1-32), para mapear a Campo_(N+5)__c
     var isSelected: Bool = false
     var isInCart: Bool = false     // Ya estaba en el carrito
 }
@@ -60,8 +61,8 @@ struct SeleccionarExamenesView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 4)
 
-                // Subtítulo dinámico desde Salesforce
-                if !seleccionConfig.subtituloTexto.isEmpty {
+                // Subtítulo dinámico desde Salesforce (solo si hay exámenes tras filtrar)
+                if !seleccionConfig.subtituloTexto.isEmpty && !examenes.isEmpty {
                     let subAttr = seleccionConfig.subtituloAttr
                     Text(seleccionConfig.subtituloTexto)
                         .font(Font.custom(
@@ -100,12 +101,10 @@ struct SeleccionarExamenesView: View {
             let textoSin = seleccionConfig.sinExamenesTexto.isEmpty
                 ? "No se encontraron exámenes para seleccionar según género o edad que tienes..."
                 : seleccionConfig.sinExamenesTexto
-            Text(textoSin)
-                .font(Font.custom(
-                    sinAttr.font.isEmpty ? "FiraSans-Bold" : sinAttr.font,
-                    size: CGFloat(Int(sinAttr.size) ?? 18)
-                ))
-                .foregroundColor(Color(hex: sinAttr.color.isEmpty ? "#333F48" : sinAttr.color))
+            let sinFont = sinAttr.font.isEmpty ? "FiraSans-Regular" : sinAttr.font
+            let sinSize = CGFloat(Int(sinAttr.size) ?? 18)
+            let sinColor = Color(hex: sinAttr.color.isEmpty ? "#333F48" : sinAttr.color)
+            parseSalesforceText(textoSin, font: sinFont, size: sinSize, color: sinColor)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
                 .padding(.top, 20)

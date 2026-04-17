@@ -520,6 +520,7 @@ private struct MultiSelectSheetView: View {
             .navigationTitle("Selecciona opciones")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationViewStyle(.stack)
         .applySheetDetentsIfAvailable()
     }
 }

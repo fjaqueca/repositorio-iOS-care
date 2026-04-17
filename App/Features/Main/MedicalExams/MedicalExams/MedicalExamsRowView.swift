@@ -17,6 +17,16 @@ struct MedicalExamsRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var badgeOrdenMedica: BadgeConfig = BadgeConfig()
+    var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
+    var badgeRecetaMedica: BadgeConfig = BadgeConfig()
+    /// Binding propagado desde MedicalExamsView. Lo seteamos a true desde el detalle
+    /// cuando hay upload exitoso, para que la lista se refresque al volver.
+    @Binding var listNeedsRefresh: Bool
+    /// PatientExam asociado a esta orden (cruce por FK calculado en el padre). Si
+    /// es nil → no hay archivos subidos → botón "Subir Examen". Si tiene valor →
+    /// botón "Ver documento enviado". Paridad con el web.
+    var linkedPatientExam: FunctionFilterExamResponse.PatientExams? = nil
 
     private var isItemSelected: Bool {
         isSelected[exam.Id ?? ""] == true
@@ -58,7 +68,27 @@ struct MedicalExamsRowView: View {
 
             // Content area - navigates to detail
             VStack(alignment: .leading, spacing: 8) {
-                Text(exam.Name ?? "Sin nombre")
+                // Badge tipo documento (dinámico desde Salesforce)
+                if let tipo = exam.tipoDocumento {
+                    let badge: BadgeConfig = {
+                        switch tipo {
+                        case .ordenMedica: return badgeOrdenMedica
+                        case .examenAutomatizado: return badgeExamenAutomatizado
+                        case .recetaMedica: return badgeRecetaMedica
+                        }
+                    }()
+                    Text(badge.texto.isEmpty ? tipo.rawValue : badge.texto)
+                        .font(Font.custom(badge.font, size: CGFloat(Int(badge.size) ?? 11)))
+                        .foregroundColor(Color(hex: badge.colorTexto))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(
+                            Capsule()
+                                .fill(Color(hex: badge.colorFondo))
+                        )
+                }
+
+                Text((exam.Name ?? "Sin nombre").uppercased())
                     .font(Font.custom(
                         UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
                         size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
@@ -121,7 +151,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 

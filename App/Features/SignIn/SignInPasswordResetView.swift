@@ -120,7 +120,7 @@ struct SignInPasswordResetView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
 }

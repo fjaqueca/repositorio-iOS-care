@@ -24,7 +24,6 @@ struct MainTabView: View {
     @ObservedResults(User.self) private var users
     @State private var showEmailPhone: Bool = false
     @State var selectedTab: Tab = .home
-    @State private var previousSelectedTab: Tab = .home
     @State private var showMore: Bool = false
     @State private var update: String = ""
     @State private var showPrescriptionsView: Bool = false
@@ -34,6 +33,28 @@ struct MainTabView: View {
     @State var UIStateAppoint: AppointmentUIStateModel = AppointmentUIStateModel()
     @State var selectedColor: String = "#387FC2"
 
+    /// Binding que intercepta la selección de "Más" (lógica Android):
+    /// - "Más" nunca cambia la vista, solo hace toggle del overlay
+    /// - Los demás tabs funcionan normal
+    private var tabSelection: Binding<Tab> {
+        Binding<Tab>(
+            get: { selectedTab },
+            set: { newValue in
+                if newValue == .more {
+                    // Como Android: solo toggle del menú, no cambiar vista
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showMore.toggle()
+                    }
+                } else {
+                    selectedTab = newValue
+                    withAnimation {
+                        showMore = false
+                    }
+                }
+            }
+        )
+    }
+
     var body: some View {
         ZStack{
             if showEmailPhone{
@@ -41,7 +62,7 @@ struct MainTabView: View {
                     ProfileUpdateInformation(isObligatori: $showEmailPhone)
                 }
             }else{
-                TabView(selection: $selectedTab) {
+                TabView(selection: tabSelection) {
                     if UIState.navBar.sectionNameNavbar.home != "No"{
                         HomeView(UIStateAppoint: $UIStateAppoint, UIState: $UIState ,selectedColor: $selectedColor, selectedTab: $selectedTab)
                             .tag(Tab.home)
@@ -77,7 +98,7 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("programs")
                                     })
-                                
+
                                 Text(UIState.navBar.sectionNameNavbar.program != "" ? UIState.navBar.sectionNameNavbar.program : "Programas")
                             }
                     }
@@ -96,8 +117,8 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("agenda")
                                     })
-                                
-                                
+
+
                                 Text(UIState.navBar.sectionNameNavbar.diary != "" ? UIState.navBar.sectionNameNavbar.diary : "Agenda")
                             }
                             .tabBarHidden(false)
@@ -117,7 +138,7 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("gray-profile")
                                     })
-                                
+
                                 Text(UIState.navBar.sectionNameNavbar.profile != "" ? UIState.navBar.sectionNameNavbar.profile : "Perfil")
                             }
                     }
@@ -136,7 +157,7 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("more")
                                     })
-                                
+
                                 Text(UIState.navBar.sectionNameNavbar.more != "" ? UIState.navBar.sectionNameNavbar.more : "Más")
                             }
                     }
@@ -145,24 +166,6 @@ struct MainTabView: View {
                 .accentColor(Color(hex: selectedColor))
                 .onAppear {
                     update = "ForcedUpdate"
-                }
-                .onChange(of: selectedTab) { newValue in
-                    if newValue == .more {
-                        // Restaurar el tab sin animación para evitar parpadeo
-                        UIView.setAnimationsEnabled(false)
-                        selectedTab = previousSelectedTab
-                        UIView.setAnimationsEnabled(true)
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showMore.toggle()
-                        }
-                    } else {
-                        if newValue != previousSelectedTab {
-                            withAnimation {
-                                showMore = false
-                            }
-                        }
-                        previousSelectedTab = newValue
-                    }
                 }
                 .overlay {
                     if showMore {
@@ -174,13 +177,13 @@ struct MainTabView: View {
                 })
                 .fullScreenCover(isPresented: $showPrescriptionsView, content: {
                     PrescriptionsView()
-                    
+
                 })
                 .fullScreenCover(isPresented: $showEducationalMaterialView, content: {
                     EducationalMaterialView()
                 })
             }
-            
+
         }
         .onChange(of: UIState.greetingUIState.text) { _ in
             if (users.first?.records.first?.PersonEmail == nil || users.first?.records.first?.PersonEmail == "") || (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == ""){
@@ -215,7 +218,7 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("exams")
                                     })
-                                
+
                                 Text(UIState.navBar.sectionNameNavbar.exam != "" ? UIState.navBar.sectionNameNavbar.exam : "Exámenes")
                                     .font(.caption2)
                                     .foregroundColor(.gray)
@@ -239,8 +242,8 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("prescriptions")
                                     })
-                                
-                                
+
+
                                 Text(UIState.navBar.sectionNameNavbar.prescription != "" ? UIState.navBar.sectionNameNavbar.prescription : "Recetas")
                                     .font(.caption2)
                                     .foregroundColor(.gray)
@@ -264,7 +267,7 @@ struct MainTabView: View {
                                     placeholder: {
                                         Image("educational-material")
                                     })
-                                
+
                                 Text(UIState.navBar.sectionNameNavbar.material != "" ? UIState.navBar.sectionNameNavbar.material : "Material")
                                     .font(.caption2)
                                     .foregroundColor(.gray)

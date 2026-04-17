@@ -13,6 +13,7 @@ struct PatientExamRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var onDelete: ((String) -> Void)? = nil
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
@@ -31,7 +32,7 @@ struct PatientExamRowView: View {
 
                 // Content
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(exam.nombreDelExamenC ?? "Sin nombre")
+                    Text((exam.nombreDelExamenC ?? "Sin nombre").uppercased())
                         .font(Font.custom(
                             UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
                             size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
@@ -39,6 +40,18 @@ struct PatientExamRowView: View {
                         .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
+
+                    // Badge tipo de documento (Tipo_de_Archivo__c de Salesforce)
+                    // No mostrar badge si el campo viene vacío/null (paridad web)
+                    if let tipoArchivo = exam.tipoArchivoC, !tipoArchivo.isEmpty {
+                        let docType = getDocumentTypeBadge()
+                        Text(docType.label)
+                            .font(Font.custom("FiraSans-Medium", size: 11))
+                            .foregroundColor(Color(hex: docType.textColor))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Capsule().fill(Color(hex: docType.bgColor)))
+                    }
 
                     if let dateStr = exam.CreatedDate, !dateStr.isEmpty {
                         HStack(spacing: 4) {
@@ -70,6 +83,19 @@ struct PatientExamRowView: View {
                 .padding(.vertical, 2)
 
                 Spacer()
+
+                // Delete icon
+                if let examId = exam.Id, !examId.isEmpty {
+                    Button {
+                        onDelete?(examId)
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color(hex: "#ff4d4f"))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.trailing, 8)
+                }
 
                 // Chevron
                 Image(systemName: "chevron.right")
@@ -105,6 +131,35 @@ struct PatientExamRowView: View {
             return outputFormatter.string(from: date)
         } else {
             return "Fecha inválida"
+        }
+    }
+
+    struct DocTypeBadge {
+        let label: String
+        let textColor: String
+        let bgColor: String
+    }
+
+    /// Obtiene el badge de tipo de documento usando `Tipo_de_Archivo__c` directo de Salesforce.
+    /// El string del backend ES el label. El color se busca por key exacta.
+    func getDocumentTypeBadge() -> DocTypeBadge {
+        let tipo = exam.tipoArchivoC ?? ""
+
+        switch tipo {
+        case "Receta Médica":
+            return DocTypeBadge(label: tipo, textColor: "#0183c7", bgColor: "#e6f4ff")
+        case "Examen de Laboratorio":
+            return DocTypeBadge(label: tipo, textColor: "#52c41a", bgColor: "#f0f9eb")
+        case "Examen de Imagen":
+            return DocTypeBadge(label: tipo, textColor: "#722ed1", bgColor: "#f9f0ff")
+        case "Orden de Exámenes":
+            return DocTypeBadge(label: tipo, textColor: "#d46b08", bgColor: "#fff7e6")
+        case "Informe Médico":
+            return DocTypeBadge(label: tipo, textColor: "#13c2c2", bgColor: "#e6fffb")
+        default:
+            // Fallback gris — tipo vacío o desconocido
+            let label = tipo.isEmpty ? "Otros" : tipo
+            return DocTypeBadge(label: label, textColor: "#8c8c8c", bgColor: "#f5f5f5")
         }
     }
 

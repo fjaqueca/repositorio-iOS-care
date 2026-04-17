@@ -102,6 +102,7 @@ struct SingUpOtpUIState{
     var imageBackground: String = ""
     var image: String = ""
     var title: GenericTextUIState = GenericTextUIState()
+    var subtitle: GenericTextUIState = GenericTextUIState()
     var msg: GenericTextUIState = GenericTextUIState()
     var code: GenericTextUIState = GenericTextUIState()
     var btnReSend: GenericTextUIState = GenericTextUIState()
@@ -132,6 +133,7 @@ struct SingInPasswordRecoveryOtpUIState{
     var imageBackground: String = ""
     var image: String = ""
     var title: GenericTextUIState = GenericTextUIState()
+    var subtitle: GenericTextUIState = GenericTextUIState()
     var msg: GenericTextUIState = GenericTextUIState()
     var code: GenericTextUIState = GenericTextUIState()
     var btnReSend: GenericTextUIState = GenericTextUIState()

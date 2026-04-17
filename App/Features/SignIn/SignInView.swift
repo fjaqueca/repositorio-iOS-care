@@ -28,6 +28,7 @@ struct SignInView: View {
     @Environment(\.presentationMode) var presentation
     @State private var navigationInSingUp: NavigationInSignUp?
     @State var codeGenerateResponse: String = ""
+    @State private var userMail: String = ""
     enum NavigationInSignUp {
         case registration(rut: String)
         case validation(rut: String, code: String)
@@ -121,7 +122,7 @@ struct SignInView: View {
                 case let .registration(rut):
                 SignUpFormView(rut: rut, UIState: $UIState, navigation: $navigation)
                 case let .validation(rut, code):
-                SignUpOtpView(rut: rut, recipient: code, navigation: $navigation, UIState: $UIState)
+                SignUpOtpView(rut: rut, recipient: code, mail: userMail, navigation: $navigation, UIState: $UIState)
                 case .emailPhoneForm(rut: let rut):
                     SignUpContactInfoFormView(rut: rut, UIState: $UIState, navigation: $navigation)
                 case .loginWithPassword(rut: let rut):
@@ -173,39 +174,48 @@ struct SignInView: View {
         guard let rut = rutField.value else {
             return
         }
-        
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔑 [SignIn] PASO 1: isUserInSalesforce()")
+        print("   RUT: \(rut)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         FirebaseLogger.shared.log("🔑 Checking RUT in Salesforce")
         AppStatusManager.setLoading(true)
-        
+
         Task {
             let result = await Network.shared.checkRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             AppStatusManager.setLoading(false)
             switch result {
-                case .success:
-                    // TODO: Handle not validate user for now it goes through.
-                
-                print(result)
+                case let .success(response):
+                    userMail = response.mail ?? ""
+
+                print("   ✅ RUT encontrado en Salesforce")
+                print("   📧 mail: \(userMail.isEmpty ? "nil" : userMail)")
+                print("   → Siguiente paso: isUserInCogito()")
                 FirebaseLogger.shared.log("✅ RUT found in Salesforce")
                 isUserInCogito()
-                
-                    
+
+
                 case let .failure(error):
                     if error.httpCode == 404 {
+                        print("   ❌ RUT NO encontrado en Salesforce (404)")
+                        print("   enabledRegister: \"\(UIState.singUpUIState.enabledRegister)\"")
                         FirebaseLogger.shared.log("⚠️ RUT not found in Salesforce (404)")
                         if UIState.singUpUIState.enabledRegister == "Si"{
+                            print("   → Registro habilitado → Navegando a SignUpFormView")
                             self.navigationInSingUp = .registration(rut: rut)
                         }else{
+                                print("   → Registro NO habilitado → Mostrando popup CustomPopupSignUp")
                                 self.showCustomPopup = true
-                                // Registrar popup mostrado
                                 FirebaseLogger.shared.logErrorPopup(
                                     title: "Usuario no encontrado",
                                     message: "El RUT no está registrado",
                                     source: "SignInView"
                                 )
-                            
+
                         }
                     } else {
-                        // 📝 Registrar error en Firebase
+                        print("   ❌ Error checkRut: httpCode=\(error.httpCode ?? -1) message=\(error.message)")
                         FirebaseLogger.shared.logAuthEvent(
                             action: "check_rut_salesforce",
                             success: false,
@@ -220,35 +230,43 @@ struct SignInView: View {
         guard let rut = rutField.value else {
             return
         }
-        
+
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔑 [SignIn] PASO 2: isUserInCogito()")
+        print("   RUT: \(rut)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         FirebaseLogger.shared.log("🔑 Checking RUT in Cognito")
         AppStatusManager.setLoading(true)
-        
+
         Task {
             let result = await Network.shared.checkCognitoRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             AppStatusManager.setLoading(false)
             switch result {
                 case let .success(response):
-                    // TODO: Handle not validate user for now it goes through.
-                
-                print(response)
+
+                print("   ✅ Cognito response:")
+                print("   exists: \(response.exists ?? false)")
+                print("   status: \(response.status ?? "nil")")
+                print("   userData.user_status: \(response.userData?.user_status ?? "nil")")
                 if let exists = response.exists, exists{
+                    print("   → Usuario EXISTE en Cognito → Navegando a loginWithPassword")
                     FirebaseLogger.shared.log("✅ User exists in Cognito")
                     self.navigationInSingUp = .loginWithPassword(rut: rut)
                 } else{
+                    print("   → Usuario NO existe en Cognito → sendOtp()")
                     FirebaseLogger.shared.log("📝 User does not exist in Cognito, sending OTP")
                     sendOtp()
                 }
-                
+
                 case let .failure(error):
-                    // 📝 Registrar error en Firebase
+                    print("   ❌ Error checkCognitoRut: \(error.message)")
                     FirebaseLogger.shared.logAuthEvent(
                         action: "check_rut_cognito",
                         success: false,
                         error: error
                     )
                     AppStatusManager.error(error)
-                    
+
             }
         }
     }
@@ -256,19 +274,29 @@ struct SignInView: View {
         guard let rut = rutField.value else {
             return
         }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔑 [SignIn] PASO 3: sendOtp()")
+        print("   RUT: \(rut)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         AppStatusManager.setLoading(true)
         Task {
             let result = await Network.shared.sendValidationCode(rut: rut.filter { $0.isLetter || $0.isNumber })
             AppStatusManager.setLoading(false)
             switch result {
                 case let .success(value):
+                print("   ✅ OTP enviado exitosamente")
+                print("   recipient: \(value.recipient)")
+                print("   → Mostrando popup CustomPopupCreatePassword")
+                print("   (Este popup dice: 'Ya tiene contraseña, en caso de no recordarla intente restablecerla')")
                 self.codeGenerateResponse = value.recipient
                 self.showCustomPopupCreatePassword = true
                 case let .failure(error):
                     if error.httpCode == 422 {
+                        print("   ⚠️ Error 422 en sendValidationCode → Mostrando popup EmailValidationPopup")
+                        print("   (No se cuenta con email registrado)")
                         self.showPopup = true
-//                        self.navigationInSingUp = .emailPhoneForm(rut: rut)
                     } else {
+                        print("   ❌ Error sendOtp: \(error.message)")
                         AppStatusManager.error(error)
                     }
             }
@@ -300,7 +328,7 @@ struct SignInView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     struct EmailValidationPopup: View {
@@ -347,7 +375,7 @@ struct SignInView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
 
@@ -420,7 +448,7 @@ struct SignInView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 300)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 300)
         }
     }
 

@@ -221,7 +221,7 @@ struct TileObjetcView: View {
                         }
                         .padding()
                     }
-                    .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+                    .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
                     .padding(.trailing) // Mantenemos el padding que usabas antes
                 }
                 .transition(.opacity.combined(with: .scale(scale: 0.95)))
@@ -285,7 +285,7 @@ struct TileObjetcView: View {
 
                         .padding()
                     }
-                    .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+                    .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
                     .padding(.trailing) // Mantenemos el padding lateral de tu versión antigua
                 }
                 .transition(.opacity.combined(with: .scale(scale: 0.9)))

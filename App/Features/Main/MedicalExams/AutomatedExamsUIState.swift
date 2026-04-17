@@ -33,9 +33,12 @@ struct AutomatedExamsUIState {
     // Custom Record - Elemento 8: Color back arrow de toda la sección exámenes
     var backArrowColorSeccion: String = "#00BBDC"
 
-    // Custom Record - Elemento 9: "Seleccionar Todos" en Prescripciones Médicas
+    // Custom Record - Elemento 9: "Seleccionar Todos" + Badges en Prescripciones Médicas
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr = TextExamAttributes()
+    var badgeExamenAutomatizado = BadgeConfig(texto: "Examen automatizado", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#7B61FF")
+    var badgeOrdenMedica = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
+    var badgeRecetaMedica = BadgeConfig(texto: "Receta médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00B894")
 
     // Main Record - Elementos 1-2: Categorias (hasta 32)
     var categorias: [CategoriaExamen] = []
@@ -244,6 +247,15 @@ struct PopupDetalleCarritoConfig {
     var btnCerrar = ButtonExamConfig()
     // Elem 7.12: Color barra scroll
     var colorBarraScroll: String = "#EDEDED"
+}
+
+// MARK: - Badge config para tipos de documento
+struct BadgeConfig {
+    var texto: String = ""
+    var font: String = "FiraSans-Medium"
+    var size: String = "11"
+    var colorTexto: String = "#FFFFFF"
+    var colorFondo: String = "#00BBDC"
 }
 
 // MARK: - Atributos de texto reutilizable

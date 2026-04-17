@@ -11,6 +11,7 @@ struct RutValidateResponse: Codable {
     var statusCode: Int?
     var message: String?
     var error: Bool?
+    var mail: String?
 }
 
 struct RutCognitoValidateResponse: Codable {

@@ -785,6 +785,41 @@ private func loadSeleccionarTodosConfig(from record: BrandAccount, into state: i
         case let attr where attr.contains("AtributosTextoSeleccionarTodasLasOrdenes"):
             state.seleccionarTodosAttr = parseTextAttributes(valor)
             print("      [9.\(i)] ✅ atributos = font:\(state.seleccionarTodosAttr.font) size:\(state.seleccionarTodosAttr.size) color:\(state.seleccionarTodosAttr.color)")
+
+        // Badges
+        case "BadgePrescricionesMedicasExamenAutomatizado":
+            state.badgeExamenAutomatizado.texto = valor
+            print("      [9.\(i)] ✅ badgeExamenAutomatizado.texto = \"\(valor)\"")
+        case let attr where attr.contains("AtributosBadgePrescricionesMedicasExamenAutomatizado"):
+            let parts = valor.replacingOccurrences(of: ",", with: ";").components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeExamenAutomatizado.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.badgeExamenAutomatizado.size = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeExamenAutomatizado.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeExamenAutomatizado.colorFondo = parts[3].trimmingCharacters(in: .whitespaces) }
+            print("      [9.\(i)] ✅ badgeExamenAutomatizado.attr → font:\(state.badgeExamenAutomatizado.font) size:\(state.badgeExamenAutomatizado.size) color:\(state.badgeExamenAutomatizado.colorTexto) fondo:\(state.badgeExamenAutomatizado.colorFondo)")
+
+        case "BadgePrescricionesMedicasOrdenMedica":
+            state.badgeOrdenMedica.texto = valor
+            print("      [9.\(i)] ✅ badgeOrdenMedica.texto = \"\(valor)\"")
+        case let attr where attr.contains("AtributosBadgePrescricionesMedicasOrdenMedica"):
+            let parts = valor.replacingOccurrences(of: ",", with: ";").components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeOrdenMedica.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.badgeOrdenMedica.size = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeOrdenMedica.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeOrdenMedica.colorFondo = parts[3].trimmingCharacters(in: .whitespaces) }
+            print("      [9.\(i)] ✅ badgeOrdenMedica.attr → font:\(state.badgeOrdenMedica.font) size:\(state.badgeOrdenMedica.size) color:\(state.badgeOrdenMedica.colorTexto) fondo:\(state.badgeOrdenMedica.colorFondo)")
+
+        case "BadgePrescricionesMedicasRecetaMedica":
+            state.badgeRecetaMedica.texto = valor
+            print("      [9.\(i)] ✅ badgeRecetaMedica.texto = \"\(valor)\"")
+        case let attr where attr.contains("AtributosBadgePrescricionesMedicasRecetaMedica"):
+            let parts = valor.replacingOccurrences(of: ",", with: ";").components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeRecetaMedica.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.badgeRecetaMedica.size = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeRecetaMedica.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeRecetaMedica.colorFondo = parts[3].trimmingCharacters(in: .whitespaces) }
+            print("      [9.\(i)] ✅ badgeRecetaMedica.attr → font:\(state.badgeRecetaMedica.font) size:\(state.badgeRecetaMedica.size) color:\(state.badgeRecetaMedica.colorTexto) fondo:\(state.badgeRecetaMedica.colorFondo)")
+
         default:
             print("      [9.\(i)] ⚠️ Atributo no reconocido: \"\(atributo)\" valor=\"\(valor)\"")
         }

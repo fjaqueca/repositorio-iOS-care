@@ -12,6 +12,7 @@ import CachedAsyncImage
 struct SignInPasswordRecoveryOtpView: View {
     let rut: String
     let code: CodeGenerateResponse
+    let mail: String
     @State private var isLoading: Bool = false
     @State private var navigation: Navigation?
     @State private var popup: Popup?
@@ -109,10 +110,27 @@ struct SignInPasswordRecoveryOtpView: View {
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("Hemos enviado un código alfanumérico de 6 caracteres a tu email registrado")
-                .font(Font.custom("FiraSans-Regular", size: CGFloat(Int(UIState.singInPasswordRecoveryOtpUIState.msg.sizeText) ?? 16)))
-                .foregroundColor(UIState.singInPasswordRecoveryOtpUIState.msg.colorText != "" ? Color(hex: UIState.singInPasswordRecoveryOtpUIState.msg.colorText) : .primaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            let subAttr = UIState.singInPasswordRecoveryOtpUIState.subtitle
+            let subtitleText = subAttr.text.isEmpty
+                ? "Hemos enviado un código de 6 dígitos a tu email:"
+                : subAttr.text
+            let subFont = subAttr.font.isEmpty ? "FiraSans-Regular" : subAttr.font
+            let subSize = CGFloat(Int(subAttr.sizeText) ?? 16)
+            let subColor: Color = subAttr.colorText.isEmpty ? .primaryText : Color(hex: subAttr.colorText)
+            if mail.isEmpty {
+                Text(subtitleText)
+                    .font(Font.custom(subFont, size: subSize))
+                    .foregroundColor(subColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                (Text(subtitleText + " ")
+                    .font(Font.custom(subFont, size: subSize))
+                    .foregroundColor(subColor)
+                + Text(mail)
+                    .font(Font.custom("FiraSans-Bold", size: subSize))
+                    .foregroundColor(subColor))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             HStack(spacing: 7) {
                 ForEach(0..<6) { index in
                     ZStack {

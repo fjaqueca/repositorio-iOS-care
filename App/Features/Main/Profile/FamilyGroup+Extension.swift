@@ -42,7 +42,7 @@ extension FamilyGroupView{
                     
                 }
             }
-            self.isLoading = false
+            // NOTA: isLoading lo gestiona loadMembers() — este método solo lee config UI de Realm
         }
     }
 }

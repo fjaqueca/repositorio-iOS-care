@@ -2839,6 +2839,60 @@
 		E6FCC7792ACF34F600C9E673 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC7782ACF34F600C9E673 /* Attribute.swift */; };
 		E6FCC77B2ACF418600C9E673 /* Network+SendS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC77A2ACF418600C9E673 /* Network+SendS3.swift */; };
 		E6FCC77D2ACF421F00C9E673 /* SendS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC77C2ACF421F00C9E673 /* SendS3.swift */; };
+		011E3FEFEE74A52FEF1CBEDD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		3FD616021AC00758C17BD0C2 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		1DF6F55737231422C462FE02 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		4D50B6080AC7FEAA92927213 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		5D3B003C82AB728938DDCDA7 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		9DD52637C607BD92C4C16918 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		4759B015E77E2DD99D6AE7DD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		7DA5A6A653957E8CEC5B0AD5 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		7896ECFD6721D79A32C8CA42 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		C90A47645CA2C896F12A840C /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		17A4FAD01AEA46B3F2EE3D77 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		CD35CC66AB40675F86820067 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		9719DBFFD5F97DB8F4F4CC0B /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		1CAB54CB66495D67FA697CA5 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		92000E37C045ECA741043743 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		EC339F29BD9A99ECDF70CEBF /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		0886B03E8AC20DBC8282D587 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		48E01386E8A3FB817712B428 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		BEB76C41399261E2A19BA7A4 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		0A5697CEE5596A357BAD90A2 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		F2632E9C7B04FC2B2DB2E8EC /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		FA104DE7670E7B93A9358A2F /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		44CE4B86067D8E9045D7062F /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		884C3116DE486D2E6A496998 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		CE0C24897CF8766C0D011C26 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		82AFFEC4C051A635D2416199 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		2B85AE6F623504CE6F1FF3AF /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		40A880BA0FEF7441844DF68E /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		1706A3C8A23993FBF069765D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C4264F26F1A1D543EE2355B2 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C0A11AB5FA53F8E6E0722727 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		CAC2B5C34803DA8952A8C9D0 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C49E54AA68E735B172BDFD40 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		565E734F7813F923904DD059 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		68B398FDA3F50B6C62E8113D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		0A8ADFA41D88BA79F75C3710 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		FE52E4D16F8009F0664A7280 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		04D9A3B97050CFD4CDFB783E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		02D95057119C2B609E73415B /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		EC13740EAAB3B9976B5D7CB4 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		2A334CF46EB718809CFCD888 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		91C36CED20987065B700E035 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		6C3B52740789BD05768E8577 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		4CB0444A082291237FAA1F8A /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		2B798DE244C40857417A4D8E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		5955B48E4EB5EEB25C01B0DF /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		21CFC49F5E388EFAC829A03D /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		5CB2D2231D30C2C56D0C8922 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		7757830D5635A39DAA568C39 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		6D167F8F9DE9A649C4855785 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		1CDD796C74C1AE8FE0CD1CDD /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		A9583C4C8DD7192041330974 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		BC34ED97913F3FB40B86E81B /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		83FD688D7D550C54635FAC45 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -3158,6 +3212,12 @@
 		E6FCC7782ACF34F600C9E673 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		E6FCC77A2ACF418600C9E673 /* Network+SendS3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+SendS3.swift"; sourceTree = "<group>"; };
 		E6FCC77C2ACF421F00C9E673 /* SendS3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendS3.swift; sourceTree = "<group>"; };
+		400230464505C8E275169DCC /* Profile+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile+Extension.swift"; sourceTree = "<group>"; };
+		089CA7B6C4ABD182398A154A /* ProfileUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUIState.swift; sourceTree = "<group>"; };
+		A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvenioLoadingDialog.swift; sourceTree = "<group>"; };
+		D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationModal.swift; sourceTree = "<group>"; };
+		E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyGroupMember.swift; sourceTree = "<group>"; };
+		EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+FamilyGroup.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3548,6 +3608,7 @@
 				E6341A9E2A730A34005E6607 /* Task.swift */,
 				E64D58FE2A978CF600B20A6C /* Prescription.swift */,
 				E6FCC7762ACF344300C9E673 /* MedicalExam.swift */,
+				E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */,
 				E6FCC7782ACF34F600C9E673 /* Attribute.swift */,
 				E6FCC77C2ACF421F00C9E673 /* SendS3.swift */,
 				E65F97002B7520A600FAD872 /* EducationalMaterial.swift */,
@@ -3667,6 +3728,8 @@
 				8702546028B38A750038B753 /* HorizontalTileView.swift */,
 				87AD0C70290C4180003C2858 /* CalendarView.swift */,
 				E6A31F402AA289A3008DB90D /* ShareSheet.swift */,
+				D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */,
+				A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */,
 				E6AB328C2AD73B55002A122E /* CameraPickerView.swift */,
 				E6AB328E2AD73BD1002A122E /* CompletionRows.swift */,
 				E6FCB0BB2AE1A71A00C264E1 /* DocumentPickerView.swift */,
@@ -3720,6 +3783,7 @@
 				E6CB453D2A828D6600901C5D /* Network+Activities.swift */,
 				E64D59002A97937800B20A6C /* Network+Prescriptions.swift */,
 				E6FCC7742ACF30EB00C9E673 /* Network+Exams.swift */,
+				EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */,
 				E6FCC77A2ACF418600C9E673 /* Network+SendS3.swift */,
 				E6FCB0BD2AE2E82900C264E1 /* Network+Favorite.swift */,
 				E623A00C2AFAC8DC00ACA31B /* Network+BrandAccount.swift */,
@@ -3875,6 +3939,8 @@
 			isa = PBXGroup;
 			children = (
 				879C5B9B289E17D6005A140D /* ProfileView.swift */,
+				089CA7B6C4ABD182398A154A /* ProfileUIState.swift */,
+				400230464505C8E275169DCC /* Profile+Extension.swift */,
 				87ABA3E328FF52FE00410133 /* ProfileChangePassword.swift */,
 				87F898E6298C66C900EACC02 /* ProfileUpdateInformation.swift */,
 				E66D0C4F2C49BB4D00F50979 /* FamilyGroupView.swift */,
@@ -5282,6 +5348,12 @@
 				7A2F7B562ED8DBA00095661C /* CheckToggleSquareStyle.swift in Sources */,
 				7A2F7B572ED8DBA00095661C /* AppView.swift in Sources */,
 				7A2F7B582ED8DBA00095661C /* AppStatusManager+FavoriteTask.swift in Sources */,
+				011E3FEFEE74A52FEF1CBEDD /* Profile+Extension.swift in Sources */,
+				C90A47645CA2C896F12A840C /* ProfileUIState.swift in Sources */,
+				BEB76C41399261E2A19BA7A4 /* ConvenioLoadingDialog.swift in Sources */,
+				40A880BA0FEF7441844DF68E /* DeleteConfirmationModal.swift in Sources */,
+				FE52E4D16F8009F0664A7280 /* FamilyGroupMember.swift in Sources */,
+				5955B48E4EB5EEB25C01B0DF /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5522,6 +5594,12 @@
 				879269C029F0363A00361152 /* CheckToggleSquareStyle.swift in Sources */,
 				87D3AEEA2897E1AA0089A2C8 /* AppView.swift in Sources */,
 				E67306C22B5585580071DF5C /* AppStatusManager+FavoriteTask.swift in Sources */,
+				3FD616021AC00758C17BD0C2 /* Profile+Extension.swift in Sources */,
+				17A4FAD01AEA46B3F2EE3D77 /* ProfileUIState.swift in Sources */,
+				0A5697CEE5596A357BAD90A2 /* ConvenioLoadingDialog.swift in Sources */,
+				1706A3C8A23993FBF069765D /* DeleteConfirmationModal.swift in Sources */,
+				04D9A3B97050CFD4CDFB783E /* FamilyGroupMember.swift in Sources */,
+				21CFC49F5E388EFAC829A03D /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5762,6 +5840,12 @@
 				E636EFA82BA8C81900A51A87 /* CheckToggleSquareStyle.swift in Sources */,
 				E636EFA92BA8C81900A51A87 /* AppView.swift in Sources */,
 				E636EFAA2BA8C81900A51A87 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				1DF6F55737231422C462FE02 /* Profile+Extension.swift in Sources */,
+				CD35CC66AB40675F86820067 /* ProfileUIState.swift in Sources */,
+				F2632E9C7B04FC2B2DB2E8EC /* ConvenioLoadingDialog.swift in Sources */,
+				C4264F26F1A1D543EE2355B2 /* DeleteConfirmationModal.swift in Sources */,
+				02D95057119C2B609E73415B /* FamilyGroupMember.swift in Sources */,
+				5CB2D2231D30C2C56D0C8922 /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6002,6 +6086,12 @@
 				E643D42B2B7170290058D227 /* CheckToggleSquareStyle.swift in Sources */,
 				E643D42C2B7170290058D227 /* AppView.swift in Sources */,
 				E643D42D2B7170290058D227 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				4D50B6080AC7FEAA92927213 /* Profile+Extension.swift in Sources */,
+				9719DBFFD5F97DB8F4F4CC0B /* ProfileUIState.swift in Sources */,
+				FA104DE7670E7B93A9358A2F /* ConvenioLoadingDialog.swift in Sources */,
+				C0A11AB5FA53F8E6E0722727 /* DeleteConfirmationModal.swift in Sources */,
+				EC13740EAAB3B9976B5D7CB4 /* FamilyGroupMember.swift in Sources */,
+				7757830D5635A39DAA568C39 /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6242,6 +6332,12 @@
 				E64AC5E82D8B04E600B3E521 /* CheckToggleSquareStyle.swift in Sources */,
 				E64AC5E92D8B04E600B3E521 /* AppView.swift in Sources */,
 				E64AC5EA2D8B04E600B3E521 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				5D3B003C82AB728938DDCDA7 /* Profile+Extension.swift in Sources */,
+				1CAB54CB66495D67FA697CA5 /* ProfileUIState.swift in Sources */,
+				44CE4B86067D8E9045D7062F /* ConvenioLoadingDialog.swift in Sources */,
+				CAC2B5C34803DA8952A8C9D0 /* DeleteConfirmationModal.swift in Sources */,
+				2A334CF46EB718809CFCD888 /* FamilyGroupMember.swift in Sources */,
+				6D167F8F9DE9A649C4855785 /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6482,6 +6578,12 @@
 				E68DD8392DB7C8D500307982 /* CheckToggleSquareStyle.swift in Sources */,
 				E68DD83A2DB7C8D500307982 /* AppView.swift in Sources */,
 				E68DD83B2DB7C8D500307982 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				9DD52637C607BD92C4C16918 /* Profile+Extension.swift in Sources */,
+				92000E37C045ECA741043743 /* ProfileUIState.swift in Sources */,
+				884C3116DE486D2E6A496998 /* ConvenioLoadingDialog.swift in Sources */,
+				C49E54AA68E735B172BDFD40 /* DeleteConfirmationModal.swift in Sources */,
+				91C36CED20987065B700E035 /* FamilyGroupMember.swift in Sources */,
+				1CDD796C74C1AE8FE0CD1CDD /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6722,6 +6824,12 @@
 				E69FED312BA47E61002ADADB /* CheckToggleSquareStyle.swift in Sources */,
 				E69FED322BA47E61002ADADB /* AppView.swift in Sources */,
 				E69FED332BA47E61002ADADB /* AppStatusManager+FavoriteTask.swift in Sources */,
+				4759B015E77E2DD99D6AE7DD /* Profile+Extension.swift in Sources */,
+				EC339F29BD9A99ECDF70CEBF /* ProfileUIState.swift in Sources */,
+				CE0C24897CF8766C0D011C26 /* ConvenioLoadingDialog.swift in Sources */,
+				565E734F7813F923904DD059 /* DeleteConfirmationModal.swift in Sources */,
+				6C3B52740789BD05768E8577 /* FamilyGroupMember.swift in Sources */,
+				A9583C4C8DD7192041330974 /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6962,6 +7070,12 @@
 				E6DC59A02B6C089C00EEC341 /* CheckToggleSquareStyle.swift in Sources */,
 				E6DC59A12B6C089C00EEC341 /* AppView.swift in Sources */,
 				E6DC59A22B6C089C00EEC341 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				7DA5A6A653957E8CEC5B0AD5 /* Profile+Extension.swift in Sources */,
+				0886B03E8AC20DBC8282D587 /* ProfileUIState.swift in Sources */,
+				82AFFEC4C051A635D2416199 /* ConvenioLoadingDialog.swift in Sources */,
+				68B398FDA3F50B6C62E8113D /* DeleteConfirmationModal.swift in Sources */,
+				4CB0444A082291237FAA1F8A /* FamilyGroupMember.swift in Sources */,
+				BC34ED97913F3FB40B86E81B /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7202,6 +7316,12 @@
 				E6F66CBB2C9478ED00B0CE60 /* CheckToggleSquareStyle.swift in Sources */,
 				E6F66CBC2C9478ED00B0CE60 /* AppView.swift in Sources */,
 				E6F66CBD2C9478ED00B0CE60 /* AppStatusManager+FavoriteTask.swift in Sources */,
+				7896ECFD6721D79A32C8CA42 /* Profile+Extension.swift in Sources */,
+				48E01386E8A3FB817712B428 /* ProfileUIState.swift in Sources */,
+				2B85AE6F623504CE6F1FF3AF /* ConvenioLoadingDialog.swift in Sources */,
+				0A8ADFA41D88BA79F75C3710 /* DeleteConfirmationModal.swift in Sources */,
+				2B798DE244C40857417A4D8E /* FamilyGroupMember.swift in Sources */,
+				83FD688D7D550C54635FAC45 /* Network+FamilyGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

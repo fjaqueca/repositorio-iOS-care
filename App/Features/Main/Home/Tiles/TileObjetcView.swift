@@ -188,7 +188,7 @@ struct TileObjetcView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     struct LoadingCustomPopup: View {
@@ -211,7 +211,7 @@ struct TileObjetcView: View {
                 }
                 .padding()
             }
-            .frame(width: UIScreen.main.bounds.size.width * 0.9, height: 250)
+            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     private func buildBrandButtons(from brand: BrandAccount) -> [BrandButton] {

@@ -37,7 +37,7 @@ struct SignUpContactInfoFormView: View {
         .ignoresSafeArea(.keyboard)
         .navigationBarTitleDisplayMode(.inline)
         .navigationLink(isActive: $isPresentingOtpView) {
-            SignUpOtpView(rut: rut, recipient: email.value ?? "", navigation: $navigation, UIState: $UIState)
+            SignUpOtpView(rut: rut, recipient: email.value ?? "", mail: email.value ?? "", navigation: $navigation, UIState: $UIState)
         }
     }
     

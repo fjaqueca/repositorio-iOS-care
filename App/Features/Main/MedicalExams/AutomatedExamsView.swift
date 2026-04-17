@@ -1057,6 +1057,12 @@ struct AutomatedExamsView: View {
                     print("   Examenes post-filtro perfil: \(filteredRecords.count)")
 
                     if !filteredRecords.isEmpty {
+                        // Extraer numero de categoria desde claveApi: "Categoria_1__c" → 1
+                        let catNum: Int = {
+                            let digits = salesforceKey.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+                            return Int(digits) ?? 0
+                        }()
+
                         // Convertir a ExamenItem, marcando los que ya estan en carrito
                         examenesCategoria = filteredRecords.map { rec in
                             let isAlreadyInCart = cartItems.contains(where: { $0.codigo == rec.Id })
@@ -1068,6 +1074,7 @@ struct AutomatedExamsView: View {
                                 edadInicio: Int(rec.Edad_Inicio__c ?? "") ?? 0,
                                 edadFin: Int(rec.Edad_Fin__c ?? "") ?? 999,
                                 categoria: categoria.nombre,
+                                categoriaNum: catNum,
                                 isSelected: isAlreadyInCart,
                                 isInCart: isAlreadyInCart
                             )
@@ -1294,24 +1301,18 @@ struct AutomatedExamsView: View {
 
     /// PASO 10: Genera la orden de examenes + busca la orden recien creada
     private func generateExamOrder() {
-        let codes = cartItems.map(\.codigo).joined(separator: ";")
-        guard !codes.isEmpty else {
+        guard !cartItems.isEmpty else {
             print("⚠️ [Paso 10] Carrito vacio, no se genera orden")
             showGenerandoOrden = false
             return
         }
 
-        let emailToUse = editedEmail.isEmpty ? patientEmail : editedEmail
-
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("📤 [Paso 10] GENERAR ORDEN DE EXAMEN")
         print("   AccountId: \(accountId)")
-        print("   Codigos: \(codes)")
-        print("   Email: \(emailToUse)")
-        print("   RUT: \(patientRut)")
         print("   Total items: \(cartItems.count)")
         for (i, item) in cartItems.enumerated() {
-            print("   [\(i)] \"\(item.nombre)\" codigo=\(item.codigo)")
+            print("   [\(i)] \"\(item.nombre)\" codigo=\(item.codigo) categoria=\"\(item.categoria)\" categoriaNum=\(item.categoriaNum)")
         }
         print("🔄 Enviando request (loading minimo \(config.popupCarga.segundosMostrar)s)...")
 
@@ -1320,11 +1321,7 @@ struct AutomatedExamsView: View {
         Task {
             let result = await Network.shared.generateAutomatedExams(
                 accountId: accountId,
-                examCodes: codes,
-                email: emailToUse,
-                rut: patientRut,
-                paisExamen: config.validacion.paisExamen,
-                tipoExamen: config.validacion.tipoExamen
+                cartItems: cartItems
             )
 
             // Asegurar loading minimo configurable desde Salesforce (CantidadSegundosMostrarPopUp)

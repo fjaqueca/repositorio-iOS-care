@@ -49,13 +49,7 @@
 	<key>UIBackgroundModes</key>
 	<array/>
 	<key>UILaunchScreen</key>
-	<dict>
-		<key>UILaunchScreen</key>
-		<dict>
-			<key>SplashView</key>
-			<string></string>
-		</dict>
-	</dict>
+	<dict/>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashView</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>

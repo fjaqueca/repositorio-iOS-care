@@ -821,6 +821,7 @@ struct PickerRow: View {
                     }
                 }
             }
+            .navigationViewStyle(.stack)
             .onAppear {
                 print("🔍 [PickerOptionsSheet] Opciones recibidas: \(options.count)")
                 if !options.isEmpty {
@@ -1105,6 +1106,7 @@ struct UniversalPickerSheet: View {
                 presentationMode.wrappedValue.dismiss()
             })
         }
+        .navigationViewStyle(.stack)
     }
 }
 
