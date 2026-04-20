@@ -109,7 +109,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica)
+                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -141,7 +141,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    PatientExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion)
+                    PatientExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, botonSubirExamenConfig: automatedExamsState.botonSubirExamen, dialogEliminarConfig: automatedExamsState.dialogEliminarExamen)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {

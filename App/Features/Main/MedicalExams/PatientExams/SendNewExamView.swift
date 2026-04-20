@@ -21,6 +21,7 @@ struct SendNewExamView: View {
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     @State private var urlToShare: URL?
     @State var examName: String = ""
     @State var isPublished: Bool = false
@@ -157,14 +158,15 @@ struct SendNewExamView: View {
 
             // Modal de confirmación de eliminación
             if showDeleteConfirmation {
-                DeleteConfirmationModal(
+                ExamDeleteConfirmationModal(
                     onConfirm: {
                         deleteExamFiles()
                     },
                     onCancel: {
                         showDeleteConfirmation = false
                     },
-                    isLoading: deletingLoading
+                    isLoading: deletingLoading,
+                    config: dialogEliminarConfig
                 )
                 .zIndex(50)
                 .transition(.opacity)

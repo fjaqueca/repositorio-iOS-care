@@ -7,6 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011E3FEFEE74A52FEF1CBEDD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		02D95057119C2B609E73415B /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		04D9A3B97050CFD4CDFB783E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		0886B03E8AC20DBC8282D587 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		0A5697CEE5596A357BAD90A2 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		0A8ADFA41D88BA79F75C3710 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		1706A3C8A23993FBF069765D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		17A4FAD01AEA46B3F2EE3D77 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		1CAB54CB66495D67FA697CA5 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		1CDD796C74C1AE8FE0CD1CDD /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		1DF6F55737231422C462FE02 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		21CFC49F5E388EFAC829A03D /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		2A334CF46EB718809CFCD888 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		2B798DE244C40857417A4D8E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		2B85AE6F623504CE6F1FF3AF /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		3FD616021AC00758C17BD0C2 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		40A880BA0FEF7441844DF68E /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		44CE4B86067D8E9045D7062F /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		4759B015E77E2DD99D6AE7DD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		48E01386E8A3FB817712B428 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		4CB0444A082291237FAA1F8A /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		4D50B6080AC7FEAA92927213 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		565E734F7813F923904DD059 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		5955B48E4EB5EEB25C01B0DF /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		5CB2D2231D30C2C56D0C8922 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		5D3B003C82AB728938DDCDA7 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		68B398FDA3F50B6C62E8113D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		6C3B52740789BD05768E8577 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		6D167F8F9DE9A649C4855785 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		7757830D5635A39DAA568C39 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		7896ECFD6721D79A32C8CA42 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
 		7A0676052F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
 		7A0676062F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
 		7A0676072F7C1E480011747C /* ProfileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0676042F7C1E480011747C /* ProfileCache.swift */; };
@@ -34,6 +65,15 @@
 		7A0E390E2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
 		7A0E390F2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
 		7A0E39102F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */; };
+		7A1C7BC42F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BC52F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BC62F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BC72F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BC82F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BC92F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BCA2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BCB2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A1C7BCC2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
 		7A2F7A8C2ED8DBA00095661C /* PrescriptionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67C8F742BBDFB1000FDAA1C /* PrescriptionView+Extension.swift */; };
 		7A2F7A8D2ED8DBA00095661C /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879C5B89289C1973005A140D /* Field.swift */; };
 		7A2F7A8E2ED8DBA00095661C /* VideoCallRoomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FB4F0C29B829E4003EE421 /* VideoCallRoomToolbar.swift */; };
@@ -637,6 +677,15 @@
 		7A9646C62F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9646BF2F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md */; };
 		7A9646C72F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9646BF2F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md */; };
 		7A9646C82F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9646BF2F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md */; };
+		7A9A8B882F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B892F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8A2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8B2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8C2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8D2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8E2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B8F2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
+		7A9A8B902F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */; };
 		7A9CB1272F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9CB1262F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md */; };
 		7A9CB1282F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9CB1262F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md */; };
 		7A9CB1292F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9CB1262F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md */; };
@@ -999,6 +1048,9 @@
 		7AFF3E652F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
 		7AFF3E662F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
 		7AFF3E672F4F9094005A6333 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFF3E5E2F4F9094005A6333 /* FirebaseLogger.swift */; };
+		7DA5A6A653957E8CEC5B0AD5 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		82AFFEC4C051A635D2416199 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		83FD688D7D550C54635FAC45 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
 		8702544C28B372A10038B753 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 8702544B28B372A10038B753 /* Realm */; };
 		8702544E28B372A10038B753 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8702544D28B372A10038B753 /* RealmSwift */; };
 		8702545028B372FD0038B753 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8702544F28B372FD0038B753 /* User.swift */; };
@@ -1145,6 +1197,21 @@
 		87F7BA842A2F97D100DF3BF7 /* AppStatusManager+Promotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F7BA822A2F97D100DF3BF7 /* AppStatusManager+Promotion.swift */; };
 		87F898E7298C66C900EACC02 /* ProfileUpdateInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F898E6298C66C900EACC02 /* ProfileUpdateInformation.swift */; };
 		87FB4F0D29B829E4003EE421 /* VideoCallRoomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FB4F0C29B829E4003EE421 /* VideoCallRoomToolbar.swift */; };
+		884C3116DE486D2E6A496998 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		91C36CED20987065B700E035 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
+		92000E37C045ECA741043743 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		9719DBFFD5F97DB8F4F4CC0B /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		9DD52637C607BD92C4C16918 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
+		A9583C4C8DD7192041330974 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		BC34ED97913F3FB40B86E81B /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
+		BEB76C41399261E2A19BA7A4 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
+		C0A11AB5FA53F8E6E0722727 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C4264F26F1A1D543EE2355B2 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C49E54AA68E735B172BDFD40 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		C90A47645CA2C896F12A840C /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		CAC2B5C34803DA8952A8C9D0 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
+		CD35CC66AB40675F86820067 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		CE0C24897CF8766C0D011C26 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
 		E606D7712D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E606D7702D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift */; };
 		E606D7722D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E606D7702D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift */; };
 		E606D7732D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E606D7702D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift */; };
@@ -2839,66 +2906,20 @@
 		E6FCC7792ACF34F600C9E673 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC7782ACF34F600C9E673 /* Attribute.swift */; };
 		E6FCC77B2ACF418600C9E673 /* Network+SendS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC77A2ACF418600C9E673 /* Network+SendS3.swift */; };
 		E6FCC77D2ACF421F00C9E673 /* SendS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FCC77C2ACF421F00C9E673 /* SendS3.swift */; };
-		011E3FEFEE74A52FEF1CBEDD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		3FD616021AC00758C17BD0C2 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		1DF6F55737231422C462FE02 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		4D50B6080AC7FEAA92927213 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		5D3B003C82AB728938DDCDA7 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		9DD52637C607BD92C4C16918 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		4759B015E77E2DD99D6AE7DD /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		7DA5A6A653957E8CEC5B0AD5 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		7896ECFD6721D79A32C8CA42 /* Profile+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400230464505C8E275169DCC /* Profile+Extension.swift */; };
-		C90A47645CA2C896F12A840C /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		17A4FAD01AEA46B3F2EE3D77 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		CD35CC66AB40675F86820067 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		9719DBFFD5F97DB8F4F4CC0B /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		1CAB54CB66495D67FA697CA5 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		92000E37C045ECA741043743 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
+		EC13740EAAB3B9976B5D7CB4 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
 		EC339F29BD9A99ECDF70CEBF /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		0886B03E8AC20DBC8282D587 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		48E01386E8A3FB817712B428 /* ProfileUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089CA7B6C4ABD182398A154A /* ProfileUIState.swift */; };
-		BEB76C41399261E2A19BA7A4 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		0A5697CEE5596A357BAD90A2 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
 		F2632E9C7B04FC2B2DB2E8EC /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
 		FA104DE7670E7B93A9358A2F /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		44CE4B86067D8E9045D7062F /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		884C3116DE486D2E6A496998 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		CE0C24897CF8766C0D011C26 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		82AFFEC4C051A635D2416199 /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		2B85AE6F623504CE6F1FF3AF /* ConvenioLoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */; };
-		40A880BA0FEF7441844DF68E /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		1706A3C8A23993FBF069765D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		C4264F26F1A1D543EE2355B2 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		C0A11AB5FA53F8E6E0722727 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		CAC2B5C34803DA8952A8C9D0 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		C49E54AA68E735B172BDFD40 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		565E734F7813F923904DD059 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		68B398FDA3F50B6C62E8113D /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
-		0A8ADFA41D88BA79F75C3710 /* DeleteConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */; };
 		FE52E4D16F8009F0664A7280 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		04D9A3B97050CFD4CDFB783E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		02D95057119C2B609E73415B /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		EC13740EAAB3B9976B5D7CB4 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		2A334CF46EB718809CFCD888 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		91C36CED20987065B700E035 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		6C3B52740789BD05768E8577 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		4CB0444A082291237FAA1F8A /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		2B798DE244C40857417A4D8E /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
-		5955B48E4EB5EEB25C01B0DF /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		21CFC49F5E388EFAC829A03D /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		5CB2D2231D30C2C56D0C8922 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		7757830D5635A39DAA568C39 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		6D167F8F9DE9A649C4855785 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		1CDD796C74C1AE8FE0CD1CDD /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		A9583C4C8DD7192041330974 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		BC34ED97913F3FB40B86E81B /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
-		83FD688D7D550C54635FAC45 /* Network+FamilyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		089CA7B6C4ABD182398A154A /* ProfileUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUIState.swift; sourceTree = "<group>"; };
+		400230464505C8E275169DCC /* Profile+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile+Extension.swift"; sourceTree = "<group>"; };
 		7A0676042F7C1E480011747C /* ProfileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCache.swift; sourceTree = "<group>"; };
 		7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIREBASE_LOGGING_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMO_SOLUCIONAR_ERRORES_COMPILACION.md; sourceTree = "<group>"; };
+		7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyGroupUIState.swift; sourceTree = "<group>"; };
 		7A2F7B7F2ED8DBA00095661C /* pruebatam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pruebatam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A2F7B802ED8DBA00095661C /* Premedic copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Premedic copy-Info.plist"; path = "/Users/careassistance/care_assistance_ios/Premedic copy-Info.plist"; sourceTree = "<absolute>"; };
 		7A2F7B812ED8DCB20095661C /* SplashViewPruebaTAM.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashViewPruebaTAM.storyboard; sourceTree = "<group>"; };
@@ -2944,6 +2965,7 @@
 		7A9646AB2F3F97BC009A9483 /* REVIEW_MODE_NAVIGATION_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = REVIEW_MODE_NAVIGATION_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7A9646B52F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIX_RE_ENTRY_LOOP.md; sourceTree = "<group>"; };
 		7A9646BF2F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIX_EMPTY_ACTIVITIES_LIST.md; sourceTree = "<group>"; };
+		7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamDeleteConfirmationModal.swift; sourceTree = "<group>"; };
 		7A9CB1262F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PICKLIST_MULTIPLE_FIX.md; sourceTree = "<group>"; };
 		7A9CB1302F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md; sourceTree = "<group>"; };
 		7A9CB13A2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md; sourceTree = "<group>"; };
@@ -3124,6 +3146,9 @@
 		87F7BA822A2F97D100DF3BF7 /* AppStatusManager+Promotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppStatusManager+Promotion.swift"; sourceTree = "<group>"; };
 		87F898E6298C66C900EACC02 /* ProfileUpdateInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateInformation.swift; sourceTree = "<group>"; };
 		87FB4F0C29B829E4003EE421 /* VideoCallRoomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallRoomToolbar.swift; sourceTree = "<group>"; };
+		A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvenioLoadingDialog.swift; sourceTree = "<group>"; };
+		D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationModal.swift; sourceTree = "<group>"; };
+		E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyGroupMember.swift; sourceTree = "<group>"; };
 		E606D7702D5A87A6007DDBA8 /* Networkl+FunctionFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Networkl+FunctionFilter.swift"; sourceTree = "<group>"; };
 		E606D7772D5A9793007DDBA8 /* FunctionFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionFilter.swift; sourceTree = "<group>"; };
 		E60FBEE52B76607400869F4A /* Network+EducationalMaterial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+EducationalMaterial.swift"; sourceTree = "<group>"; };
@@ -3212,11 +3237,6 @@
 		E6FCC7782ACF34F600C9E673 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		E6FCC77A2ACF418600C9E673 /* Network+SendS3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+SendS3.swift"; sourceTree = "<group>"; };
 		E6FCC77C2ACF421F00C9E673 /* SendS3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendS3.swift; sourceTree = "<group>"; };
-		400230464505C8E275169DCC /* Profile+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile+Extension.swift"; sourceTree = "<group>"; };
-		089CA7B6C4ABD182398A154A /* ProfileUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUIState.swift; sourceTree = "<group>"; };
-		A62C7DDA73D1403EB84EB337 /* ConvenioLoadingDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvenioLoadingDialog.swift; sourceTree = "<group>"; };
-		D4234D92F48C8317DEF2F23F /* DeleteConfirmationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationModal.swift; sourceTree = "<group>"; };
-		E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyGroupMember.swift; sourceTree = "<group>"; };
 		EBF8158C945C19F7AA43157D /* Network+FamilyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+FamilyGroup.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3938,6 +3958,7 @@
 		87D3AEE52897E05B0089A2C8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */,
 				879C5B9B289E17D6005A140D /* ProfileView.swift */,
 				089CA7B6C4ABD182398A154A /* ProfileUIState.swift */,
 				400230464505C8E275169DCC /* Profile+Extension.swift */,
@@ -4042,6 +4063,7 @@
 		E6799D8A2E211A0A00871886 /* PatientExams */ = {
 			isa = PBXGroup;
 			children = (
+				7A9A8B872F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift */,
 				E6799D8B2E211B0200871886 /* PatientExamsView.swift */,
 				E6799D942E21475800871886 /* PatientExamRowView.swift */,
 				E6799D9D2E21A62B00871886 /* SendNewExamView.swift */,
@@ -5152,6 +5174,7 @@
 				7A2F7AA82ED8DBA00095661C /* Environment+CustomKeys.swift in Sources */,
 				7A2F7AA92ED8DBA00095661C /* Network+JWT.swift in Sources */,
 				7A2F7AAA2ED8DBA00095661C /* AppointmentRowView.swift in Sources */,
+				7A9A8B8B2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				7A2F7AAB2ED8DBA00095661C /* ProgramsView.swift in Sources */,
 				7A2F7AAC2ED8DBA00095661C /* Network+Exams.swift in Sources */,
 				7A2F7AAD2ED8DBA00095661C /* CGFloat+Constants.swift in Sources */,
@@ -5244,6 +5267,7 @@
 				7A2F7AF62ED8DBA00095661C /* Appointment.swift in Sources */,
 				7A2F7AF72ED8DBA00095661C /* AppointmentUIStateModel.swift in Sources */,
 				7A6319E92F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BCB2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				7A2F7AF82ED8DBA00095661C /* Beneficiary.swift in Sources */,
 				7A2F7AF92ED8DBA00095661C /* View+Navigation.swift in Sources */,
 				7A9001B92F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -5398,6 +5422,7 @@
 				87ABA3E028FEDF4100410133 /* Environment+CustomKeys.swift in Sources */,
 				87097C5A28E33ADB004C2DF0 /* Network+JWT.swift in Sources */,
 				87F2284828B7FB8D0031199F /* AppointmentRowView.swift in Sources */,
+				7A9A8B8E2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				879269B629F0360300361152 /* ProgramsView.swift in Sources */,
 				E6FCC7752ACF30EB00C9E673 /* Network+Exams.swift in Sources */,
 				87D3AEF22897E9AA0089A2C8 /* CGFloat+Constants.swift in Sources */,
@@ -5490,6 +5515,7 @@
 				8702545628B37B120038B753 /* Appointment.swift in Sources */,
 				E6B83D602C066C65001B3666 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319EC2F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC52F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				8729FA41295B22AE0042B5C0 /* Beneficiary.swift in Sources */,
 				879C5B94289D6232005A140D /* View+Navigation.swift in Sources */,
 				7A9001BC2F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -5644,6 +5670,7 @@
 				E636EF152BA8C81900A51A87 /* Network+JWT.swift in Sources */,
 				E636EF162BA8C81900A51A87 /* AppointmentRowView.swift in Sources */,
 				E636EF172BA8C81900A51A87 /* ProgramsView.swift in Sources */,
+				7A9A8B902F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E636EF182BA8C81900A51A87 /* Network+Exams.swift in Sources */,
 				E636EF192BA8C81900A51A87 /* CGFloat+Constants.swift in Sources */,
 				E636EF1A2BA8C81900A51A87 /* AppStatusManager.swift in Sources */,
@@ -5736,6 +5763,7 @@
 				E636EF582BA8C81900A51A87 /* Beneficiary.swift in Sources */,
 				E6B83D642C066C65001B3666 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319EB2F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC42F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E636EF592BA8C81900A51A87 /* View+Navigation.swift in Sources */,
 				E636EF5A2BA8C81900A51A87 /* Network+Profile.swift in Sources */,
 				7A9001B72F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -5890,6 +5918,7 @@
 				E643D39B2B7170290058D227 /* Environment+CustomKeys.swift in Sources */,
 				E643D39C2B7170290058D227 /* Network+JWT.swift in Sources */,
 				E643D39D2B7170290058D227 /* AppointmentRowView.swift in Sources */,
+				7A9A8B892F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E643D39E2B7170290058D227 /* ProgramsView.swift in Sources */,
 				E643D39F2B7170290058D227 /* Network+Exams.swift in Sources */,
 				E643D3A02B7170290058D227 /* CGFloat+Constants.swift in Sources */,
@@ -5982,6 +6011,7 @@
 				E643D3DD2B7170290058D227 /* Appointment.swift in Sources */,
 				E6B83D622C066C65001B3666 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319E82F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC92F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E643D3DE2B7170290058D227 /* Beneficiary.swift in Sources */,
 				E643D3DF2B7170290058D227 /* View+Navigation.swift in Sources */,
 				7A9001B62F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -6136,6 +6166,7 @@
 				E64AC5472D8B04E600B3E521 /* Environment+CustomKeys.swift in Sources */,
 				E64AC5482D8B04E600B3E521 /* Network+JWT.swift in Sources */,
 				E64AC5492D8B04E600B3E521 /* AppointmentRowView.swift in Sources */,
+				7A9A8B8F2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E64AC54A2D8B04E600B3E521 /* ProgramsView.swift in Sources */,
 				E64AC54B2D8B04E600B3E521 /* Network+Exams.swift in Sources */,
 				E64AC54C2D8B04E600B3E521 /* CGFloat+Constants.swift in Sources */,
@@ -6228,6 +6259,7 @@
 				E64AC5922D8B04E600B3E521 /* Appointment.swift in Sources */,
 				E64AC5932D8B04E600B3E521 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319EA2F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC62F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E64AC5942D8B04E600B3E521 /* Beneficiary.swift in Sources */,
 				E64AC5952D8B04E600B3E521 /* View+Navigation.swift in Sources */,
 				7A9001BB2F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -6382,6 +6414,7 @@
 				E68DD7942DB7C8D500307982 /* Environment+CustomKeys.swift in Sources */,
 				E68DD7952DB7C8D500307982 /* Network+JWT.swift in Sources */,
 				E68DD7962DB7C8D500307982 /* AppointmentRowView.swift in Sources */,
+				7A9A8B8C2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E68DD7972DB7C8D500307982 /* ProgramsView.swift in Sources */,
 				E68DD7982DB7C8D500307982 /* Network+Exams.swift in Sources */,
 				E68DD7992DB7C8D500307982 /* CGFloat+Constants.swift in Sources */,
@@ -6474,6 +6507,7 @@
 				E68DD7E02DB7C8D500307982 /* Appointment.swift in Sources */,
 				E68DD7E12DB7C8D500307982 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319ED2F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BCA2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E68DD7E22DB7C8D500307982 /* Beneficiary.swift in Sources */,
 				E68DD7E32DB7C8D500307982 /* View+Navigation.swift in Sources */,
 				7A9001B82F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -6628,6 +6662,7 @@
 				E69FEC9E2BA47E61002ADADB /* Network+JWT.swift in Sources */,
 				E69FEC9F2BA47E61002ADADB /* AppointmentRowView.swift in Sources */,
 				E69FECA02BA47E61002ADADB /* ProgramsView.swift in Sources */,
+				7A9A8B882F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E69FECA12BA47E61002ADADB /* Network+Exams.swift in Sources */,
 				E69FECA22BA47E61002ADADB /* CGFloat+Constants.swift in Sources */,
 				E69FECA32BA47E61002ADADB /* AppStatusManager.swift in Sources */,
@@ -6720,6 +6755,7 @@
 				E69FECE12BA47E61002ADADB /* Beneficiary.swift in Sources */,
 				E6B83D632C066C65001B3666 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319E52F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC82F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E69FECE22BA47E61002ADADB /* View+Navigation.swift in Sources */,
 				E69FECE32BA47E61002ADADB /* Network+Profile.swift in Sources */,
 				7A9001B42F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -6874,6 +6910,7 @@
 				E6DC59102B6C089C00EEC341 /* Environment+CustomKeys.swift in Sources */,
 				E6DC59112B6C089C00EEC341 /* Network+JWT.swift in Sources */,
 				E6DC59122B6C089C00EEC341 /* AppointmentRowView.swift in Sources */,
+				7A9A8B8A2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E6DC59132B6C089C00EEC341 /* ProgramsView.swift in Sources */,
 				E6DC59142B6C089C00EEC341 /* Network+Exams.swift in Sources */,
 				E6DC59152B6C089C00EEC341 /* CGFloat+Constants.swift in Sources */,
@@ -6966,6 +7003,7 @@
 				E6DC59522B6C089C00EEC341 /* Appointment.swift in Sources */,
 				E6B83D612C066C65001B3666 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319E72F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BC72F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E6DC59532B6C089C00EEC341 /* Beneficiary.swift in Sources */,
 				E6DC59542B6C089C00EEC341 /* View+Navigation.swift in Sources */,
 				7A9001BA2F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -7120,6 +7158,7 @@
 				E6F66C202C9478ED00B0CE60 /* Environment+CustomKeys.swift in Sources */,
 				E6F66C212C9478ED00B0CE60 /* Network+JWT.swift in Sources */,
 				E6F66C222C9478ED00B0CE60 /* AppointmentRowView.swift in Sources */,
+				7A9A8B8D2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
 				E6F66C232C9478ED00B0CE60 /* ProgramsView.swift in Sources */,
 				E6F66C242C9478ED00B0CE60 /* Network+Exams.swift in Sources */,
 				E6F66C252C9478ED00B0CE60 /* CGFloat+Constants.swift in Sources */,
@@ -7212,6 +7251,7 @@
 				E6F66C672C9478ED00B0CE60 /* Appointment.swift in Sources */,
 				E6F66C682C9478ED00B0CE60 /* AppointmentUIStateModel.swift in Sources */,
 				7A6319E62F631B9000F6A38B /* Date+AppointmentTime.swift in Sources */,
+				7A1C7BCC2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */,
 				E6F66C692C9478ED00B0CE60 /* Beneficiary.swift in Sources */,
 				E6F66C6A2C9478ED00B0CE60 /* View+Navigation.swift in Sources */,
 				7A9001B52F43A46400993F1D /* LoadingStandardizationExample.swift in Sources */,
@@ -7763,6 +7803,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8219,6 +8260,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8256,6 +8298,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8361,6 +8404,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8502,6 +8546,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8853,6 +8898,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -9854,6 +9900,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -10390,6 +10437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -10602,6 +10650,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -11238,6 +11287,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -11520,6 +11570,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CODE_SIGN_ENTITLEMENTS = CareAssistance.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -193,7 +193,7 @@ extension ExamsView {
             print("╔══════════════════════════════════════════════════════════════╗")
             print("║  DUMP COMPLETO: Record Name='ExamenesAutomatizadosCustom'   ║")
             print("╚══════════════════════════════════════════════════════════════╝")
-            for elemIdx in 1...10 {
+            for elemIdx in 1...11 {
                 guard let nombreElem = custom.getNombreElemento(elemIdx) else { continue }
                 print("┌─ Elemento \(elemIdx): Nombre=\"\(nombreElem)\"")
                 for fieldIdx in 1...16 {
@@ -260,6 +260,11 @@ extension ExamsView {
             print("   🔙 BackArrowColorSeccion (Elemento 8): \(state.backArrowColorSeccion)")
             loadSeleccionarTodosConfig(from: custom, into: &state)
             print("   ✅ SeleccionarTodos (Elemento 9): texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
+            loadSeccionMisArchivosDeSalud(from: custom, into: &state)
+            print("   📂 SeccionMisArchivosDeSalud (Elemento 10): botonSubirExamen texto=\"\(state.botonSubirExamen.texto)\" colorTexto=\(state.botonSubirExamen.colorTexto) colorFondo=\(state.botonSubirExamen.colorFondo)")
+            loadDialogEliminarExamen(from: custom, into: &state)
+            let dlg = state.dialogEliminarExamen
+            print("   🗑️ DialogEliminarExamen (Elemento 11): titulo=\"\(dlg.titulo)\" descripcion=\"\(dlg.descripcion.prefix(60))\" btnAceptar=\"\(dlg.botonAceptar.texto)\" btnCancelar=\"\(dlg.botonCancelar.texto)\"")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom' NO encontrado")
         }
@@ -826,6 +831,57 @@ private func loadSeleccionarTodosConfig(from record: BrandAccount, into state: i
     }
     print("   📊 RESULTADO FINAL: texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
+// MARK: - Elemento 10: SeccionMisArchivosDeSalud
+
+private func loadSeccionMisArchivosDeSalud(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 10, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 10, field: i) ?? ""
+
+        switch atributo {
+        case "BotonSubirExamen(Texto;ColorTexto;ColorFondo)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.botonSubirExamen.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.botonSubirExamen.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.botonSubirExamen.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Elemento 11: DialogEliminarExamenSubido
+
+private func loadDialogEliminarExamen(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 11, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 11, field: i) ?? ""
+
+        switch atributo {
+        case "TituloDialogEliminarMiExamen":
+            state.dialogEliminarExamen.titulo = valor
+
+        case "AtributosTituloDialogEliminarMiExamen(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarExamen.tituloAttr = parseTextAttributes(valor)
+
+        case "DescripcionDialogEliminarMiExamen":
+            state.dialogEliminarExamen.descripcion = valor
+
+        case "AtributosDescripcionDialogEliminarMiExamen(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarExamen.descripcionAttr = parseTextAttributes(valor)
+
+        case "BotonAceptarDialogEliminarMiExamen(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarExamen.botonAceptar = parseButton3(valor)
+
+        case "BotonCancelarDialogEliminarMiExamen(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarExamen.botonCancelar = parseButton3(valor)
+
+        default:
+            break
+        }
+    }
 }
 
 // MARK: - Main Record Parsers

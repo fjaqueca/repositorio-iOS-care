@@ -13,7 +13,8 @@ struct FamilyGroupView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedResults(User.self) private var users
     @ObservedResults(BrandAccounts.self) var items
-    @State var UIState: PreLoginUIState = PreLoginUIState()
+    @State var preLoginState: PreLoginUIState = PreLoginUIState()
+    @State var fgConfig = FamilyGroupUIState()
     @State var isLoading: Bool = true
     @State private var selectedEnterprise: CompanyAgreementR? = AppStatusManager.selectedEnterprise
 
@@ -122,6 +123,7 @@ struct FamilyGroupView: View {
                 if isLoading {
                     Spacer()
                     ProgressView()
+                        .tint(Color(hex: fgConfig.seccionPrincipal.colorSpinner.isEmpty ? "#00BBDC" : fgConfig.seccionPrincipal.colorSpinner))
                         .scaleEffect(1.1)
                     Spacer()
                 } else {
@@ -182,6 +184,7 @@ struct FamilyGroupView: View {
         .onAppear {
             isLoading = true
             loadUIState()
+            fgConfig = loadFamilyGroupConfig()
             logFamilyGroupState()
             loadMembers()
         }
@@ -189,25 +192,17 @@ struct FamilyGroupView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Grupo Familiar")
-                    .font(Font.custom("FiraSans-Bold", size: 21))
-                    .foregroundColor(Color(hex: "#00BBDC"))
+                toolbarTitle
             }
             ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    presentation.wrappedValue.dismiss()
-                } label: {
-                    Image("back")
-                        .renderingMode(.template)
-                        .foregroundColor(Color(hex: "#00BBDC"))
-                }
+                toolbarBackButton
             }
         }
         .background(
             Group {
-                if UIState.singUpFormUIState.imageBackground != "" {
+                if preLoginState.singUpFormUIState.imageBackground != "" {
                     CachedAsyncImage(
-                        url: URL(string: UIState.singUpFormUIState.imageBackground),
+                        url: URL(string: preLoginState.singUpFormUIState.imageBackground),
                         content: { image in
                             image.resizable().edgesIgnoringSafeArea(.all).aspectRatio(contentMode: .fill)
                         },
@@ -224,10 +219,18 @@ struct FamilyGroupView: View {
     // ══════════════════════════════════════════════════════
 
     private var memberListView: some View {
-        VStack(spacing: 0) {
-            Text("Aquí tienes la lista de cargas disponibles, puedes modificar los datos en cualquier momento:")
-                .font(Font.custom("FiraSans-Regular", size: 14))
-                .foregroundColor(Color(hex: "#555555"))
+        let dAttr = fgConfig.seccionPrincipal.descripcionAttr
+        let btnAddCfg = fgConfig.seccionPrincipal.botonAgregar
+
+        return VStack(spacing: 0) {
+            Text(fgConfig.seccionPrincipal.descripcion.isEmpty
+                 ? "Aquí tienes la lista de cargas disponibles, puedes modificar los datos en cualquier momento:"
+                 : fgConfig.seccionPrincipal.descripcion)
+                .font(Font.custom(
+                    dAttr.font.isEmpty ? "FiraSans-Regular" : dAttr.font,
+                    size: CGFloat(Int(dAttr.size) ?? 14)
+                ))
+                .foregroundColor(Color(hex: dAttr.color.isEmpty ? "#555555" : dAttr.color))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, .margin)
                 .padding(.top, 16)
@@ -268,15 +271,15 @@ struct FamilyGroupView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 16))
-                        Text("Agregar Carga")
+                        Text(btnAddCfg.texto.isEmpty ? "Agregar Carga" : btnAddCfg.texto)
                             .font(Font.custom("FiraSans-Bold", size: 15))
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(hex: btnAddCfg.colorTexto.isEmpty ? "#FFFFFF" : btnAddCfg.colorTexto))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 13)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(hex: "#00BBDC"))
+                            .fill(Color(hex: btnAddCfg.colorFondo.isEmpty ? "#00BBDC" : btnAddCfg.colorFondo))
                     )
                 }
                 .padding(.horizontal, .margin)
@@ -287,29 +290,23 @@ struct FamilyGroupView: View {
 
     // MARK: - Member Card
     private func memberCard(member: FamilyGroupMember, index: Int) -> some View {
-        HStack(spacing: 14) {
-            // Avatar con iniciales
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "#0095B3"), Color(hex: "#00BBDC"), Color(hex: "#33CFEA")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 46, height: 46)
+        let nAttr = fgConfig.seccionPrincipal.nombresAttr
+        let editColor = fgConfig.seccionPrincipal.colorIconoEditar
+        let deleteColor = fgConfig.seccionPrincipal.colorIconoEliminar
+        let avatarBg = fgConfig.fondoAvatar.colorFondoAvatar
 
-                Text(member.initials)
-                    .font(Font.custom("FiraSans-Bold", size: 17))
-                    .foregroundColor(.white)
-            }
+        return HStack(spacing: 14) {
+            // Avatar: icono dinámico o iniciales como fallback
+            memberAvatar(member: member, size: 46)
 
             // Info
             VStack(alignment: .leading, spacing: 3) {
                 Text(member.fullName)
-                    .font(Font.custom("FiraSans-Bold", size: 15))
-                    .foregroundColor(Color(hex: "#333333"))
+                    .font(Font.custom(
+                        nAttr.font.isEmpty ? "FiraSans-Bold" : nAttr.font,
+                        size: CGFloat(Int(nAttr.size) ?? 15)
+                    ))
+                    .foregroundColor(Color(hex: nAttr.color.isEmpty ? "#333333" : nAttr.color))
                     .lineLimit(1)
 
                 if !member.email.isEmpty {
@@ -334,9 +331,9 @@ struct FamilyGroupView: View {
             } label: {
                 Image(systemName: "pencil")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "#00BBDC"))
+                    .foregroundColor(Color(hex: editColor.isEmpty ? "#00BBDC" : editColor))
                     .frame(width: 36, height: 36)
-                    .background(Color(hex: "#E6F9FC"))
+                    .background(Color(hex: avatarBg.isEmpty ? "#E6F9FC" : avatarBg))
                     .cornerRadius(8)
             }
             .buttonStyle(.plain)
@@ -347,9 +344,9 @@ struct FamilyGroupView: View {
             } label: {
                 Image(systemName: "trash")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "#FF4D4F"))
+                    .foregroundColor(Color(hex: deleteColor.isEmpty ? "#FF4D4F" : deleteColor))
                     .frame(width: 36, height: 36)
-                    .background(Color(hex: "#FFF1F0"))
+                    .background(Color(hex: avatarBg.isEmpty ? "#FFF1F0" : avatarBg))
                     .cornerRadius(8)
             }
             .buttonStyle(.plain)
@@ -368,32 +365,43 @@ struct FamilyGroupView: View {
 
     // MARK: - Empty State
     private var emptyStateView: some View {
-        VStack(spacing: 20) {
-            Spacer().frame(height: 40)
+        let esAttr = fgConfig.seccionPrincipal.textoSinCargasAttr
+        let esIconUrl = fgConfig.seccionPrincipal.iconoSinCargas
 
-            ZStack {
-                Circle()
-                    .stroke(Color(hex: "#E0E0E0"), lineWidth: 1.5)
-                    .frame(width: 80, height: 80)
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 34, weight: .light))
-                    .foregroundColor(Color(hex: "#BDBDBD"))
-                    .overlay(
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(Color(hex: "#BDBDBD"))
-                            .offset(x: 8, y: -8),
-                        alignment: .topTrailing
-                    )
+        return VStack(spacing: 16) {
+            Spacer().frame(height: 20)
+
+            if !esIconUrl.isEmpty, let url = URL(string: esIconUrl) {
+                CachedAsyncImage(
+                    url: url,
+                    content: { image in
+                        image.resizable().scaledToFit().frame(width: 70, height: 70)
+                    },
+                    placeholder: {
+                        ProgressView().frame(width: 70, height: 70)
+                    }
+                )
+            } else {
+                ZStack {
+                    Circle()
+                        .stroke(Color(hex: "#E0E0E0"), lineWidth: 1.5)
+                        .frame(width: 70, height: 70)
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 30, weight: .light))
+                        .foregroundColor(Color(hex: "#BDBDBD"))
+                }
             }
 
-            Text("No se encontraron cargas asociadas a tu usuario y esta empresa...")
-                .font(Font.custom("FiraSans-Regular", size: 14))
-                .foregroundColor(Color(hex: "#777777"))
+            Text(fgConfig.seccionPrincipal.textoSinCargas.isEmpty
+                 ? "No se encontraron cargas asociadas a tu usuario y esta empresa..."
+                 : fgConfig.seccionPrincipal.textoSinCargas)
+                .font(Font.custom(
+                    esAttr.font.isEmpty ? "FiraSans-Regular" : esAttr.font,
+                    size: CGFloat(Int(esAttr.size) ?? 14)
+                ))
+                .foregroundColor(Color(hex: esAttr.color.isEmpty ? "#777777" : esAttr.color))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
-
-            Spacer()
         }
         .frame(maxWidth: .infinity)
     }
@@ -403,7 +411,10 @@ struct FamilyGroupView: View {
     // ══════════════════════════════════════════════════════
 
     private var addMemberModal: some View {
-        ZStack {
+        let agCfg = fgConfig.seccionAgregar
+        let agTAttr = agCfg.tituloAttr
+
+        return ZStack {
             Color.black.opacity(0.35)
                 .ignoresSafeArea()
                 .onTapGesture {
@@ -413,9 +424,12 @@ struct FamilyGroupView: View {
             VStack(spacing: 0) {
                 // Header — título centrado, botón X a la derecha
                 ZStack {
-                    Text("Agregar Carga")
-                        .font(Font.custom("FiraSans-Bold", size: 16))
-                        .foregroundColor(Color(hex: "#333333"))
+                    Text(agCfg.titulo.isEmpty ? "Agregar Carga" : agCfg.titulo)
+                        .font(Font.custom(
+                            agTAttr.font.isEmpty ? "FiraSans-Bold" : agTAttr.font,
+                            size: CGFloat(Int(agTAttr.size) ?? 16)
+                        ))
+                        .foregroundColor(Color(hex: agTAttr.color.isEmpty ? "#333333" : agTAttr.color))
                         .frame(maxWidth: .infinity, alignment: .center)
                     HStack {
                         Spacer()
@@ -444,7 +458,7 @@ struct FamilyGroupView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         // RUT: solo alfanuméricos UPPERCASE, max 25
                         transformedEditField(
-                            label: "RUT *",
+                            label: fgAddLabel(0, fallback: "RUT") + " *",
                             text: $addRut,
                             error: $addRutError,
                             maxLength: 25,
@@ -453,7 +467,7 @@ struct FamilyGroupView: View {
 
                         // Nombre: Title Case, trim en blur
                         transformedEditField(
-                            label: "Nombre *",
+                            label: fgAddLabel(2, fallback: "Nombre") + " *",
                             text: $addName,
                             error: $addNameError,
                             transform: { titleCase($0) },
@@ -462,7 +476,7 @@ struct FamilyGroupView: View {
 
                         // Apellido: Title Case, trim en blur
                         transformedEditField(
-                            label: "Apellido *",
+                            label: fgAddLabel(3, fallback: "Apellido") + " *",
                             text: $addLastName,
                             error: $addLastNameError,
                             transform: { titleCase($0) },
@@ -471,7 +485,7 @@ struct FamilyGroupView: View {
 
                         // Fecha de nacimiento
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Fecha de nacimiento *")
+                            Text(fgAddLabel(4, fallback: "Fecha de Nacimiento") + " *")
                                 .font(Font.custom("FiraSans-Medium", size: 13))
                                 .foregroundColor(Color(hex: "#555555"))
                             Button {
@@ -483,7 +497,7 @@ struct FamilyGroupView: View {
                                         .foregroundColor(addBirthdate == nil ? .gray.opacity(0.5) : Color(hex: "#333333"))
                                     Spacer()
                                     Image(systemName: "calendar")
-                                        .foregroundColor(Color(hex: "#00BBDC"))
+                                        .foregroundColor(Color(hex: fgConfig.seccionAgregar.colorIconoCalendario.isEmpty ? "#00BBDC" : fgConfig.seccionAgregar.colorIconoCalendario))
                                 }
                                 .padding(10)
                                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(
@@ -501,7 +515,7 @@ struct FamilyGroupView: View {
 
                         // Email: lowercased, trim en blur. Deshabilitado si menor.
                         transformedEditField(
-                            label: addIsMinor ? "Correo (del titular)" : "Email *",
+                            label: addIsMinor ? "\(fgAddLabel(5, fallback: "Correo Electrónico")) (del titular)" : fgAddLabel(5, fallback: "Correo Electrónico") + " *",
                             text: $addEmail,
                             error: $addEmailError,
                             keyboard: .emailAddress,
@@ -512,7 +526,7 @@ struct FamilyGroupView: View {
 
                         // Teléfono: solo dígitos, max 12, trim en blur. Deshabilitado si menor.
                         transformedEditField(
-                            label: addIsMinor ? "Teléfono (del titular)" : "Teléfono *",
+                            label: addIsMinor ? "\(fgAddLabel(6, fallback: "Teléfono")) (del titular)" : fgAddLabel(6, fallback: "Teléfono") + " *",
                             text: $addPhone,
                             error: $addPhoneError,
                             keyboard: .phonePad,
@@ -530,47 +544,7 @@ struct FamilyGroupView: View {
                 Divider()
 
                 // Footer con botones
-                HStack(spacing: 12) {
-                    Button {
-                        if !isAddLoading { closeAddModal() }
-                    } label: {
-                        Text("Cancelar")
-                            .font(Font.custom("FiraSans-Bold", size: 15))
-                            .foregroundColor(Color(hex: "#555555"))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(RoundedRectangle(cornerRadius: 25).fill(Color.white))
-                            .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(isAddLoading)
-
-                    Button {
-                        registerUser()
-                    } label: {
-                        ZStack {
-                            Text("Agregar")
-                                .font(Font.custom("FiraSans-Bold", size: 15))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .fill(isAddFormValid ? Color(hex: "#00BBDC") : Color.gray.opacity(0.4))
-                                )
-                                .opacity(isAddLoading ? 0.5 : 1.0)
-                            if isAddLoading {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                    .scaleEffect(0.8)
-                            }
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(!isAddFormValid || isAddLoading)
-                }
-                .padding(.horizontal, 18)
-                .padding(.vertical, 14)
+                addModalFooter
             }
             .frame(maxWidth: 420)
             .background(RoundedRectangle(cornerRadius: 24).fill(Color.white))
@@ -587,9 +561,14 @@ struct FamilyGroupView: View {
 
     // DatePicker popup específico del add (fecha opcional + no futuras)
     private var addDatePickerPopup: some View {
-        VStack {
+        let cal = fgConfig.seccionAgregar.coloresCalendario
+        let accentHex = cal.colorFondoSeleccion.isEmpty ? "#7F35B2" : cal.colorFondoSeleccion
+        let titleHex = cal.colorMes.isEmpty ? "#3A3A3A" : cal.colorMes
+
+        return VStack {
             HStack {
                 Text("Fecha de nacimiento")
+                    .foregroundColor(Color(hex: titleHex))
                 Spacer()
                 Button {
                     addShowCalendar = false
@@ -600,7 +579,7 @@ struct FamilyGroupView: View {
                 } label: {
                     Text("Aceptar")
                         .font(.appBodyBold)
-                        .foregroundColor(.primaryText)
+                        .foregroundColor(Color(hex: accentHex))
                 }
             }
             DatePicker(
@@ -613,6 +592,7 @@ struct FamilyGroupView: View {
                 displayedComponents: [.date]
             )
             .datePickerStyle(.wheel)
+            .accentColor(Color(hex: accentHex))
             .environment(\.locale, Locale(identifier: "es_ES"))
         }
         .padding()
@@ -670,7 +650,10 @@ struct FamilyGroupView: View {
     // ══════════════════════════════════════════════════════
 
     private var editMemberModal: some View {
-        ZStack {
+        let modCfg = fgConfig.seccionModificar
+        let modTAttr = modCfg.tituloAttr
+
+        return ZStack {
             Color.black.opacity(0.35)
                 .ignoresSafeArea()
                 .onTapGesture {
@@ -680,9 +663,12 @@ struct FamilyGroupView: View {
             VStack(spacing: 0) {
                 // Header — título centrado, botón X a la derecha
                 ZStack {
-                    Text("Modificar Datos")
-                        .font(Font.custom("FiraSans-Bold", size: 16))
-                        .foregroundColor(Color(hex: "#333333"))
+                    Text(modCfg.titulo.isEmpty ? "Modificar Datos" : modCfg.titulo)
+                        .font(Font.custom(
+                            modTAttr.font.isEmpty ? "FiraSans-Bold" : modTAttr.font,
+                            size: CGFloat(Int(modTAttr.size) ?? 16)
+                        ))
+                        .foregroundColor(Color(hex: modTAttr.color.isEmpty ? "#333333" : modTAttr.color))
                         .frame(maxWidth: .infinity, alignment: .center)
                     HStack {
                         Spacer()
@@ -710,11 +696,11 @@ struct FamilyGroupView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
                         // RUT (solo lectura, no se envía)
-                        editField(label: "RUT", text: $editRut, disabled: true)
+                        editField(label: fgEditLabel(0, fallback: "RUT"), text: $editRut, disabled: true)
 
                         // Nombre: Title Case + trim
                         transformedEditField(
-                            label: "Nombre *",
+                            label: fgEditLabel(1, fallback: "Nombre") + " *",
                             text: $editFirstName,
                             error: $editFirstNameError,
                             transform: { titleCase($0) },
@@ -723,7 +709,7 @@ struct FamilyGroupView: View {
 
                         // Apellido: Title Case + trim
                         transformedEditField(
-                            label: "Apellido *",
+                            label: fgEditLabel(2, fallback: "Apellido") + " *",
                             text: $editLastName,
                             error: $editLastNameError,
                             transform: { titleCase($0) },
@@ -732,7 +718,7 @@ struct FamilyGroupView: View {
 
                         // Dirección (opcional): Title Case + trim
                         transformedEditField(
-                            label: "Dirección",
+                            label: fgEditLabel(3, fallback: "Dirección"),
                             text: $editAddress,
                             error: .constant(nil),
                             transform: { titleCase($0) },
@@ -741,7 +727,7 @@ struct FamilyGroupView: View {
 
                         // Fecha de nacimiento (no futuras)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Fecha de nacimiento *")
+                            Text(fgEditLabel(4, fallback: "Fecha de Nacimiento") + " *")
                                 .font(Font.custom("FiraSans-Medium", size: 13))
                                 .foregroundColor(Color(hex: "#555555"))
                             Button {
@@ -753,7 +739,7 @@ struct FamilyGroupView: View {
                                         .foregroundColor(Color(hex: "#333333"))
                                     Spacer()
                                     Image(systemName: "calendar")
-                                        .foregroundColor(Color(hex: "#00BBDC"))
+                                        .foregroundColor(Color(hex: fgConfig.seccionModificar.colorIconoCalendario.isEmpty ? "#00BBDC" : fgConfig.seccionModificar.colorIconoCalendario))
                                 }
                                 .padding(10)
                                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(
@@ -769,9 +755,9 @@ struct FamilyGroupView: View {
                             }
                         }
 
-                        // Sexo (opcional, label "Sexo" paridad web)
+                        // Sexo (opcional)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Sexo")
+                            Text(fgEditLabel(5, fallback: "Sexo"))
                                 .font(Font.custom("FiraSans-Medium", size: 13))
                                 .foregroundColor(Color(hex: "#555555"))
                             Menu {
@@ -780,13 +766,13 @@ struct FamilyGroupView: View {
                                 Button("No especificar") { editGender = "" }
                             } label: {
                                 HStack {
-                                    Text(editGender == "Male" ? "Hombre" : editGender == "Female" ? "Mujer" : "Seleccionar")
+                                    Text(editGender == "Male" ? "Hombre" : editGender == "Female" ? "Mujer" : (fgConfig.seccionModificar.textoPreSeleccion.isEmpty ? "Seleccionar" : fgConfig.seccionModificar.textoPreSeleccion))
                                         .font(Font.custom("FiraSans-Regular", size: 15))
                                         .foregroundColor(editGender.isEmpty ? .gray.opacity(0.5) : Color(hex: "#333333"))
                                     Spacer()
                                     Image(systemName: "chevron.down")
                                         .font(.system(size: 12))
-                                        .foregroundColor(Color(hex: "#00BBDC"))
+                                        .foregroundColor(Color(hex: fgConfig.seccionModificar.colorIconoCalendario.isEmpty ? "#00BBDC" : fgConfig.seccionModificar.colorIconoCalendario))
                                 }
                                 .padding(10)
                                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
@@ -795,7 +781,7 @@ struct FamilyGroupView: View {
 
                         // Email: lowercased + trim.lowercased onBlur
                         transformedEditField(
-                            label: "Email *",
+                            label: fgEditLabel(6, fallback: "Correo Electrónico") + " *",
                             text: $editEmail,
                             error: $editEmailError,
                             keyboard: .emailAddress,
@@ -805,7 +791,7 @@ struct FamilyGroupView: View {
 
                         // Teléfono: solo dígitos + max 12 + trim
                         transformedEditField(
-                            label: "Teléfono *",
+                            label: fgEditLabel(7, fallback: "Teléfono") + " *",
                             text: $editPhone,
                             error: $editPhoneError,
                             keyboard: .phonePad,
@@ -822,47 +808,7 @@ struct FamilyGroupView: View {
                 Divider()
 
                 // Footer con botones
-                HStack(spacing: 12) {
-                    Button {
-                        if !isEditLoading { closeEditModal() }
-                    } label: {
-                        Text("Cancelar")
-                            .font(Font.custom("FiraSans-Bold", size: 15))
-                            .foregroundColor(Color(hex: "#555555"))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(RoundedRectangle(cornerRadius: 25).fill(Color.white))
-                            .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(isEditLoading)
-
-                    Button {
-                        saveEdit()
-                    } label: {
-                        ZStack {
-                            Text("Modificar Datos")
-                                .font(Font.custom("FiraSans-Bold", size: 15))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .fill(isEditFormValid ? Color(hex: "#00BBDC") : Color.gray.opacity(0.4))
-                                )
-                                .opacity(isEditLoading ? 0.5 : 1.0)
-                            if isEditLoading {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                    .scaleEffect(0.8)
-                            }
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(!isEditFormValid || isEditLoading)
-                }
-                .padding(.horizontal, 18)
-                .padding(.vertical, 14)
+                editModalFooter
             }
             .frame(maxWidth: 420)
             .background(RoundedRectangle(cornerRadius: 24).fill(Color.white))
@@ -876,9 +822,14 @@ struct FamilyGroupView: View {
 
     // DatePicker popup del edit (fecha requerida + no futuras)
     private var editDatePickerPopup: some View {
-        VStack {
+        let cal = fgConfig.seccionModificar.coloresCalendario
+        let accentHex = cal.colorFondoSeleccion.isEmpty ? "#7F35B2" : cal.colorFondoSeleccion
+        let titleHex = cal.colorMes.isEmpty ? "#3A3A3A" : cal.colorMes
+
+        return VStack {
             HStack {
                 Text("Fecha de nacimiento")
+                    .foregroundColor(Color(hex: titleHex))
                 Spacer()
                 Button {
                     showEditCalendar = false
@@ -886,7 +837,7 @@ struct FamilyGroupView: View {
                 } label: {
                     Text("Aceptar")
                         .font(.appBodyBold)
-                        .foregroundColor(.primaryText)
+                        .foregroundColor(Color(hex: accentHex))
                 }
             }
             DatePicker(
@@ -896,6 +847,7 @@ struct FamilyGroupView: View {
                 displayedComponents: [.date]
             )
             .datePickerStyle(.wheel)
+            .accentColor(Color(hex: accentHex))
             .environment(\.locale, Locale(identifier: "es_ES"))
         }
         .padding()
@@ -999,7 +951,11 @@ struct FamilyGroupView: View {
     // ══════════════════════════════════════════════════════
 
     private func deleteMemberModal(member: FamilyGroupMember) -> some View {
-        ZStack {
+        let popCfg = fgConfig.popupEliminar
+        let tAttr = popCfg.tituloAttr
+        let dAttr = popCfg.textoAttr
+
+        return ZStack {
             Color.black.opacity(0.25)
                 .ignoresSafeArea()
                 .onTapGesture {
@@ -1007,76 +963,80 @@ struct FamilyGroupView: View {
                 }
 
             VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "#FFF3E0"))
-                        .frame(width: 56, height: 56)
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(Color(hex: "#FF9800"))
-                }
-                .scaleEffect(deleteIconScale)
-                .opacity(Double(deleteIconScale))
-                .padding(.top, 20)
-                .onAppear {
-                    // Bounce-in ~800ms (spring con overshoot notorio)
-                    deleteIconScale = 0.0
-                    withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
-                        deleteIconScale = 1.0
-                    }
-                }
-
-                Text("¿Estás seguro de que deseas eliminar a \(member.firstName)?")
-                    .font(Font.custom("FiraSans-Bold", size: 16))
-                    .foregroundColor(Color(hex: "#333333"))
-                    .multilineTextAlignment(.center)
-
-                Text("Esta acción dará de baja la carga del grupo familiar y no se puede deshacer.")
-                    .font(Font.custom("FiraSans-Regular", size: 13))
-                    .foregroundColor(Color(hex: "#777777"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 4)
-
-                Text("Una vez eliminada, deberá esperar 24 horas antes de poder volver a agregar esta carga.")
-                    .font(Font.custom("FiraSans-Bold", size: 13))
-                    .foregroundColor(Color(hex: "#555555"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 4)
-
-                HStack(spacing: 12) {
-                    Button {
-                        performDelete(member: member)
-                    } label: {
-                        ZStack {
-                            Text("Eliminar")
-                                .font(Font.custom("FiraSans-Bold", size: 15))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
-                                .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: "#FF4D4F")))
-                                .opacity(isDeletingLoading ? 0.5 : 1.0)
-                            if isDeletingLoading {
-                                ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white)).scaleEffect(0.8)
-                            }
+                // Icono: URL dinámica o SF Symbol fallback
+                if !popCfg.iconUrl.isEmpty, let url = URL(string: popCfg.iconUrl) {
+                    CachedAsyncImage(
+                        url: url,
+                        content: { image in
+                            image.resizable().scaledToFit().frame(width: 56, height: 56)
+                        },
+                        placeholder: {
+                            ProgressView().frame(width: 56, height: 56)
+                        }
+                    )
+                    .scaleEffect(deleteIconScale)
+                    .opacity(Double(deleteIconScale))
+                    .padding(.top, 20)
+                    .onAppear {
+                        deleteIconScale = 0.0
+                        withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
+                            deleteIconScale = 1.0
                         }
                     }
-                    .disabled(isDeletingLoading)
-
-                    Button {
-                        deletingMember = nil
-                    } label: {
-                        Text("Cancelar")
-                            .font(Font.custom("FiraSans-Bold", size: 15))
-                            .foregroundColor(Color(hex: "#555555"))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(RoundedRectangle(cornerRadius: 25).fill(Color.white))
-                            .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
+                } else {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "#FFF3E0"))
+                            .frame(width: 56, height: 56)
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(Color(hex: "#FF9800"))
                     }
-                    .disabled(isDeletingLoading)
+                    .scaleEffect(deleteIconScale)
+                    .opacity(Double(deleteIconScale))
+                    .padding(.top, 20)
+                    .onAppear {
+                        deleteIconScale = 0.0
+                        withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
+                            deleteIconScale = 1.0
+                        }
+                    }
                 }
-                .padding(.top, 4)
-                .padding(.bottom, 18)
+
+                // Título dinámico
+                Text(popCfg.titulo.isEmpty ? "¿Estás seguro de que deseas eliminar a \(member.firstName)?" : popCfg.titulo)
+                    .font(Font.custom(
+                        tAttr.font.isEmpty ? "FiraSans-Bold" : tAttr.font,
+                        size: CGFloat(Int(tAttr.size) ?? 16)
+                    ))
+                    .foregroundColor(Color(hex: tAttr.color.isEmpty ? "#333333" : tAttr.color))
+                    .multilineTextAlignment(.center)
+
+                // Texto dinámico (soporta **bold** vía parseSalesforceText)
+                if !popCfg.texto.isEmpty {
+                    parseSalesforceText(
+                        popCfg.texto,
+                        font: dAttr.font.isEmpty ? "FiraSans-Regular" : dAttr.font,
+                        size: CGFloat(Int(dAttr.size) ?? 14),
+                        color: Color(hex: dAttr.color.isEmpty ? "#777777" : dAttr.color)
+                    )
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 4)
+                } else {
+                    Text("Esta acción dará de baja la carga del grupo familiar y no se puede deshacer.")
+                        .font(Font.custom("FiraSans-Regular", size: 13))
+                        .foregroundColor(Color(hex: "#777777"))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 4)
+
+                    Text("Una vez eliminada, deberá esperar 24 horas antes de poder volver a agregar esta carga.")
+                        .font(Font.custom("FiraSans-Bold", size: 13))
+                        .foregroundColor(Color(hex: "#555555"))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 4)
+                }
+
+                deleteModalButtons(member: member, popCfg: popCfg)
             }
             .padding(.horizontal, 20)
             .frame(maxWidth: 320)
@@ -1090,7 +1050,11 @@ struct FamilyGroupView: View {
     // ══════════════════════════════════════════════════════
 
     private var overLimitModal: some View {
-        GeometryReader { geo in
+        let olTAttr = fgConfig.seccionOverLimit.tituloAttr
+        let olDAttr = fgConfig.seccionOverLimit.textoAttr
+        let olTextoBase = fgConfig.seccionOverLimit.texto
+
+        return GeometryReader { geo in
             let dialogWidth = geo.size.width * 0.92
 
             ZStack {
@@ -1109,15 +1073,21 @@ struct FamilyGroupView: View {
                     }
                     .padding(.top, 20)
 
-                    // 2) Título — azul #0254A5, 17sp bold (paridad Android)
-                    Text("Límite de cargas excedido")
-                        .font(Font.custom("FiraSans-Bold", size: 17))
-                        .foregroundColor(Color(hex: "#0254A5"))
+                    // 2) Título dinámico
+                    Text(fgConfig.seccionOverLimit.titulo.isEmpty ? "Límite de cargas excedido" : fgConfig.seccionOverLimit.titulo)
+                        .font(Font.custom(
+                            olTAttr.font.isEmpty ? "FiraSans-Bold" : olTAttr.font,
+                            size: CGFloat(Int(olTAttr.size) ?? 17)
+                        ))
+                        .foregroundColor(Color(hex: olTAttr.color.isEmpty ? "#0254A5" : olTAttr.color))
 
-                    // 3) Descripción — gris #666666, 13sp, lineSpacing 3 (paridad Android)
-                    Text("Tienes \(members.count) cargas, el máximo es \(maxCargas). Debes eliminar \(members.count - maxCargas) carga(s) para continuar.")
-                        .font(Font.custom("FiraSans-Regular", size: 13))
-                        .foregroundColor(Color(hex: "#666666"))
+                    // 3) Descripción dinámica (reemplaza "/" por conteos)
+                    Text(overLimitText(template: olTextoBase, memberCount: members.count, maxCount: maxCargas))
+                        .font(Font.custom(
+                            olDAttr.font.isEmpty ? "FiraSans-Regular" : olDAttr.font,
+                            size: CGFloat(Int(olDAttr.size) ?? 13)
+                        ))
+                        .foregroundColor(Color(hex: olDAttr.color.isEmpty ? "#666666" : olDAttr.color))
                         .multilineTextAlignment(.center)
                         .lineSpacing(3)
                         .padding(.horizontal, 8)
@@ -1146,22 +1116,8 @@ struct FamilyGroupView: View {
     /// Card de miembro dentro del dialog overlimit (paridad Android item_miembro_grupo_familiar.xml con hideEditButton=true)
     private func overLimitMemberCard(member: FamilyGroupMember, index: Int) -> some View {
         HStack(spacing: 12) {
-            // Avatar circular con iniciales (48x48dp — paridad Android)
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "#0095B3"), Color(hex: "#00BBDC"), Color(hex: "#33CFEA")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 48, height: 48)
-
-                Text(member.initials)
-                    .font(Font.custom("FiraSans-Bold", size: 17))
-                    .foregroundColor(.white)
-            }
+            // Avatar: icono dinámico o iniciales como fallback
+            memberAvatar(member: member, size: 48)
 
             // Info: nombre (bold 15sp), correo y RUT (grises 12sp)
             VStack(alignment: .leading, spacing: 2) {
@@ -1192,7 +1148,7 @@ struct FamilyGroupView: View {
             } label: {
                 Image(systemName: "trash")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "#FF4D4F"))
+                    .foregroundColor(Color(hex: fgConfig.seccionPrincipal.colorIconoEliminar.isEmpty ? "#FF4D4F" : fgConfig.seccionPrincipal.colorIconoEliminar))
                     .frame(width: 32, height: 32)
                     .background(Color(hex: "#FFF1F0"))
                     .cornerRadius(8)
@@ -1970,6 +1926,200 @@ struct FamilyGroupView: View {
     }
 
     // ══════════════════════════════════════════════════════
+    // MARK: - Extracted Sub-Views (evita let en @ViewBuilder)
+    // ══════════════════════════════════════════════════════
+
+    private var toolbarTitle: some View {
+        let tAttr = fgConfig.seccionPrincipal.tituloAttr
+        return Text(fgConfig.seccionPrincipal.titulo.isEmpty ? "Grupo Familiar" : fgConfig.seccionPrincipal.titulo)
+            .font(Font.custom(
+                tAttr.font.isEmpty ? "FiraSans-Bold" : tAttr.font,
+                size: CGFloat(Int(tAttr.size) ?? 21)
+            ))
+            .foregroundColor(Color(hex: tAttr.color.isEmpty ? "#00BBDC" : tAttr.color))
+    }
+
+    private var toolbarBackButton: some View {
+        let backColor = fgConfig.backArrow.colorBackArrow
+        return Button {
+            presentation.wrappedValue.dismiss()
+        } label: {
+            Image("back")
+                .renderingMode(.template)
+                .foregroundColor(Color(hex: backColor.isEmpty ? "#00BBDC" : backColor))
+        }
+    }
+
+    /// Avatar de miembro: muestra el icono de LinkIconoUsuarios sobre el círculo,
+    /// o las iniciales del miembro como fallback si la URL está vacía.
+    @ViewBuilder
+    private func memberAvatar(member: FamilyGroupMember, size: CGFloat) -> some View {
+        let iconUrl = fgConfig.seccionPrincipal.iconoUsuarios
+        let avatarBg = fgConfig.fondoAvatar.colorFondoAvatar
+        ZStack {
+            Circle()
+                .fill(Color(hex: avatarBg.isEmpty ? "#00BBDC" : avatarBg))
+                .frame(width: size, height: size)
+
+            if !iconUrl.isEmpty, let url = URL(string: iconUrl) {
+                CachedAsyncImage(
+                    url: url,
+                    content: { image in
+                        image.resizable().scaledToFit()
+                            .frame(width: size * 0.55, height: size * 0.55)
+                    },
+                    placeholder: {
+                        ProgressView().frame(width: size * 0.55, height: size * 0.55)
+                    }
+                )
+                .colorMultiply(.white)
+            } else {
+                Text(member.initials)
+                    .font(Font.custom("FiraSans-Bold", size: size * 0.37))
+                    .foregroundColor(.white)
+            }
+        }
+    }
+
+    private var addModalFooter: some View {
+        let btnCancel = fgConfig.seccionAgregar.botonCancelar
+        let btnAdd = fgConfig.seccionAgregar.botonAgregar
+
+        return HStack(spacing: 12) {
+            Button {
+                if !isAddLoading { closeAddModal() }
+            } label: {
+                Text(btnCancel.texto.isEmpty ? "Cancelar" : btnCancel.texto)
+                    .font(Font.custom("FiraSans-Bold", size: 15))
+                    .foregroundColor(Color(hex: btnCancel.colorTextoActivo.isEmpty ? "#555555" : btnCancel.colorTextoActivo))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: btnCancel.colorFondoActivo.isEmpty ? "#FFFFFF" : btnCancel.colorFondoActivo)))
+                    .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+            .disabled(isAddLoading)
+
+            Button {
+                registerUser()
+            } label: {
+                ZStack {
+                    Text(btnAdd.texto.isEmpty ? "Agregar" : btnAdd.texto)
+                        .font(Font.custom("FiraSans-Bold", size: 15))
+                        .foregroundColor(Color(hex: btnAdd.colorTextoActivo.isEmpty ? "#FFFFFF" : btnAdd.colorTextoActivo))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(isAddFormValid
+                                      ? Color(hex: btnAdd.colorFondoActivo.isEmpty ? "#00BBDC" : btnAdd.colorFondoActivo)
+                                      : Color(hex: btnAdd.colorFondoInactivo.isEmpty ? "#EDEDED" : btnAdd.colorFondoInactivo))
+                        )
+                        .opacity(isAddLoading ? 0.5 : 1.0)
+                    if isAddLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .scaleEffect(0.8)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(!isAddFormValid || isAddLoading)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+    }
+
+    private var editModalFooter: some View {
+        let btnCancel = fgConfig.seccionModificar.botonCancelar
+        let btnMod = fgConfig.seccionModificar.botonModificar
+
+        return HStack(spacing: 12) {
+            Button {
+                if !isEditLoading { closeEditModal() }
+            } label: {
+                Text(btnCancel.texto.isEmpty ? "Cancelar" : btnCancel.texto)
+                    .font(Font.custom("FiraSans-Bold", size: 15))
+                    .foregroundColor(Color(hex: btnCancel.colorTextoActivo.isEmpty ? "#555555" : btnCancel.colorTextoActivo))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: btnCancel.colorFondoActivo.isEmpty ? "#FFFFFF" : btnCancel.colorFondoActivo)))
+                    .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+            .disabled(isEditLoading)
+
+            Button {
+                saveEdit()
+            } label: {
+                ZStack {
+                    Text(btnMod.texto.isEmpty ? "Modificar Datos" : btnMod.texto)
+                        .font(Font.custom("FiraSans-Bold", size: 15))
+                        .foregroundColor(Color(hex: btnMod.colorTextoActivo.isEmpty ? "#FFFFFF" : btnMod.colorTextoActivo))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(isEditFormValid
+                                      ? Color(hex: btnMod.colorFondoActivo.isEmpty ? "#00BBDC" : btnMod.colorFondoActivo)
+                                      : Color(hex: btnMod.colorFondoInactivo.isEmpty ? "#EDEDED" : btnMod.colorFondoInactivo))
+                        )
+                        .opacity(isEditLoading ? 0.5 : 1.0)
+                    if isEditLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .scaleEffect(0.8)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(!isEditFormValid || isEditLoading)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+    }
+
+    private func deleteModalButtons(member: FamilyGroupMember, popCfg: FGPopupEliminarConfig) -> some View {
+        let btnSi = popCfg.botonSi
+        let btnNo = popCfg.botonNo
+
+        return HStack(spacing: 12) {
+            Button {
+                performDelete(member: member)
+            } label: {
+                ZStack {
+                    Text(btnSi.texto.isEmpty ? "Eliminar" : btnSi.texto)
+                        .font(Font.custom("FiraSans-Bold", size: 15))
+                        .foregroundColor(Color(hex: btnSi.colorTexto.isEmpty ? "#FFFFFF" : btnSi.colorTexto))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: btnSi.colorFondo.isEmpty ? "#FF4D4F" : btnSi.colorFondo)))
+                        .opacity(isDeletingLoading ? 0.5 : 1.0)
+                    if isDeletingLoading {
+                        ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white)).scaleEffect(0.8)
+                    }
+                }
+            }
+            .disabled(isDeletingLoading)
+
+            Button {
+                deletingMember = nil
+            } label: {
+                Text(btnNo.texto.isEmpty ? "Cancelar" : btnNo.texto)
+                    .font(Font.custom("FiraSans-Bold", size: 15))
+                    .foregroundColor(Color(hex: btnNo.colorTexto.isEmpty ? "#555555" : btnNo.colorTexto))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: btnNo.colorFondo.isEmpty ? "#FFFFFF" : btnNo.colorFondo)))
+                    .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
+            }
+            .disabled(isDeletingLoading)
+        }
+        .padding(.top, 4)
+        .padding(.bottom, 18)
+    }
+
+    // ══════════════════════════════════════════════════════
     // MARK: - Helpers
     // ══════════════════════════════════════════════════════
 
@@ -1988,6 +2138,40 @@ struct FamilyGroupView: View {
         print("   isFamilyGroupAddEnabled: \(isFamilyGroupAddEnabled)")
         print("   shouldSendEmpresaSolicitada: \(shouldSendEmpresaSolicitada)")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    }
+
+    /// Retorna el label dinámico para el campo en posición `index` del modal Editar.
+    /// Labels del JSON: "Identificacion;Nombre;Apellido;Direccion;FechaNacimiento;Sexo;Correo;Telefono"
+    func fgEditLabel(_ index: Int, fallback: String) -> String {
+        let labels = fgConfig.seccionModificar.labels
+        guard index < labels.count, !labels[index].isEmpty else { return fallback }
+        return labels[index]
+    }
+
+    /// Retorna el label dinámico para el campo en posición `index` del modal Agregar.
+    /// Labels del JSON: "Identificacion;TipoAfiliado;Nombre;Apellido;FechaNacimiento;Correo;Telefono"
+    func fgAddLabel(_ index: Int, fallback: String) -> String {
+        let labels = fgConfig.seccionAgregar.labels
+        guard index < labels.count, !labels[index].isEmpty else { return fallback }
+        return labels[index]
+    }
+
+    /// Genera el texto del modal over-limit reemplazando "/" por conteos dinámicos.
+    /// Template de SF: "Actualmente posee / cargas activas, el máximo permitido es /.\n\nElimine / carga para poder continuar."
+    func overLimitText(template: String, memberCount: Int, maxCount: Int) -> String {
+        guard !template.isEmpty else {
+            return "Tienes \(memberCount) cargas, el máximo es \(maxCount). Debes eliminar \(memberCount - maxCount) carga(s) para continuar."
+        }
+        let excess = memberCount - maxCount
+        // Reemplaza los "/" de izquierda a derecha: 1er "/" → memberCount, 2do "/" → maxCount, 3ro "/" → excess
+        var result = template
+        let replacements = ["\(memberCount)", "\(maxCount)", "\(excess)"]
+        for replacement in replacements {
+            if let range = result.range(of: "/") {
+                result = result.replacingCharacters(in: range, with: replacement)
+            }
+        }
+        return result
     }
 
     func formattedDate(_ date: Date) -> String {

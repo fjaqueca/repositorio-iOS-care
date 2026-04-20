@@ -227,13 +227,7 @@ struct ProfileView: View {
                 profileState = loadProfileUIState()
             }
             .foregroundColor(.primaryText)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Perfil")
-                        .font(.appTabTitleBold)
-                        .foregroundColor(.primaryText)
-                }
-            }
+            .toolbar {}
             .configureNavigation()
     }
 

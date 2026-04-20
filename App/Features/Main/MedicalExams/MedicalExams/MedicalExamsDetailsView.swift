@@ -33,6 +33,7 @@ struct MedicalExamsDetailsView: View {
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
@@ -285,14 +286,15 @@ struct MedicalExamsDetailsView: View {
 
             // Modal de confirmación de eliminación del examen vinculado
             if showDeleteLinkedExamConfirm {
-                DeleteConfirmationModal(
+                ExamDeleteConfirmationModal(
                     onConfirm: {
                         deleteLinkedPatientExam()
                     },
                     onCancel: {
                         showDeleteLinkedExamConfirm = false
                     },
-                    isLoading: deletingLinkedLoading
+                    isLoading: deletingLinkedLoading,
+                    config: dialogEliminarConfig
                 )
                 .zIndex(50)
                 .transition(.opacity)
@@ -373,9 +375,9 @@ struct MedicalExamsDetailsView: View {
         })
         .navigationLink(isActive: $sendNewExam) {
             if isExamPublish {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             } else {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             }
         }
     }

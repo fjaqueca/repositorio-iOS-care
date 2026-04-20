@@ -13,6 +13,7 @@ import ZIPFoundation
 struct MedicalExamsView: View {
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
@@ -134,6 +135,7 @@ struct MedicalExamsView: View {
                                         isLoadingExam: $isLoading,
                                         UIState: $UIState,
                                         backArrowColor: backArrowColor,
+                                        dialogEliminarConfig: dialogEliminarConfig,
                                         badgeOrdenMedica: badgeOrdenMedica,
                                         badgeExamenAutomatizado: badgeExamenAutomatizado,
                                         badgeRecetaMedica: badgeRecetaMedica,

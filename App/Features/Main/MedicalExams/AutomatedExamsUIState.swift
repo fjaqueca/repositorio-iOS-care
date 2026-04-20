@@ -33,6 +33,12 @@ struct AutomatedExamsUIState {
     // Custom Record - Elemento 8: Color back arrow de toda la sección exámenes
     var backArrowColorSeccion: String = "#00BBDC"
 
+    // Custom Record - Elemento 10: Sección Mis Archivos de Salud
+    var botonSubirExamen = ButtonExamConfig()
+
+    // Custom Record - Elemento 11: Dialog Eliminar Examen Subido
+    var dialogEliminarExamen = DialogEliminarExamenConfig()
+
     // Custom Record - Elemento 9: "Seleccionar Todos" + Badges en Prescripciones Médicas
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr = TextExamAttributes()
@@ -55,6 +61,16 @@ struct AutomatedExamsUIState {
     var popupCarga = PopupCargaConfig()
     var popupExamenRealizado = PopupExamConfig()
     var popupSugerencia = PopupExamConfig()
+}
+
+// MARK: - Dialog Eliminar Examen Subido (Elemento 11)
+struct DialogEliminarExamenConfig {
+    var titulo: String = ""
+    var tituloAttr = TextExamAttributes()
+    var descripcion: String = ""
+    var descripcionAttr = TextExamAttributes()
+    var botonAceptar = ButtonExamConfig()
+    var botonCancelar = ButtonExamConfig()
 }
 
 // MARK: - Banner

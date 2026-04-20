@@ -12,6 +12,8 @@ import CachedAsyncImage
 struct PatientExamsView: View {
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
     @State private var isLoading: Bool = true
@@ -100,6 +102,7 @@ struct PatientExamsView: View {
                                     isLoadingExam: $isLoading,
                                     UIState: $UIState,
                                     backArrowColor: backArrowColor,
+                                    dialogEliminarConfig: dialogEliminarConfig,
                                     onDelete: { examId in
                                         deleteConfirmExamId = examId
                                     }
@@ -139,7 +142,7 @@ struct PatientExamsView: View {
             getExamsForPatient()
         }
         .navigationLink(isActive: $sendNewExam) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, isPublished: false, exam: nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, isPublished: false, exam: nil)
         }
         .background(
             Group {
@@ -163,14 +166,15 @@ struct PatientExamsView: View {
 
         // Modal de confirmación de eliminación
         if deleteConfirmExamId != nil {
-            DeleteConfirmationModal(
+            ExamDeleteConfirmationModal(
                 onConfirm: {
                     deletePatientExam()
                 },
                 onCancel: {
                     deleteConfirmExamId = nil
                 },
-                isLoading: deletingLoading
+                isLoading: deletingLoading,
+                config: dialogEliminarConfig
             )
             .zIndex(50)
             .transition(.opacity)
@@ -240,21 +244,27 @@ struct PatientExamsView: View {
 
     // MARK: - Upload Button
     private var uploadButton: some View {
-        Button {
+        let btnText = botonSubirExamenConfig.texto.isEmpty
+            ? (UIState.btnAddSeeExam.btnAddExam.textBtn.isEmpty ? "+ Subir Examen" : UIState.btnAddSeeExam.btnAddExam.textBtn)
+            : botonSubirExamenConfig.texto
+        let btnColorTexto = botonSubirExamenConfig.colorTexto.isEmpty ? "#FFFFFF" : botonSubirExamenConfig.colorTexto
+        let btnColorFondo = botonSubirExamenConfig.colorFondo.isEmpty ? "#00BBDC" : botonSubirExamenConfig.colorFondo
+
+        return Button {
             sendNewExam = true
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "arrow.up.doc.fill")
                     .font(.system(size: 14, weight: .medium))
-                Text(UIState.btnAddSeeExam.btnAddExam.textBtn.isEmpty ? "Subir Examen" : UIState.btnAddSeeExam.btnAddExam.textBtn)
+                Text(btnText)
                     .font(Font.custom("FiraSans-Medium", size: 15))
             }
-            .foregroundColor(.white)
+            .foregroundColor(Color(hex: btnColorTexto))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 13)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(accentColor)
+                    .fill(Color(hex: btnColorFondo))
             )
         }
     }

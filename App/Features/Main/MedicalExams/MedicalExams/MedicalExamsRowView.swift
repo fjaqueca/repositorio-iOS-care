@@ -17,6 +17,7 @@ struct MedicalExamsRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
@@ -151,7 +152,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 

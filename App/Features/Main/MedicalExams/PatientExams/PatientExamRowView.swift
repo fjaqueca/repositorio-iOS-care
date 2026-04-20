@@ -13,6 +13,7 @@ struct PatientExamRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var onDelete: ((String) -> Void)? = nil
 
     private var accentColor: Color {
@@ -117,7 +118,7 @@ struct PatientExamRowView: View {
         }
         .buttonStyle(.plain)
         .navigationLink(isActive: $isPresentingDetails) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
         }
     }
 
