@@ -21,6 +21,10 @@ struct SendNewExamView: View {
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     @State private var urlToShare: URL?
     @State var examName: String = ""
@@ -176,9 +180,12 @@ struct SendNewExamView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Exámenes Médicos")
-                    .font(Font.custom("FiraSans-Bold", size: 18))
-                    .foregroundColor(.primary)
+                Text(navTitle.isEmpty ? "Exámenes Médicos" : navTitle)
+                    .font(Font.custom(
+                        navTitleAttr.font.isEmpty ? "FiraSans-Bold" : navTitleAttr.font,
+                        size: CGFloat(Int(navTitleAttr.size) ?? 20)
+                    ))
+                    .foregroundColor(Color(hex: navTitleAttr.color.isEmpty ? "#00BBDC" : navTitleAttr.color))
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
@@ -324,22 +331,25 @@ struct SendNewExamView: View {
         VStack(spacing: 16) {
             // Card info del documento
             VStack(alignment: .leading, spacing: 10) {
-                Text(exam?.nombreDelExamenC ?? examName)
+                Text((exam?.nombreDelExamenC ?? examName).uppercased())
                     .font(Font.custom("FiraSans-Bold", size: 16))
                     .foregroundColor(Color(hex: "#333333"))
 
-                // Badge "Cargado por el Paciente"
+                // Badge "Cargado por el Paciente" (dinámico desde Elemento 10)
                 HStack(spacing: 6) {
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 11))
-                        .foregroundColor(.white)
-                    Text("Cargado por el Paciente")
-                        .font(Font.custom("FiraSans-Medium", size: 11))
-                        .foregroundColor(.white)
+                    Image(systemName: badgeCargadoPorPaciente.icono)
+                        .font(.system(size: CGFloat(Double(badgeCargadoPorPaciente.size) ?? 11)))
+                        .foregroundColor(Color(hex: badgeCargadoPorPaciente.colorTexto))
+                    Text(badgeCargadoPorPaciente.texto)
+                        .font(Font.custom(
+                            badgeCargadoPorPaciente.font.isEmpty ? "FiraSans-Medium" : badgeCargadoPorPaciente.font,
+                            size: CGFloat(Double(badgeCargadoPorPaciente.size) ?? 11)
+                        ))
+                        .foregroundColor(Color(hex: badgeCargadoPorPaciente.colorTexto))
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background(Capsule().fill(Color(hex: "#7B61FF")))
+                .background(Capsule().fill(Color(hex: badgeCargadoPorPaciente.colorFondo)))
 
                 if let dateStr = exam?.CreatedDate, !dateStr.isEmpty {
                     HStack(spacing: 6) {
@@ -413,19 +423,25 @@ struct SendNewExamView: View {
     @State private var deletingLoading = false
 
     private var publishedButtons: some View {
-        HStack(spacing: 10) {
+        let btnElim = botonesDetalleExamen.botonEliminar
+        let btnDesc = botonesDetalleExamen.botonDescargar
+
+        return HStack(spacing: 10) {
             // Eliminar
             Button {
                 showDeleteConfirmation = true
             } label: {
-                Text("Eliminar")
-                    .font(Font.custom("FiraSans-Bold", size: 16))
-                    .foregroundColor(.white)
+                Text(btnElim.texto.isEmpty ? "Eliminar" : btnElim.texto)
+                    .font(Font.custom(
+                        btnElim.font.isEmpty ? "FiraSans-Bold" : btnElim.font,
+                        size: CGFloat(Double(btnElim.size) ?? 16)
+                    ))
+                    .foregroundColor(Color(hex: btnElim.colorTexto.isEmpty ? "#FFFFFF" : btnElim.colorTexto))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.red)
+                            .fill(Color(hex: btnElim.colorFondo.isEmpty ? "#FF3B30" : btnElim.colorFondo))
                     )
             }
 
@@ -433,14 +449,17 @@ struct SendNewExamView: View {
             Button {
                 downloadAllFiles()
             } label: {
-                Text("Descargar")
-                    .font(Font.custom("FiraSans-Bold", size: 16))
-                    .foregroundColor(.white)
+                Text(btnDesc.texto.isEmpty ? "Descargar" : btnDesc.texto)
+                    .font(Font.custom(
+                        btnDesc.font.isEmpty ? "FiraSans-Bold" : btnDesc.font,
+                        size: CGFloat(Double(btnDesc.size) ?? 16)
+                    ))
+                    .foregroundColor(Color(hex: btnDesc.colorTexto.isEmpty ? "#FFFFFF" : btnDesc.colorTexto))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(hex: "#00BBDC"))
+                            .fill(Color(hex: btnDesc.colorFondo.isEmpty ? "#00BBDC" : btnDesc.colorFondo))
                     )
             }
         }

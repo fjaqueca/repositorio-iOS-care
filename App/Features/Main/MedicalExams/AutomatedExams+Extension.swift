@@ -18,6 +18,19 @@ private func parseFontName(_ raw: String) -> String {
     }
 }
 
+/// Mapea nombres de iconos de Salesforce a SF Symbols
+private func parseIconName(_ raw: String) -> String {
+    switch raw.lowercased().trimmingCharacters(in: .whitespaces) {
+    case "ic_stethoscope": return "stethoscope"
+    case "ic_pill", "ic_pills": return "pills.fill"
+    case "ic_doc", "ic_document": return "doc.text"
+    case "ic_heart": return "heart.fill"
+    case "ic_calendar": return "calendar"
+    case "ic_person_datos", "ic_person": return "person.fill"
+    default: return raw
+    }
+}
+
 /// Parsea "font;size;color;align" -> TextExamAttributes (4 partes)
 private func parseTextAttributes(_ raw: String?) -> TextExamAttributes {
     guard let raw = raw else { return TextExamAttributes() }
@@ -261,10 +274,21 @@ extension ExamsView {
             loadSeleccionarTodosConfig(from: custom, into: &state)
             print("   ✅ SeleccionarTodos (Elemento 9): texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
             loadSeccionMisArchivosDeSalud(from: custom, into: &state)
-            print("   📂 SeccionMisArchivosDeSalud (Elemento 10): botonSubirExamen texto=\"\(state.botonSubirExamen.texto)\" colorTexto=\(state.botonSubirExamen.colorTexto) colorFondo=\(state.botonSubirExamen.colorFondo)")
+            print("   📂 SeccionMisArchivosDeSalud (Elemento 10): botonSubirExamen texto=\"\(state.botonSubirExamen.texto)\" colorTexto=\(state.botonSubirExamen.colorTexto) colorFondo=\(state.botonSubirExamen.colorFondo) font=\(state.botonSubirExamen.font) size=\(state.botonSubirExamen.size)")
+            print("      badgeDetallePrescripciones: texto=\"\(state.badgeDetallePrescripciones.texto)\" icono=\(state.badgeDetallePrescripciones.icono)")
+            print("      badgeDetalleRecetaMedica: texto=\"\(state.badgeDetalleRecetaMedica.texto)\" icono=\(state.badgeDetalleRecetaMedica.icono)")
+            print("      badgeDetalleExamenMedico: texto=\"\(state.badgeDetalleExamenMedico.texto)\" icono=\(state.badgeDetalleExamenMedico.icono)")
+            print("      botonVerDocEnviado: texto=\"\(state.botonVerDocumentoEnviado.texto)\" colorFondo=\(state.botonVerDocumentoEnviado.colorFondo)")
+            print("      badgeCargadoPorPaciente: texto=\"\(state.badgeCargadoPorPaciente.texto)\" icono=\(state.badgeCargadoPorPaciente.icono) colorFondo=\(state.badgeCargadoPorPaciente.colorFondo)")
             loadDialogEliminarExamen(from: custom, into: &state)
             let dlg = state.dialogEliminarExamen
             print("   🗑️ DialogEliminarExamen (Elemento 11): titulo=\"\(dlg.titulo)\" descripcion=\"\(dlg.descripcion.prefix(60))\" btnAceptar=\"\(dlg.botonAceptar.texto)\" btnCancelar=\"\(dlg.botonCancelar.texto)\"")
+            loadBadgesMisExamenes(from: custom, into: &state)
+            let bdg = state.badgesMisExamenes
+            print("   🏷️ BadgesMisExamenes (Elemento 12): imagen=\"\(bdg.badgeExamenImagen.texto)\" receta=\"\(bdg.badgeRecetaMedica.texto)\" lab=\"\(bdg.badgeExamenLaboratorio.texto)\" orden=\"\(bdg.badgeOrdenExamen.texto)\" informe=\"\(bdg.badgeInformeMedico.texto)\" otros=\"\(bdg.badgeOtros.texto)\"")
+            loadBotonesDetalleExamen(from: custom, into: &state)
+            let btns = state.botonesDetalleExamen
+            print("   🔘 BotonesDetalleExamen (Elemento 13): eliminar=\"\(btns.botonEliminar.texto)\" colorFondo=\(btns.botonEliminar.colorFondo) | descargar=\"\(btns.botonDescargar.texto)\" colorFondo=\(btns.botonDescargar.colorFondo)")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom' NO encontrado")
         }
@@ -324,6 +348,10 @@ extension ExamsView {
             print("      antesDeContinuarAttr: font=\(state.carrito.antesDeContinuarAttr.font) size=\(state.carrito.antesDeContinuarAttr.size)")
             print("      subAntesDeContinuarTexto: \"\(state.carrito.subAntesDeContinuarTexto)\"")
             print("      subAntesDeContinuarAttr: font=\(state.carrito.subAntesDeContinuarAttr.font) size=\(state.carrito.subAntesDeContinuarAttr.size)")
+            loadBadgesPrescripcionesMedicas(from: main, into: &state)
+            print("   🏷️ BadgesPrescripcionesMedicas (Elemento 13): examenAuto=\"\(state.badgeExamenAutomatizado.texto)\" font=\(state.badgeExamenAutomatizado.font) size=\(state.badgeExamenAutomatizado.size) colorTexto=\(state.badgeExamenAutomatizado.colorTexto) colorFondo=\(state.badgeExamenAutomatizado.colorFondo)")
+            print("      examenMedico=\"\(state.badgeOrdenMedica.texto)\" font=\(state.badgeOrdenMedica.font) size=\(state.badgeOrdenMedica.size) colorTexto=\(state.badgeOrdenMedica.colorTexto) colorFondo=\(state.badgeOrdenMedica.colorFondo)")
+            print("      recetaMedica=\"\(state.badgeRecetaMedica.texto)\" font=\(state.badgeRecetaMedica.font) size=\(state.badgeRecetaMedica.size) colorTexto=\(state.badgeRecetaMedica.colorTexto) colorFondo=\(state.badgeRecetaMedica.colorFondo)")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizados' NO encontrado")
         }
@@ -841,11 +869,58 @@ private func loadSeccionMisArchivosDeSalud(from record: BrandAccount, into state
         let valor = record.getValor(section: 10, field: i) ?? ""
 
         switch atributo {
-        case "BotonSubirExamen(Texto;ColorTexto;ColorFondo)":
+        case "BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
             let parts = valor.components(separatedBy: ";")
             if parts.count >= 1 { state.botonSubirExamen.texto = parts[0].trimmingCharacters(in: .whitespaces) }
             if parts.count >= 2 { state.botonSubirExamen.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
             if parts.count >= 3 { state.botonSubirExamen.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.botonSubirExamen.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+            if parts.count >= 5 { state.botonSubirExamen.size = parts[4].trimmingCharacters(in: .whitespaces) }
+
+        case "BadgeDetalleTipoPrescripcionesMedicas(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeDetallePrescripciones.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.badgeDetallePrescripciones.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeDetallePrescripciones.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeDetallePrescripciones.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+            if parts.count >= 5 { state.badgeDetallePrescripciones.size = parts[4].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 6 { state.badgeDetallePrescripciones.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
+
+        case "BadgeDetalleTipoRecetaMedica(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeDetalleRecetaMedica.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.badgeDetalleRecetaMedica.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeDetalleRecetaMedica.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeDetalleRecetaMedica.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+            if parts.count >= 5 { state.badgeDetalleRecetaMedica.size = parts[4].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 6 { state.badgeDetalleRecetaMedica.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
+
+        case "BadgeDetalleTipoExamenMedico(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeDetalleExamenMedico.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.badgeDetalleExamenMedico.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeDetalleExamenMedico.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeDetalleExamenMedico.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+            if parts.count >= 5 { state.badgeDetalleExamenMedico.size = parts[4].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 6 { state.badgeDetalleExamenMedico.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
+
+        case "BotonVerDocumentoEnviado(Texto;Size;ColorTexto;ColorFondo;TipoFuente)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.botonVerDocumentoEnviado.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.botonVerDocumentoEnviado.size = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.botonVerDocumentoEnviado.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.botonVerDocumentoEnviado.colorFondo = parts[3].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 5 { state.botonVerDocumentoEnviado.font = parseFontName(parts[4].trimmingCharacters(in: .whitespaces)) }
+
+        case "BadgeCargadoPorElPacienteVerDocumentoEnviado(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.badgeCargadoPorPaciente.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.badgeCargadoPorPaciente.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 3 { state.badgeCargadoPorPaciente.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 4 { state.badgeCargadoPorPaciente.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+            if parts.count >= 5 { state.badgeCargadoPorPaciente.size = parts[4].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 6 { state.badgeCargadoPorPaciente.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
+
         default:
             break
         }
@@ -878,6 +953,77 @@ private func loadDialogEliminarExamen(from record: BrandAccount, into state: ino
         case "BotonCancelarDialogEliminarMiExamen(Texto;ColorTexto;ColorFondo)":
             state.dialogEliminarExamen.botonCancelar = parseButton3(valor)
 
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Elemento 12: BadgesTipoExamenSubidoEnMisExamenes
+
+/// Parsea formato: TipoFuente;Texto;ColorTexto;Size;ColorFondo
+private func parseBadge(_ valor: String) -> BadgeConfig {
+    let parts = valor.components(separatedBy: ";")
+    var badge = BadgeConfig()
+    if parts.count >= 1 { badge.font = parseFontName(parts[0].trimmingCharacters(in: .whitespaces)) }
+    if parts.count >= 2 { badge.texto = parts[1].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 3 { badge.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 4 { badge.size = parts[3].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 5 { badge.colorFondo = parts[4].trimmingCharacters(in: .whitespaces) }
+    return badge
+}
+
+private func loadBadgesMisExamenes(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 12, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 12, field: i) ?? ""
+
+        switch atributo {
+        case "BadgeTipoExamenImagen(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeExamenImagen = parseBadge(valor)
+        case "BadgeTipoRecetaMedica(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeRecetaMedica = parseBadge(valor)
+        case "BadgeTipoExamenLaboratorio(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeExamenLaboratorio = parseBadge(valor)
+        case "BadgeTipoOrdenExamen(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeOrdenExamen = parseBadge(valor)
+        case "BadgeTipoInformeMedico(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeInformeMedico = parseBadge(valor)
+        case "BadgeTipoOtros(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+            state.badgesMisExamenes.badgeOtros = parseBadge(valor)
+        case "IconoBasuraEliminarMiArchivoSalud(Size;Color)":
+            let parts = valor.components(separatedBy: ";")
+            if parts.count >= 1 { state.badgesMisExamenes.iconoBasuraSize = parts[0].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 2 { state.badgesMisExamenes.iconoBasuraColor = parts[1].trimmingCharacters(in: .whitespaces) }
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Elemento 13: BotonesVistaDetalleExamenSubidoMisExamenes
+
+private func parseButton5Fields(_ valor: String) -> ButtonExamConfig {
+    let parts = valor.components(separatedBy: ";")
+    var btn = ButtonExamConfig()
+    if parts.count >= 1 { btn.texto = parts[0].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 2 { btn.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 3 { btn.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 4 { btn.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
+    if parts.count >= 5 { btn.size = parts[4].trimmingCharacters(in: .whitespaces) }
+    return btn
+}
+
+private func loadBotonesDetalleExamen(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 13, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 13, field: i) ?? ""
+
+        switch atributo {
+        case "BotonEliminar(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
+            state.botonesDetalleExamen.botonEliminar = parseButton5Fields(valor)
+        case "BotonDescargar(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
+            state.botonesDetalleExamen.botonDescargar = parseButton5Fields(valor)
         default:
             break
         }
@@ -1048,6 +1194,46 @@ private func loadCarritoFromMain(from record: BrandAccount, into state: inout Au
                     )
                     print("      [\(elemIdx).\(i)] ✅ [nil→pos] subAntesDeContinuar = \"\(state.carrito.subAntesDeContinuarTexto)\"")
                 }
+            }
+        }
+        break
+    }
+}
+
+// MARK: - Main Record Elemento 13: BadgesPrescripcionesMedicas
+
+private func loadBadgesPrescripcionesMedicas(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for elemIdx in 1...13 {
+        guard let nombreElemento = record.getNombreElemento(elemIdx) else { continue }
+        guard nombreElemento == "BadgesPrescripcionesMedicas" else { continue }
+
+        for i in 1...16 {
+            guard let atributo = record.getAtributo(section: elemIdx, field: i), !atributo.isEmpty else { continue }
+            let valor = record.getValor(section: elemIdx, field: i) ?? ""
+            // Formato: TipoFuente;Texto;ColorTexto;Size;ColorFondo
+            let parts = valor.components(separatedBy: ";")
+
+            switch atributo {
+            case "BadgeTipoExamenAutomatizado(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeExamenAutomatizado.font = parseFontName(parts[0].trimmingCharacters(in: .whitespaces)) }
+                if parts.count >= 2 { state.badgeExamenAutomatizado.texto = parts[1].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 3 { state.badgeExamenAutomatizado.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 4 { state.badgeExamenAutomatizado.size = parts[3].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 5 { state.badgeExamenAutomatizado.colorFondo = parts[4].trimmingCharacters(in: .whitespaces) }
+            case "BadgeTipoExamenMedico(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeOrdenMedica.font = parseFontName(parts[0].trimmingCharacters(in: .whitespaces)) }
+                if parts.count >= 2 { state.badgeOrdenMedica.texto = parts[1].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 3 { state.badgeOrdenMedica.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 4 { state.badgeOrdenMedica.size = parts[3].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 5 { state.badgeOrdenMedica.colorFondo = parts[4].trimmingCharacters(in: .whitespaces) }
+            case "BadgeTipoRecetaMedica(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeRecetaMedica.font = parseFontName(parts[0].trimmingCharacters(in: .whitespaces)) }
+                if parts.count >= 2 { state.badgeRecetaMedica.texto = parts[1].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 3 { state.badgeRecetaMedica.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 4 { state.badgeRecetaMedica.size = parts[3].trimmingCharacters(in: .whitespaces) }
+                if parts.count >= 5 { state.badgeRecetaMedica.colorFondo = parts[4].trimmingCharacters(in: .whitespaces) }
+            default:
+                break
             }
         }
         break

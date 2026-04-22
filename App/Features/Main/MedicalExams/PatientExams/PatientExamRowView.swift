@@ -13,6 +13,11 @@ struct PatientExamRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    var badgesMisExamenes: BadgesMisExamenesConfig = BadgesMisExamenesConfig()
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var onDelete: ((String) -> Void)? = nil
 
@@ -45,13 +50,16 @@ struct PatientExamRowView: View {
                     // Badge tipo de documento (Tipo_de_Archivo__c de Salesforce)
                     // No mostrar badge si el campo viene vacío/null (paridad web)
                     if let tipoArchivo = exam.tipoArchivoC, !tipoArchivo.isEmpty {
-                        let docType = getDocumentTypeBadge()
-                        Text(docType.label)
-                            .font(Font.custom("FiraSans-Medium", size: 11))
-                            .foregroundColor(Color(hex: docType.textColor))
+                        let badge = getDocumentTypeBadge()
+                        Text(badge.texto)
+                            .font(Font.custom(
+                                badge.font.isEmpty ? "FiraSans-Medium" : badge.font,
+                                size: CGFloat(Double(badge.size) ?? 11)
+                            ))
+                            .foregroundColor(Color(hex: badge.colorTexto))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Capsule().fill(Color(hex: docType.bgColor)))
+                            .background(Capsule().fill(Color(hex: badge.colorFondo)))
                     }
 
                     if let dateStr = exam.CreatedDate, !dateStr.isEmpty {
@@ -91,8 +99,8 @@ struct PatientExamRowView: View {
                         onDelete?(examId)
                     } label: {
                         Image(systemName: "trash")
-                            .font(.system(size: 16))
-                            .foregroundColor(Color(hex: "#ff4d4f"))
+                            .font(.system(size: CGFloat(Double(badgesMisExamenes.iconoBasuraSize) ?? 16)))
+                            .foregroundColor(Color(hex: badgesMisExamenes.iconoBasuraColor.isEmpty ? "#FF4D4F" : badgesMisExamenes.iconoBasuraColor))
                     }
                     .buttonStyle(.plain)
                     .padding(.trailing, 8)
@@ -118,7 +126,7 @@ struct PatientExamRowView: View {
         }
         .buttonStyle(.plain)
         .navigationLink(isActive: $isPresentingDetails) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
         }
     }
 
@@ -135,32 +143,24 @@ struct PatientExamRowView: View {
         }
     }
 
-    struct DocTypeBadge {
-        let label: String
-        let textColor: String
-        let bgColor: String
-    }
-
     /// Obtiene el badge de tipo de documento usando `Tipo_de_Archivo__c` directo de Salesforce.
-    /// El string del backend ES el label. El color se busca por key exacta.
-    func getDocumentTypeBadge() -> DocTypeBadge {
+    /// Colores, texto, font y size vienen de la config dinámica (Elemento 12 BrandAccount).
+    func getDocumentTypeBadge() -> BadgeConfig {
         let tipo = exam.tipoArchivoC ?? ""
 
         switch tipo {
         case "Receta Médica":
-            return DocTypeBadge(label: tipo, textColor: "#0183c7", bgColor: "#e6f4ff")
+            return badgesMisExamenes.badgeRecetaMedica
         case "Examen de Laboratorio":
-            return DocTypeBadge(label: tipo, textColor: "#52c41a", bgColor: "#f0f9eb")
+            return badgesMisExamenes.badgeExamenLaboratorio
         case "Examen de Imagen":
-            return DocTypeBadge(label: tipo, textColor: "#722ed1", bgColor: "#f9f0ff")
+            return badgesMisExamenes.badgeExamenImagen
         case "Orden de Exámenes":
-            return DocTypeBadge(label: tipo, textColor: "#d46b08", bgColor: "#fff7e6")
+            return badgesMisExamenes.badgeOrdenExamen
         case "Informe Médico":
-            return DocTypeBadge(label: tipo, textColor: "#13c2c2", bgColor: "#e6fffb")
+            return badgesMisExamenes.badgeInformeMedico
         default:
-            // Fallback gris — tipo vacío o desconocido
-            let label = tipo.isEmpty ? "Otros" : tipo
-            return DocTypeBadge(label: label, textColor: "#8c8c8c", bgColor: "#f5f5f5")
+            return badgesMisExamenes.badgeOtros
         }
     }
 

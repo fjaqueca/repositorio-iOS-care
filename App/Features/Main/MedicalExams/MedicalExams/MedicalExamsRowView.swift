@@ -17,10 +17,18 @@ struct MedicalExamsRowView: View {
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
+    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
+    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
+    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     /// Binding propagado desde MedicalExamsView. Lo seteamos a true desde el detalle
     /// cuando hay upload exitoso, para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -69,6 +77,15 @@ struct MedicalExamsRowView: View {
 
             // Content area - navigates to detail
             VStack(alignment: .leading, spacing: 8) {
+                Text((exam.Name ?? "Sin nombre").uppercased())
+                    .font(Font.custom(
+                        UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
+                        size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
+                    ))
+                    .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+
                 // Badge tipo documento (dinámico desde Salesforce)
                 if let tipo = exam.tipoDocumento {
                     let badge: BadgeConfig = {
@@ -88,15 +105,6 @@ struct MedicalExamsRowView: View {
                                 .fill(Color(hex: badge.colorFondo))
                         )
                 }
-
-                Text((exam.Name ?? "Sin nombre").uppercased())
-                    .font(Font.custom(
-                        UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
-                        size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
-                    ))
-                    .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
 
                 if let descripcion = exam.descripcionC, !descripcion.isEmpty {
                     Text(descripcion)
@@ -152,7 +160,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 

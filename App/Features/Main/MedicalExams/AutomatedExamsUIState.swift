@@ -35,9 +35,20 @@ struct AutomatedExamsUIState {
 
     // Custom Record - Elemento 10: Sección Mis Archivos de Salud
     var botonSubirExamen = ButtonExamConfig()
+    var badgeDetallePrescripciones = BadgeDetalleConfig(texto: "Creado por el paciente", colorTexto: "#D4A017", colorFondo: "#FFF7E6", font: "FiraSans-Regular", size: "15", icono: "stethoscope")
+    var badgeDetalleRecetaMedica = BadgeDetalleConfig(texto: "Receta médica", colorTexto: "#1890FF", colorFondo: "#E6F4FF", font: "FiraSans-Regular", size: "15", icono: "pills.fill")
+    var badgeDetalleExamenMedico = BadgeDetalleConfig(texto: "Dr/a {ProfesionalResponsable}", colorTexto: "#52C41A", colorFondo: "#F0F9EB", font: "FiraSans-Regular", size: "15", icono: "stethoscope")
+    var botonVerDocumentoEnviado = ButtonExamConfig(texto: "Ver documento enviado", colorTexto: "#FFFFFF", colorFondo: "#00BBDC", font: "FiraSans-Bold", size: "16")
+    var badgeCargadoPorPaciente = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
 
     // Custom Record - Elemento 11: Dialog Eliminar Examen Subido
     var dialogEliminarExamen = DialogEliminarExamenConfig()
+
+    // Custom Record - Elemento 12: Badges tipo examen subido en Mis Archivos de Salud
+    var badgesMisExamenes = BadgesMisExamenesConfig()
+
+    // Custom Record - Elemento 13: Botones vista detalle examen subido en Mis Archivos de Salud
+    var botonesDetalleExamen = BotonesDetalleExamenConfig()
 
     // Custom Record - Elemento 9: "Seleccionar Todos" + Badges en Prescripciones Médicas
     var seleccionarTodosTexto: String = "Seleccionar Todos"
@@ -272,6 +283,34 @@ struct BadgeConfig {
     var size: String = "11"
     var colorTexto: String = "#FFFFFF"
     var colorFondo: String = "#00BBDC"
+}
+
+// MARK: - Badge Detalle Prescripciones Médicas (Elemento 10)
+struct BadgeDetalleConfig {
+    var texto: String = ""
+    var colorTexto: String = ""
+    var colorFondo: String = ""
+    var font: String = "FiraSans-Regular"
+    var size: String = "15"
+    var icono: String = "stethoscope"
+}
+
+// MARK: - Botones Vista Detalle Examen Subido (Elemento 13)
+struct BotonesDetalleExamenConfig {
+    var botonEliminar = ButtonExamConfig(texto: "Eliminar", colorTexto: "#FFFFFF", colorFondo: "#FF3B30", font: "FiraSans-Bold", size: "16")
+    var botonDescargar = ButtonExamConfig(texto: "Descargar", colorTexto: "#FFFFFF", colorFondo: "#00BBDC", font: "FiraSans-Bold", size: "16")
+}
+
+// MARK: - Badges Tipo Examen Subido en Mis Archivos de Salud (Elemento 12)
+struct BadgesMisExamenesConfig {
+    var badgeExamenImagen = BadgeConfig(texto: "Examen de Imagen", font: "FiraSans-Medium", size: "11", colorTexto: "#722ed1", colorFondo: "#f9f0ff")
+    var badgeRecetaMedica = BadgeConfig(texto: "Receta Médica", font: "FiraSans-Medium", size: "11", colorTexto: "#0183c7", colorFondo: "#e6f4ff")
+    var badgeExamenLaboratorio = BadgeConfig(texto: "Examen de Laboratorio", font: "FiraSans-Medium", size: "11", colorTexto: "#52c41a", colorFondo: "#f0f9eb")
+    var badgeOrdenExamen = BadgeConfig(texto: "Orden de Exámenes", font: "FiraSans-Medium", size: "11", colorTexto: "#d46b08", colorFondo: "#fff7e6")
+    var badgeInformeMedico = BadgeConfig(texto: "Informe Médico", font: "FiraSans-Medium", size: "11", colorTexto: "#13c2c2", colorFondo: "#e6fffb")
+    var badgeOtros = BadgeConfig(texto: "Otros", font: "FiraSans-Medium", size: "11", colorTexto: "#8c8c8c", colorFondo: "#f5f5f5")
+    var iconoBasuraSize: String = "16"
+    var iconoBasuraColor: String = "#FF4D4F"
 }
 
 // MARK: - Atributos de texto reutilizable

@@ -136,39 +136,38 @@ struct ProfileView: View {
                         }
 
                         // Información Legal (expandible)
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                showButtons.toggle()
+                        if profileState.informacionLegal.isVisible {
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.25)) {
+                                    showButtons.toggle()
+                                }
+                            } label: {
+                                HStack(spacing: 14) {
+                                    menuIcon(url: profileState.informacionLegal.iconUrl, fallbackSFSymbol: "doc.text")
+                                    Text(profileState.informacionLegal.label)
+                                        .font(Font.custom(profileState.menuStyle.font, size: CGFloat(Double(profileState.menuStyle.size) ?? 15)))
+                                        .foregroundColor(Color(hex: profileState.menuStyle.color))
+                                    Spacer()
+                                    Image(systemName: showButtons ? "chevron.up" : "chevron.down")
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.gray.opacity(0.5))
+                                }
+                                .padding(.horizontal, .margin)
+                                .padding(.vertical, 14)
                             }
-                        } label: {
-                            HStack(spacing: 14) {
-                                Image(systemName: "doc.text")
-                                    .font(.system(size: 18, weight: .regular))
-                                    .foregroundColor(Color(hex: "#00BBDC"))
-                                    .frame(width: 28)
-                                Text("Información Legal")
-                                    .font(Font.custom(profileState.menuStyle.font, size: CGFloat(Double(profileState.menuStyle.size) ?? 15)))
-                                    .foregroundColor(Color(hex: profileState.menuStyle.color))
-                                Spacer()
-                                Image(systemName: showButtons ? "chevron.up" : "chevron.down")
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(.gray.opacity(0.5))
-                            }
-                            .padding(.horizontal, .margin)
-                            .padding(.vertical, 14)
-                        }
-                        .buttonStyle(.plain)
+                            .buttonStyle(.plain)
 
-                        if showButtons {
-                            VStack(spacing: 0) {
-                                subMenuRow(title: "Términos y condiciones") {
-                                    navigation = .termsAndConditions
+                            if showButtons {
+                                VStack(spacing: 0) {
+                                    subMenuRow(title: "Términos y condiciones") {
+                                        navigation = .termsAndConditions
+                                    }
+                                    subMenuRow(title: "Políticas de privacidad") {
+                                        navigation = .privacyPolicies
+                                    }
                                 }
-                                subMenuRow(title: "Políticas de privacidad") {
-                                    navigation = .privacyPolicies
-                                }
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                             }
-                            .transition(.opacity.combined(with: .move(edge: .top)))
                         }
 
                         if profileState.ayuda.isVisible {

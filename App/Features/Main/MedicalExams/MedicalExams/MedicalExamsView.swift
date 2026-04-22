@@ -13,12 +13,20 @@ import ZIPFoundation
 struct MedicalExamsView: View {
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig(texto: "Examen automatizado", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#7B61FF")
     var badgeRecetaMedica: BadgeConfig = BadgeConfig(texto: "Receta médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00B894")
+    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
+    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
+    var botonSubirExamen: ButtonExamConfig = ButtonExamConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
@@ -135,10 +143,18 @@ struct MedicalExamsView: View {
                                         isLoadingExam: $isLoading,
                                         UIState: $UIState,
                                         backArrowColor: backArrowColor,
+                                        navTitle: navTitle,
+                                        navTitleAttr: navTitleAttr,
                                         dialogEliminarConfig: dialogEliminarConfig,
                                         badgeOrdenMedica: badgeOrdenMedica,
                                         badgeExamenAutomatizado: badgeExamenAutomatizado,
                                         badgeRecetaMedica: badgeRecetaMedica,
+                                        badgeDetallePrescripciones: badgeDetallePrescripciones,
+                                        badgeDetalleRecetaMedica: badgeDetalleRecetaMedica,
+                                        badgeDetalleExamenMedico: badgeDetalleExamenMedico,
+                                        botonVerDocumentoEnviado: botonVerDocumentoEnviado,
+                                        botonSubirExamenConfig: botonSubirExamen,
+                                        badgeCargadoPorPaciente: badgeCargadoPorPaciente,
                                         listNeedsRefresh: $listNeedsRefresh,
                                         linkedPatientExam: linkedPatientExam(for: exam)
                                     )

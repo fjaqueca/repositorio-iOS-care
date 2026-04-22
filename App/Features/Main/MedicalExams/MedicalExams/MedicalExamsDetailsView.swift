@@ -33,10 +33,18 @@ struct MedicalExamsDetailsView: View {
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
+    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
+    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
+    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
+    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     /// Binding al MedicalExamsView padre. Lo seteamos a true tras un upload exitoso
     /// para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -62,8 +70,6 @@ struct MedicalExamsDetailsView: View {
     @State private var urlToShare: URL?
     @State private var sendNewExam: Bool = false
     @State private var showDownloadSuccessDialog: Bool = false
-    @State private var showDeleteLinkedExamConfirm: Bool = false
-    @State private var deletingLinkedLoading: Bool = false
     var publisher = PassthroughSubject<Void, Never>()
     enum AlertAuthEvent: Identifiable{
         var id: Int{
@@ -96,37 +102,44 @@ struct MedicalExamsDetailsView: View {
                         VStack(alignment: .leading, spacing: 0) {
                             // Exam name & date
                             VStack(alignment: .leading, spacing: 6) {
-                                Text(exam.Name ?? "Sin nombre")
+                                Text((exam.Name ?? "Sin nombre").uppercased())
                                     .font(Font.custom("FiraSans-Bold", size: 16))
                                     .foregroundColor(Color(hex: "#333333"))
                                     .lineLimit(3)
 
-                                // Badge indicador de tipo de documento
+                                // Badge indicador de tipo de documento (dinámico desde Elemento 10)
                                 if let tipo = exam.tipoDocumento {
-                                    let badge: BadgeConfig = {
+                                    let detalleBadge: BadgeDetalleConfig = {
                                         switch tipo {
-                                        case .ordenMedica: return badgeOrdenMedica
-                                        case .examenAutomatizado: return badgeExamenAutomatizado
-                                        case .recetaMedica: return badgeRecetaMedica
+                                        case .examenAutomatizado: return badgeDetallePrescripciones
+                                        case .recetaMedica: return badgeDetalleRecetaMedica
+                                        case .ordenMedica: return badgeDetalleExamenMedico
                                         }
                                     }()
+                                    let badgeTexto: String = {
+                                        if tipo == .ordenMedica {
+                                            return detalleBadge.texto.replacingOccurrences(of: "{ProfesionalResponsable}", with: exam.profesionalResponsableR?.Name ?? "")
+                                        }
+                                        return detalleBadge.texto
+                                    }()
                                     HStack(spacing: 6) {
-                                        Image(systemName: tipo == .recetaMedica ? "pills.fill" : "stethoscope")
-                                            .font(.system(size: CGFloat(Int(badge.size) ?? 11)))
-                                            .foregroundColor(Color(hex: badge.colorTexto))
-                                        Text(tipo == .examenAutomatizado ? "Creado por el paciente" :
-                                             tipo == .ordenMedica ? "Dr/a \(exam.profesionalResponsableR?.Name ?? "")" :
-                                             tipo.rawValue)
-                                            .font(Font.custom(badge.font, size: CGFloat(Int(badge.size) ?? 11)))
-                                            .foregroundColor(Color(hex: badge.colorTexto))
+                                        Image(systemName: detalleBadge.icono)
+                                            .font(.system(size: CGFloat(Double(detalleBadge.size) ?? 15)))
+                                            .foregroundColor(Color(hex: detalleBadge.colorTexto))
+                                        Text(badgeTexto)
+                                            .font(Font.custom(
+                                                detalleBadge.font.isEmpty ? "FiraSans-Regular" : detalleBadge.font,
+                                                size: CGFloat(Double(detalleBadge.size) ?? 15)
+                                            ))
+                                            .foregroundColor(Color(hex: detalleBadge.colorTexto))
                                     }
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)
-                                    .background(Capsule().fill(Color(hex: badge.colorFondo)))
+                                    .background(Capsule().fill(Color(hex: detalleBadge.colorFondo)))
                                 }
 
                                 if let dateStr = exam.desdeC, !dateStr.isEmpty {
-                                    Text(dateStr)
+                                    Text(formatDateDisplay(dateStr))
                                         .font(Font.custom("FiraSans-Regular", size: 13))
                                         .foregroundColor(.gray)
                                 }
@@ -208,18 +221,17 @@ struct MedicalExamsDetailsView: View {
                         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         .padding(.horizontal, .margin)
 
-                        // Subir Examen button (oculto para recetas médicas)
-                        if exam.tipoDocumento != .recetaMedica {
-                            subExamButton
-                                .padding(.horizontal, .margin)
-                        }
                     }
                     .padding(.top, 20)
                     .padding(.bottom, .margin)
                 }
-                // isExamPublished() ya no es necesario: el botón se decide por el
-                // computed isExamPublish, que depende de linkedPatientExam (calculado
-                // en el padre) y optimisticUploaded (estado local tras upload).
+
+                // Subir Examen button (oculto para recetas médicas) — fijo al final
+                if exam.tipoDocumento != .recetaMedica {
+                    subExamButton
+                        .padding(.horizontal, .margin)
+                        .padding(.vertical, 14)
+                }
             }
             .alert(item: $alertAuthEvent, content: { tipe in
                 switch tipe {
@@ -237,9 +249,12 @@ struct MedicalExamsDetailsView: View {
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(UIState.examDetail.title.text.isEmpty ? "Exámenes Médicos" : UIState.examDetail.title.text)
-                        .font(Font.custom("FiraSans-Bold", size: 17))
-                        .foregroundColor(Color(hex: UIState.examDetail.title.color.isEmpty ? "#333333" : UIState.examDetail.title.color))
+                    Text(navTitle.isEmpty ? "Prescripciones Médicas" : navTitle)
+                        .font(Font.custom(
+                            navTitleAttr.font.isEmpty ? "FiraSans-Bold" : navTitleAttr.font,
+                            size: CGFloat(Int(navTitleAttr.size) ?? 20)
+                        ))
+                        .foregroundColor(Color(hex: navTitleAttr.color.isEmpty ? "#00BBDC" : navTitleAttr.color))
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -284,21 +299,7 @@ struct MedicalExamsDetailsView: View {
                     .cornerRadius(12)
             }
 
-            // Modal de confirmación de eliminación del examen vinculado
-            if showDeleteLinkedExamConfirm {
-                ExamDeleteConfirmationModal(
-                    onConfirm: {
-                        deleteLinkedPatientExam()
-                    },
-                    onCancel: {
-                        showDeleteLinkedExamConfirm = false
-                    },
-                    isLoading: deletingLinkedLoading,
-                    config: dialogEliminarConfig
-                )
-                .zIndex(50)
-                .transition(.opacity)
-            }
+
         }
         .background(Color(.systemGroupedBackground))
     }
@@ -306,54 +307,39 @@ struct MedicalExamsDetailsView: View {
     private var subExamButton: some View {
         Group {
             if isExamPublish {
-                VStack(spacing: 10) {
-                    Button {
-                        sendNewExam = true
-                    } label: {
-                        Text("Ver documento enviado")
-                            .font(Font.custom("FiraSans-Bold", size: 16))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(Color(hex: UIState.btnAddSeeExam.btnSeeExam.colorButton.isEmpty ? "#00BCD4" : UIState.btnAddSeeExam.btnSeeExam.colorButton))
-                            )
-                    }
-
-                    // Eliminar examen vinculado
-                    if let linkedId = effectiveLinkedExam?.Id, !linkedId.isEmpty {
-                        Button {
-                            showDeleteLinkedExamConfirm = true
-                        } label: {
-                            HStack(spacing: 6) {
-                                Image(systemName: "trash")
-                                    .font(.system(size: 14))
-                                Text("Eliminar documento")
-                                    .font(Font.custom("FiraSans-Bold", size: 16))
-                            }
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(Color.red)
-                            )
-                        }
-                    }
-                }
-            } else {
+                let btn = botonVerDocumentoEnviado
                 Button {
                     sendNewExam = true
                 } label: {
-                    Text("+ Subir Examen")
-                        .font(Font.custom("FiraSans-Bold", size: 16))
-                        .foregroundColor(.white)
+                    Text(btn.texto.isEmpty ? "Ver documento enviado" : btn.texto)
+                        .font(Font.custom(
+                            btn.font.isEmpty ? "FiraSans-Bold" : btn.font,
+                            size: CGFloat(Double(btn.size) ?? 16)
+                        ))
+                        .foregroundColor(Color(hex: btn.colorTexto.isEmpty ? "#FFFFFF" : btn.colorTexto))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
                         .background(
                             RoundedRectangle(cornerRadius: 25)
-                                .fill(Color(hex: UIState.btnAddSeeExam.btnAddExam.colorButton.isEmpty ? "#00BCD4" : UIState.btnAddSeeExam.btnAddExam.colorButton))
+                                .fill(Color(hex: btn.colorFondo.isEmpty ? "#00BBDC" : btn.colorFondo))
+                        )
+                }
+            } else {
+                let btn = botonSubirExamenConfig
+                Button {
+                    sendNewExam = true
+                } label: {
+                    Text(btn.texto.isEmpty ? "+ Subir Examen" : btn.texto)
+                        .font(Font.custom(
+                            btn.font.isEmpty ? "FiraSans-Bold" : btn.font,
+                            size: CGFloat(Double(btn.size) ?? 16)
+                        ))
+                        .foregroundColor(Color(hex: btn.colorTexto.isEmpty ? "#FFFFFF" : btn.colorTexto))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(hex: btn.colorFondo.isEmpty ? "#00BBDC" : btn.colorFondo))
                         )
                 }
             }
@@ -375,9 +361,9 @@ struct MedicalExamsDetailsView: View {
         })
         .navigationLink(isActive: $sendNewExam) {
             if isExamPublish {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             } else {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             }
         }
     }
@@ -588,35 +574,17 @@ struct MedicalExamsDetailsView: View {
         return patientExam
     }
 
-    /// Elimina el examen del paciente vinculado a esta orden médica.
-    func deleteLinkedPatientExam() {
-        guard let linkedId = effectiveLinkedExam?.Id, !linkedId.isEmpty else {
-            print("❌ [ExamDetalle] No se puede eliminar: linkedExam.Id es nil o vacío")
-            showDeleteLinkedExamConfirm = false
-            return
+    /// Convierte fecha de formato Salesforce (yyyy-MM-dd) a formato display (dd-MM-yyyy)
+    private func formatDateDisplay(_ dateStr: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "dd-MM-yyyy"
+        if let date = inputFormatter.date(from: dateStr) {
+            return outputFormatter.string(from: date)
         }
-
-        deletingLinkedLoading = true
-
-        Task {
-            let result = await Network.shared.deletePatientExam(examId: linkedId)
-
-            await MainActor.run {
-                deletingLinkedLoading = false
-                showDeleteLinkedExamConfirm = false
-                switch result {
-                case .success:
-                    print("🗑️ [ExamDetalle] Examen vinculado eliminado exitosamente — id: \(linkedId)")
-                    // Limpiar estado local para que el botón vuelva a "Subir Examen"
-                    refreshedLinkedExam = nil
-                    optimisticUploaded = false
-                    listNeedsRefresh = true
-                case let .failure(error):
-                    print("❌ [ExamDetalle] Error al eliminar examen vinculado: \(error.name) - \(error.message)")
-                    AppStatusManager.error(error)
-                }
-            }
-        }
+        return dateStr
     }
 
     /// Consulta puntual al backend para refrescar el PatientExam asociado a ESTA orden,

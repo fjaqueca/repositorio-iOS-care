@@ -12,7 +12,12 @@ import CachedAsyncImage
 struct PatientExamsView: View {
     @Binding var UIState: ExamUIState
     var backArrowColor: String = "#00BBDC"
+    var navTitle: String = ""
+    var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
+    var badgesMisExamenes: BadgesMisExamenesConfig = BadgesMisExamenesConfig()
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
+    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
@@ -102,6 +107,11 @@ struct PatientExamsView: View {
                                     isLoadingExam: $isLoading,
                                     UIState: $UIState,
                                     backArrowColor: backArrowColor,
+                                    navTitle: navTitle,
+                                    navTitleAttr: navTitleAttr,
+                                    badgesMisExamenes: badgesMisExamenes,
+                                    botonesDetalleExamen: botonesDetalleExamen,
+                                    badgeCargadoPorPaciente: badgeCargadoPorPaciente,
                                     dialogEliminarConfig: dialogEliminarConfig,
                                     onDelete: { examId in
                                         deleteConfirmExamId = examId
@@ -142,7 +152,7 @@ struct PatientExamsView: View {
             getExamsForPatient()
         }
         .navigationLink(isActive: $sendNewExam) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, dialogEliminarConfig: dialogEliminarConfig, isPublished: false, exam: nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, isPublished: false, exam: nil)
         }
         .background(
             Group {
@@ -249,6 +259,8 @@ struct PatientExamsView: View {
             : botonSubirExamenConfig.texto
         let btnColorTexto = botonSubirExamenConfig.colorTexto.isEmpty ? "#FFFFFF" : botonSubirExamenConfig.colorTexto
         let btnColorFondo = botonSubirExamenConfig.colorFondo.isEmpty ? "#00BBDC" : botonSubirExamenConfig.colorFondo
+        let btnFont = botonSubirExamenConfig.font.isEmpty ? "FiraSans-Medium" : botonSubirExamenConfig.font
+        let btnSize = Double(botonSubirExamenConfig.size) ?? 15
 
         return Button {
             sendNewExam = true
@@ -257,7 +269,7 @@ struct PatientExamsView: View {
                 Image(systemName: "arrow.up.doc.fill")
                     .font(.system(size: 14, weight: .medium))
                 Text(btnText)
-                    .font(Font.custom("FiraSans-Medium", size: 15))
+                    .font(Font.custom(btnFont, size: btnSize))
             }
             .foregroundColor(Color(hex: btnColorTexto))
             .frame(maxWidth: .infinity)
