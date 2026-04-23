@@ -248,42 +248,42 @@ struct AppView: View {
 #if CareAssistance
     agreement = "a3yRN0000007kkTYAQ"
             //agreement = "a3yRN000000MMBZYA4" pre login de testing
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6449431471"
             schemeName = "CareAssistance"
 #elseif Wellbeing
     agreement = "a3yRN0000007S7dYAE"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6477316325"
             schemeName = "Wellbeing"
 #elseif BCI
     agreement = "a3yRN000000YiWTYA0"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6479409551"
             schemeName = "BCI"
 #elseif PharmaBenefits
     agreement = "a3yRN000000AxwTYAS"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6479473964"
             schemeName = "PharmaBenefits"
 #elseif VCContigo
     agreement = "a3yRN000000Ch7dYAC"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6479615108"
             schemeName = "VCContigo"
 #elseif CareAssistanceMX
     agreement = "a3yRN000000gzQTYAY"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6479615108"
             schemeName = "CareAssistanceMX"
 #elseif Premedic
     agreement = "a3yRN0000018NJpYAM"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6743768129"
             schemeName = "Premedic"
 #elseif ContigoSalud
     agreement = "a3yRN0000017n8HYAQ"
-            self.iOSVersionApp = 24
+            self.iOSVersionApp = 25
             self.idAppStore = "6744413095"
             schemeName = "ContigoSalud"
 #endif

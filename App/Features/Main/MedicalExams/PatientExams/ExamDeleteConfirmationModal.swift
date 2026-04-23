@@ -45,7 +45,7 @@ struct ExamDeleteConfirmationModal: View {
                 .padding(.top, 12)
                 .padding(.trailing, 4)
 
-                // Ícono de advertencia: círculo con borde gris + "!" amarillo (bounce in)
+                // Ícono de advertencia (dinámico o hardcodeado)
                 ZStack {
                     Circle()
                         .fill(Color.white)
@@ -54,9 +54,16 @@ struct ExamDeleteConfirmationModal: View {
                             Circle()
                                 .stroke(Color(hex: "#E0E0E0"), lineWidth: 1.5)
                         )
-                    Text("!")
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Color(hex: "#F5A623"))
+                    if config.icono.isEmpty {
+                        // Fallback: "!" amarillo hardcodeado (comportamiento original)
+                        Text("!")
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundColor(Color(hex: "#F5A623"))
+                    } else {
+                        Image(systemName: config.icono)
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(Color(hex: "#F5A623"))
+                    }
                 }
                 .scaleEffect(iconScale)
                 .opacity(iconOpacity)

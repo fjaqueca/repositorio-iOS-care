@@ -19,6 +19,8 @@ struct PatientExamRowView: View {
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
+    var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var onDelete: ((String) -> Void)? = nil
 
     private var accentColor: Color {
@@ -126,7 +128,7 @@ struct PatientExamRowView: View {
         }
         .buttonStyle(.plain)
         .navigationLink(isActive: $isPresentingDetails) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
         }
     }
 

@@ -188,6 +188,7 @@ extension ExamsView {
 
         var customRecord: BrandAccount?
         var mainRecord: BrandAccount?
+        var custom2Record: BrandAccount?
 
         for record in records {
             if record.Name == "ExamenesAutomatizadosCustom" {
@@ -195,6 +196,9 @@ extension ExamsView {
             }
             if record.Name == "ExamenesAutomatizados" {
                 mainRecord = record
+            }
+            if record.Name == "ExamenesAutomatizadosCustom2" {
+                custom2Record = record
             }
         }
 
@@ -354,6 +358,40 @@ extension ExamsView {
             print("      recetaMedica=\"\(state.badgeRecetaMedica.texto)\" font=\(state.badgeRecetaMedica.font) size=\(state.badgeRecetaMedica.size) colorTexto=\(state.badgeRecetaMedica.colorTexto) colorFondo=\(state.badgeRecetaMedica.colorFondo)")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizados' NO encontrado")
+        }
+
+        // --- CUSTOM2 RECORD ---
+        if let custom2 = custom2Record {
+            print("")
+            print("✅ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom2' ENCONTRADO")
+            print("╔══════════════════════════════════════════════════════════════╗")
+            print("║  DUMP COMPLETO: Record Name='ExamenesAutomatizadosCustom2'  ║")
+            print("╚══════════════════════════════════════════════════════════════╝")
+            for elemIdx in 1...11 {
+                guard let nombreElem = custom2.getNombreElemento(elemIdx) else { continue }
+                print("┌─ Elemento \(elemIdx): Nombre=\"\(nombreElem)\"")
+                for fieldIdx in 1...16 {
+                    let attr = custom2.getAtributo(section: elemIdx, field: fieldIdx)
+                    let val = custom2.getValor(section: elemIdx, field: fieldIdx)
+                    guard attr != nil || val != nil else { continue }
+                    print("│  [\(elemIdx).\(fieldIdx)] Atributo=\"\(attr ?? "(nil)")\" → Valor=\"\((val ?? "(nil)").prefix(80))\"")
+                }
+                print("└────────────────────────────────────────────────")
+            }
+            print("═══════════════════════════════════════════════════════════════")
+            print("")
+            print("─── Parseando CUSTOM2 RECORD ───")
+            loadDialogExamenesEnviados(from: custom2, into: &state)
+            let dlgEnv = state.dialogExamenesEnviados
+            print("   ✅ DialogExamenesEnviados (Elemento 1): icono=\"\(dlgEnv.icono)\" titulo=\"\(dlgEnv.titulo)\" descripcion=\"\(dlgEnv.descripcion.prefix(60))\" btnAceptar=\"\(dlgEnv.botonAceptar.texto)\"")
+            loadDialogEliminarDocOrden(from: custom2, into: &state)
+            let dlgElim = state.dialogEliminarDocOrden
+            print("   🗑️ DialogEliminarDocOrden (Elemento 2): icono=\"\(dlgElim.icono)\" titulo=\"\(dlgElim.titulo)\" descripcion=\"\(dlgElim.descripcion.prefix(60))\" btnAceptar=\"\(dlgElim.botonAceptar.texto)\" btnCancelar=\"\(dlgElim.botonCancelar.texto)\"")
+            loadDialogEliminarMiArchivo(from: custom2, into: &state)
+            let dlgArch = state.dialogEliminarMiArchivo
+            print("   🗑️ DialogEliminarMiArchivo (Elemento 3): titulo=\"\(dlgArch.titulo)\" descripcion=\"\(dlgArch.descripcion.prefix(60))\" btnAceptar=\"\(dlgArch.botonAceptar.texto)\" btnCancelar=\"\(dlgArch.botonCancelar.texto)\"")
+        } else {
+            print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom2' NO encontrado")
         }
 
         print("")
@@ -1024,6 +1062,119 @@ private func loadBotonesDetalleExamen(from record: BrandAccount, into state: ino
             state.botonesDetalleExamen.botonEliminar = parseButton5Fields(valor)
         case "BotonDescargar(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
             state.botonesDetalleExamen.botonDescargar = parseButton5Fields(valor)
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Custom2 Record Parsers
+
+// MARK: - Elemento 1 (Custom2): DialogExamenesEnviadosCorrectamente
+
+private func loadDialogExamenesEnviados(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 1, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 1, field: i) ?? ""
+
+        switch atributo {
+        case "IconoSuperiorDialog":
+            state.dialogExamenesEnviados.icono = parseIconoDialog(valor)
+
+        case "TituloDialogExamenesEnviadosCorrectamente":
+            state.dialogExamenesEnviados.titulo = valor
+
+        case "AtributosTituloDialogExamenesEnviadosCorrectamente(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogExamenesEnviados.tituloAttr = parseTextAttributes(valor)
+
+        case "DescripcionDialogExamenesEnviadosCorrectamente":
+            state.dialogExamenesEnviados.descripcion = valor
+
+        case "AtributosDescripcionDialogExamenesEnviadosCorrectamente(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogExamenesEnviados.descripcionAttr = parseTextAttributes(valor)
+
+        case "BotonAceptarDialogExamenesEnviadosCorrectamente(Texto;ColorTexto;ColorFondo)":
+            state.dialogExamenesEnviados.botonAceptar = parseButton3(valor)
+
+        default:
+            break
+        }
+    }
+}
+
+/// Mapea nombres de ícono de Salesforce para dialogs a SF Symbols
+private func parseIconoDialog(_ raw: String) -> String {
+    switch raw.trimmingCharacters(in: .whitespaces) {
+    case "Check":      return "checkmark"
+    case "Error":      return "xmark"
+    case "Warning":    return "exclamationmark.triangle"
+    case "Alert":      return "exclamationmark.triangle.fill"
+    case "Info":       return "info.circle"
+    default:           return raw
+    }
+}
+
+// MARK: - Elemento 2 (Custom2): DialogConfirmarEliminarDocumentoSubidoAOrdenExamen
+
+private func loadDialogEliminarDocOrden(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 2, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 2, field: i) ?? ""
+
+        switch atributo {
+        case "IconoSuperiorDialog":
+            state.dialogEliminarDocOrden.icono = parseIconoDialog(valor)
+
+        case "TituloDialogConfirmarEliminarDocumentoSubidoAOrdenExamen":
+            state.dialogEliminarDocOrden.titulo = valor
+
+        case "AtributosTituloDialogConfirmarEliminarDocumentoSubidoAOrdenExamen(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarDocOrden.tituloAttr = parseTextAttributes(valor)
+
+        case "DescripcionDialogConfirmarEliminarDocumentoSubidoAOrdenExamen":
+            state.dialogEliminarDocOrden.descripcion = valor
+
+        case "AtributosDescripcionDialogConfirmarEliminarDocumentoSubidoAOrdenExamen(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarDocOrden.descripcionAttr = parseTextAttributes(valor)
+
+        case "BotonAceptarDialogConfirmarEliminarDocumentoSubidoAOrdenExamen(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarDocOrden.botonAceptar = parseButton3(valor)
+
+        case "BotonCancelarDialogConfirmarEliminarDocumentoSubidoAOrdenExamen(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarDocOrden.botonCancelar = parseButton3(valor)
+
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Elemento 3 (Custom2): DialogConfirmarEliminarMiArchivoDeSalud
+
+private func loadDialogEliminarMiArchivo(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for i in 1...16 {
+        guard let atributo = record.getAtributo(section: 3, field: i), !atributo.isEmpty else { continue }
+        let valor = record.getValor(section: 3, field: i) ?? ""
+
+        switch atributo {
+        case "TituloDialogConfirmarEliminarMiArchivoDeSalud":
+            state.dialogEliminarMiArchivo.titulo = valor
+
+        case "AtributosTituloDialogConfirmarEliminarMiArchivoDeSalud(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarMiArchivo.tituloAttr = parseTextAttributes(valor)
+
+        case "DescripcionDialogConfirmarEliminarMiArchivoDeSalud":
+            state.dialogEliminarMiArchivo.descripcion = valor
+
+        case "AtributosDescripcionDialogConfirmarEliminarMiArchivoDeSalud(TipoFuente;Size;ColorTexto;Posicion)":
+            state.dialogEliminarMiArchivo.descripcionAttr = parseTextAttributes(valor)
+
+        case "BotonAceptarDialogConfirmarEliminarMiArchivoDeSalud(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarMiArchivo.botonAceptar = parseButton3(valor)
+
+        case "BotonCancelarDialogConfirmarEliminarMiArchivoDeSalud(Texto;ColorTexto;ColorFondo)":
+            state.dialogEliminarMiArchivo.botonCancelar = parseButton3(valor)
+
         default:
             break
         }

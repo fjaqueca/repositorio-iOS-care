@@ -19,6 +19,9 @@ struct PatientExamsView: View {
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
+    var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogEliminarMiArchivoConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
     @State private var isLoading: Bool = true
@@ -113,6 +116,8 @@ struct PatientExamsView: View {
                                     botonesDetalleExamen: botonesDetalleExamen,
                                     badgeCargadoPorPaciente: badgeCargadoPorPaciente,
                                     dialogEliminarConfig: dialogEliminarConfig,
+                                    dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig,
+                                    dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig,
                                     onDelete: { examId in
                                         deleteConfirmExamId = examId
                                     }
@@ -152,7 +157,7 @@ struct PatientExamsView: View {
             getExamsForPatient()
         }
         .navigationLink(isActive: $sendNewExam) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, isPublished: false, exam: nil)
+            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: false, exam: nil)
         }
         .background(
             Group {
@@ -174,7 +179,7 @@ struct PatientExamsView: View {
             }
         )
 
-        // Modal de confirmación de eliminación
+        // Modal de confirmación de eliminación (usa config específica de Custom2 Elem 3)
         if deleteConfirmExamId != nil {
             ExamDeleteConfirmationModal(
                 onConfirm: {
@@ -184,7 +189,7 @@ struct PatientExamsView: View {
                     deleteConfirmExamId = nil
                 },
                 isLoading: deletingLoading,
-                config: dialogEliminarConfig
+                config: dialogEliminarMiArchivoConfig
             )
             .zIndex(50)
             .transition(.opacity)

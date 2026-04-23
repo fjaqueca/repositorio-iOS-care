@@ -16,6 +16,8 @@ struct MedicalExamsView: View {
     var navTitle: String = ""
     var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
+    var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var seleccionarTodosTexto: String = "Seleccionar Todos"
     var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
@@ -146,6 +148,8 @@ struct MedicalExamsView: View {
                                         navTitle: navTitle,
                                         navTitleAttr: navTitleAttr,
                                         dialogEliminarConfig: dialogEliminarConfig,
+                                        dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig,
+                                        dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig,
                                         badgeOrdenMedica: badgeOrdenMedica,
                                         badgeExamenAutomatizado: badgeExamenAutomatizado,
                                         badgeRecetaMedica: badgeRecetaMedica,

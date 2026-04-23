@@ -44,6 +44,15 @@ struct AutomatedExamsUIState {
     // Custom Record - Elemento 11: Dialog Eliminar Examen Subido
     var dialogEliminarExamen = DialogEliminarExamenConfig()
 
+    // Custom2 Record - Elemento 1: Dialog Exámenes Enviados Correctamente
+    var dialogExamenesEnviados = DialogExamenesEnviadosConfig()
+
+    // Custom2 Record - Elemento 2: Dialog Confirmar Eliminar Documento Subido a Orden Examen
+    var dialogEliminarDocOrden = DialogEliminarExamenConfig()
+
+    // Custom2 Record - Elemento 3: Dialog Confirmar Eliminar Mi Archivo de Salud
+    var dialogEliminarMiArchivo = DialogEliminarExamenConfig()
+
     // Custom Record - Elemento 12: Badges tipo examen subido en Mis Archivos de Salud
     var badgesMisExamenes = BadgesMisExamenesConfig()
 
@@ -74,8 +83,21 @@ struct AutomatedExamsUIState {
     var popupSugerencia = PopupExamConfig()
 }
 
+// MARK: - Dialog Exámenes Enviados Correctamente (Custom2 - Elemento 1)
+struct DialogExamenesEnviadosConfig {
+    var icono: String = "checkmark"          // SF Symbol del ícono superior
+    var colorIcono: String = "#4CAF50"       // Color del ícono
+    var colorFondoIcono: String = "#E8F5E9"  // Color del círculo de fondo
+    var titulo: String = ""
+    var tituloAttr = TextExamAttributes()
+    var descripcion: String = ""
+    var descripcionAttr = TextExamAttributes()
+    var botonAceptar = ButtonExamConfig()
+}
+
 // MARK: - Dialog Eliminar Examen Subido (Elemento 11)
 struct DialogEliminarExamenConfig {
+    var icono: String = ""               // SF Symbol del ícono superior (vacío = usa "!" hardcodeado)
     var titulo: String = ""
     var tituloAttr = TextExamAttributes()
     var descripcion: String = ""

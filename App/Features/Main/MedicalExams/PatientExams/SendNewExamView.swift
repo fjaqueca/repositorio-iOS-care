@@ -26,6 +26,8 @@ struct SendNewExamView: View {
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
+    var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     @State private var urlToShare: URL?
     @State var examName: String = ""
     @State var isPublished: Bool = false
@@ -160,7 +162,7 @@ struct SendNewExamView: View {
                     .transition(.opacity)
             }
 
-            // Modal de confirmación de eliminación
+            // Modal de confirmación de eliminación (usa config específica de Custom2 Elem 2)
             if showDeleteConfirmation {
                 ExamDeleteConfirmationModal(
                     onConfirm: {
@@ -170,7 +172,7 @@ struct SendNewExamView: View {
                         showDeleteConfirmation = false
                     },
                     isLoading: deletingLoading,
-                    config: dialogEliminarConfig
+                    config: dialogEliminarDocOrdenConfig
                 )
                 .zIndex(50)
                 .transition(.opacity)
@@ -522,7 +524,12 @@ struct SendNewExamView: View {
     /// Modal de éxito que se muestra tras subir los exámenes correctamente.
     /// Diseño: card blanca con check verde animado, título bold, mensaje y botón celeste.
     private var successModalView: some View {
-        ZStack {
+        let cfg = dialogExamenesEnviadosConfig
+        let tAttr = cfg.tituloAttr
+        let dAttr = cfg.descripcionAttr
+        let btn = cfg.botonAceptar
+
+        return ZStack {
             // Backdrop oscuro semi-transparente que cubre toda la pantalla.
             Color.black.opacity(0.45)
                 .ignoresSafeArea()
@@ -530,47 +537,64 @@ struct SendNewExamView: View {
 
             // Card blanca centrada
             VStack(spacing: 20) {
-                // Círculo claro con check verde animado
+                // Círculo claro con ícono animado
                 ZStack {
                     Circle()
-                        .fill(Color(hex: "#E8F5E9"))
+                        .fill(Color(hex: cfg.colorFondoIcono.isEmpty ? "#E8F5E9" : cfg.colorFondoIcono))
                         .frame(width: 78, height: 78)
-                    Image(systemName: "checkmark")
+                    Image(systemName: cfg.icono.isEmpty ? "checkmark" : cfg.icono)
                         .font(.system(size: 36, weight: .bold))
-                        .foregroundColor(Color(hex: "#4CAF50"))
+                        .foregroundColor(Color(hex: cfg.colorIcono.isEmpty ? "#4CAF50" : cfg.colorIcono))
                         .scaleEffect(checkScale)
                         .opacity(checkOpacity)
                 }
                 .padding(.top, 24)
 
-                Text("¡Exámenes Enviados!")
-                    .font(Font.custom("FiraSans-Bold", size: 18))
-                    .foregroundColor(Color(hex: "#222222"))
+                Text(cfg.titulo.isEmpty ? "¡Exámenes Enviados!" : cfg.titulo)
+                    .font(Font.custom(
+                        tAttr.font.isEmpty ? "FiraSans-Bold" : tAttr.font,
+                        size: CGFloat(Int(tAttr.size) ?? 18)
+                    ))
+                    .foregroundColor(Color(hex: tAttr.color.isEmpty ? "#222222" : tAttr.color))
                     .multilineTextAlignment(.center)
 
-                VStack(spacing: 12) {
-                    Text("Sus exámenes han sido cargados\ncorrectamente.")
-                        .font(Font.custom("FiraSans-Regular", size: 14))
-                        .foregroundColor(Color(hex: "#555555"))
-                        .multilineTextAlignment(.center)
-                    Text("Puedes revisarlos en cualquier\nmomento desde tu App.")
-                        .font(Font.custom("FiraSans-Regular", size: 14))
-                        .foregroundColor(Color(hex: "#555555"))
-                        .multilineTextAlignment(.center)
+                if !cfg.descripcion.isEmpty {
+                    parseSalesforceText(
+                        cfg.descripcion,
+                        font: dAttr.font.isEmpty ? "FiraSans-Regular" : dAttr.font,
+                        size: CGFloat(Int(dAttr.size) ?? 14),
+                        color: Color(hex: dAttr.color.isEmpty ? "#555555" : dAttr.color)
+                    )
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    VStack(spacing: 12) {
+                        Text("Sus exámenes han sido cargados\ncorrectamente.")
+                            .font(Font.custom("FiraSans-Regular", size: 14))
+                            .foregroundColor(Color(hex: "#555555"))
+                            .multilineTextAlignment(.center)
+                        Text("Puedes revisarlos en cualquier\nmomento desde tu App.")
+                            .font(Font.custom("FiraSans-Regular", size: 14))
+                            .foregroundColor(Color(hex: "#555555"))
+                            .multilineTextAlignment(.center)
+                    }
+                    .fixedSize(horizontal: false, vertical: true)
                 }
-                .fixedSize(horizontal: false, vertical: true)
 
                 Button {
                     dismissSuccessModal()
                 } label: {
-                    Text("Aceptar")
-                        .font(Font.custom("FiraSans-Bold", size: 16))
-                        .foregroundColor(.white)
+                    Text(btn.texto.isEmpty ? "Aceptar" : btn.texto)
+                        .font(Font.custom(
+                            btn.font.isEmpty ? "FiraSans-Bold" : btn.font,
+                            size: CGFloat(Int(btn.size) ?? 16)
+                        ))
+                        .foregroundColor(Color(hex: btn.colorTexto.isEmpty ? "#FFFFFF" : btn.colorTexto))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
                         .background(
                             RoundedRectangle(cornerRadius: 25)
-                                .fill(Color(hex: "#1A8FCB"))
+                                .fill(Color(hex: btn.colorFondo.isEmpty ? "#1A8FCB" : btn.colorFondo))
                         )
                 }
                 .padding(.top, 4)
@@ -589,6 +613,16 @@ struct SendNewExamView: View {
 
     /// Muestra el modal y dispara la animación del check (spring scale + fade in).
     private func presentSuccessModal() {
+        let cfg = dialogExamenesEnviadosConfig
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("✅ [SendNewExamView] Mostrando dialog éxito con config dinámica:")
+        print("   icono: \"\(cfg.icono)\"")
+        print("   titulo: \"\(cfg.titulo)\"")
+        print("   tituloAttr: font=\(cfg.tituloAttr.font) size=\(cfg.tituloAttr.size) color=\(cfg.tituloAttr.color)")
+        print("   descripcion: \"\(cfg.descripcion)\"")
+        print("   descripcionAttr: font=\(cfg.descripcionAttr.font) size=\(cfg.descripcionAttr.size) color=\(cfg.descripcionAttr.color)")
+        print("   botonAceptar: texto=\"\(cfg.botonAceptar.texto)\" colorTexto=\(cfg.botonAceptar.colorTexto) colorFondo=\(cfg.botonAceptar.colorFondo)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         // Reset estado de animación antes de mostrar
         checkScale = 0.0
         checkOpacity = 0.0

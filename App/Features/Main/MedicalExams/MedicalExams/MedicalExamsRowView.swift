@@ -20,6 +20,8 @@ struct MedicalExamsRowView: View {
     var navTitle: String = ""
     var navTitleAttr: TextExamAttributes = TextExamAttributes()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
+    var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
@@ -160,7 +162,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 

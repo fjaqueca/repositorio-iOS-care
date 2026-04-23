@@ -116,71 +116,72 @@ struct FamilyGroupView: View {
     }
 
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                Divider()
+        VStack(spacing: 0) {
+            Divider()
 
-                if isLoading {
-                    Spacer()
-                    ProgressView()
-                        .tint(Color(hex: fgConfig.seccionPrincipal.colorSpinner.isEmpty ? "#00BBDC" : fgConfig.seccionPrincipal.colorSpinner))
-                        .scaleEffect(1.1)
-                    Spacer()
-                } else {
-                    memberListView
-                }
-            }
-            .blur(radius: (deletingMember != nil || showOverLimitModal || showEditModal || showAddModal || showGenericErrorModal || showEditSuccessModal || showDeleteSuccessModal) ? 3 : 0.000001)
-
-            // Modal agregar carga
-            if showAddModal {
-                addMemberModal
-                    .zIndex(30)
-                    .transition(.opacity)
-            }
-
-            // Modal editar miembro
-            if showEditModal {
-                editMemberModal
-                    .zIndex(40)
-                    .transition(.opacity)
-            }
-
-            // Modal sobre-límite
-            if showOverLimitModal {
-                overLimitModal
-                    .zIndex(50)
-                    .transition(.opacity)
-            }
-
-            // Modal eliminar miembro (zIndex superior para que se muestre encima del overlimit)
-            if let member = deletingMember {
-                deleteMemberModal(member: member)
-                    .zIndex(60)
-                    .transition(.opacity)
-            }
-
-            // Modal de error genérico
-            if showGenericErrorModal {
-                genericErrorModal
-                    .zIndex(70)
-                    .transition(.opacity)
-            }
-
-            // Modal de éxito edición
-            if showEditSuccessModal {
-                editSuccessModal
-                    .zIndex(80)
-                    .transition(.opacity)
-            }
-
-            // Modal de éxito eliminación
-            if showDeleteSuccessModal {
-                deleteSuccessModal
-                    .zIndex(90)
-                    .transition(.opacity)
+            if isLoading {
+                Spacer()
+                ProgressView()
+                    .tint(Color(hex: fgConfig.seccionPrincipal.colorSpinner.isEmpty ? "#00BBDC" : fgConfig.seccionPrincipal.colorSpinner))
+                    .scaleEffect(1.1)
+                Spacer()
+            } else {
+                memberListView
             }
         }
+        .blur(radius: (deletingMember != nil || showOverLimitModal || showEditModal || showAddModal || showGenericErrorModal || showEditSuccessModal || showDeleteSuccessModal) ? 3 : 0.000001)
+        .overlay(
+            ZStack {
+                // Modal agregar carga
+                if showAddModal {
+                    addMemberModal
+                        .zIndex(30)
+                        .transition(.opacity)
+                }
+
+                // Modal editar miembro
+                if showEditModal {
+                    editMemberModal
+                        .zIndex(40)
+                        .transition(.opacity)
+                }
+
+                // Modal sobre-límite
+                if showOverLimitModal {
+                    overLimitModal
+                        .zIndex(50)
+                        .transition(.opacity)
+                }
+
+                // Modal eliminar miembro (zIndex superior para que se muestre encima del overlimit)
+                if let member = deletingMember {
+                    deleteMemberModal(member: member)
+                        .zIndex(60)
+                        .transition(.opacity)
+                }
+
+                // Modal de error genérico
+                if showGenericErrorModal {
+                    genericErrorModal
+                        .zIndex(70)
+                        .transition(.opacity)
+                }
+
+                // Modal de éxito edición
+                if showEditSuccessModal {
+                    editSuccessModal
+                        .zIndex(80)
+                        .transition(.opacity)
+                }
+
+                // Modal de éxito eliminación
+                if showDeleteSuccessModal {
+                    deleteSuccessModal
+                        .zIndex(90)
+                        .transition(.opacity)
+                }
+            }
+        )
         .onAppear {
             isLoading = true
             loadUIState()
