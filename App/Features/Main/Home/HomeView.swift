@@ -193,10 +193,6 @@ struct HomeView: View {
                     },
                     isCloseable: true // ✅ HomeView: El modal SÍ se puede cerrar
                 )
-            } else {
-                SheetFormularioGeneral {
-                    mostrarFormularioGeneral = false
-                }
             }
         }
     }
@@ -345,13 +341,17 @@ struct HomeView: View {
                     self.formularioParsed = formulario
                     print("✅ [Decision] Formulario parseado exitosamente con \(formulario.preguntas.count) preguntas")
                 } else {
-                    print("⚠️ [Decision] No se pudo parsear el formulario. Usando modal básico.")
-                    finalDecision = false // Si no se puede parsear, no mostramos nada
+                    print("⚠️ [Decision] No se pudo parsear el formulario. No se mostrará nada.")
+                    finalDecision = false
                 }
             } else if !wantsToShowByFicha {
                 // Usuario ya tiene ficha → Nunca mostrar modal
                 finalDecision = false
                 print("✅ [Decision] Usuario ya tiene ficha clínica → Override ignorado, modal NO se mostrará")
+            } else {
+                // isOverride es false (BrandAccount dice "No" o no es "Si") → No mostrar
+                finalDecision = false
+                print("✅ [Decision] BrandAccount NO habilita formulario (Valor='\(valor)') → modal NO se mostrará")
             }
         } else {
             print("ℹ️ [Decision] No hay registro 'FormularioGeneral' en BrandAccount para override.")
@@ -470,41 +470,6 @@ struct HomeView: View {
         } else {
             self.currentSubHome.append(currentStringSubHome)
         }
-    }
-}
-
-// MARK: - Sheet content compatible con iOS 15+
-private struct SheetFormularioGeneral: View {
-    let onClose: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Text("Completa tu Ficha Clínica")
-                .font(.title2.weight(.semibold))
-                .multilineTextAlignment(.center)
-            
-            Text("Para brindarte una mejor atención, necesitamos que completes tu Ficha Clínica General. Esto nos permite contar con información importante para tus atenciones.")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-                .padding(.horizontal)
-            
-            Button(action: onClose) {
-                Text("Cerrar")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-            }
-            .padding(.top, 8)
-            
-            Spacer(minLength: 8)
-        }
-        .padding(.top, 24)
-        .applySheetDetentsIfAvailable()
     }
 }
 
