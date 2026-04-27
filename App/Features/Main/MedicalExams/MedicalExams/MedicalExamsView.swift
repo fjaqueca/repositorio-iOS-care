@@ -902,22 +902,24 @@ struct MedicalExamsView: View {
         Task {
             print("📥 [ExamList] Llamando getPresignedUrl...")
             let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
-            switch result {
-            case let .success(response):
-                print("📥 [ExamList] getPresignedUrl response -> error: \(response.error), url: \(response.url?.prefix(60) ?? "nil")")
-                guard let presignedUrl = response.url, !response.error,
-                      let remoteURL = URL(string: presignedUrl) else {
-                    print("❌ [ExamList] Respuesta invalida o con error")
+            await MainActor.run {
+                switch result {
+                case let .success(response):
+                    print("📥 [ExamList] getPresignedUrl response -> error: \(response.error), url: \(response.url?.prefix(60) ?? "nil")")
+                    guard let presignedUrl = response.url, !response.error,
+                          let remoteURL = URL(string: presignedUrl) else {
+                        print("❌ [ExamList] Respuesta invalida o con error")
+                        self.count += 1
+                        self.progress = Double(self.count / self.total)
+                        return
+                    }
+                    print("📥 [ExamList] Descargando desde presigned URL...")
+                    downloadFromPresignedUrl(remoteURL, fileName: fileName, action: action)
+                case let .failure(error):
+                    print("❌ [ExamList] Error getPresignedUrl: \(error.message)")
                     self.count += 1
                     self.progress = Double(self.count / self.total)
-                    return
                 }
-                print("📥 [ExamList] Descargando desde presigned URL...")
-                downloadFromPresignedUrl(remoteURL, fileName: fileName, action: action)
-            case let .failure(error):
-                print("❌ [ExamList] Error getPresignedUrl: \(error.message)")
-                self.count += 1
-                self.progress = Double(self.count / self.total)
             }
         }
     }

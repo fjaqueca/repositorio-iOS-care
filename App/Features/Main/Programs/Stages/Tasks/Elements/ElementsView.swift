@@ -165,24 +165,6 @@ struct ElementsView: View {
                     
                 })
                 .padding(.margin)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mis Programas")
-                            .font(.appTabTitleBold)
-                            .foregroundColor(.primaryText)
-                    }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            changeFavorite()
-                        } label: {
-                            Image(systemName: isFavorite ? "star.fill" : "star")
-                                .foregroundColor(.secondaryText)
-                        }
-                    }
-                }
             }
             .onAppear {
                 isFavorite = taskData.favoritoAppC ?? false
@@ -391,6 +373,24 @@ struct ElementsView: View {
             
             if isLoading {
                 CenteredLoadingView()
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Mis Programas")
+                    .font(.appTabTitleBold)
+                    .foregroundColor(.primaryText)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    changeFavorite()
+                } label: {
+                    Image(systemName: isFavorite ? "star.fill" : "star")
+                        .foregroundColor(.secondaryText)
+                }
             }
         }
     }

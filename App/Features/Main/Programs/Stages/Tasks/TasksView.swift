@@ -135,14 +135,6 @@ struct TasksView: View {
                         .padding(.margin)
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mis Programas")
-                            .font(.appTabTitleBold)
-                            .foregroundColor(.primaryText)
-                    }
-                }
             }
             .navigationLink(isActive: $navigateToElementsView) {
                 ForEach(goals, id: \.self) { tasks in
@@ -180,6 +172,14 @@ struct TasksView: View {
             // ✅ Loading centralizado para carga inicial y auto-navegación
             if isLoadingTasks || shouldAutoNavigate {
                 CenteredLoadingView()
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Mis Programas")
+                    .font(.appTabTitleBold)
+                    .foregroundColor(.primaryText)
             }
         }
         .task {

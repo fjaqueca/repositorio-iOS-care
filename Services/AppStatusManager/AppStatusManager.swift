@@ -46,7 +46,7 @@ class AppStatusManager {
                 let data = try! JSONEncoder().encode(newValue)
                 defaults.set(data, forKey: "enterprise_\(rut)")
 
-                selectedEnterprisePublisher.send(newValue)
+                sendOnMain(selectedEnterprisePublisher, newValue)
                 changeEnterprise()
                 updateStatus()
             }
@@ -54,22 +54,30 @@ class AppStatusManager {
     }
 
     fileprivate static func updateStatus() {
+        let newStatus: AppStatus
         if self.credentials != nil, self.rut != nil {
-            if self.selectedEnterprise == nil {
-                status.send(.selectingEnterprise)
-            } else {
-                status.send(.signedIn)
-            }
+            newStatus = self.selectedEnterprise == nil ? .selectingEnterprise : .signedIn
         } else {
-///         If no credentials or rut we go to onboarding
-            status.send(.onboarding)
+            newStatus = .onboarding
         }
+        sendOnMain(status, newStatus)
     }
 
     fileprivate static let status: CurrentValueSubject<AppStatus, Never> = .init(.loading)
     fileprivate static let isLoading: CurrentValueSubject<Bool, Never> = .init(false)
     fileprivate static let error: CurrentValueSubject<AppError?, Never> = .init(nil)
     fileprivate static let selectedEnterprisePublisher: CurrentValueSubject<CompanyAgreementR?, Never> = .init(nil)
+
+    /// Helper para enviar valores en main thread y evitar "Publishing changes from background threads"
+    fileprivate static func sendOnMain<T>(_ subject: CurrentValueSubject<T, Never>, _ value: T) {
+        if Thread.isMainThread {
+            subject.send(value)
+        } else {
+            DispatchQueue.main.async {
+                subject.send(value)
+            }
+        }
+    }
 
     private enum DefaultKeys: String {
         case credentials
@@ -121,7 +129,7 @@ class AppStatusManager {
             ))
         }
         
-        isLoading.send(true)
+        sendOnMain(isLoading, true)
         
         // 🔥 FIREBASE LOGGING: Inicio de login
         FirebaseLogger.shared.log("🔄 Intentando login para RUT: \(rut)")
@@ -132,7 +140,7 @@ class AppStatusManager {
         print("⏰ Timestamp: \(Date())")
         
         let signinResponse = await Network.shared.signIn(rut: rut, password: password)
-        isLoading.send(false)
+        sendOnMain(isLoading, false)
         
         switch signinResponse {
             case let .success(credentials):
@@ -356,9 +364,9 @@ class AppStatusManager {
         guard let rut = self.rut else {
             return .failure(.generic)
         }
-        isLoading.send(true)
+        sendOnMain(isLoading, true)
         let result = await action(rut)
-        isLoading.send(false)
+        sendOnMain(isLoading, false)
         if case .success = result {
             DispatchQueue.main.async {
                 AppStatusManager.cleanup()
@@ -428,7 +436,7 @@ class AppStatusManager {
     }
 
     public static func setLoading(_ value: Bool) {
-        isLoading.send(value)
+        sendOnMain(isLoading, value)
     }
 
     static func changeEnterprise() {
@@ -469,12 +477,12 @@ extension AppStatusManager {
     public static func error(_ value: AppError) {
         // 📊 Registrar error en Firebase usando FirebaseLogger
         logErrorToFirebase(value)
-        
-        error.send(value)
+
+        sendOnMain(error, value)
     }
 
     public static func dismissError() {
-        error.send(nil)
+        sendOnMain(error, nil)
     }
     
     // MARK: - Firebase Logging

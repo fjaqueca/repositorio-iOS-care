@@ -91,14 +91,6 @@ struct StagesView: View {
                         }
                         .padding(.margin)
                     }
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Text("Mis Programas")
-                                .font(.appTabTitleBold)
-                                .foregroundColor(.primaryText)
-                        }
-                    }
                     // Navegación programática
                     .navigationLink(isActive: $navigateToTaskView) {
                         if let stageRecords = stages?.records {
@@ -125,6 +117,14 @@ struct StagesView: View {
             // ✅ LOADING: Pantalla completa con solo el spinner, SIN contenido debajo
             if isLoading || showOverlay {
                 CenteredLoadingView()
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Mis Programas")
+                    .font(.appTabTitleBold)
+                    .foregroundColor(.primaryText)
             }
         }
         // ✅ CLAVE: .onAppear se ejecuta CADA VEZ que la vista entra en pantalla

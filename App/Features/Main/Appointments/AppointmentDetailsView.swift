@@ -194,6 +194,7 @@ struct AppointmentDetailsView: View {
             checkAndUpdateCancelButton() // NUEVO: Ejecutar inmediatamente al aparecer
         }
         .padding(.horizontal, .margin)
+        .overlayView(isLoading)
         .navigationLink(isActive: $showModifyAppointment) {
 //            NewAppointmentSelectDetailsView(previousAppointment: appointment)
         }
@@ -225,7 +226,6 @@ struct AppointmentDetailsView: View {
         }
         .navigationBarBackButtonHidden()
         .tabBarHidden(true)
-        .overlayView(isLoading)
     }
     
     @ViewBuilder

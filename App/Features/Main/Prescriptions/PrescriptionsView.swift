@@ -352,26 +352,27 @@ struct PrescriptionsView: View {
     prescriptionSelectedList = [:]
         Task{
             let result = await Network.shared.getRecetas(accountId: accountId, from: from, until: until)
-            self.isLoading = false
-            switch result {
-                case let .success(listPres):
-                self.prescriptions = listPres
-                if let prescriptions = prescriptions{
-                    for pres in prescriptions.records {
-                        if isCurrent{
-                            if stringToDate(pres.hastaC ?? "") >= Date().adding(days: -1) {
+            await MainActor.run {
+                self.isLoading = false
+                switch result {
+                    case let .success(listPres):
+                    self.prescriptions = listPres
+                    if let prescriptions = prescriptions{
+                        for pres in prescriptions.records {
+                            if isCurrent{
+                                if stringToDate(pres.hastaC ?? "") >= Date().adding(days: -1) {
+                                    prescriptionSelectedList[pres.Id ?? ""] = false
+                                }
+                            }else{
                                 prescriptionSelectedList[pres.Id ?? ""] = false
                             }
-                        }else{
-                            prescriptionSelectedList[pres.Id ?? ""] = false
                         }
                     }
-                }
-                case let .failure(error):
-                    AppStatusManager.error(error)
-                
-            }
+                    case let .failure(error):
+                        AppStatusManager.error(error)
 
+                }
+            }
         }
     }
     func checkSelectedList(){
@@ -460,18 +461,22 @@ struct PrescriptionsView: View {
             let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
             let pdfNameFromUrl = "\(name)-\(fileName).pdf"
             let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
-            
+
             do {
                 try pdfData?.write(to: actualPath, options: .atomic)
                 print("pdf successfully saved!")
-                self.count += 1
-                self.progress = Double(self.count/self.total)
-                print(self.progress)
+                DispatchQueue.main.async {
+                    self.count += 1
+                    self.progress = Double(self.count/self.total)
+                    print(self.progress)
+                }
             } catch {
                 print("PDF no guardado: \(error)")
-                self.count += 1
-                self.progress = self.count/self.total
-                print(self.progress)
+                DispatchQueue.main.async {
+                    self.count += 1
+                    self.progress = self.count/self.total
+                    print(self.progress)
+                }
             }
         }
     }
@@ -482,19 +487,21 @@ struct PrescriptionsView: View {
 
         Task {
             let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
-            switch result {
-            case let .success(response):
-                guard let presignedUrl = response.url, !response.error,
-                      let remoteURL = URL(string: presignedUrl) else {
+            await MainActor.run {
+                switch result {
+                case let .success(response):
+                    guard let presignedUrl = response.url, !response.error,
+                          let remoteURL = URL(string: presignedUrl) else {
+                        self.count += 1
+                        self.progress = Double(self.count / self.total)
+                        return
+                    }
+                    downloadFromPresignedUrl(remoteURL, fileName: fileName, action: action)
+                case let .failure(error):
+                    AppStatusManager.error(error)
                     self.count += 1
                     self.progress = Double(self.count / self.total)
-                    return
                 }
-                downloadFromPresignedUrl(remoteURL, fileName: fileName, action: action)
-            case let .failure(error):
-                AppStatusManager.error(error)
-                self.count += 1
-                self.progress = Double(self.count / self.total)
             }
         }
     }

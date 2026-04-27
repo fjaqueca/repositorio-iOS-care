@@ -265,14 +265,6 @@ struct ElementDetailsView: View {
                         )
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mis Programas")
-                            .font(.appTabTitleBold)
-                            .foregroundColor(.primaryText)
-                    }
-                }
 
                 // MARK: - BOTONES ANTERIOR / SIGUIENTE
                 HStack(spacing: 12) {
@@ -374,6 +366,14 @@ struct ElementDetailsView: View {
                     .background(Color(.systemBackground).ignoresSafeArea())
                     .zIndex(999) // ⭐️ Asegurar que esté encima de TODO, incluso durante navegación
                     .transition(.identity) // ⭐️ Sin animación de transición para evitar flash
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Mis Programas")
+                    .font(.appTabTitleBold)
+                    .foregroundColor(.primaryText)
             }
         }
         .onAppear {

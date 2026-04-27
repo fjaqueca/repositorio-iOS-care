@@ -29,33 +29,33 @@ struct NewAppointmentSelectDetailsView: View {
     @State var popupConsent: [PopupConsent] = []
     @ObservedResults(BrandAccounts.self) var items
     @State var isCreateAppointment = false
-    
+
     @State private var popup: Popup?
     @State private var error: AppError?
-    
+
     @State private var isLoading: Bool = false
-    
+
     // NUEVO: Estados para Ficha Clínica General
     @State private var brandAccountResponse: BrandAccounts?
     @State private var brandAccountFormularioGeneral: BrandAccount?
     @State private var mostrarFormularioGeneral: Bool = false
     @State private var formularioParsed: FormularioGeneral?
-    
+
     // Professional
     @State private var professional: Professional?
     @State private var professionals: [Professional] = []
     @State private var showProfessionalsPicker: Bool = false
-    
+
     // Date
     @State private var date: Date?
     @State private var showCalendar: Bool = false
     @State private var calendarMonthOffset: Int = 0
-    
+
     // Slot
     @State private var slot: AppointmentSlot?
     @State private var slots: [AppointmentSlot] = []
     @State private var showSlotPicker: Bool = false
-    
+
     @Binding var selectedTab: Tab
     var selectedDateSlots: [AppointmentSlot] {
         slots.filter {
@@ -65,7 +65,7 @@ struct NewAppointmentSelectDetailsView: View {
             return Calendar.current.isDate($0.startDate, inSameDayAs: date)
         }
     }
-    
+
     var dateFormat: Date.FormatStyle {
         .init(
             date: .abbreviated,
@@ -76,7 +76,7 @@ struct NewAppointmentSelectDetailsView: View {
             capitalizationContext: .beginningOfSentence
         )
     }
-    
+
     var body: some View {
         content
             .toolbar {
@@ -84,6 +84,7 @@ struct NewAppointmentSelectDetailsView: View {
                     VStack {
                         Text(UIStateAppoint.newAppointmentUIState.title.text)
                             .font(Font.custom(UIStateAppoint.newAppointmentUIState.title.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.title.size) ?? 18)))
+                            .bold()
                             .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.title.color))
                     }
                 }
@@ -101,7 +102,7 @@ struct NewAppointmentSelectDetailsView: View {
             .task {
                 getProfessionals()
                 configPopupConsent()
-                
+
                 // 🆕 NUEVO: Verificar Ficha Clínica General al entrar a la vista
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                 print("🏥 [NewAppointmentSelectDetailsView] Vista cargada - Iniciando verificación de Ficha Clínica")
@@ -128,7 +129,7 @@ struct NewAppointmentSelectDetailsView: View {
                 }
             }
     }
-    
+
     @ViewBuilder
     var content: some View {
         if professionals.isEmpty {
@@ -153,62 +154,62 @@ struct NewAppointmentSelectDetailsView: View {
                 if isShowingPopupPerClinic{
                     PopupView(showCustomPopup: $isShowingPopupPerClinic, clinicName: $clinicName, popupData: UIStateAppoint.popupAllreadyHaveAppointmentPerClinic)
                 }
-                
+
             }
-            
+
         }
     }
-    
+
+    // MARK: - Form (rediseñado)
     var form: some View {
-        VStack {
-            Divider()
-            ScrollView{
-                
-                
-                clinicRow
-                
-                if professional == nil {
-                    dateFirstAvailableButton
-                    Text("O")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .font(.appCallout)
-                        .foregroundColor(Color.primaryText)
-                        .padding(.margin / 2)
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                Divider()
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Card: Clínica
+                        cardClinic
+
+                        // Card: Primer turno disponible (solo si no hay profesional)
+                        if professional == nil {
+                            cardFirstAvailable
+                        }
+
+                        // Card: Profesional + Fecha + Hora
+                        cardAppointmentDetails
+
+                        // Card: Tipo de cita (solo si hay slot)
+                        if slot != nil {
+                            cardAppointmentType
+                        }
+                    }
+                    .padding(.top, 20)
+                    .padding(.bottom, .margin)
                 }
-                
-                professionalRow
-                
-                if professional != nil {
-                    dateRow
+
+                // Botón Agendar fijo abajo
+                VStack(spacing: 0) {
+                    Divider()
+                    PrimaryButton(title: "Agendar cita", UIStateBtn: UIStateAppoint.newAppointmentUIState.btnAgend) {
+                        validatePopupConsent()
+                    }
+                    .background{
+                        if slot?.appointmentType == nil{
+                            Color(hex: UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn != "" ? UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn : "#E9E9EB")
+                                .cornerRadius(5.0)
+                        }
+                    }
+                    .disabled(slot?.appointmentType == nil)
+                    .padding(.horizontal, .margin)
+                    .padding(.vertical, 12)
+                    .isLoading(isLoading)
                 }
-                
-                if date != nil {
-                    slotRow
-                }
-                
-                if slot != nil {
-                    appointmentTypeButtons
-                }
-                
-                
-                
-                
+                .background(Color(.systemBackground))
             }
-            Spacer()
-            PrimaryButton(title: "Agendar cita", UIStateBtn: UIStateAppoint.newAppointmentUIState.btnAgend) {
-                validatePopupConsent()
-            }
-            .background{
-                if slot?.appointmentType == nil{
-                    Color(hex: UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn != "" ? UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn : "#E9E9EB")
-                        .cornerRadius(5.0)
-                }
-            }
-            .disabled(slot?.appointmentType == nil)
-            .padding(.bottom, .margin)
-            .isLoading(isLoading)
         }
-        .padding(.horizontal, .margin)
         .overlayView(isLoading)
         .pickerPopup(
             title: "Seleccionar profesional",
@@ -264,248 +265,319 @@ struct NewAppointmentSelectDetailsView: View {
             if newValue {
                 createAppointment()
             }
-            
+
         }
         .popup(item: $popup)
     }
-    
-    @ViewBuilder
-    var clinicRow: some View {
-        Text(UIStateAppoint.newAppointmentUIState.labelTxtClinic)
-            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
-            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .onAppear{
-                name = clinic.name
-            }
-        
-        HStack {
-            ClinicIconView(clinic: clinic)
-            TextField("", text: $name)
-                .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
-                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
-                .textFieldStyle(.plain)
-                .disabled(true)
-        }
-        .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
-        .frame(height: 50.0)
-        .cornerRadius(.cornerRadius)
-        .padding(.bottom, .margin)
-    }
-    
-    @ViewBuilder
-    var professionalRow: some View {
-        Text(UIStateAppoint.newAppointmentUIState.labelTxtProf)
-            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
-            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        
-        HStack {
-            ClinicIconView(clinic: clinic)
-            
-            Button {
-                showProfessionalsPicker = true
-            } label: {
-                Text(professional?.description ?? UIStateAppoint.newAppointmentUIState.hintTxtProf)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                    .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
-                    .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
-            }
-            .buttonStyle(.plain)
-        }
-        .frame(height: 50.0)
-        .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
-        .cornerRadius(.cornerRadius)
-        .padding(.bottom, .margin)
-    }
-    
-    @ViewBuilder
-    var dateRow: some View {
-        Text(UIStateAppoint.newAppointmentUIState.labelTxtDate)
-            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
-            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        datePickerButton
-            .padding(.bottom, .margin)
-    }
-    
-    @ViewBuilder
-    var datePickerButton: some View {
-        Button {
-            showCalendar = true
-        } label: {
+
+    // MARK: - Card: Clínica
+    private var cardClinic: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(UIStateAppoint.newAppointmentUIState.labelTxtClinic)
+                .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
+                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 8)
+                .onAppear {
+                    name = clinic.name
+                }
+
             HStack {
-                if date != nil {
-                    ClinicIconView(clinic: clinic)
-                }
-                Text(date?.formatted(dateFormat) ?? UIStateAppoint.newAppointmentUIState.hintTxtDate)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-                    .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
-                    .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
-                    .padding(.leading, date == nil ? .margin : .zero)
-                Spacer()
-                Image("calendar-empty")
-                    .renderingMode(.template)
-                    .padding(.trailing, .margin)
-                    .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
-                    .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
-            }
-        }
-        .buttonStyle(.plain)
-        .frame(height: 50.0)
-        .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
-        .cornerRadius(.cornerRadius)
-    }
-    
-    @ViewBuilder
-    var dateFirstAvailableButton: some View {
-        Button {
-            selectAvailableSlot()
-        } label: {
-            Text(UIStateAppoint.newAppointmentUIState.btnTextFirst)
-                .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
-                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
-                .padding(.leading, .margin)
-                .frame(height: 50.0)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(
-                    RoundedRectangle(cornerRadius: .cornerRadius)
-                        .fill(Color.white)
-                        .shadow(color: .gray, radius: 2, x: 1, y: 1)
-                )
-        }
-        .buttonStyle(.plain)
-        .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500))
-    }
-    
-    @ViewBuilder
-    var slotRow: some View {
-        Text(UIStateAppoint.newAppointmentUIState.labelTxtHour)
-            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
-            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        
-        HStack {
-            if  date != nil {
                 ClinicIconView(clinic: clinic)
-            }
-            Button {
-                showSlotPicker = true
-            } label: {
-                Text(slot?.startDate.formatted(date: .omitted, time: .shortened) ?? UIStateAppoint.newAppointmentUIState.hintTxtHour)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
+                TextField("", text: $name)
                     .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
                     .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                    .textFieldStyle(.plain)
+                    .disabled(true)
+            }
+            .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
+            .frame(height: 50.0)
+            .cornerRadius(.cornerRadius)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, .margin)
+    }
+
+    // MARK: - Card: Primer turno disponible
+    private var cardFirstAvailable: some View {
+        VStack(spacing: 12) {
+            Button {
+                selectAvailableSlot()
+            } label: {
+                HStack {
+                    Image(systemName: "bolt.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                    Text(UIStateAppoint.newAppointmentUIState.btnTextFirst)
+                        .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
+                        .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Color(.systemGray3))
+                }
+                .padding(.horizontal, 16)
+                .frame(height: 50.0)
             }
             .buttonStyle(.plain)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemBackground))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+
+            // Separador "O"
+            HStack {
+                Rectangle()
+                    .fill(Color(.systemGray4))
+                    .frame(height: 1)
+                Text("O")
+                    .font(.appCallout)
+                    .foregroundColor(Color(.secondaryLabel))
+                    .padding(.horizontal, 12)
+                Rectangle()
+                    .fill(Color(.systemGray4))
+                    .frame(height: 1)
+            }
+            .padding(.horizontal, 8)
         }
-        .frame(height: 50.0)
-        .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
-        .cornerRadius(.cornerRadius)
-        .padding(.bottom, .margin)
+        .padding(.horizontal, .margin)
     }
-    
-    @ViewBuilder
-    var appointmentTypeButtons: some View {
-        Text(UIStateAppoint.newAppointmentUIState.tipeOfAppointment)
-            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
-            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, .margin)
-        
-        HStack {
-            if slot != nil {
-                Spacer()
-                if UIStateAppoint.newAppointmentUIState.isBtnPhoneHidden != "No"{
-                    
-                    
-                    Button(action: {
-                        slot?.appointmentType = "Phone"
-                    }) {
-                        VStack{
-                            if slot?.appointmentType == "Phone"{
-                                CachedAsyncImage(
-                                    url: URL(string: UIStateAppoint.newAppointmentUIState.btnPhoneSelected),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                    },
-                                    placeholder: {
-                                        ProgressView()
-                                    })
-                            }else{
-                                CachedAsyncImage(
-                                    url: URL(string: UIStateAppoint.newAppointmentUIState.btnPhoneEnable),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                    },
-                                    placeholder: {
-                                        ProgressView()
-                                    })
-                            }
-                            Text(UIStateAppoint.newAppointmentUIState.btnPhone.text)
-                                .padding(.margin / 2)
-                                .font(Font.custom(UIStateAppoint.newAppointmentUIState.btnPhone.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btnPhone.size) ?? 18)))
-                                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btnPhone.textColor))
+
+    // MARK: - Card: Detalles de la cita (Profesional + Fecha + Hora)
+    private var cardAppointmentDetails: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Sección: Profesional
+            formSectionLabel(UIStateAppoint.newAppointmentUIState.labelTxtProf)
+                .padding(.top, 16)
+
+            HStack {
+                ClinicIconView(clinic: clinic)
+
+                Button {
+                    showProfessionalsPicker = true
+                } label: {
+                    Text(professional?.description ?? UIStateAppoint.newAppointmentUIState.hintTxtProf)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                        .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
+                        .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                }
+                .buttonStyle(.plain)
+            }
+            .frame(height: 50.0)
+            .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
+            .cornerRadius(.cornerRadius)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 12)
+
+            // Sección: Fecha (solo si hay profesional)
+            if professional != nil {
+                Divider()
+                    .padding(.horizontal, 16)
+
+                formSectionLabel(UIStateAppoint.newAppointmentUIState.labelTxtDate)
+                    .padding(.top, 12)
+
+                Button {
+                    showCalendar = true
+                } label: {
+                    HStack {
+                        if date != nil {
+                            ClinicIconView(clinic: clinic)
                         }
-                        
+                        Text(date?.formatted(dateFormat) ?? UIStateAppoint.newAppointmentUIState.hintTxtDate)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                            .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
+                            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                            .padding(.leading, date == nil ? .margin : .zero)
+                        Spacer()
+                        Image("calendar-empty")
+                            .renderingMode(.template)
+                            .padding(.trailing, .margin)
+                            .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
+                            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
                     }
                 }
-                if UIStateAppoint.newAppointmentUIState.isBtnVideoHidden != "No" && UIStateAppoint.newAppointmentUIState.isBtnPhoneHidden != "No"{
-                    Spacer()
-                }
-                
-                if UIStateAppoint.newAppointmentUIState.isBtnVideoHidden != "No"{
-                    Button(action: {
-                        slot?.appointmentType = "Video"
-                    }) {
-                        VStack{
-                            if slot?.appointmentType == "Video"{
-                                CachedAsyncImage(
-                                    url: URL(string: UIStateAppoint.newAppointmentUIState.btnVideoSelected),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                    },
-                                    placeholder: {
-                                        ProgressView()
-                                    })
-                            }else{
-                                CachedAsyncImage(
-                                    url: URL(string: UIStateAppoint.newAppointmentUIState.btnVideoEnable),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                    },
-                                    placeholder: {
-                                        ProgressView()
-                                    })
-                            }
-                            Text(UIStateAppoint.newAppointmentUIState.btnVideo.text)
-                                .padding(.margin / 2)
-                                .font(Font.custom(UIStateAppoint.newAppointmentUIState.btnVideo.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btnVideo.size) ?? 18)))
-                                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btnVideo.textColor))
-                        }
-                        
+                .buttonStyle(.plain)
+                .frame(height: 50.0)
+                .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
+                .cornerRadius(.cornerRadius)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+            }
+
+            // Sección: Hora (solo si hay fecha)
+            if date != nil {
+                Divider()
+                    .padding(.horizontal, 16)
+
+                formSectionLabel(UIStateAppoint.newAppointmentUIState.labelTxtHour)
+                    .padding(.top, 12)
+
+                HStack {
+                    if date != nil {
+                        ClinicIconView(clinic: clinic)
                     }
+                    Button {
+                        showSlotPicker = true
+                    } label: {
+                        Text(slot?.startDate.formatted(date: .omitted, time: .shortened) ?? UIStateAppoint.newAppointmentUIState.hintTxtHour)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                            .font(Font.custom(UIStateAppoint.newAppointmentUIState.btns.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.btns.size) ?? 18)))
+                            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.btns.textColor))
+                    }
+                    .buttonStyle(.plain)
                 }
+                .frame(height: 50.0)
+                .background(Color(hex: UIStateAppoint.newAppointmentUIState.btns.backColor))
+                .cornerRadius(.cornerRadius)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+            } else {
                 Spacer()
-                
+                    .frame(height: 4)
             }
         }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, .margin)
     }
+
+    // MARK: - Card: Tipo de cita
+    private var cardAppointmentType: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(UIStateAppoint.newAppointmentUIState.tipeOfAppointment)
+                .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
+                .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 12)
+
+            HStack(spacing: 12) {
+                if slot != nil {
+                    if UIStateAppoint.newAppointmentUIState.isBtnPhoneHidden != "No" {
+                        appointmentTypeCard(
+                            isSelected: slot?.appointmentType == "Phone",
+                            iconSelected: UIStateAppoint.newAppointmentUIState.btnPhoneSelected,
+                            iconEnabled: UIStateAppoint.newAppointmentUIState.btnPhoneEnable,
+                            label: UIStateAppoint.newAppointmentUIState.btnPhone.text,
+                            labelFont: UIStateAppoint.newAppointmentUIState.btnPhone.font,
+                            labelSize: UIStateAppoint.newAppointmentUIState.btnPhone.size,
+                            labelColor: UIStateAppoint.newAppointmentUIState.btnPhone.textColor
+                        ) {
+                            slot?.appointmentType = "Phone"
+                        }
+                    }
+
+                    if UIStateAppoint.newAppointmentUIState.isBtnVideoHidden != "No" {
+                        appointmentTypeCard(
+                            isSelected: slot?.appointmentType == "Video",
+                            iconSelected: UIStateAppoint.newAppointmentUIState.btnVideoSelected,
+                            iconEnabled: UIStateAppoint.newAppointmentUIState.btnVideoEnable,
+                            label: UIStateAppoint.newAppointmentUIState.btnVideo.text,
+                            labelFont: UIStateAppoint.newAppointmentUIState.btnVideo.font,
+                            labelSize: UIStateAppoint.newAppointmentUIState.btnVideo.size,
+                            labelColor: UIStateAppoint.newAppointmentUIState.btnVideo.textColor
+                        ) {
+                            slot?.appointmentType = "Video"
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, .margin)
+    }
+
+    // MARK: - Helpers UI
+
+    /// Label de sección dentro de una card
+    private func formSectionLabel(_ text: String) -> some View {
+        Text(text)
+            .font(Font.custom(UIStateAppoint.newAppointmentUIState.labelsAtr.font, size: CGFloat(Int(UIStateAppoint.newAppointmentUIState.labelsAtr.size) ?? 18)))
+            .foregroundColor(Color(hex: UIStateAppoint.newAppointmentUIState.labelsAtr.color))
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+    }
+
+    /// Card seleccionable para tipo de cita (Phone / Video)
+    @ViewBuilder
+    private func appointmentTypeCard(
+        isSelected: Bool,
+        iconSelected: String,
+        iconEnabled: String,
+        label: String,
+        labelFont: String,
+        labelSize: String,
+        labelColor: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                CachedAsyncImage(
+                    url: URL(string: isSelected ? iconSelected : iconEnabled),
+                    content: { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50, height: 50)
+                    },
+                    placeholder: {
+                        ProgressView()
+                    })
+                Text(label)
+                    .font(Font.custom(labelFont, size: CGFloat(Int(labelSize) ?? 18)))
+                    .foregroundColor(Color(hex: labelColor))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? Color(.systemGray6) : Color.clear)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(isSelected ? Color(.systemGray3) : Color(.systemGray5), lineWidth: isSelected ? 2 : 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
 }
 
 // MARK: Network Requests
@@ -523,7 +595,7 @@ extension NewAppointmentSelectDetailsView {
                     selectAvailableSlot()
                     return
                 }
-                
+
                 for professional in self.professionals {
                     if professional.serviceResourceId == firstSlot.resources.first?.id {
                         self.professional = professional
@@ -543,19 +615,19 @@ extension NewAppointmentSelectDetailsView {
             }
         }
     }
-    
+
     func getProfessionals() {
         Task {
             // 🔥 FIREBASE LOGGING: Inicio de carga de profesionales
             FirebaseLogger.shared.log("🔄 Cargando profesionales para clínica: \(clinic.name)")
-            
+
             let result = await Network.shared.getProfessionalsByClinic(id: clinic.id)
             switch result {
             case let .success(professionals):
                 // 🔥 FIREBASE LOGGING: Éxito
                 FirebaseLogger.shared.log("✅ Profesionales cargados: \(professionals.count)")
                 self.professionals = professionals
-                
+
             case let .failure(error):
                 // 🔥 FIREBASE LOGGING: Error con contexto de red
                 FirebaseLogger.shared.log("❌ Error al cargar profesionales: \(error.localizedDescription)")
@@ -570,34 +642,34 @@ extension NewAppointmentSelectDetailsView {
                     "clinic_name": clinic.name,
                     "error_context": "load_professionals"
                 ])
-                
+
                 AppStatusManager.error(error)
             }
         }
     }
-    
+
     func getProfessionalAvailableDatesForCurrentMonth() async {
         guard let professional else {
             return
         }
         isLoading = true
-        
+
         // 🔥 FIREBASE LOGGING: Inicio de carga de disponibilidad
         FirebaseLogger.shared.log("🔄 Cargando disponibilidad para: \(professional.name)")
-        
+
         let result = await Network.shared.getProfessionalsAvailability(clinic: clinic, professional: professional, monthOffset: calendarMonthOffset)
         isLoading = false
         switch result {
         case let .success(slots):
             // 🔥 FIREBASE LOGGING: Éxito
             FirebaseLogger.shared.log("✅ Slots disponibles cargados: \(slots.count)")
-            
+
             var updatedSlots = slots
                 .filter { !self.slots.contains($0) }
             updatedSlots.append(contentsOf: self.slots)
             updatedSlots.sort()
             self.slots = updatedSlots
-            
+
         case let .failure(error):
             // 🔥 FIREBASE LOGGING: Error con contexto de red
             FirebaseLogger.shared.log("❌ Error al cargar disponibilidad: \(error.localizedDescription)")
@@ -614,18 +686,18 @@ extension NewAppointmentSelectDetailsView {
                 "month_offset": calendarMonthOffset,
                 "error_context": "load_availability"
             ])
-            
+
             AppStatusManager.error(error)
         }
     }
-    
+
     func createAppointment() {
         Task {
             guard let rut = AppStatusManager.rut, let professional, let slot else {
                 return
             }
             popup = nil
-            
+
             // 🔥 FIREBASE LOGGING: Validación de cita duplicada en clínica
             if checkPreviusAppoitnmentForConfirmedOrScheduledClinic(){
                 FirebaseLogger.shared.log("⚠️ Validación fallida: Cita duplicada en clínica - \(clinic.name)")
@@ -639,11 +711,11 @@ extension NewAppointmentSelectDetailsView {
                     "clinic_id": id,
                     "clinic_name": clinic.name
                 ])
-                
+
                 self.isShowingPopupPerClinic = true
                 return
             }
-            
+
             // 🔥 FIREBASE LOGGING: Validación de cita duplicada en horario
             if checkPreviusAppoitnmentForConfirmedOrScheduledHour(){
                 FirebaseLogger.shared.log("⚠️ Validación fallida: Cita duplicada en horario")
@@ -656,7 +728,7 @@ extension NewAppointmentSelectDetailsView {
                     "validation_type": "hour_duplicate",
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
-                
+
                 self.isShowingPopupPerHour = true
                 return
             }
@@ -666,11 +738,11 @@ extension NewAppointmentSelectDetailsView {
             let isValid = await validateProfessionalAvailability()
             guard isValid else {
                 isLoading = false
-                
+
                 // 🔥 FIREBASE LOGGING: Popup de disponibilidad no válida
                 let title = UIStateAppoint.popupCantAgendAppointment.title.text
                 let message = UIStateAppoint.popupCantAgendAppointment.msg.text
-                
+
                 FirebaseLogger.shared.log("❌ Validación fallida: Profesional no disponible")
                 FirebaseLogger.shared.logErrorPopup(
                     title: title,
@@ -684,7 +756,7 @@ extension NewAppointmentSelectDetailsView {
                     "clinic_id": clinic.id ?? "N/A",
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
-                
+
                 popup = .init(
                     image: UIStateAppoint.popupCantAgendAppointment.img,
                     title: title,
@@ -703,7 +775,7 @@ extension NewAppointmentSelectDetailsView {
                 return
             }
             var previousAppointment = checkPreviusAppoitnment()
-            
+
             // 🔥 FIREBASE LOGGING: Inicio de creación de cita
             FirebaseLogger.shared.log("📅 Iniciando creación de cita")
             FirebaseLogger.shared.logEvent("appointment_create_started", attributes: [
@@ -713,7 +785,7 @@ extension NewAppointmentSelectDetailsView {
                 "professional_name": professional.name,
                 "is_replacement": previousAppointment != nil ? "true" : "false"
             ])
-            
+
             let result: Result<Alamofire.Empty, AppError>
             if let previousAppointment = previousAppointment {
                 result = await Network.shared.replaceAppointment(
@@ -744,28 +816,28 @@ extension NewAppointmentSelectDetailsView {
                     "slot_start": slot.startDate.ISO8601Format(),
                     "was_replacement": previousAppointment != nil ? "true" : "false"
                 ])
-                
+
                 popup = .init(
                     image: UIStateAppoint.popupAppointmentUIState.iconCheck,
                     title: previousAppointment == nil ? UIStateAppoint.popupAppointmentUIState.agend.text1 : UIStateAppoint.popupAppointmentUIState.modifier.text1,
                     message: previousAppointment == nil ? UIStateAppoint.popupAppointmentUIState.agend.text2 : "Usted ya tenia una cita agendada. La misma fue cancelada y se agendó una nueva cita. Recuerde que debe confirmar su turno 48hs previas para no perder la cita agendada.",
                     actionTitle: UIStateAppoint.popupAppointmentUIState.agend.btnOk,
                     action: {
-                        
+
                         self.dismiss()
                         self.publisher.send()
                         if selectedTab == .appointments{
                             rootPresentation.dismiss()
                         }
-                        
-                        
+
+
                     },
                     UIStateTitle: UIStateAppoint.popupAppointmentUIState.titleTxt,
                     UIStateMessage: UIStateAppoint.popupAppointmentUIState.textAtr,
                     UIStateButton: UIStateAppoint.popupAppointmentUIState.btnConfirm,
                     UIStateCancelButton: UIStateAppoint.popupAppointmentUIState.btnCancel
                 )
-                
+
             case let .failure(error):
                 // 🔥 FIREBASE LOGGING: Error al crear cita con contexto completo
                 FirebaseLogger.shared.log("❌ Error al crear cita: \(error.localizedDescription)")
@@ -781,7 +853,7 @@ extension NewAppointmentSelectDetailsView {
                     "professional_name": professional.name,
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
-                
+
                 AppStatusManager.error(error)
             }
         }
@@ -790,8 +862,8 @@ extension NewAppointmentSelectDetailsView {
                 if appoint.workTypeGroup == self.id {
                     // ✅ Solo consideramos como "cita existente" los 3 estados activos
                     // Los estados inactivos NO deben tratarse como reemplazo
-                    if appoint.status.rawValue == "A Confirmar" || 
-                       appoint.status.rawValue == "Programado" || 
+                    if appoint.status.rawValue == "A Confirmar" ||
+                       appoint.status.rawValue == "Programado" ||
                        appoint.status.rawValue == "Confirmado" {
                         return appoint
                     }
@@ -803,8 +875,8 @@ extension NewAppointmentSelectDetailsView {
             for appoint in self.previousAppointment{
                 if appoint.workTypeGroup == self.id {
                     // ✅ Solo estos 3 estados bloquean el agendamiento
-                    if appoint.status.rawValue == "A Confirmar" || 
-                       appoint.status.rawValue == "Programado" || 
+                    if appoint.status.rawValue == "A Confirmar" ||
+                       appoint.status.rawValue == "Programado" ||
                        appoint.status.rawValue == "Confirmado"{
                         return true
                     }
@@ -816,12 +888,12 @@ extension NewAppointmentSelectDetailsView {
             for appoint in self.previousAppointment{
                 if appoint.date == self.slot?.startDate {
                     // ✅ Solo estos 3 estados bloquean el agendamiento
-                    if appoint.status.rawValue == "A Confirmar" || 
-                       appoint.status.rawValue == "Programado" || 
+                    if appoint.status.rawValue == "A Confirmar" ||
+                       appoint.status.rawValue == "Programado" ||
                        appoint.status.rawValue == "Confirmado"{
                         if let matched = clinicObjects.first(where: { $0.id == appoint.workTypeGroup }) {
                             self.clinicName = matched.name
-                            
+
                         }else{
                             self.clinicName = appoint.clinica
                         }
@@ -885,7 +957,7 @@ extension NewAppointmentSelectDetailsView {
             UIStateCancelButton: nil
         )
     }
-    
+
     func validatePopupConsent(){
         if isConsent ?? false {
             for popups in popupConsent {
@@ -898,32 +970,32 @@ extension NewAppointmentSelectDetailsView {
         }else{
             createAppointment()
         }
-        
+
     }
-    
+
     // MARK: - Ficha Clínica General
-    
+
     /// Verifica si debe mostrar el formulario de Ficha Clínica General en esta vista
     /// NOTA: A diferencia de HomeView, aquí SIEMPRE consultamos el servidor (ignoramos el flag local)
     /// porque esta pantalla es la barrera obligatoria para agendar. Si el usuario borró la ficha
     /// desde Salesforce sin cerrar sesión, el flag quedaría stale y nunca mostraríamos el modal.
     private func checkFichaClinicaGeneralInAgendamiento() async {
         print("🔍 [NewAppointmentSelectDetailsView] Iniciando verificación de Ficha Clínica General")
-        
+
         // 📝 IMPORTANTE: A diferencia de HomeView, NO usamos el flag como gate aquí
         let flagLocal = UserDefaults.standard.bool(forKey: "ficha_clinica_completada")
         print("ℹ️ [NewAppointmentSelectDetailsView] Flag local ficha_clinica_completada=\(flagLocal) (ignorado como gate)")
-        
+
         // Paso 1: Leer BrandAccount de CACHÉ LOCAL (sin HTTP request)
         // El BrandAccount ya fue descargado en HomeView y está en memoria/Realm
         guard let brandAccountCached = items.first else {
             print("⚠️ [NewAppointmentSelectDetailsView] No hay BrandAccount en caché local (Realm)")
             return
         }
-        
+
         print("✅ [NewAppointmentSelectDetailsView] BrandAccount leído de caché local (sin HTTP)")
         print("   • Total registros en caché: \(brandAccountCached.records.count)")
-        
+
         // Buscar "FormularioGeneral" en caché
         var foundRecord: BrandAccount?
         for record in brandAccountCached.records {
@@ -933,28 +1005,28 @@ extension NewAppointmentSelectDetailsView {
                 break
             }
         }
-        
+
         guard let formularioRecord = foundRecord else {
             print("⚠️ [NewAppointmentSelectDetailsView] No se encontró 'FormularioGeneral' en BrandAccount caché")
             return
         }
-        
+
         print("✅ [NewAppointmentSelectDetailsView] FormularioGeneral encontrado en caché")
         print("   • Atributo_1_1__c: \(formularioRecord.atributo11C ?? "nil")")
         print("   • Valor_1_1__c: \(formularioRecord.valor11C ?? "nil")")
-        
+
         // Verificar si MostrarFormularioGeneral == "Si"
         let atributo = formularioRecord.atributo11C ?? ""
         let valor = formularioRecord.valor11C ?? ""
         let debeVerificar = (atributo == "MostrarFormularioGeneral") && (valor.lowercased() == "si")
-        
+
         guard debeVerificar else {
             print("ℹ️ [NewAppointmentSelectDetailsView] MostrarFormularioGeneral != 'Si' → No verificar ficha")
             return
         }
-        
+
         print("✅ [NewAppointmentSelectDetailsView] MostrarFormularioGeneral='Si' → Continuar verificación")
-        
+
         // Guardar el formulario parseado para usarlo después si es necesario
         self.brandAccountFormularioGeneral = formularioRecord
         if let formulario = FormularioGeneralParser.parse(from: formularioRecord) {
@@ -964,31 +1036,31 @@ extension NewAppointmentSelectDetailsView {
             print("⚠️ [NewAppointmentSelectDetailsView] No se pudo parsear formulario desde caché")
             return
         }
-        
+
         // Paso 2: SIEMPRE consultar al servidor (ignorar flag local)
         guard let accountId = UserDefaults.standard.string(forKey: "account_id"), !accountId.isEmpty else {
             print("⚠️ [NewAppointmentSelectDetailsView] No hay account_id para consultar ficha clínica")
             return
         }
-        
+
         print("📡 [NewAppointmentSelectDetailsView] 🌐 Consultando servidor SIEMPRE (flag=\(flagLocal), ignorado aquí)")
         print("   • Motivo: Esta pantalla es la barrera obligatoria para agendar")
         print("   • Si el usuario borró la ficha desde Salesforce, el flag quedaría stale")
         await checkFichaClinicaExistente(accountId: accountId)
     }
-    
+
     /// Verifica si el usuario ya tiene una ficha clínica en el servidor
     private func checkFichaClinicaExistente(accountId: String) async {
         print("🔄 [NewAppointmentSelectDetailsView.FichaClinica] Consultando function_filter...")
         print("   • account_id: \(accountId)")
-        
+
         let result = await Network.shared.fichaClinicaGeneralService(accountId: accountId)
-        
+
         switch result {
         case .success(let response):
             let countBlocks = response.data.count
             print("✅ [NewAppointmentSelectDetailsView.FichaClinica] Respuesta OK. data.count=\(countBlocks)")
-            
+
             if let first = response.data.first {
                 let fichaArray = first["Ficha_Clinica_General__c"] ?? []
                 let count = fichaArray.count
@@ -998,28 +1070,28 @@ extension NewAppointmentSelectDetailsView {
                 print("ℹ️ [NewAppointmentSelectDetailsView.FichaClinica] data.first es nil. Asumimos fichaArray vacío")
                 applyFinalDecisionAgendamiento(fichaArrayCount: 0)
             }
-            
+
         case .failure(let error):
             print("❌ [NewAppointmentSelectDetailsView.FichaClinica] Error en function_filter: \(error)")
             applyFinalDecisionAgendamiento(fichaArrayCount: 0)
         }
     }
-    
+
     /// Aplica la lógica de decisión final para mostrar el formulario
     /// NOTA: Aquí SÍ actualizamos el flag local, pero solo DESPUÉS de consultar el servidor
     private func applyFinalDecisionAgendamiento(fichaArrayCount: Int?) {
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("⚖️ [NewAppointmentSelectDetailsView.Decision] Evaluando decisión basada en servidor")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        
+
         guard let count = fichaArrayCount else {
             print("⚠️ [NewAppointmentSelectDetailsView.Decision] fichaArrayCount es nil → No mostrar modal")
             self.mostrarFormularioGeneral = false
             return
         }
-        
+
         print("📊 [NewAppointmentSelectDetailsView.Decision] fichaArrayCount=\(count) (del servidor)")
-        
+
         if count > 0 {
             // Usuario YA tiene ficha clínica en el servidor
             print("✅ [NewAppointmentSelectDetailsView.Decision] Usuario tiene \(count) ficha(s) → Actualizar flag local")
@@ -1030,64 +1102,64 @@ extension NewAppointmentSelectDetailsView {
             // Usuario NO tiene ficha clínica en el servidor → BLOQUEAR con modal OBLIGATORIO
             print("⚠️ [NewAppointmentSelectDetailsView.Decision] Usuario NO tiene ficha → Modal OBLIGATORIO")
             UserDefaults.standard.set(false, forKey: "ficha_clinica_completada")
-            
+
             // Verificar que el formulario esté parseado
             guard self.formularioParsed != nil else {
                 print("❌ [NewAppointmentSelectDetailsView.Decision] Formulario no parseado → No mostrar modal")
                 self.mostrarFormularioGeneral = false
                 return
             }
-            
+
             self.mostrarFormularioGeneral = true
             print("🟢 [NewAppointmentSelectDetailsView.Decision] mostrarFormularioGeneral=true (MODAL OBLIGATORIO para agendar)")
         }
-        
+
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     }
-    
+
     /// Handler cuando el usuario completa el formulario
     @MainActor
     private func handleFormularioComplete(respuestas: [String: Any], formulario: FormularioGeneral) {
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("📥 [NewAppointmentSelectDetailsView.Formulario] Respuestas recibidas del formulario")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        
+
         guard let nombreFlujo = formulario.nombreFlujoServicio else {
             print("❌ [NewAppointmentSelectDetailsView.Formulario] No hay nombreFlujoServicio en el formulario")
             return
         }
-        
+
         // Reconstruir el diccionario correcto desde el FormularioGeneralView
         // El formulario viene con estructura: ["pregunta_1": {...}, "pregunta_2": {...}]
         // Necesitamos convertirlo a [UUID: RespuestaPregunta]
-        
+
         var respuestasTyped: [UUID: RespuestaPregunta] = [:]
-        
+
         for (index, pregunta) in formulario.preguntas.enumerated() {
             let key = "pregunta_\(index + 1)"
-            
+
             // Obtener el diccionario de la respuesta
             guard let respuestaDict = respuestas[key] as? [String: Any] else {
                 print("⚠️ [NewAppointmentSelectDetailsView.Formulario] No se encontró respuesta para \(key)")
                 continue
             }
-            
+
             // Reconstruir RespuestaPregunta desde el diccionario
             // NOTA: opcionesSeleccionadas ahora viene como String (formato "Opcion1;Opcion2;Opcion3")
             let opcionesString = respuestaDict["opcionesSeleccionadas"] as? String ?? ""
             let opcionesArray = opcionesString.isEmpty ? [] : opcionesString.components(separatedBy: ";")
-            
+
             let textoLibre = respuestaDict["textoLibre"] as? String ?? ""
             let campoCondicional = respuestaDict["campoCondicional"] as? String ?? ""
-            
+
             let respuesta = RespuestaPregunta(
                 opcionesSeleccionadas: opcionesArray,
                 textoLibre: textoLibre,
                 campoCondicional: campoCondicional
             )
-            
+
             respuestasTyped[pregunta.id] = respuesta
-            
+
             print("   ✓ Pregunta \(index + 1): \(pregunta.texto)")
             if !opcionesArray.isEmpty {
                 print("     - Opciones: \(opcionesArray.joined(separator: ", "))")
@@ -1099,30 +1171,30 @@ extension NewAppointmentSelectDetailsView {
                 print("     - Campo condicional: \(campoCondicional)")
             }
         }
-        
+
         print("📤 [NewAppointmentSelectDetailsView.Formulario] Enviando formulario al servidor...")
         print("   • Nombre del flujo: \(nombreFlujo)")
         print("   • Preguntas: \(formulario.preguntas.count)")
         print("   • Respuestas reconstruidas: \(respuestasTyped.count)")
-        
+
         Task {
             self.isLoading = true
-            
+
             let result = await Network.shared.postFichaClinicaGeneral(
                 nombreFlujo: nombreFlujo,
                 preguntas: formulario.preguntas,
                 respuestas: respuestasTyped
             )
-            
+
             await MainActor.run {
                 self.isLoading = false
-                
+
                 switch result {
                 case .success:
                     print("✅ [NewAppointmentSelectDetailsView.Formulario] Ficha clínica enviada exitosamente")
                     self.mostrarFormularioGeneral = false
                     print("💾 [NewAppointmentSelectDetailsView.Formulario] Modal cerrado y flag guardado")
-                    
+
                 case .failure(let error):
                     print("❌ [NewAppointmentSelectDetailsView.Formulario] Error al enviar ficha clínica: \(error)")
                     // Falla silenciosamente, el modal permanece abierto
@@ -1130,8 +1202,8 @@ extension NewAppointmentSelectDetailsView {
             }
         }
     }
-    
-    
+
+
     struct PopupView: View {
         @Binding var showCustomPopup: Bool
         @Binding var clinicName: String
@@ -1153,15 +1225,15 @@ extension NewAppointmentSelectDetailsView {
                             .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.size) ?? 18)))
                             .foregroundColor(Color(hex: popupData.msg.color))
                             .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-                        
+
                     }else{
                         Text(.init(popupData.msg.text.htmlToString()))
                             .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.size) ?? 18)))
                             .foregroundColor(Color(hex: popupData.msg.color))
                             .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-                            
+
                     }
-                    
+
                     Button {
                         self.showCustomPopup = false
                     } label: {
@@ -1268,9 +1340,9 @@ extension NewAppointmentSelectDetailsView {
                                 .cornerRadius(8)
                         }
                         .disabled(!hasScrolledToBottom)
-                        
+
                         Spacer()
-                        
+
                         Button {
                             showConsentPopup = false
                         } label: {
@@ -1293,4 +1365,3 @@ extension NewAppointmentSelectDetailsView {
         }
     }
 }
-

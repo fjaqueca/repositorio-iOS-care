@@ -364,14 +364,16 @@ struct PrescriptionDetailsView: View {
     func repeatPrescription() {
         Task {
             let result = await Network.shared.postReceta(accountId: prescription.pacienteC ?? "", prescriptionId: prescription.Id ?? "")
-            self.isLoading = false
-            switch result {
-            case .success(_):
-                self.showAlert.toggle()
-                self.alertAuthEvent = .RepeatPrescription
-            case .failure(_):
-                self.showAlert.toggle()
-                self.alertAuthEvent = .RepeatFails
+            await MainActor.run {
+                self.isLoading = false
+                switch result {
+                case .success(_):
+                    self.showAlert.toggle()
+                    self.alertAuthEvent = .RepeatPrescription
+                case .failure(_):
+                    self.showAlert.toggle()
+                    self.alertAuthEvent = .RepeatFails
+                }
             }
         }
     }
