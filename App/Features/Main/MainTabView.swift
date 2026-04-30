@@ -32,254 +32,350 @@ struct MainTabView: View {
     @State var UIState: HomeUIState = HomeUIState()
     @State var UIStateAppoint: AppointmentUIStateModel = AppointmentUIStateModel()
     @State var selectedColor: String = "#387FC2"
+    @State private var isConvenioLoading: Bool = false
 
-    /// Binding que intercepta la selección de "Más" (lógica Android):
-    /// - "Más" nunca cambia la vista, solo hace toggle del overlay
-    /// - Los demás tabs funcionan normal
-    private var tabSelection: Binding<Tab> {
-        Binding<Tab>(
-            get: { selectedTab },
-            set: { newValue in
-                if newValue == .more {
-                    // Como Android: solo toggle del menú, no cambiar vista
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showMore.toggle()
-                    }
-                } else {
-                    selectedTab = newValue
-                    withAnimation {
-                        showMore = false
-                    }
-                }
-            }
-        )
-    }
+    // Drawer "Más opciones"
 
     var body: some View {
-        ZStack{
-            if showEmailPhone{
-                NavigationViewCustom{
+        ZStack {
+            if showEmailPhone {
+                NavigationViewCustom {
                     ProfileUpdateInformation(isObligatori: $showEmailPhone)
                 }
-            }else{
-                TabView(selection: tabSelection) {
-                    if UIState.navBar.sectionNameNavbar.home != "No"{
-                        HomeView(UIStateAppoint: $UIStateAppoint, UIState: $UIState ,selectedColor: $selectedColor, selectedTab: $selectedTab)
-                            .tag(Tab.home)
-                            .tabItem {
-                                if UIState.navBar.sectionNameNavbar.home != ""{
-                                    CachedAsyncImage(
-                                        url: URL(string: UIState.navBar.iconsNavBar.home),
-                                        content: { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(maxWidth: 30, maxHeight: 30)
-                                        },
-                                        placeholder: {
-                                            Image("home")
-                                        })
-                                    Text(UIState.navBar.sectionNameNavbar.home != "" ? UIState.navBar.sectionNameNavbar.home : "Home")
-                                }
-                            }
+            } else {
+                VStack(spacing: 0) {
+                    // MARK: - Contenido principal
+                    ZStack {
+                        if UIState.navBar.sectionNameNavbar.home != "No" {
+                            HomeView(UIStateAppoint: $UIStateAppoint, UIState: $UIState, selectedColor: $selectedColor, selectedTab: $selectedTab)
+                                .opacity(selectedTab == .home ? 1 : 0)
+                                .zIndex(selectedTab == .home ? 1 : 0)
+                        }
+                        if UIState.navBar.sectionNameNavbar.program != "No" && UIState.navBar.sectionNameNavbar.program != "" {
+                            ProgramsView(programIconUrl: UIState.navBar.iconsNavBar.program)
+                                .opacity(selectedTab == .programs ? 1 : 0)
+                                .zIndex(selectedTab == .programs ? 1 : 0)
+                        }
+                        if UIState.navBar.sectionNameNavbar.diary != "No" && UIState.navBar.sectionNameNavbar.diary != "" {
+                            AppointmentsView(UIStateAppoint: $UIStateAppoint, selectedTab: $selectedTab)
+                                .opacity(selectedTab == .appointments ? 1 : 0)
+                                .zIndex(selectedTab == .appointments ? 1 : 0)
+                        }
+                        if UIState.navBar.sectionNameNavbar.profile != "No" && UIState.navBar.sectionNameNavbar.profile != "" {
+                            ProfileView(isConvenioLoading: $isConvenioLoading)
+                                .opacity(selectedTab == .profile ? 1 : 0)
+                                .zIndex(selectedTab == .profile ? 1 : 0)
+                        }
                     }
-                    if UIState.navBar.sectionNameNavbar.program != "No" && UIState.navBar.sectionNameNavbar.program != ""{
-                        ProgramsView()
-                            .tag(Tab.programs)
-                            .tabItem {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.program),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("programs")
-                                    })
+                    .overlay {
+                        if showMore {
+                            moreTabView
+                        }
+                    }
 
-                                Text(UIState.navBar.sectionNameNavbar.program != "" ? UIState.navBar.sectionNameNavbar.program : "Programas")
-                            }
-                    }
-                    if UIState.navBar.sectionNameNavbar.diary != "No" && UIState.navBar.sectionNameNavbar.diary != ""{
-                        AppointmentsView(UIStateAppoint: $UIStateAppoint, selectedTab: $selectedTab)
-                            .tag(Tab.appointments)
-                            .tabItem {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.diary),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("agenda")
-                                    })
+                    Divider()
 
-
-                                Text(UIState.navBar.sectionNameNavbar.diary != "" ? UIState.navBar.sectionNameNavbar.diary : "Agenda")
-                            }
-                            .tabBarHidden(false)
-                    }
-                    if UIState.navBar.sectionNameNavbar.profile != "No" && UIState.navBar.sectionNameNavbar.profile != ""{
-                        ProfileView()
-                            .tag(Tab.profile)
-                            .tabItem {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.profile),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("gray-profile")
-                                    })
-
-                                Text(UIState.navBar.sectionNameNavbar.profile != "" ? UIState.navBar.sectionNameNavbar.profile : "Perfil")
-                            }
-                    }
-                    if UIState.navBar.sectionNameNavbar.more != "No" && UIState.navBar.sectionNameNavbar.more != ""{
-                        Color.clear
-                            .tag(Tab.more)
-                            .tabItem {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.more),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("more")
-                                    })
-
-                                Text(UIState.navBar.sectionNameNavbar.more != "" ? UIState.navBar.sectionNameNavbar.more : "Más")
-                            }
-                    }
-                }
-                .enableHiding()
-                .accentColor(Color(hex: selectedColor))
-                .onAppear {
-                    update = "ForcedUpdate"
-                }
-                .overlay {
-                    if showMore {
-                        moreTabView
-                    }
+                    // MARK: - Tab Bar Custom
+                    customTabBar
                 }
                 .fullScreenCover(isPresented: $showMedicalExamsView, content: {
                     ExamsView()
                 })
                 .fullScreenCover(isPresented: $showPrescriptionsView, content: {
                     PrescriptionsView()
-
                 })
                 .fullScreenCover(isPresented: $showEducationalMaterialView, content: {
                     EducationalMaterialView()
                 })
             }
-
+        }
+        .onAppear {
+            update = "ForcedUpdate"
         }
         .onChange(of: UIState.greetingUIState.text) { _ in
-            if (users.first?.records.first?.PersonEmail == nil || users.first?.records.first?.PersonEmail == "") || (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == ""){
+            if (users.first?.records.first?.PersonEmail == nil || users.first?.records.first?.PersonEmail == "") || (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == "") {
                 self.showEmailPhone = true
             }
         }
     }
 
+    // MARK: - Custom Tab Bar
+
+    private var customTabBar: some View {
+        HStack(spacing: 0) {
+            if UIState.navBar.sectionNameNavbar.home != "No" && UIState.navBar.sectionNameNavbar.home != "" {
+                tabBarItem(
+                    tab: .home,
+                    label: UIState.navBar.sectionNameNavbar.home.isEmpty ? "Home" : UIState.navBar.sectionNameNavbar.home,
+                    iconUrl: UIState.navBar.iconsNavBar.home,
+                    fallbackImage: "home"
+                )
+            }
+            if UIState.navBar.sectionNameNavbar.program != "No" && UIState.navBar.sectionNameNavbar.program != "" {
+                tabBarItem(
+                    tab: .programs,
+                    label: UIState.navBar.sectionNameNavbar.program.isEmpty ? "Programas" : UIState.navBar.sectionNameNavbar.program,
+                    iconUrl: UIState.navBar.iconsNavBar.program,
+                    fallbackImage: "programs"
+                )
+            }
+            if UIState.navBar.sectionNameNavbar.diary != "No" && UIState.navBar.sectionNameNavbar.diary != "" {
+                tabBarItem(
+                    tab: .appointments,
+                    label: UIState.navBar.sectionNameNavbar.diary.isEmpty ? "Agenda" : UIState.navBar.sectionNameNavbar.diary,
+                    iconUrl: UIState.navBar.iconsNavBar.diary,
+                    fallbackImage: "agenda"
+                )
+            }
+            if UIState.navBar.sectionNameNavbar.profile != "No" && UIState.navBar.sectionNameNavbar.profile != "" {
+                tabBarItem(
+                    tab: .profile,
+                    label: UIState.navBar.sectionNameNavbar.profile.isEmpty ? "Perfil" : UIState.navBar.sectionNameNavbar.profile,
+                    iconUrl: UIState.navBar.iconsNavBar.profile,
+                    fallbackImage: "gray-profile"
+                )
+            }
+            if UIState.navBar.sectionNameNavbar.more != "No" && UIState.navBar.sectionNameNavbar.more != "" {
+                moreTabBarItem
+            }
+        }
+        .padding(.top, 6)
+        .padding(.bottom, 2)
+        .background(
+            Color(.systemBackground)
+                .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: -2)
+        )
+        .allowsHitTesting(!isConvenioLoading)
+        .opacity(isConvenioLoading ? 0.5 : 1.0)
+    }
+
+    /// Tab item estándar (Home, Programas, Agenda, Perfil)
+    private func tabBarItem(tab: Tab, label: String, iconUrl: String, fallbackImage: String) -> some View {
+        Button {
+            selectedTab = tab
+            if showMore {
+                closeMoreDrawer()
+            }
+        } label: {
+            let isActive = selectedTab == tab
+            let tintColor = isActive ? Color(hex: "#333333") : Color(hex: "#C4C4C4")
+            VStack(spacing: 3) {
+                // Barra horizontal indicadora encima del icono (como Android)
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(isActive ? Color(hex: "#333333") : Color.clear)
+                    .frame(width: 28, height: 2)
+                CachedAsyncImage(
+                    url: URL(string: iconUrl),
+                    content: { image in
+                        image
+                            .renderingMode(.template)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 24, maxHeight: 24)
+                    },
+                    placeholder: {
+                        Image(fallbackImage)
+                            .renderingMode(.template)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 24, maxHeight: 24)
+                    })
+                Text(label)
+                    .font(.system(size: 10, weight: isActive ? .bold : .regular))
+            }
+            .foregroundColor(tintColor)
+            .opacity(isActive ? 1.0 : 0.6)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 4)
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// Tab item especial "Más" — estilo activo independiente controlado por showMore
+    private var moreTabBarItem: some View {
+        let isActive = showMore
+        let tintColor = isActive ? Color(hex: "#333333") : Color(hex: "#C4C4C4")
+        return Button {
+            if showMore {
+                closeMoreDrawer()
+            } else {
+                openMoreDrawer()
+            }
+        } label: {
+            VStack(spacing: 3) {
+                // Barra horizontal indicadora encima del icono (como Android)
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(isActive ? Color(hex: "#333333") : Color.clear)
+                    .frame(width: 28, height: 2)
+                CachedAsyncImage(
+                    url: URL(string: UIState.navBar.iconsNavBar.more),
+                    content: { image in
+                        image
+                            .renderingMode(.template)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 24, maxHeight: 24)
+                    },
+                    placeholder: {
+                        Image("more")
+                            .renderingMode(.template)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 24, maxHeight: 24)
+                    })
+                Text(UIState.navBar.sectionNameNavbar.more.isEmpty ? "Más" : UIState.navBar.sectionNameNavbar.more)
+                    .font(.system(size: 10, weight: isActive ? .bold : .regular))
+            }
+            .foregroundColor(tintColor)
+            .opacity(isActive ? 1.0 : 0.6)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 4)
+            .background(
+                showMore
+                    ? RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(.systemGray5))
+                        .padding(.horizontal, 6)
+                    : nil
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - More Menu Overlay (Mini-Drawer — paridad Android)
+
+    private var moreMenuItems: [(label: String, iconUrl: String, fallback: String, action: () -> Void)] {
+        var items: [(label: String, iconUrl: String, fallback: String, action: () -> Void)] = []
+        let nav = UIState.navBar.sectionNameNavbar
+        let icons = UIState.navBar.iconsNavBar
+
+        if nav.exam != "No" && nav.exam != "" {
+            items.append((
+                label: nav.exam.isEmpty ? "Exámenes" : nav.exam,
+                iconUrl: icons.exam,
+                fallback: "exams",
+                action: { [self] in closeMoreDrawer { showMedicalExamsView = true } }
+            ))
+        }
+        if nav.prescription != "No" && nav.prescription != "" {
+            items.append((
+                label: nav.prescription.isEmpty ? "Recetas" : nav.prescription,
+                iconUrl: icons.prescription,
+                fallback: "prescriptions",
+                action: { [self] in closeMoreDrawer { showPrescriptionsView = true } }
+            ))
+        }
+        if nav.material != "No" && nav.material != "" {
+            items.append((
+                label: nav.material.isEmpty ? "Material Educativo" : nav.material,
+                iconUrl: icons.material,
+                fallback: "educational-material",
+                action: { [self] in closeMoreDrawer { showEducationalMaterialView = true } }
+            ))
+        }
+        return items
+    }
+
+    // MARK: Abrir/cerrar drawer
+    private func openMoreDrawer() {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+            showMore = true
+        }
+    }
+
+    private func closeMoreDrawer(then action: (() -> Void)? = nil) {
+        withAnimation(.easeIn(duration: 0.2)) {
+            showMore = false
+        }
+        if let action = action {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                action()
+            }
+        }
+    }
+
     private var moreTabView: some View {
-        Color.black.opacity(0.01)
-            .onTapGesture {
-                withAnimation {
-                    showMore = false
+        ZStack(alignment: .bottomTrailing) {
+            // Backdrop (20% negro)
+            Color.black.opacity(0.20)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    closeMoreDrawer()
+                }
+
+            // Card drawer
+            VStack(spacing: 0) {
+                // Header — barra azul + título "Más opciones"
+                HStack(spacing: 8) {
+                    RoundedRectangle(cornerRadius: 1.5)
+                        .fill(Color(hex: "#00BBDC"))
+                        .frame(width: 3, height: 13)
+                    Text("Más opciones")
+                        .font(Font.custom("FiraSans-Bold", size: 12))
+                        .foregroundColor(Color(hex: "#5B6770"))
+                        .tracking(0.3)
+                    Spacer()
+                }
+                .padding(.horizontal, 12)
+                .padding(.top, 11)
+                .padding(.bottom, 7)
+
+                // Items dinámicos
+                ForEach(Array(moreMenuItems.enumerated()), id: \.offset) { index, item in
+                    // Divider sutil entre items
+                    Rectangle()
+                        .fill(Color(hex: "#EEEEEE"))
+                        .frame(height: 0.5)
+                        .padding(.horizontal, 8)
+
+                    Button {
+                        item.action()
+                    } label: {
+                        HStack(spacing: 9) {
+                            CachedAsyncImage(
+                                url: URL(string: item.iconUrl),
+                                content: { image in
+                                    image
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20)
+                                },
+                                placeholder: {
+                                    Image(item.fallback)
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20)
+                                })
+                                .foregroundColor(Color(hex: "#333F48"))
+
+                            Text(item.label)
+                                .font(Font.custom("FiraSans-Regular", size: 13))
+                                .foregroundColor(Color(hex: "#333F48"))
+                                .lineLimit(1)
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(Color(hex: "#BDBDBD"))
+                        }
+                        .padding(.leading, 12)
+                        .padding(.trailing, 10)
+                        .padding(.vertical, 11)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
-            .overlay(alignment: .bottomTrailing) {
-                VStack(spacing: .margin){
-                    if UIState.navBar.sectionNameNavbar.exam != "No" && UIState.navBar.sectionNameNavbar.exam != ""{
-                        Button {
-                            showMedicalExamsView = true
-                            showMore = false
-                        } label: {
-                            VStack {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.exam),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("exams")
-                                    })
-
-                                Text(UIState.navBar.sectionNameNavbar.exam != "" ? UIState.navBar.sectionNameNavbar.exam : "Exámenes")
-                                    .font(.caption2)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    }
-                    if UIState.navBar.sectionNameNavbar.prescription != "No" && UIState.navBar.sectionNameNavbar.prescription != ""{
-                        Button {
-                            showPrescriptionsView = true
-                            showMore = false
-                        } label: {
-                            VStack {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.prescription),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("prescriptions")
-                                    })
-
-
-                                Text(UIState.navBar.sectionNameNavbar.prescription != "" ? UIState.navBar.sectionNameNavbar.prescription : "Recetas")
-                                    .font(.caption2)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    }
-                    if UIState.navBar.sectionNameNavbar.material != "No" && UIState.navBar.sectionNameNavbar.material != ""{
-                        Button {
-                            showEducationalMaterialView = true
-                            showMore = false
-                        } label: {
-                            VStack {
-                                CachedAsyncImage(
-                                    url: URL(string: UIState.navBar.iconsNavBar.material),
-                                    content: { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 30, maxHeight: 30)
-                                    },
-                                    placeholder: {
-                                        Image("educational-material")
-                                    })
-
-                                Text(UIState.navBar.sectionNameNavbar.material != "" ? UIState.navBar.sectionNameNavbar.material : "Material")
-                                    .font(.caption2)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    }
-                }
-                .frame(width: 80.0)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .padding(.vertical)
-                .background(Color.white)
-            }
-            .offset(x: 0, y: -59.0)
+            .frame(width: 196)
+            .background(
+                RoundedRectangle(cornerRadius: 17)
+                    .fill(Color.white)
+            )
+            .shadow(color: .black.opacity(0.12), radius: 14, x: 0, y: -4)
+            .padding(.trailing, 10)
+            .padding(.bottom, 8)
+            .transition(.scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity))
+        }
     }
 }

@@ -76,34 +76,55 @@ struct PrescriptionsView: View {
                             .foregroundColor(Color(hex: UIState.presList.titleList.color))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        ScrollView {
-                            if isLoading{
+                        if isLoading {
+                            ScrollView {
                                 ProgressView()
                                     .padding()
-                                    .onAppear{
+                                    .onAppear {
                                         if isInitialLoad {
                                             isInitialLoad = false
                                             dateToString()
                                             getRecetas()
                                         }
                                     }
-                            }else{
+                            }
+                        } else if let searchPres = searchPres, !searchPres.isEmpty {
+                            ScrollView {
                                 VStack {
-                                    if let searchPres = searchPres{
-                                        ForEach(searchPres, id: \.self) { pres in
-                                            
-                                            if isCurrent{
-                                                if stringToDate(pres.hastaC ?? "") >= Date().adding(days: -1) {
-                                                    PrescriptionRowView(isSelected:  $prescriptionSelectedList, prescription: pres, UIState: $UIState)
-                                                }
-                                            }else{
-                                                PrescriptionRowView(isSelected:  $prescriptionSelectedList, prescription: pres, UIState: $UIState)
+                                    ForEach(searchPres, id: \.self) { pres in
+                                        if isCurrent {
+                                            if stringToDate(pres.hastaC ?? "") >= Date().adding(days: -1) {
+                                                PrescriptionRowView(isSelected: $prescriptionSelectedList, prescription: pres, UIState: $UIState)
                                             }
+                                        } else {
+                                            PrescriptionRowView(isSelected: $prescriptionSelectedList, prescription: pres, UIState: $UIState)
                                         }
                                     }
                                 }
                             }
-                            
+                        } else {
+                            VStack(spacing: 12) {
+                                Spacer()
+                                Spacer()
+
+                                Image(systemName: "doc.text.magnifyingglass")
+                                    .font(.system(size: 50, weight: .light))
+                                    .foregroundColor(Color(.systemGray3))
+
+                                Text("No se encontraron documentos")
+                                    .font(Font.custom("FiraSans-Bold", size: 19))
+                                    .foregroundColor(Color(hex: "#5B6770"))
+
+                                Text("No tienes recetas médicas asociadas por el momento")
+                                    .font(Font.custom("FiraSans-Regular", size: 15))
+                                    .foregroundColor(Color(hex: "#C4C4C4"))
+                                    .multilineTextAlignment(.center)
+
+                                Spacer()
+                                Spacer()
+                                Spacer()
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
                     .padding(.margin)

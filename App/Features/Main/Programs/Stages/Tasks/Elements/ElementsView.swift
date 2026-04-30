@@ -81,9 +81,9 @@ struct ElementsView: View {
                         .foregroundColor(.primaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            if let activities = allActivities.records {
+                    if let activities = allActivities.records, !activities.filter({ !($0.actividadInvisibleC ?? false) }).isEmpty {
+                        ScrollView {
+                            VStack(spacing: 0) {
                                 ForEach(activities, id: \.Id) { activity in
                                     // ✅ FILTRAR ACTIVIDADES INVISIBLES
                                     if !(activity.actividadInvisibleC ?? false) {
@@ -127,6 +127,25 @@ struct ElementsView: View {
                                 }
                             }
                         }
+                    } else if !isLoading {
+                        VStack(spacing: 12) {
+                            Spacer()
+                            Spacer()
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .font(.system(size: 50, weight: .light))
+                                .foregroundColor(Color(.systemGray3))
+                            Text("No se encontraron actividades")
+                                .font(Font.custom("FiraSans-Bold", size: 19))
+                                .foregroundColor(Color(hex: "#5B6770"))
+                            Text("No hay actividades disponibles en esta tarea")
+                                .font(Font.custom("FiraSans-Regular", size: 15))
+                                .foregroundColor(Color(hex: "#C4C4C4"))
+                                .multilineTextAlignment(.center)
+                            Spacer()
+                            Spacer()
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     // ⛔️ ELIMINADO: .id(listRefreshId)
                     // Cambiar el ID forzaba a SwiftUI a destruir y recrear la lista entera,

@@ -47,6 +47,7 @@ struct MedicalExamsDetailsView: View {
     var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
     var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     /// Binding al MedicalExamsView padre. Lo seteamos a true tras un upload exitoso
     /// para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -101,6 +102,15 @@ struct MedicalExamsDetailsView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         // Main card
+                        let _ = {
+                            let btns = botonesDetalleExamen
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("📋 [MedicalExamsDetailsView] CONFIG DINÁMICA BOTONES DETALLE")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            print("   btnDescargar: texto=\"\(btns.botonDescargar.texto)\" font=\(btns.botonDescargar.font) size=\(btns.botonDescargar.size) colorTexto=\(btns.botonDescargar.colorTexto) colorFondo=\(btns.botonDescargar.colorFondo) icono=\(btns.botonDescargar.icono) colorBorde=\(btns.botonDescargar.colorBorde)")
+                            print("   btnCompartir: texto=\"\(btns.botonCompartir.texto)\" font=\(btns.botonCompartir.font) size=\(btns.botonCompartir.size) colorTexto=\(btns.botonCompartir.colorTexto) colorFondo=\(btns.botonCompartir.colorFondo) icono=\(btns.botonCompartir.icono) colorBorde=\(btns.botonCompartir.colorBorde)")
+                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        }()
                         VStack(alignment: .leading, spacing: 0) {
                             // Exam name & date
                             VStack(alignment: .leading, spacing: 6) {
@@ -373,39 +383,67 @@ struct MedicalExamsDetailsView: View {
     // MARK: - Download & Share Buttons
     var buttonsBottom: some View {
         HStack(spacing: 12) {
+            let btnDesc = botonesDetalleExamen.botonDescargar
             Button {
                 downloadArchive(action: .isDownload)
             } label: {
                 HStack(spacing: 6) {
-                    Text(UIState.examDetail.btnDownload.textBtn.isEmpty ? "Descargar" : UIState.examDetail.btnDownload.textBtn)
-                        .font(Font.custom("FiraSans-Medium", size: 14))
-                    Image(systemName: "square.and.arrow.down")
-                        .font(.system(size: 13, weight: .medium))
+                    Text(btnDesc.texto.isEmpty ? "Descargar" : btnDesc.texto)
+                        .font(Font.custom(
+                            btnDesc.font.isEmpty ? "FiraSans-Medium" : btnDesc.font,
+                            size: CGFloat(Int(btnDesc.size) ?? 14)
+                        ))
+                    if !btnDesc.icono.isEmpty {
+                        Image(systemName: btnDesc.icono)
+                            .font(.system(size: CGFloat(Int(btnDesc.size) ?? 14), weight: .medium))
+                            .foregroundColor(Color(hex: btnDesc.colorIcono.isEmpty ? btnDesc.colorTexto : btnDesc.colorIcono))
+                    } else {
+                        Image(systemName: "square.and.arrow.down")
+                            .font(.system(size: 13, weight: .medium))
+                    }
                 }
-                .foregroundColor(Color(hex: "#333333"))
+                .foregroundColor(Color(hex: btnDesc.colorTexto.isEmpty ? "#333333" : btnDesc.colorTexto))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(hex: btnDesc.colorFondo.isEmpty ? "#FFFFFF" : btnDesc.colorFondo))
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color(.systemGray4), lineWidth: 1)
+                        .stroke(Color(hex: btnDesc.colorBorde.isEmpty ? "#D1D1D6" : btnDesc.colorBorde), lineWidth: 1)
                 )
             }
 
+            let btnComp = botonesDetalleExamen.botonCompartir
             Button {
                 downloadArchive(action: .isShare)
             } label: {
                 HStack(spacing: 6) {
-                    Text(UIState.examDetail.btnShare.textBtn.isEmpty ? "Compartir" : UIState.examDetail.btnShare.textBtn)
-                        .font(Font.custom("FiraSans-Medium", size: 14))
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 13, weight: .medium))
+                    Text(btnComp.texto.isEmpty ? "Compartir" : btnComp.texto)
+                        .font(Font.custom(
+                            btnComp.font.isEmpty ? "FiraSans-Medium" : btnComp.font,
+                            size: CGFloat(Int(btnComp.size) ?? 14)
+                        ))
+                    if !btnComp.icono.isEmpty {
+                        Image(systemName: btnComp.icono)
+                            .font(.system(size: CGFloat(Int(btnComp.size) ?? 14), weight: .medium))
+                            .foregroundColor(Color(hex: btnComp.colorIcono.isEmpty ? btnComp.colorTexto : btnComp.colorIcono))
+                    } else {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 13, weight: .medium))
+                    }
                 }
-                .foregroundColor(Color(hex: "#333333"))
+                .foregroundColor(Color(hex: btnComp.colorTexto.isEmpty ? "#333333" : btnComp.colorTexto))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(hex: btnComp.colorFondo.isEmpty ? "#FFFFFF" : btnComp.colorFondo))
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color(.systemGray4), lineWidth: 1)
+                        .stroke(Color(hex: btnComp.colorBorde.isEmpty ? "#D1D1D6" : btnComp.colorBorde), lineWidth: 1)
                 )
             }
         }

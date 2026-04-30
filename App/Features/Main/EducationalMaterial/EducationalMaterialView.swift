@@ -40,24 +40,24 @@ struct EducationalMaterialView: View {
                             Color(hex: UIState.materialList.colorSearch.backgrountColor)
                         }
                         .cornerRadius(10)
-                        ScrollView {
-                            if isLoading {
+                        if isLoading {
+                            ScrollView {
                                 ProgressView()
                                     .padding()
-                                    .onAppear{
+                                    .onAppear {
                                         getEducationalMaterial()
                                     }
-                            }else{
+                            }
+                        } else if let searchMaterial = searchMaterial, !searchMaterial.isEmpty {
+                            ScrollView {
                                 VStack {
-                                    if let searchMaterial = searchMaterial{
-                                        ForEach(searchMaterial, id: \.self) { filterMaterial in
-                                            
-                                            EducationalMaterialRow(material: filterMaterial, isLoadingFavorite: $isLoadingFav, isLoadingMaterial: $isLoading, UIState: $UIState)
-                                            
-                                        }
+                                    ForEach(searchMaterial, id: \.self) { filterMaterial in
+                                        EducationalMaterialRow(material: filterMaterial, isLoadingFavorite: $isLoadingFav, isLoadingMaterial: $isLoading, UIState: $UIState)
                                     }
                                 }
                             }
+                        } else {
+                            emptyStateView
                         }
                     }
                     .padding(.margin)
@@ -103,6 +103,27 @@ struct EducationalMaterialView: View {
                 .sorted{$0.favoritoAppC ?? false && !($1.favoritoAppC ?? false) }
         }
     }
+    // MARK: - Empty State
+    private var emptyStateView: some View {
+        VStack(spacing: 12) {
+            Spacer()
+            Spacer()
+
+            Image(systemName: "folder")
+                .font(.system(size: 50, weight: .light))
+                .foregroundColor(Color(.systemGray3))
+
+            Text("Sin documentos cargados...")
+                .font(Font.custom("FiraSans-Bold", size: 19))
+                .foregroundColor(Color(hex: "#5B6770"))
+
+            Spacer()
+            Spacer()
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
     func getEducationalMaterial() {
         Task{
             let agreementId = AppStatusManager.selectedEnterprise?.empresaC

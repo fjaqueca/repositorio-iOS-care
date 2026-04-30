@@ -80,27 +80,27 @@ struct ExamsView: View {
 
     // MARK: - Hub Content
     private var hubContent: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 20) {
-                Spacer().frame(height: 1)
+        let screenWidth = UIScreen.main.bounds.width
 
-                // Banner carousel (same pattern as PromotionsTile in HomeView)
+        return ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                Spacer().frame(height: 16)
+
+                // Banner carousel (padding 15pt por lado, paridad Android)
                 bannerCarousel
+                    .frame(width: screenWidth)
 
-                // Descripcion / Instruccion
-                Text(automatedExamsState.header.descripcion.isEmpty
-                    ? "Por favor seleccione una opcion para poder continuar:"
-                    : automatedExamsState.header.descripcion)
-                    .font(Font.custom(
-                        automatedExamsState.header.descripcionAttr.font,
-                        size: CGFloat(Int(automatedExamsState.header.descripcionAttr.size) ?? 14)
-                    ))
-                    .foregroundColor(Color(hex: automatedExamsState.header.descripcionAttr.color))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, .margin)
+                Spacer().frame(height: 8)
+
+                // Descripcion / Instruccion (margin 20pt por lado, paridad Android)
+                descriptionText
+                    .frame(width: screenWidth)
+
+                Spacer().frame(height: 20)
 
                 // Option cards
                 optionCards
+                    .frame(width: screenWidth)
 
                 Spacer()
             }
@@ -109,7 +109,7 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, navTitle: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.nombre ?? "", navTitleAttr: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.tituloAttr ?? TextExamAttributes(), dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica, badgeDetallePrescripciones: automatedExamsState.badgeDetallePrescripciones, badgeDetalleRecetaMedica: automatedExamsState.badgeDetalleRecetaMedica, badgeDetalleExamenMedico: automatedExamsState.badgeDetalleExamenMedico, botonVerDocumentoEnviado: automatedExamsState.botonVerDocumentoEnviado, botonSubirExamen: automatedExamsState.botonSubirExamen, badgeCargadoPorPaciente: automatedExamsState.badgeCargadoPorPaciente)
+                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, navTitle: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.nombre ?? "", navTitleAttr: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.tituloAttr ?? TextExamAttributes(), dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica, badgeDetallePrescripciones: automatedExamsState.badgeDetallePrescripciones, badgeDetalleRecetaMedica: automatedExamsState.badgeDetalleRecetaMedica, badgeDetalleExamenMedico: automatedExamsState.badgeDetalleExamenMedico, botonVerDocumentoEnviado: automatedExamsState.botonVerDocumentoEnviado, botonSubirExamen: automatedExamsState.botonSubirExamen, badgeCargadoPorPaciente: automatedExamsState.badgeCargadoPorPaciente, botonesDetalleExamen: automatedExamsState.botonesDetalleExamen)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -174,6 +174,27 @@ struct ExamsView: View {
         }
     }
 
+    // MARK: - Description Text
+    private var descriptionText: some View {
+        let descAttr = automatedExamsState.header.descripcionAttr
+        let descAlign = descAttr.alignment.lowercased()
+        let alignment: TextAlignment = descAlign == "center" ? .center : (descAlign == "right" ? .trailing : .leading)
+        let frameAlignment: Alignment = descAlign == "center" ? .center : (descAlign == "right" ? .trailing : .leading)
+
+        return Text(automatedExamsState.header.descripcion.isEmpty
+            ? "Por favor seleccione una opcion para poder continuar:"
+            : automatedExamsState.header.descripcion)
+            .font(Font.custom(
+                descAttr.font,
+                size: CGFloat(Int(descAttr.size) ?? 14)
+            ))
+            .foregroundColor(Color(hex: descAttr.color))
+            .multilineTextAlignment(alignment)
+            .lineLimit(nil)
+            .frame(maxWidth: .infinity, alignment: frameAlignment)
+            .padding(.horizontal, 20)
+    }
+
     // MARK: - Banner Carousel
     private var bannerCarousel: some View {
         VStack(spacing: 8) {
@@ -193,11 +214,11 @@ struct ExamsView: View {
                                         .foregroundColor(.gray.opacity(0.4))
                                 }
                             )
-                            .padding(.horizontal, .margin)
+                            .padding(.horizontal, 15)
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 120)
+                .frame(width: UIScreen.main.bounds.width, height: 120)
             } else {
                 TabView(selection: $currentBannerIndex) {
                     ForEach(Array(automatedExamsState.bannersHub.enumerated()), id: \.element.id) { index, banner in
@@ -212,12 +233,12 @@ struct ExamsView: View {
                                 .fill(Color.gray.opacity(0.15))
                                 .overlay(ProgressView())
                         }
-                        .padding(.horizontal, .margin)
+                        .padding(.horizontal, 15)
                         .tag(index)
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 120)
+                .frame(width: UIScreen.main.bounds.width, height: 120)
 
                 // Page indicators
                 if automatedExamsState.bannersHub.count > 1 {
@@ -225,7 +246,7 @@ struct ExamsView: View {
                         ForEach(0..<automatedExamsState.bannersHub.count, id: \.self) { index in
                             Circle()
                                 .fill(index == currentBannerIndex
-                                    ? Color(hex: automatedExamsState.header.tituloAttr.color)
+                                    ? Color(hex: automatedExamsState.header.colorCirculoBannerSeleccionado)
                                     : Color.gray.opacity(0.3))
                                 .frame(width: 7, height: 7)
                         }
@@ -261,28 +282,48 @@ struct ExamsView: View {
                 }
                 .padding(.horizontal, .margin)
             } else {
-                // Secciones dinámicas del BrandAccount — grilla adaptativa
+                // Secciones dinámicas del BrandAccount — layout adaptativo según cantidad
                 let visibleSecciones = automatedExamsState.secciones.filter { $0.visible }
-                let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: min(visibleSecciones.count, 3))
 
-                LazyVGrid(columns: columns, alignment: .center, spacing: 12) {
-                    ForEach(visibleSecciones) { seccion in
-                        examOptionCard(
-                            title: seccion.nombre,
-                            iconURL: seccion.iconURL.isEmpty ? nil : seccion.iconURL,
-                            systemIcon: iconForSeccion(seccion.numero)
-                        ) {
-                            handleSeccionTap(seccion.numero)
+                if visibleSecciones.count <= 2 {
+                    // 1 o 2 opciones: HStack centrado para mantener íconos cerca del centro
+                    HStack(alignment: .top, spacing: 24) {
+                        ForEach(visibleSecciones) { seccion in
+                            examOptionCard(
+                                title: seccion.nombre,
+                                iconURL: seccion.iconURL.isEmpty ? nil : seccion.iconURL,
+                                systemIcon: iconForSeccion(seccion.numero),
+                                expandWidth: false
+                            ) {
+                                handleSeccionTap(seccion.numero)
+                            }
                         }
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, .margin)
+                } else {
+                    // 3+ opciones: grilla de 3 columnas
+                    let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
+
+                    LazyVGrid(columns: columns, alignment: .center, spacing: 12) {
+                        ForEach(visibleSecciones) { seccion in
+                            examOptionCard(
+                                title: seccion.nombre,
+                                iconURL: seccion.iconURL.isEmpty ? nil : seccion.iconURL,
+                                systemIcon: iconForSeccion(seccion.numero)
+                            ) {
+                                handleSeccionTap(seccion.numero)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, .margin)
                 }
-                .padding(.horizontal, .margin)
             }
         }
     }
 
     // MARK: - Single Option Card
-    private func examOptionCard(title: String, iconURL: String?, systemIcon: String, action: @escaping () -> Void) -> some View {
+    private func examOptionCard(title: String, iconURL: String?, systemIcon: String, expandWidth: Bool = true, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             if let iconURL = iconURL, let url = URL(string: iconURL) {
                 WebImage(url: url) { image in
@@ -306,7 +347,7 @@ struct ExamsView: View {
                     )
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: expandWidth ? .infinity : nil)
     }
 
     private func iconForSeccion(_ numero: Int) -> String {

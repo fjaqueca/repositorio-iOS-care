@@ -145,8 +145,8 @@ struct ExamDeleteConfirmationModal: View {
                 .padding(.top, 6)
                 .padding(.bottom, 18)
             }
-            .padding(.horizontal, 20)
-            .frame(maxWidth: 310)
+            .padding(.horizontal, 28)
+            .frame(maxWidth: 380)
             .background(
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color.white)

@@ -112,21 +112,41 @@ struct TasksView: View {
                             }
                             
                             
-                            ForEach(goals, id: \.self) { tasks in
-                                ForEach(tasks.records, id: \.self) { task in
-                                    ForEach(task.goalsR.records, id: \.self) { t in
-                                        TaskRowView(
-                                            task: t,
-                                            isLoadingFavorite: $isLoadingFavorite,
-                                            isLoadingTasks: $isLoadingTasks,
-                                            programId: program_id,
-                                            puntosActivos: puntosActivos,
-                                            puntosObtener: puntosObtener,
-                                            puntosAcumulados: puntosAcumulados
-                                        )
-                                        .environmentObject(navigationState)  // ✅ PASAR ESTADO A TaskRowView
-                                        .onAppear {
-                                            self.isFavorite = t.favoritoAppC ?? false
+                            if goals.isEmpty {
+                                VStack(spacing: 12) {
+                                    Spacer()
+                                        .frame(height: 30)
+                                    Image(systemName: "doc.text.magnifyingglass")
+                                        .font(.system(size: 50, weight: .light))
+                                        .foregroundColor(Color(.systemGray3))
+                                    Text("No se encontraron tareas")
+                                        .font(Font.custom("FiraSans-Bold", size: 19))
+                                        .foregroundColor(Color(hex: "#5B6770"))
+                                    Text("No hay tareas disponibles en esta etapa")
+                                        .font(Font.custom("FiraSans-Regular", size: 15))
+                                        .foregroundColor(Color(hex: "#C4C4C4"))
+                                        .multilineTextAlignment(.center)
+                                    Spacer()
+                                        .frame(height: 30)
+                                }
+                                .frame(maxWidth: .infinity)
+                            } else {
+                                ForEach(goals, id: \.self) { tasks in
+                                    ForEach(tasks.records, id: \.self) { task in
+                                        ForEach(task.goalsR.records, id: \.self) { t in
+                                            TaskRowView(
+                                                task: t,
+                                                isLoadingFavorite: $isLoadingFavorite,
+                                                isLoadingTasks: $isLoadingTasks,
+                                                programId: program_id,
+                                                puntosActivos: puntosActivos,
+                                                puntosObtener: puntosObtener,
+                                                puntosAcumulados: puntosAcumulados
+                                            )
+                                            .environmentObject(navigationState)  // ✅ PASAR ESTADO A TaskRowView
+                                            .onAppear {
+                                                self.isFavorite = t.favoritoAppC ?? false
+                                            }
                                         }
                                     }
                                 }

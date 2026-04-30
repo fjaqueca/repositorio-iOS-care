@@ -11,6 +11,10 @@ import RealmSwift
 import CachedAsyncImage
 
 struct HomeView: View {
+    /// Flag de sesión: true después de mostrar (o decidir) el formulario por primera vez.
+    /// Se resetea automáticamente al cerrar la app (es static, vive solo en memoria).
+    private static var formularioYaMostradoEnSesion = false
+
     @State private var selectedEnterprise: CompanyAgreementR? = AppStatusManager.selectedEnterprise
     @State var  isLoading: Bool = true
     @ObservedResults(User.self) private var users
@@ -263,10 +267,18 @@ struct HomeView: View {
     // MARK: - Decisión final: Ficha Clínica + Prioridad BrandAccount
     @MainActor
     private func checkFichaClinicaGeneralAndDecide() async {
+        // Solo mostrar el formulario 1 vez por sesión de app
+        guard !HomeView.formularioYaMostradoEnSesion else {
+            print("ℹ️ [FichaClinica] Ya se evaluó el formulario en esta sesión. No se volverá a mostrar.")
+            self.isLoading = false
+            return
+        }
+        HomeView.formularioYaMostradoEnSesion = true
+
         // 📝 IMPORTANTE: Como Android, NUNCA usamos el flag como gate aquí
         // El flag solo se actualiza DESDE la respuesta del servidor
         // Si el usuario borró la ficha desde Salesforce, lo detectamos en la próxima navegación
-        
+
         let accountId = UserDefaults.standard.string(forKey: "account_id") ?? ""
         guard !accountId.isEmpty else {
             print("⚠️ [FichaClinica] account_id vacío. No se puede consultar Ficha_Clinica_General__c.")

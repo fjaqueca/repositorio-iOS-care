@@ -31,6 +31,7 @@ struct MedicalExamsRowView: View {
     var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
     var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     /// Binding propagado desde MedicalExamsView. Lo seteamos a true desde el detalle
     /// cuando hay upload exitoso, para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -162,7 +163,7 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, botonesDetalleExamen: botonesDetalleExamen, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 

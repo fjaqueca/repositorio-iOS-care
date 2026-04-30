@@ -42,8 +42,27 @@ struct EducationalMaterialDetailsView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         headerCard
-                        materialsCard
-                        buttonsBottom
+                        if materialData.isEmpty {
+                            VStack(spacing: 12) {
+                                Spacer()
+                                    .frame(height: 40)
+
+                                Image(systemName: "folder")
+                                    .font(.system(size: 50, weight: .light))
+                                    .foregroundColor(Color(.systemGray3))
+
+                                Text("Sin documentos cargados...")
+                                    .font(Font.custom("FiraSans-Bold", size: 19))
+                                    .foregroundColor(Color(hex: "#5B6770"))
+
+                                Spacer()
+                                    .frame(height: 40)
+                            }
+                            .frame(maxWidth: .infinity)
+                        } else {
+                            materialsCard
+                            buttonsBottom
+                        }
                     }
                     .padding(.top, 20)
                     .padding(.bottom, .margin)

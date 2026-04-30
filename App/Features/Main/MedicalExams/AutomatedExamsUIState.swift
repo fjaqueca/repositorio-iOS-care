@@ -121,6 +121,7 @@ struct ExamHeaderConfig {
     var descripcionAttr = TextExamAttributes()
     var blockPosition: String = "Center"
     var botonVolver = ButtonExamConfig()
+    var colorCirculoBannerSeleccionado: String = "#00BBDC"
 }
 
 // MARK: - Seccion inicial (opcion circular)
@@ -321,6 +322,9 @@ struct BadgeDetalleConfig {
 struct BotonesDetalleExamenConfig {
     var botonEliminar = ButtonExamConfig(texto: "Eliminar", colorTexto: "#FFFFFF", colorFondo: "#FF3B30", font: "FiraSans-Bold", size: "16")
     var botonDescargar = ButtonExamConfig(texto: "Descargar", colorTexto: "#FFFFFF", colorFondo: "#00BBDC", font: "FiraSans-Bold", size: "16")
+    var botonCompartir = ButtonExamConfig(texto: "Compartir", colorTexto: "#FFFFFF", colorFondo: "#00BBDC", font: "FiraSans-Bold", size: "16")
+    var tituloArchivosAdjuntos: String = "Archivos adjuntos"
+    var tituloArchivosAdjuntosAttr = TextExamAttributes()
 }
 
 // MARK: - Badges Tipo Examen Subido en Mis Archivos de Salud (Elemento 12)
@@ -351,6 +355,9 @@ struct ButtonExamConfig: Hashable {
     var colorFondo: String = ""
     var font: String = ""
     var size: String = ""
+    // Para botones con icono
+    var icono: String = ""
+    var colorIcono: String = ""
     // Para botones con estado activo/inactivo
     var colorTextoActivo: String = ""
     var colorFondoActivo: String = ""
@@ -358,4 +365,6 @@ struct ButtonExamConfig: Hashable {
     var colorFondoInactivo: String = ""
     // Para botones con hover
     var colorHover: String = ""
+    // Para botones con borde
+    var colorBorde: String = ""
 }

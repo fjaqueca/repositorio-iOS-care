@@ -117,8 +117,6 @@ struct FamilyGroupView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Divider()
-
             if isLoading {
                 Spacer()
                 ProgressView()
@@ -224,42 +222,44 @@ struct FamilyGroupView: View {
         let btnAddCfg = fgConfig.seccionPrincipal.botonAgregar
 
         return VStack(spacing: 0) {
-            Text(fgConfig.seccionPrincipal.descripcion.isEmpty
-                 ? "Aquí tienes la lista de cargas disponibles, puedes modificar los datos en cualquier momento:"
-                 : fgConfig.seccionPrincipal.descripcion)
-                .font(Font.custom(
-                    dAttr.font.isEmpty ? "FiraSans-Regular" : dAttr.font,
-                    size: CGFloat(Int(dAttr.size) ?? 14)
-                ))
-                .foregroundColor(Color(hex: dAttr.color.isEmpty ? "#555555" : dAttr.color))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, .margin)
-                .padding(.top, 16)
-                .padding(.bottom, 16)
+            ScrollView {
+                VStack(spacing: 0) {
+                    Divider()
 
-            if members.isEmpty {
-                emptyStateView
-            } else {
-                ScrollView {
-                    VStack(spacing: 12) {
-                        ForEach(Array(members.enumerated()), id: \.element.id) { index, member in
-                            memberCard(member: member, index: index)
-                                .opacity(membersAnimated ? 1.0 : 0.0)
-                                .offset(y: membersAnimated ? 0 : 20)
-                                .scaleEffect(membersAnimated ? 1.0 : 0.92)
-                                .animation(
-                                    .spring(response: 0.65, dampingFraction: 0.75)
-                                        .delay(Double(index) * 0.08),
-                                    value: membersAnimated
-                                )
+                    Text(fgConfig.seccionPrincipal.descripcion.isEmpty
+                         ? "Aquí tienes la lista de cargas disponibles, puedes modificar los datos en cualquier momento:"
+                         : fgConfig.seccionPrincipal.descripcion)
+                        .font(Font.custom(
+                            dAttr.font.isEmpty ? "FiraSans-Regular" : dAttr.font,
+                            size: CGFloat(Int(dAttr.size) ?? 14)
+                        ))
+                        .foregroundColor(Color(hex: dAttr.color.isEmpty ? "#555555" : dAttr.color))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, .margin)
+                        .padding(.top, 16)
+                        .padding(.bottom, 16)
+
+                    if members.isEmpty {
+                        emptyStateView
+                    } else {
+                        VStack(spacing: 12) {
+                            ForEach(Array(members.enumerated()), id: \.element.id) { index, member in
+                                memberCard(member: member, index: index)
+                                    .opacity(membersAnimated ? 1.0 : 0.0)
+                                    .offset(y: membersAnimated ? 0 : 20)
+                                    .scaleEffect(membersAnimated ? 1.0 : 0.92)
+                                    .animation(
+                                        .spring(response: 0.65, dampingFraction: 0.75)
+                                            .delay(Double(index) * 0.08),
+                                        value: membersAnimated
+                                    )
+                            }
                         }
+                        .padding(.horizontal, .margin)
+                        .padding(.bottom, .margin)
                     }
-                    .padding(.horizontal, .margin)
-                    .padding(.bottom, .margin)
                 }
             }
-
-            Spacer()
 
             // Botón agregar (solo si habilitado Y < 5 cargas)
             if isFamilyGroupAddEnabled && members.count < maxCargas {
@@ -1039,8 +1039,8 @@ struct FamilyGroupView: View {
 
                 deleteModalButtons(member: member, popCfg: popCfg)
             }
-            .padding(.horizontal, 20)
-            .frame(maxWidth: 320)
+            .padding(.horizontal, 28)
+            .frame(maxWidth: 380)
             .background(RoundedRectangle(cornerRadius: 14).fill(Color.white))
             .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
         }
@@ -1232,8 +1232,8 @@ struct FamilyGroupView: View {
                 .padding(.top, 4)
                 .padding(.bottom, 18)
             }
-            .padding(.horizontal, 20)
-            .frame(maxWidth: 320)
+            .padding(.horizontal, 28)
+            .frame(maxWidth: 380)
             .background(RoundedRectangle(cornerRadius: 18).fill(Color.white))
             .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 6)
         }

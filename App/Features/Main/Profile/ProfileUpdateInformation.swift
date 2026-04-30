@@ -47,10 +47,10 @@ struct ProfileUpdateInformation: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                Divider()
-
                 ScrollView {
                     VStack(spacing: 0) {
+                        Divider()
+
                         // MARK: - Header con avatar
                         profileHeader
                             .padding(.top, 24)

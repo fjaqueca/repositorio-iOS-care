@@ -74,6 +74,18 @@ struct SendNewExamView: View {
                             .padding(.horizontal, .margin)
                             .padding(.top, 20)
                             .padding(.bottom, 30)
+                            .onAppear {
+                                let btns = botonesDetalleExamen
+                                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                                print("📋 [SendNewExamView] CONFIG DINÁMICA BOTONES DETALLE")
+                                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                                print("   tituloArchivosAdjuntos: \"\(btns.tituloArchivosAdjuntos)\"")
+                                print("   tituloAttr: font=\(btns.tituloArchivosAdjuntosAttr.font) size=\(btns.tituloArchivosAdjuntosAttr.size) color=\(btns.tituloArchivosAdjuntosAttr.color)")
+                                print("   btnDescargar: texto=\"\(btns.botonDescargar.texto)\" font=\(btns.botonDescargar.font) size=\(btns.botonDescargar.size) colorTexto=\(btns.botonDescargar.colorTexto) colorFondo=\(btns.botonDescargar.colorFondo) icono=\(btns.botonDescargar.icono) colorIcono=\(btns.botonDescargar.colorIcono) colorBorde=\(btns.botonDescargar.colorBorde)")
+                                print("   btnCompartir: texto=\"\(btns.botonCompartir.texto)\" font=\(btns.botonCompartir.font) size=\(btns.botonCompartir.size) colorTexto=\(btns.botonCompartir.colorTexto) colorFondo=\(btns.botonCompartir.colorFondo) icono=\(btns.botonCompartir.icono) colorIcono=\(btns.botonCompartir.colorIcono) colorBorde=\(btns.botonCompartir.colorBorde)")
+                                print("   btnEliminar: texto=\"\(btns.botonEliminar.texto)\" font=\(btns.botonEliminar.font) size=\(btns.botonEliminar.size) colorTexto=\(btns.botonEliminar.colorTexto) colorFondo=\(btns.botonEliminar.colorFondo) icono=\(btns.botonEliminar.icono) colorIcono=\(btns.botonEliminar.colorIcono) colorBorde=\(btns.botonEliminar.colorBorde)")
+                                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                            }
                     } else {
                         VStack(spacing: 16) {
                             documentTypeCard
@@ -386,13 +398,24 @@ struct SendNewExamView: View {
                     .stroke(Color(.systemGray5), lineWidth: 1)
             )
 
-            // Card archivos adjuntos
+            // Card archivos adjuntos + botones Descargar/Compartir
             VStack(alignment: .leading, spacing: 10) {
-                Text("Archivos adjuntos")
-                    .font(Font.custom("FiraSans-Bold", size: 15))
-                    .foregroundColor(Color(hex: "#333333"))
+                let tituloAttr = botonesDetalleExamen.tituloArchivosAdjuntosAttr
+                let tituloAlign = tituloAttr.alignment.lowercased()
+                let frameAlign: Alignment = tituloAlign == "center" ? .center : (tituloAlign == "right" ? .trailing : .leading)
+                Text(botonesDetalleExamen.tituloArchivosAdjuntos.isEmpty ? "Archivos adjuntos" : botonesDetalleExamen.tituloArchivosAdjuntos)
+                    .font(Font.custom(
+                        tituloAttr.font.isEmpty ? "FiraSans-Bold" : tituloAttr.font,
+                        size: CGFloat(Int(tituloAttr.size) ?? 15)
+                    ))
+                    .foregroundColor(Color(hex: tituloAttr.color.isEmpty ? "#333333" : tituloAttr.color))
+                    .frame(maxWidth: .infinity, alignment: frameAlign)
 
-                LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+                let activeFileExams = fileExams.filter { !$0.urlImg.isEmpty }
+                let columns: [GridItem] = activeFileExams.count == 1
+                    ? [GridItem(.flexible())]
+                    : [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+                LazyVGrid(columns: columns, spacing: 12) {
                     ForEach($fileExams) { $fileExam in
                         if !fileExam.urlImg.isEmpty {
                             FileRowExam(
@@ -407,6 +430,68 @@ struct SendNewExamView: View {
                         }
                     }
                 }
+
+                // Botones Descargar y Compartir (dinámico desde Elemento 13)
+                HStack(spacing: 12) {
+                    let btnDesc = botonesDetalleExamen.botonDescargar
+                    Button {
+                        downloadAllFiles()
+                    } label: {
+                        HStack(spacing: 6) {
+                            if !btnDesc.icono.isEmpty {
+                                Image(systemName: btnDesc.icono)
+                                    .font(.system(size: CGFloat(Int(btnDesc.size) ?? 14), weight: .medium))
+                                    .foregroundColor(Color(hex: btnDesc.colorIcono.isEmpty ? btnDesc.colorTexto : btnDesc.colorIcono))
+                            }
+                            Text(btnDesc.texto.isEmpty ? "Descargar" : btnDesc.texto)
+                                .font(Font.custom(
+                                    btnDesc.font.isEmpty ? "FiraSans-Medium" : btnDesc.font,
+                                    size: CGFloat(Int(btnDesc.size) ?? 14)
+                                ))
+                        }
+                        .foregroundColor(Color(hex: btnDesc.colorTexto.isEmpty ? "#333333" : btnDesc.colorTexto))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(hex: btnDesc.colorFondo.isEmpty ? "#FFFFFF" : btnDesc.colorFondo))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color(hex: btnDesc.colorBorde.isEmpty ? "#D1D1D6" : btnDesc.colorBorde), lineWidth: 1)
+                        )
+                    }
+
+                    let btnComp = botonesDetalleExamen.botonCompartir
+                    Button {
+                        shareAllFiles()
+                    } label: {
+                        HStack(spacing: 6) {
+                            if !btnComp.icono.isEmpty {
+                                Image(systemName: btnComp.icono)
+                                    .font(.system(size: CGFloat(Int(btnComp.size) ?? 14), weight: .medium))
+                                    .foregroundColor(Color(hex: btnComp.colorIcono.isEmpty ? btnComp.colorTexto : btnComp.colorIcono))
+                            }
+                            Text(btnComp.texto.isEmpty ? "Compartir" : btnComp.texto)
+                                .font(Font.custom(
+                                    btnComp.font.isEmpty ? "FiraSans-Medium" : btnComp.font,
+                                    size: CGFloat(Int(btnComp.size) ?? 14)
+                                ))
+                        }
+                        .foregroundColor(Color(hex: btnComp.colorTexto.isEmpty ? "#333333" : btnComp.colorTexto))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(hex: btnComp.colorFondo.isEmpty ? "#FFFFFF" : btnComp.colorFondo))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color(hex: btnComp.colorBorde.isEmpty ? "#D1D1D6" : btnComp.colorBorde), lineWidth: 1)
+                        )
+                    }
+                }
+                .padding(.top, 4)
             }
             .padding(16)
             .background(
@@ -426,44 +511,29 @@ struct SendNewExamView: View {
 
     private var publishedButtons: some View {
         let btnElim = botonesDetalleExamen.botonEliminar
-        let btnDesc = botonesDetalleExamen.botonDescargar
 
-        return HStack(spacing: 10) {
-            // Eliminar
-            Button {
-                showDeleteConfirmation = true
-            } label: {
+        return Button {
+            showDeleteConfirmation = true
+        } label: {
+            HStack(spacing: 6) {
+                if !btnElim.icono.isEmpty {
+                    Image(systemName: btnElim.icono)
+                        .font(.system(size: CGFloat(Int(btnElim.size) ?? 16), weight: .medium))
+                        .foregroundColor(Color(hex: btnElim.colorIcono.isEmpty ? btnElim.colorTexto : btnElim.colorIcono))
+                }
                 Text(btnElim.texto.isEmpty ? "Eliminar" : btnElim.texto)
                     .font(Font.custom(
                         btnElim.font.isEmpty ? "FiraSans-Bold" : btnElim.font,
                         size: CGFloat(Double(btnElim.size) ?? 16)
                     ))
-                    .foregroundColor(Color(hex: btnElim.colorTexto.isEmpty ? "#FFFFFF" : btnElim.colorTexto))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(hex: btnElim.colorFondo.isEmpty ? "#FF3B30" : btnElim.colorFondo))
-                    )
             }
-
-            // Descargar
-            Button {
-                downloadAllFiles()
-            } label: {
-                Text(btnDesc.texto.isEmpty ? "Descargar" : btnDesc.texto)
-                    .font(Font.custom(
-                        btnDesc.font.isEmpty ? "FiraSans-Bold" : btnDesc.font,
-                        size: CGFloat(Double(btnDesc.size) ?? 16)
-                    ))
-                    .foregroundColor(Color(hex: btnDesc.colorTexto.isEmpty ? "#FFFFFF" : btnDesc.colorTexto))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(hex: btnDesc.colorFondo.isEmpty ? "#00BBDC" : btnDesc.colorFondo))
-                    )
-            }
+            .foregroundColor(Color(hex: btnElim.colorTexto.isEmpty ? "#FFFFFF" : btnElim.colorTexto))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(hex: btnElim.colorFondo.isEmpty ? "#FF3B30" : btnElim.colorFondo))
+                )
         }
         .padding(.horizontal, .margin)
         .padding(.top, 10)
@@ -600,8 +670,8 @@ struct SendNewExamView: View {
                 .padding(.top, 4)
                 .padding(.bottom, 20)
             }
-            .padding(.horizontal, 24)
-            .frame(maxWidth: 320)
+            .padding(.horizontal, 28)
+            .frame(maxWidth: 380)
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.white)
@@ -931,6 +1001,12 @@ struct SendNewExamView: View {
         let filesWithUrl = fileExams.filter { !$0.urlImg.isEmpty }
         guard let first = filesWithUrl.first else { return }
         downloadArchive(action: .isDownload, urlParameter: first.urlImg)
+    }
+
+    private func shareAllFiles() {
+        let filesWithUrl = fileExams.filter { !$0.urlImg.isEmpty }
+        guard let first = filesWithUrl.first else { return }
+        downloadArchive(action: .isShare, urlParameter: first.urlImg)
     }
 
     private func deleteExamFiles() {

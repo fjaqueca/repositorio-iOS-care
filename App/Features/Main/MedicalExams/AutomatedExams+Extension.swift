@@ -27,6 +27,9 @@ private func parseIconName(_ raw: String) -> String {
     case "ic_heart": return "heart.fill"
     case "ic_calendar": return "calendar"
     case "ic_person_datos", "ic_person": return "person.fill"
+    case "downloadicon": return "square.and.arrow.down"
+    case "shareicon": return "square.and.arrow.up"
+    case "deleteicon": return "trash"
     default: return raw
     }
 }
@@ -210,7 +213,7 @@ extension ExamsView {
             print("╔══════════════════════════════════════════════════════════════╗")
             print("║  DUMP COMPLETO: Record Name='ExamenesAutomatizadosCustom'   ║")
             print("╚══════════════════════════════════════════════════════════════╝")
-            for elemIdx in 1...11 {
+            for elemIdx in 1...16 {
                 guard let nombreElem = custom.getNombreElemento(elemIdx) else { continue }
                 print("┌─ Elemento \(elemIdx): Nombre=\"\(nombreElem)\"")
                 for fieldIdx in 1...16 {
@@ -292,7 +295,7 @@ extension ExamsView {
             print("   🏷️ BadgesMisExamenes (Elemento 12): imagen=\"\(bdg.badgeExamenImagen.texto)\" receta=\"\(bdg.badgeRecetaMedica.texto)\" lab=\"\(bdg.badgeExamenLaboratorio.texto)\" orden=\"\(bdg.badgeOrdenExamen.texto)\" informe=\"\(bdg.badgeInformeMedico.texto)\" otros=\"\(bdg.badgeOtros.texto)\"")
             loadBotonesDetalleExamen(from: custom, into: &state)
             let btns = state.botonesDetalleExamen
-            print("   🔘 BotonesDetalleExamen (Elemento 13): eliminar=\"\(btns.botonEliminar.texto)\" colorFondo=\(btns.botonEliminar.colorFondo) | descargar=\"\(btns.botonDescargar.texto)\" colorFondo=\(btns.botonDescargar.colorFondo)")
+            print("   🔘 BotonesDetalleExamen (Elemento 13): eliminar=\"\(btns.botonEliminar.texto)\" colorFondo=\(btns.botonEliminar.colorFondo) icono=\(btns.botonEliminar.icono) colorBorde=\(btns.botonEliminar.colorBorde) | descargar=\"\(btns.botonDescargar.texto)\" colorFondo=\(btns.botonDescargar.colorFondo) icono=\(btns.botonDescargar.icono) colorBorde=\(btns.botonDescargar.colorBorde) | compartir=\"\(btns.botonCompartir.texto)\" colorFondo=\(btns.botonCompartir.colorFondo) icono=\(btns.botonCompartir.icono) colorBorde=\(btns.botonCompartir.colorBorde) | titulo=\"\(btns.tituloArchivosAdjuntos)\"")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizadosCustom' NO encontrado")
         }
@@ -409,11 +412,13 @@ extension ExamsView {
 
 private func loadBannersHub(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
     // Elemento 1: Banners pantalla principal
+    // Solo agregar como banner si el atributo es una URL (los campos restantes del Elemento 1
+    // pueden contener nombres de atributos de otras configs, no URLs de banners)
     for i in 1...16 {
-        guard let imageURL = record.getAtributo(section: 1, field: i),
-              !imageURL.isEmpty else { continue }
+        guard let imageURL = record.getAtributo(section: 1, field: i)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              imageURL.lowercased().hasPrefix("http") else { continue }
         let linkURL = record.getValor(section: 1, field: i) ?? ""
-        let isNull = linkURL.lowercased() == "null"
+        let isNull = linkURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "null"
         state.bannersHub.append(BannerExamItem(
             imageURL: imageURL,
             linkURL: isNull ? "" : linkURL
@@ -441,6 +446,8 @@ private func loadHeaderConfig(from record: BrandAccount, into state: inout Autom
             state.header.blockPosition = valor
         } else if attrLower.contains("botonvolver") {
             state.header.botonVolver = parseButton4(valor)
+        } else if attrLower == "colorcirculobannerseleccionado" {
+            state.header.colorCirculoBannerSeleccionado = valor
         }
     }
 }
@@ -1052,16 +1059,80 @@ private func parseButton5Fields(_ valor: String) -> ButtonExamConfig {
     return btn
 }
 
+/// Parsea formato: TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon (7 campos)
+/// o formato extendido: TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde (8 campos)
+private func parseButton7Fields(_ valor: String) -> ButtonExamConfig {
+    let parts = valor.components(separatedBy: ";")
+    var btn = ButtonExamConfig()
+    if parts.count >= 1 { btn.font = parseFontName(parts[0].trimmingCharacters(in: .whitespaces)) }
+    if parts.count >= 2 { btn.texto = parts[1].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 3 { btn.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 4 { btn.size = parts[3].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 5 { btn.colorFondo = parts[4].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 6 { btn.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
+    if parts.count >= 7 { btn.colorIcono = parts[6].trimmingCharacters(in: .whitespaces) }
+    if parts.count >= 8 { btn.colorBorde = parts[7].trimmingCharacters(in: .whitespaces) }
+    return btn
+}
+
 private func loadBotonesDetalleExamen(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("🔍 [loadBotonesDetalleExamen] DUMP Elemento 13 del record '\(record.Name)'")
+    print("   nombreElemento13: \"\(record.getNombreElemento(13) ?? "nil")\"")
+    for j in 1...16 {
+        let atr = record.getAtributo(section: 13, field: j)
+        let val = record.getValor(section: 13, field: j)
+        if atr != nil || val != nil {
+            print("   [13.\(j)] atributo=\"\(atr ?? "nil")\" valor=\"\(val ?? "nil")\"")
+        }
+    }
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
     for i in 1...16 {
         guard let atributo = record.getAtributo(section: 13, field: i), !atributo.isEmpty else { continue }
         let valor = record.getValor(section: 13, field: i) ?? ""
 
         switch atributo {
+        // Formato antiguo (Texto;ColorTexto;ColorFondo;TipoFuente;Size)
         case "BotonEliminar(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
             state.botonesDetalleExamen.botonEliminar = parseButton5Fields(valor)
         case "BotonDescargar(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
             state.botonesDetalleExamen.botonDescargar = parseButton5Fields(valor)
+
+        // Formato 7 campos (TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon)
+        case "BotonDescargar(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon)":
+            state.botonesDetalleExamen.botonDescargar = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonDescargar = \"\(state.botonesDetalleExamen.botonDescargar.texto)\" icono=\(state.botonesDetalleExamen.botonDescargar.icono)")
+
+        case "BotonEliminar(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon)":
+            state.botonesDetalleExamen.botonEliminar = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonEliminar = \"\(state.botonesDetalleExamen.botonEliminar.texto)\" icono=\(state.botonesDetalleExamen.botonEliminar.icono)")
+
+        case "BotonCompartir(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon)":
+            state.botonesDetalleExamen.botonCompartir = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonCompartir = \"\(state.botonesDetalleExamen.botonCompartir.texto)\" icono=\(state.botonesDetalleExamen.botonCompartir.icono)")
+
+        // Formato 8 campos con ColorBorde (TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+        case "BotonDescargar(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+            state.botonesDetalleExamen.botonDescargar = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonDescargar = \"\(state.botonesDetalleExamen.botonDescargar.texto)\" icono=\(state.botonesDetalleExamen.botonDescargar.icono) colorBorde=\(state.botonesDetalleExamen.botonDescargar.colorBorde)")
+
+        case "BotonEliminar(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+            state.botonesDetalleExamen.botonEliminar = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonEliminar = \"\(state.botonesDetalleExamen.botonEliminar.texto)\" icono=\(state.botonesDetalleExamen.botonEliminar.icono) colorBorde=\(state.botonesDetalleExamen.botonEliminar.colorBorde)")
+
+        case "BotonCompartir(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+            state.botonesDetalleExamen.botonCompartir = parseButton7Fields(valor)
+            print("      [13.\(i)] ✅ botonCompartir = \"\(state.botonesDetalleExamen.botonCompartir.texto)\" icono=\(state.botonesDetalleExamen.botonCompartir.icono) colorBorde=\(state.botonesDetalleExamen.botonCompartir.colorBorde)")
+
+        case "TituloArchivosAdjuntos":
+            state.botonesDetalleExamen.tituloArchivosAdjuntos = valor.trimmingCharacters(in: .whitespaces)
+            print("      [13.\(i)] ✅ tituloArchivosAdjuntos = \"\(state.botonesDetalleExamen.tituloArchivosAdjuntos)\"")
+
+        case "AtributosTituloArchivosAdjuntos(TipoFuente;Size;ColorTexto;Posicion)":
+            state.botonesDetalleExamen.tituloArchivosAdjuntosAttr = parseTextAttributes(valor)
+            print("      [13.\(i)] ✅ tituloArchivosAdjuntosAttr = font=\(state.botonesDetalleExamen.tituloArchivosAdjuntosAttr.font) size=\(state.botonesDetalleExamen.tituloArchivosAdjuntosAttr.size) color=\(state.botonesDetalleExamen.tituloArchivosAdjuntosAttr.color)")
+
         default:
             break
         }

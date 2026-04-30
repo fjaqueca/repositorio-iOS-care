@@ -13,6 +13,7 @@ import WebKit
 import SDWebImageSwiftUI
 
 struct ProfileView: View {
+    @Binding var isConvenioLoading: Bool
     @ObservedResults(User.self) private var users
     @ObservedResults(BrandAccounts.self) var items
     @State private var showEmailPhone: Bool = false
@@ -25,6 +26,7 @@ struct ProfileView: View {
     @State private var avatarScale: CGFloat = 0.0
     @State private var avatarOpacity: Double = 0.0
     @State private var showCompanyDialog: Bool = false
+    @State private var showLogoutDialog: Bool = false
     @State var profileState = ProfileUIState()
 
     public struct AlertConfirmation {
@@ -55,16 +57,6 @@ struct ProfileView: View {
             mainContent
         }
         .accentColor(.blue)
-        .alert("", isPresented: .init(get: { alert != nil }, set: { if !$0 { alert = nil }}), presenting: alert) { value in
-            Button("Cancelar") {
-                self.alert = nil
-            }
-            Button("Confirmar") {
-                value.action()
-            }
-        } message: { value in
-            Text(value.title)
-        }
     }
 
     @ViewBuilder
@@ -77,6 +69,23 @@ struct ProfileView: View {
                     .zIndex(50)
                     .transition(.opacity)
             }
+
+            if showLogoutDialog {
+                LogoutConfirmationDialog(
+                    onConfirm: {
+                        showLogoutDialog = false
+                        asyncTask(AppStatusManager.logoutUser)
+                    },
+                    onCancel: {
+                        showLogoutDialog = false
+                    }
+                )
+                .zIndex(50)
+                .transition(.opacity)
+            }
+        }
+        .onChange(of: showCompanyDialog) { newValue in
+            isConvenioLoading = newValue
         }
     }
 
@@ -190,9 +199,7 @@ struct ProfileView: View {
                             title: "Cerrar sesión",
                             isDestructive: true
                         ) {
-                            alert = .init(title: "¿Está seguro de cerrar su sesión?") {
-                                asyncTask(AppStatusManager.logoutUser)
-                            }
+                            showLogoutDialog = true
                         }
                     }
                     .padding(.top, 8)

@@ -159,20 +159,148 @@ Log at 3 levels: (1) config loading, (2) before service calls with parameters, (
 
 Currently hardcoded to PRD in `Network.swift`.
 
-## Clean Transitions (Loading States)
+## Clean Transitions (Loading States) — Regla de Oro
 
-When reloading a list or applying a filter, **ALWAYS** activate loading BEFORE hiding current content. There must never be a frame where neither the list nor the loading spinner is visible.
+El loading debe estar **visible hasta que el contenido esté listo en pantalla**. Nunca debe existir un frame donde ni la lista ni el spinner sean visibles (pantalla en blanco). Esta regla aplica a **toda la app**: carga inicial, filtros, refresh, navegación, eliminación, paginación, etc.
 
-### Correct order — Starting a load:
-1. `isLoading = true` — activate loading/spinner
-2. Show the ProgressView (spinner becomes visible)
-3. List/content hides (SwiftUI `if isLoading` branch switches)
+### Regla 1: `isLoading = true` desde la declaración (primer frame)
+El spinner debe estar visible desde el primer frame que SwiftUI renderiza. Declarar el estado inicial como `true`:
+```swift
+@State private var isLoading: Bool = true  // ✅ spinner visible desde frame 1
+```
+**Nunca** declarar `isLoading = false` y activarlo después — eso genera un frame sin spinner ni contenido.
 
-### Correct order — Receiving the response:
-1. Update data (`self.exams = ...`, `self.prescriptions = ...`)
-2. `isLoading = false` — spinner hides, list with new data appears
+### Regla 2: Orden de entrada / refresh
+1. `isLoading = true` — el spinner se muestra (o ya estaba visible)
+2. La lista/contenido se oculta (el branch `if isLoading` de SwiftUI cambia)
+3. Se llama al servicio de red
 
-### The anti-pattern to avoid:
-Setting content to empty/nil first, then setting loading to true. In that order, SwiftUI renders an intermediate frame with neither list nor spinner — the user sees a white flash. By setting `isLoading = true` first, the spinner is already visible when the list disappears, making the transition seamless.
+```swift
+// ✅ Correcto: spinner primero, luego servicio
+self.isLoading = true
+getRecetas()
+```
 
-This applies to every flow that replaces visible content: filters, refresh, back navigation, deletion, pagination, etc.
+```swift
+// ❌ Incorrecto: vaciar datos primero causa flash blanco
+self.prescriptions = nil   // frame sin datos NI spinner
+self.isLoading = true
+getRecetas()
+```
+
+### Regla 3: Orden de respuesta — bloque atómico en `MainActor.run`
+Al recibir la respuesta, asignar datos y desactivar loading **en el mismo bloque** `MainActor.run`. SwiftUI agrupa todas las mutaciones de `@State` dentro de un bloque antes de re-renderizar, así el spinner desaparece y la lista aparece en el **mismo frame**:
+
+```swift
+await MainActor.run {
+    self.isLoading = false          // ← ambos en el mismo bloque
+    self.prescriptions = listPres   // ← SwiftUI re-renderiza UNA sola vez
+}
+```
+
+```swift
+// ❌ Incorrecto: bloques separados = dos renders = flash blanco
+await MainActor.run { self.isLoading = false }   // render 1: sin spinner, sin datos
+await MainActor.run { self.prescriptions = data } // render 2: datos aparecen
+```
+
+### Regla 4: Apagar loader explícitamente en caso de error
+En el branch `.failure` del `Result`, siempre desactivar `isLoading`. Si no, el spinner queda girando infinitamente:
+```swift
+case let .failure(error):
+    self.isLoading = false   // ✅ siempre apagar, incluso en error
+    AppStatusManager.error(error)
+```
+
+### Regla 5: Spinner local por vista, no overlay global
+Cada vista maneja su propio `@State private var isLoading` con su propio `ProgressView()` inline. **No usar** un spinner global/overlay compartido — los servicios paralelos de otras vistas pueden apagarlo prematuramente.
+
+### Regla 6: Servicios paralelos o parseo pesado
+Si una vista llama múltiples servicios en paralelo, tomar control manual del loader:
+- No desactivar `isLoading` en cada respuesta individual
+- Esperar a que **todos** los servicios terminen antes de hacer `isLoading = false`
+- Si hay parseo pesado post-respuesta, mantener el spinner activo hasta que el parseo termine
+
+```swift
+// ✅ Ejemplo con múltiples servicios
+async let result1 = Network.shared.getRecetas(...)
+async let result2 = Network.shared.getExams(...)
+let (recetas, exams) = await (result1, result2)
+
+await MainActor.run {
+    self.prescriptions = recetas
+    self.exams = exams
+    self.isLoading = false   // ← al final, cuando TODO está listo
+}
+```
+
+### Estructura del body — triple branch obligatorio
+Toda vista con datos remotos debe seguir esta estructura `if/else if/else`:
+```swift
+if isLoading {
+    ProgressView()                    // Branch A: spinner
+} else if !items.isEmpty {
+    ScrollView { ForEach(items) ... } // Branch B: lista con datos
+} else {
+    // Empty state inline              // Branch C: sin datos
+}
+```
+
+### Referencias canónicas en iOS
+- `PrescriptionsView.swift` — Recetas médicas (lista con filtros)
+- `ExamsView.swift` — Órdenes de exámenes
+- `ProgramsView.swift` — Programas
+
+### Resumen visual
+
+| Momento | Estado | Lo que ve el usuario |
+|---------|--------|---------------------|
+| Primer frame | `isLoading = true` (declaración) | Spinner |
+| Durante carga | `isLoading = true` | Spinner |
+| Respuesta OK | datos + `isLoading = false` (atómico) | Lista aparece, spinner desaparece — mismo frame |
+| Respuesta error | `isLoading = false` (atómico) | Empty state o error |
+| Filtro/refresh | `isLoading = true` → servicio | Spinner reemplaza lista vieja — sin flash |
+
+## Empty State Pattern
+
+Every view that displays data **must** include its own inline empty state to avoid blank screens. Do NOT create a reusable component — each view defines its empty state locally. Two structures are allowed:
+
+### Structure 1: Icon + Title + Description
+```swift
+VStack(spacing: 12) {
+    Spacer()
+    Image(systemName: "doc.text.magnifyingglass")
+        .font(.system(size: 50, weight: .light))
+        .foregroundColor(Color(.systemGray3))
+    Text("Título principal")
+        .font(Font.custom("FiraSans-Bold", size: 19))
+        .foregroundColor(Color(hex: "#5B6770"))
+    Text("Descripción secundaria explicativa")
+        .font(Font.custom("FiraSans-Regular", size: 15))
+        .foregroundColor(Color(hex: "#C4C4C4"))
+        .multilineTextAlignment(.center)
+    Spacer()
+}
+.frame(maxWidth: .infinity, maxHeight: .infinity)
+```
+
+### Structure 2: Icon + Text (without description)
+```swift
+VStack(spacing: 12) {
+    Spacer()
+    Image(systemName: "folder")
+        .font(.system(size: 50, weight: .light))
+        .foregroundColor(Color(.systemGray3))
+    Text("Mensaje informativo")
+        .font(Font.custom("FiraSans-Regular", size: 15))
+        .foregroundColor(Color(hex: "#C4C4C4"))
+        .multilineTextAlignment(.center)
+    Spacer()
+}
+.frame(maxWidth: .infinity, maxHeight: .infinity)
+```
+
+### Rules
+- Show the empty state only when `!isLoading && items.isEmpty` — never during loading.
+- Each view chooses the SF Symbol icon that mejor represente su contenido.
+- Textos y mensajes deben ser descriptivos y en español.

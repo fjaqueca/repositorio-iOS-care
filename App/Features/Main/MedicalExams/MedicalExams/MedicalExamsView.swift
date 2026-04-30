@@ -29,6 +29,7 @@ struct MedicalExamsView: View {
     var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
     var botonSubirExamen: ButtonExamConfig = ButtonExamConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
+    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
@@ -159,6 +160,7 @@ struct MedicalExamsView: View {
                                         botonVerDocumentoEnviado: botonVerDocumentoEnviado,
                                         botonSubirExamenConfig: botonSubirExamen,
                                         badgeCargadoPorPaciente: badgeCargadoPorPaciente,
+                                        botonesDetalleExamen: botonesDetalleExamen,
                                         listNeedsRefresh: $listNeedsRefresh,
                                         linkedPatientExam: linkedPatientExam(for: exam)
                                     )

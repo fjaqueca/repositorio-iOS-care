@@ -148,9 +148,12 @@ struct CarritoExamView: View {
 
                                     if !carritoConfig.subAntesDeContinuarTexto.isEmpty {
                                         let subAttr = carritoConfig.subAntesDeContinuarAttr
-                                        Text(carritoConfig.subAntesDeContinuarTexto)
-                                            .font(Font.custom(subAttr.font, size: CGFloat(Int(subAttr.size) ?? 12)))
-                                            .foregroundColor(Color(hex: subAttr.color))
+                                        parseSalesforceText(
+                                            carritoConfig.subAntesDeContinuarTexto,
+                                            font: subAttr.font.isEmpty ? "FiraSans-Regular" : subAttr.font,
+                                            size: CGFloat(Int(subAttr.size) ?? 12),
+                                            color: Color(hex: subAttr.color)
+                                        )
                                     }
                                 }
                                 .padding(.horizontal, .margin)
