@@ -86,6 +86,9 @@ struct ProfileView: View {
         }
         .onChange(of: showCompanyDialog) { newValue in
             isConvenioLoading = newValue
+            if !newValue {
+                profileState = loadProfileUIState()
+            }
         }
     }
 

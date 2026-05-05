@@ -20,6 +20,8 @@ struct AppView: View {
     @State var idAppStore: String = ""
     @State private var showPostLoginLoading: Bool = false
     @State private var postLoginLoadingComplete: Bool = false
+    @State private var forceUpdateIconScale: CGFloat = 0.0
+    @State private var forceUpdateIconRotation: Double = 0.0
     var body: some View {
         ZStack{
             if isLoadingBrandAccount{
@@ -89,42 +91,8 @@ struct AppView: View {
                             }
                         #endif
                         }
-                }else{
-                    EmptyView()
-                        .blur(radius: 3)
-                        .onAppear {
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("🚨 [ForceUpdate] ACTUALIZACIÓN FORZADA — Mostrando popup")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("   iOSVersionApp (hardcoded): \(iOSVersionApp)")
-                            print("   iOSVersionBA (Salesforce Valor_12_3__c): \(iOSVersionBA)")
-                            print("   Condición: \(iOSVersionApp) >= \(iOSVersionBA) → false")
-                            print("   idAppStore: \(idAppStore)")
-                            print("   URL App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
-                            print("   CFBundleShortVersionString: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A")")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                        }
-                        .popup(item: .constant(
-                            .init(
-                                title: "Actualizacion importante pendiente",
-                                message: "",
-                                actionTitle: "Actualizar",
-                                action: {
-                                    print("🚨 [ForceUpdate] Usuario presionó ACTUALIZAR → Abriendo App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
-                                    if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(idAppStore)") {
-                                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                                    }
-                                },
-                                isCancellable: true, UIStateTitle: nil,
-                                UIStateMessage: nil,
-                                UIStateButton: nil,
-                                UIStateCancelButton: nil,
-                                cancelAction: {
-                                    print("🚨 [ForceUpdate] Usuario presionó CANCELAR → Cerrando app con exit(0)")
-                                    exit(0)
-                                }
-                            )
-                        ))
+                } else {
+                    forceUpdateDialog
                 }
                 
             }
@@ -246,44 +214,48 @@ struct AppView: View {
             var agreement = ""
             var schemeName = ""
 #if CareAssistance
+    // ─── CONVENIO PRE-LOGIN ───────────────────────────────────────
+    // PROD REAL (Onboarding_Care PROD REAL) — descomentar para producción/App Store
     agreement = "a3yRN0000007kkTYAQ"
-            //agreement = "a3yRN000000MMBZYA4" pre login de testing
-            self.iOSVersionApp = 26
+    // TESTING (Onboarding_Care TEST / PRUEBATESTINGCA) — descomentar SOLO para QA
+    // agreement = "a3yRN000000MMBZYA4"
+    // ──────────────────────────────────────────────────────────────
+            self.iOSVersionApp = 47
             self.idAppStore = "6449431471"
             schemeName = "CareAssistance"
 #elseif Wellbeing
     agreement = "a3yRN0000007S7dYAE"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6477316325"
             schemeName = "Wellbeing"
 #elseif BCI
     agreement = "a3yRN000000YiWTYA0"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6479409551"
             schemeName = "BCI"
 #elseif PharmaBenefits
     agreement = "a3yRN000000AxwTYAS"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6479473964"
             schemeName = "PharmaBenefits"
 #elseif VCContigo
     agreement = "a3yRN000000Ch7dYAC"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6479615108"
             schemeName = "VCContigo"
 #elseif CareAssistanceMX
     agreement = "a3yRN000000gzQTYAY"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6479615108"
             schemeName = "CareAssistanceMX"
 #elseif Premedic
     agreement = "a3yRN0000018NJpYAM"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6743768129"
             schemeName = "Premedic"
 #elseif ContigoSalud
     agreement = "a3yRN0000017n8HYAQ"
-            self.iOSVersionApp = 26
+            self.iOSVersionApp = 47
             self.idAppStore = "6744413095"
             schemeName = "ContigoSalud"
 #endif
@@ -359,6 +331,125 @@ struct AppView: View {
             self.isLoadingBrandAccount = false
         }
     }
+    // MARK: - Force Update Dialog
+
+    private var forceUpdateDialog: some View {
+        ZStack {
+            Color.black.opacity(0.30)
+                .ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                // Ícono animado: giro + bounce en bucle
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "#E3F2FD"))
+                        .frame(width: 64, height: 64)
+                    Image(systemName: "arrow.triangle.2.circlepath")
+                        .font(.system(size: 32, weight: .medium))
+                        .foregroundColor(Color(hex: "#00BBDC"))
+                }
+                .scaleEffect(forceUpdateIconScale)
+                .rotationEffect(.degrees(forceUpdateIconRotation))
+                .padding(.top, 24)
+                .onAppear {
+                    forceUpdateIconScale = 0.0
+                    forceUpdateIconRotation = 0.0
+                    withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
+                        forceUpdateIconScale = 1.0
+                    }
+                    startForceUpdateIconLoop()
+
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("🚨 [ForceUpdate] ACTUALIZACIÓN FORZADA — Mostrando popup")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("   iOSVersionApp (hardcoded): \(iOSVersionApp)")
+                    print("   iOSVersionBA (Salesforce Valor_12_3__c): \(iOSVersionBA)")
+                    print("   Condición: \(iOSVersionApp) >= \(iOSVersionBA) → false")
+                    print("   idAppStore: \(idAppStore)")
+                    print("   URL App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
+                    print("   CFBundleShortVersionString: \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "N/A")")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                }
+
+                // Título
+                Text("Actualización importante pendiente")
+                    .font(Font.custom("FiraSans-Bold", size: 17))
+                    .foregroundColor(Color(hex: "#333333"))
+                    .multilineTextAlignment(.center)
+
+                // Mensaje
+                Text("Hay una nueva versión disponible. Por favor actualiza la app para continuar.")
+                    .font(Font.custom("FiraSans-Regular", size: 13))
+                    .foregroundColor(Color(hex: "#777777"))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 12)
+
+                // Botones
+                HStack(spacing: 12) {
+                    // Actualizar
+                    Button {
+                        print("🚨 [ForceUpdate] Usuario presionó ACTUALIZAR → Abriendo App Store: itms-apps://itunes.apple.com/app/id\(idAppStore)")
+                        if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(idAppStore)") {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    } label: {
+                        Text("Actualizar")
+                            .font(Font.custom("FiraSans-Bold", size: 15))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: "#00BBDC")))
+                    }
+                    .buttonStyle(.plain)
+
+                    // Cerrar
+                    Button {
+                        print("🚨 [ForceUpdate] Usuario presionó CERRAR → Cerrando app con exit(0)")
+                        exit(0)
+                    } label: {
+                        Text("Cerrar")
+                            .font(Font.custom("FiraSans-Bold", size: 15))
+                            .foregroundColor(Color(hex: "#555555"))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(RoundedRectangle(cornerRadius: 25).fill(Color.white))
+                            .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color(hex: "#CCCCCC"), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.top, 4)
+                .padding(.bottom, 18)
+            }
+            .padding(.horizontal, 28)
+            .frame(maxWidth: 380)
+            .background(RoundedRectangle(cornerRadius: 18).fill(Color.white))
+            .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 6)
+        }
+    }
+
+    private func startForceUpdateIconLoop() {
+        // Paso 1: Giro 360°
+        withAnimation(.easeInOut(duration: 1.2).delay(0.8)) {
+            forceUpdateIconRotation = 360
+        }
+        // Paso 2: Bounce (escala baja y sube)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.4)) {
+                forceUpdateIconScale = 0.75
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.4)) {
+                    forceUpdateIconScale = 1.0
+                }
+            }
+        }
+        // Repetir el ciclo
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            forceUpdateIconRotation = 0
+            startForceUpdateIconLoop()
+        }
+    }
+
     func getCurrentCountry() -> String? {
         let locale = Locale.current
         return locale.regionCode
