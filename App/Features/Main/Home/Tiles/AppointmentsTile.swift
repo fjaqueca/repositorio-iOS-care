@@ -127,63 +127,91 @@ struct AppointmentsTile: View {
 
         // Construimos la vista exactamente igual a la anterior (sin cambios visuales)
         return Button {
+            HapticManager.selection()
             selectedAppointment = (item, displayName)
         } label: {
-            HStack {
+            HStack(spacing: 0) {
+                // Panel lateral imagen (esquinas solo izquierda, paridad Android)
                 CachedAsyncImage(
                     url: URL(string: displayIcon),
                     content: { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .frame(width: 65)
                             .frame(maxHeight: .infinity)
-                            .frame(width: 50.0)
-                            .background(Color(hex: UIState.nextAppointmentUIState.headerOblea))
                     },
                     placeholder: {
-                        ProgressView()
+                        Color.clear.frame(width: 65)
                     }
                 )
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
+                .frame(width: 75)
+                .frame(maxHeight: .infinity)
+                .background(Color(hex: UIState.nextAppointmentUIState.headerOblea))
+                .clipShape(LeftRoundedShape(radius: 18))
+
+                // Contenido texto
+                VStack(alignment: .leading, spacing: 5) {
+                    // Header: título + badge status
+                    HStack(spacing: 8) {
                         Text(UIState.nextAppointmentUIState.title.text)
-                            .font(Font.custom(UIState.nextAppointmentUIState.title.font, size: CGFloat(Int(UIState.nextAppointmentUIState.title.size) ?? 16)))
+                            .font(Font.custom(UIState.nextAppointmentUIState.title.font, size: CGFloat(Int(UIState.nextAppointmentUIState.title.size) ?? 14)))
                             .foregroundColor(Color(hex: UIState.nextAppointmentUIState.title.color))
+
                         Text(item?.status.description ?? "")
-                            .font(.appCalloutSemibold)
+                            .font(Font.custom("FiraSans-Medium", size: 11))
                             .foregroundColor(statusColor)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(Capsule().fill(statusColor.opacity(0.12)))
                     }
-                    .padding(.bottom, .margin / 1.5)
 
+                    // Nombre clínica
                     Text(displayName)
-                        .textCase(.uppercase)
-                        .font(Font.custom(UIState.nextAppointmentUIState.clinic.font, size: CGFloat(Int(UIState.nextAppointmentUIState.clinic.size) ?? 18)))
+                        .font(Font.custom(UIState.nextAppointmentUIState.clinic.font, size: CGFloat(Int(UIState.nextAppointmentUIState.clinic.size) ?? 15)))
                         .foregroundColor(Color(hex: UIState.nextAppointmentUIState.clinic.color))
-                        .padding(.bottom, .margin / 2)
+                        .lineLimit(1)
 
-                    Label(item?.date.formatted(dateFormat) ?? "", image: "calendar-blue")
-                        .font(Font.custom(UIState.nextAppointmentUIState.date.font, size: CGFloat(Int(UIState.nextAppointmentUIState.date.size) ?? 14)))
-                        .foregroundColor(Color(hex: UIState.nextAppointmentUIState.date.color))
-                        .padding(.bottom, .margin / 2)
+                    // Fecha
+                    HStack(spacing: 6) {
+                        Image(systemName: "calendar")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(hex: UIState.nextAppointmentUIState.date.color))
+                        Text(item?.date.formatted(dateFormat) ?? "")
+                            .font(Font.custom(UIState.nextAppointmentUIState.date.font, size: CGFloat(Int(UIState.nextAppointmentUIState.date.size) ?? 13)))
+                            .foregroundColor(Color(hex: UIState.nextAppointmentUIState.date.color))
+                    }
 
-                    Label((item?.date.formatted(Date.FormatStyle.init(time: .shortened)) ?? "") + "hs.", image: "clock-blue")
-                        .font(Font.custom(UIState.nextAppointmentUIState.hour.font, size: CGFloat(Int(UIState.nextAppointmentUIState.hour.size) ?? 14)))
-                        .foregroundColor(Color(hex: UIState.nextAppointmentUIState.hour.color))
-                        .padding(.leading, -3)
+                    // Hora
+                    HStack(spacing: 6) {
+                        Image(systemName: "clock")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(hex: UIState.nextAppointmentUIState.hour.color))
+                        Text((item?.date.formatted(Date.FormatStyle.init(time: .shortened)) ?? "") + "hs.")
+                            .font(Font.custom(UIState.nextAppointmentUIState.hour.font, size: CGFloat(Int(UIState.nextAppointmentUIState.hour.size) ?? 13)))
+                            .foregroundColor(Color(hex: UIState.nextAppointmentUIState.hour.color))
+                    }
                 }
-                .padding(.horizontal, .margin / 2)
-                .padding(.vertical, .margin)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+
+                Spacer(minLength: 0)
             }
             .frame(height: 120)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(hex: UIState.nextAppointmentUIState.backgrounOblea))
-            .cornerRadius(.cornerRadius)
+            .background(
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color(hex: UIState.nextAppointmentUIState.backgrounOblea.isEmpty ? "#FFFFFF" : UIState.nextAppointmentUIState.backgrounOblea))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 18)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
         }
-        .overlay(
-            RoundedRectangle(cornerRadius: .cornerRadius)
-                .stroke(Color.shadowLight.opacity(0.5), lineWidth: 1)
-                .shadow(color: .shadowLight, radius: 4, x: 1,y: 1)
-        )
+        .buttonStyle(.plain)
+        .pressable()
+        .springOnAppear(delay: 0.1)
     }
 
     // MARK: - Heurística para encontrar ClinicInit correspondiente a un Appointment
@@ -197,5 +225,23 @@ struct AppointmentsTile: View {
         }
         // Si no se encuentra, devolvemos nil -> se usan los datos originales del appointment
         return nil
+    }
+}
+
+// MARK: - Shape con esquinas redondeadas solo en el lado izquierdo
+private struct LeftRoundedShape: Shape {
+    var radius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: radius, y: 0))
+        path.addLine(to: CGPoint(x: rect.maxX, y: 0))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: radius, y: rect.maxY))
+        path.addArc(center: CGPoint(x: radius, y: rect.maxY - radius), radius: radius, startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)
+        path.addLine(to: CGPoint(x: 0, y: radius))
+        path.addArc(center: CGPoint(x: radius, y: radius), radius: radius, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
+        path.closeSubpath()
+        return path
     }
 }

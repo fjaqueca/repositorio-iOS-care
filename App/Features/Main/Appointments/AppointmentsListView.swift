@@ -56,8 +56,10 @@ struct AppointmentsListView: View {
                 if !sections.isEmpty {
                     ForEach(sections) { section in
                         Section {
-                            ForEach(section.appointments) { appointment in
+                            ForEach(Array(section.appointments.enumerated()), id: \.element.id) { index, appointment in
                                 AppointmentRowView(appointment, UIStateAppoint: $UIStateAppoint)
+                                    .pressable()
+                                    .springOnAppear(delay: Double(index) * 0.05)
                             }
                         } header: {
                             Text(section.date.formatted(dateFormat).uppercased())
@@ -72,10 +74,25 @@ struct AppointmentsListView: View {
                     }
                     
                 } else {
-                    Text("No hay citas agendadas")
-                        .font(.appCallout)
-                        .foregroundColor(.textSecondary)
-                        .frame(height: 60.0)
+                    VStack(spacing: 12) {
+                        Spacer()
+
+                        LottieView(animationName: "no_citas_para_este_dia")
+                            .frame(width: 180, height: 180)
+
+                        Text("No hay citas agendadas")
+                            .font(Font.custom("FiraSans-Bold", size: 19))
+                            .foregroundColor(Color(hex: "#5B6770"))
+
+                        Text("Agenda tu primera cita con un profesional")
+                            .font(Font.custom("FiraSans-Regular", size: 15))
+                            .foregroundColor(Color(hex: "#C4C4C4"))
+                            .multilineTextAlignment(.center)
+
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .popIn()
                 }
             }
         }

@@ -56,15 +56,19 @@ extension AppStatusManager {
                 }
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
                 
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    let oldItems = realm.objects(Appointment.self)
-                    // Delete stored items
-                    realm.delete(oldItems)
-//                    let oldObjects = realm.objects(Appointment.self)
-//                    let ids = appointments.map(\.id)
-                    realm.add(appointments, update: .all)
-//                    realm.delete(oldObjects.filter({ !ids.contains($0.id) }))
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        let oldItems = realm.objects(Appointment.self)
+                        // Delete stored items
+                        realm.delete(oldItems)
+//                        let oldObjects = realm.objects(Appointment.self)
+//                        let ids = appointments.map(\.id)
+                        realm.add(appointments, update: .all)
+//                        realm.delete(oldObjects.filter({ !ids.contains($0.id) }))
+                    }
+                } catch {
+                    print("❌ [Realm] Error en loadAppointments: \(error.localizedDescription)")
                 }
             AppStatusManager.setLoading(false)
                 return

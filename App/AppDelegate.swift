@@ -32,11 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // FirebaseLogger.shared.log("🚀 App launched successfully")
 
         // 📲 SFMC Push configuration (SDK 8.1.4)
+        guard let mcURL = URL(string: "https://mcmjn-1pfbl2yn2rlf5886l2-651.device.marketingcloudapis.com") else {
+            print("❌ Marketing Cloud URL is invalid, skipping SFMC configuration")
+            return true
+        }
         let pushConfig = PushConfigBuilder(appId: "b904dc0c-5956-4e29-a65a-5f5f6837ad51")
             .setAccessToken("hJ5KtZU8CbXDsvRLWz6dfpfa")
-            .setMarketingCloudServerUrl(
-                URL(string: "https://mcmjn-1pfbl2yn2rlf5886l2-651.device.marketingcloudapis.com")!
-            )
+            .setMarketingCloudServerUrl(mcURL)
             .setAnalyticsEnabled(true)
             .build()
 

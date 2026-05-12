@@ -138,6 +138,13 @@ extension OnboardingView {
                     self.UIState.onboardingUIState.imageBackground = brandAccount.valor11C ?? ""
                     
                     self.UIState.onboardingUIState.nav1.imgNav = brandAccount.valor12C ?? ""
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("🖼️ [Onboarding] URLs de imágenes del carousel:")
+                    print("   Imagen 1: \(brandAccount.valor12C ?? "vacío")")
+                    print("   Imagen 2: \(brandAccount.valor15C ?? "vacío")")
+                    print("   Imagen 3: \(brandAccount.valor18C ?? "vacío")")
+                    print("   Fondo:    \(brandAccount.valor11C ?? "vacío")")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                     self.UIState.onboardingUIState.nav1.textNav = brandAccount.valor13C ?? ""
                     if let valor14 = brandAccount.valor14C?.components(separatedBy: ";"), valor14.count >= 2{
                         self.UIState.onboardingUIState.nav1.colorTextNav = valor14[0]

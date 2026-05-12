@@ -175,6 +175,7 @@ struct TileObjectSecondView: View {
                         .multilineTextAlignment(popupData.popupAtr.alignment == "center" ? .center : .leading)
                         .padding(.bottom)
                     Button {
+                        HapticManager.impact(style: .light)
                         self.showCustomPopup = false
                     } label: {
                         Text(popupData.btnPopup.textBtn == "" ? "Acepter" : popupData.btnPopup.textBtn)
@@ -237,12 +238,12 @@ struct TileObjectSecondView: View {
                     }
                 }
                 
-                let tipoElementoRaw = brand.value(forKey: "tipoElemento\(index)C") as? String ?? ""
+                let tipoElementoRaw = brand.safeValue(forKey: "tipoElemento\(index)C") as? String ?? ""
                 let tipoElemento = TipoElemento(rawValue: tipoElementoRaw)
                 
                 let clinic = ClinicDetail()
                 clinic.id = brand.getBrandValue(section: index, field: 3) ?? ""
-                clinic.name = brand.value(forKey: "nombreElemento\(index)C") as? String ?? ""
+                clinic.name = brand.safeValue(forKey: "nombreElemento\(index)C") as? String ?? ""
                 clinic.icon = brand.getBrandValue(section: index, field: 13) ?? brand.getBrandValue(section: index, field: 1)
                 clinic.brandBanner = brand.getBrandValue(section: index, field: 4)
                 clinic.descShort = brand.getBrandValue(section: index, field: 5)
@@ -262,7 +263,7 @@ struct TileObjectSecondView: View {
                         imageUrl: imageUrl,
                         tipoElemento: tipoElemento,
                         subHomeId: brand.getBrandValue(section: index, field: 4) ?? "",
-                        name: brand.value(forKey: "nombreElemento\(index)C") as? String ?? "",
+                        name: brand.safeValue(forKey: "nombreElemento\(index)C") as? String ?? "",
                         typeId: brand.getBrandValue(section: index, field: 3) ?? "",
                         logo: brand.getBrandValue(section: index, field: 5) ?? "",
                         customName: brand.getBrandValue(section: index, field: 6) ?? "",

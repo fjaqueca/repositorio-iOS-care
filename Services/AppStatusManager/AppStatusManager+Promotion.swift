@@ -14,9 +14,13 @@ extension AppStatusManager {
             let promotionResult = await Network.shared.getPromotions()
             switch promotionResult {
                 case let .success(promotions):
-                    let realm = try! Realm(queue: nil)
-                    try! realm.write {
-                        realm.add(promotions, update: .all)
+                    do {
+                        let realm = try Realm(queue: nil)
+                        try realm.write {
+                            realm.add(promotions, update: .all)
+                        }
+                    } catch {
+                        print("❌ [Realm] Error en loadPromotions: \(error.localizedDescription)")
                     }
                     return
                 case let .failure(error):

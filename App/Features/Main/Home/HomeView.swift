@@ -35,6 +35,9 @@ struct HomeView: View {
     @State private var mostrarFormularioGeneral: Bool = false
     // NUEVO: Formulario parseado listo para mostrar
     @State private var formularioParsed: FormularioGeneral?
+    @State private var waveRotation: Double = 0
+    @State private var waveOpacity: Double = 0
+    @State private var waveAlreadyPlayed: Bool = false
 
     var body: some View {
         NavigationViewCustom {
@@ -45,6 +48,7 @@ struct HomeView: View {
                         HStack{
                             if totalSubHomes.count > 1{
                                 Button {
+                                    HapticManager.impact(style: .light)
                                     totalSubHomes.removeLast()
                                     tipeSubHome.removeLast()
                                     UIState.customSubHomeName.removeLast()
@@ -97,6 +101,14 @@ struct HomeView: View {
                                 }
                             }
                             .padding(.leading)
+                            // Manita saludando animada (réplica de web: fade-in + wave-once)
+                            if totalSubHomes.count == 1 {
+                                Text("👋🏻")
+                                    .font(.system(size: 24))
+                                    .opacity(waveOpacity)
+                                    .rotationEffect(.degrees(waveRotation), anchor: UnitPoint(x: 0.7, y: 0.7))
+                                    .padding(.leading, 4)
+                            }
                             Spacer()
                         }
                     }
@@ -105,6 +117,7 @@ struct HomeView: View {
                     ScrollView(.vertical) {
                         TilesView(UIState: $UIState, UIStateAppoint: $UIStateAppoint, currentSubHome: $currentSubHome, totalSubHomes: $totalSubHomes, tipeSubHome: $tipeSubHome, selectedTab: $selectedTab)
                     }
+                    .fadeSlideIn(delay: 0.05, from: .bottom)
                 }
                 .onReceive(AppStatusManager.onSelectedEnterprise) { newValue in
                     guard let newValue = newValue else { return }
@@ -113,6 +126,7 @@ struct HomeView: View {
                     }
                 }
                 .onChange(of: items){ newValue in
+                    guard !newValue.isEmpty else { return }
                     loadUIState()
                     loadUIStateAppoint()
                 }
@@ -132,7 +146,7 @@ struct HomeView: View {
         .accentColor(.blue)
         .onAppear {
             // Ejecutar el servicio BrandAccount al entrar a HomeView (doble llamada)
-            Task {
+            Task { @MainActor in
                 print("⏳ [Loading] Iniciando carga de HomeView...")
                 
                 // 1) Mantener flujo actual: persistir en Realm y generar clínicas
@@ -184,6 +198,15 @@ struct HomeView: View {
                 print("✅ [Loading] Proceso de decisión completado")
             }
         }
+        .onChange(of: mostrarFormularioGeneral) { newValue in
+            // Sheet se cerró → disparar animación wave
+            if !newValue && !waveAlreadyPlayed {
+                waveAlreadyPlayed = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    startWaveAnimation()
+                }
+            }
+        }
         // PRESENTACIÓN DEL SHEET CUANDO mostrarFormularioGeneral = true
         .sheet(isPresented: $mostrarFormularioGeneral) {
             if let formulario = formularioParsed {
@@ -201,6 +224,61 @@ struct HomeView: View {
         }
     }
     
+    // MARK: - Wave Animation
+
+    /// Réplica del patrón web: greeting-fade-in (0.55s delay, 0.3s) + wave-once (1s delay, 1.2s)
+    /// @keyframes wave-once: 0%→0deg, 15%→14deg, 30%→-8deg, 45%→14deg, 60%→-4deg, 75%→10deg, 100%→0deg
+    /// transform-origin: 70% 70% (pivote en la "muñeca")
+    private func startWaveAnimation() {
+        // Fase 1: fade-in a los 0.55s
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                waveOpacity = 1
+            }
+        }
+
+        // Fase 2: wave-once a los 1.0s (duración total 1.2s, 6 keyframes)
+        let waveStart: Double = 1.0
+        let duration: Double = 1.2
+
+        // 15% → 14deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration * 0.15) {
+            withAnimation(.easeInOut(duration: duration * 0.15)) {
+                waveRotation = 14
+            }
+        }
+        // 30% → -8deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration * 0.30) {
+            withAnimation(.easeInOut(duration: duration * 0.15)) {
+                waveRotation = -8
+            }
+        }
+        // 45% → 14deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration * 0.45) {
+            withAnimation(.easeInOut(duration: duration * 0.15)) {
+                waveRotation = 14
+            }
+        }
+        // 60% → -4deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration * 0.60) {
+            withAnimation(.easeInOut(duration: duration * 0.15)) {
+                waveRotation = -4
+            }
+        }
+        // 75% → 10deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration * 0.75) {
+            withAnimation(.easeInOut(duration: duration * 0.15)) {
+                waveRotation = 10
+            }
+        }
+        // 100% → 0deg
+        DispatchQueue.main.asyncAfter(deadline: .now() + waveStart + duration) {
+            withAnimation(.easeInOut(duration: duration * 0.25)) {
+                waveRotation = 0
+            }
+        }
+    }
+
     // MARK: - Búsqueda de "FormularioGeneral"
     private func findFormularioGeneral(in brands: BrandAccounts) {
         print("🔎 Buscando registro con Name == \"FormularioGeneral\" en \(brands.records.count) records...")
@@ -371,10 +449,18 @@ struct HomeView: View {
         
         self.mostrarFormularioGeneral = finalDecision
         print("🟢 [Decision] mostrarFormularioGeneral=\(self.mostrarFormularioGeneral)")
-        
+
         // ✅ OCULTAR LOADING AQUÍ (después de tomar la decisión final)
         print("✅ [Loading] Decisión final tomada. Ocultando loading...")
         self.isLoading = false
+
+        // Si no hay formulario, animar la manita directamente
+        if !finalDecision && !waveAlreadyPlayed {
+            waveAlreadyPlayed = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                startWaveAnimation()
+            }
+        }
     }
     
     // MARK: - Handler del formulario completado

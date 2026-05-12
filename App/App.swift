@@ -18,7 +18,15 @@ struct CareAssistanceApp: SwiftUI.App {
     init() {
         var configuration = Realm.Configuration.defaultConfiguration
         configuration.deleteRealmIfMigrationNeeded = true
-        let realmURL = configuration.fileURL!
+        guard let realmURL = configuration.fileURL else {
+            print("⚠️ Realm default fileURL is nil, using fallback")
+            let fallbackURL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("default.realm")
+            configuration.fileURL = fallbackURL
+            Realm.Configuration.defaultConfiguration = configuration
+            AppStatusManager.load()
+            setUpDependencies()
+            return
+        }
         let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("default.realm") ?? realmURL
         configuration.fileURL = url
         Realm.Configuration.defaultConfiguration = configuration
@@ -28,10 +36,12 @@ struct CareAssistanceApp: SwiftUI.App {
         let barAppearance = UINavigationBar.appearance()
         barAppearance.backIndicatorImage = UIImage(named: "back")
         barAppearance.backIndicatorTransitionMaskImage = UIImage(named: "back")
-        
+
         setUpDependencies() // Initialize SVGCoder
         #if CareAssistance
-        print("The realm is stored \(Realm.Configuration.defaultConfiguration.fileURL!)")
+        if let realmPath = Realm.Configuration.defaultConfiguration.fileURL {
+            print("The realm is stored \(realmPath)")
+        }
         #endif
     }
 

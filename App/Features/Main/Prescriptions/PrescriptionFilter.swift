@@ -191,6 +191,7 @@ struct PrescriptionFilter: View {
                     HStack(spacing: 12) {
                         // Aplicar
                         Button {
+                            HapticManager.impact(style: .medium)
                             applyFilter()
                         } label: {
                             Text(UIState.btn2Text.isEmpty ? "Aplicar filtro" : UIState.btn2Text)
@@ -203,9 +204,11 @@ struct PrescriptionFilter: View {
                                         .fill(Color(hex: UIState.btn2ColorBack.isEmpty ? "#00BBDC" : UIState.btn2ColorBack))
                                 )
                         }
+                        .bounceOnTap()
 
                         // Cancelar
                         Button {
+                            HapticManager.impact(style: .light)
                             showFilterView = false
                         } label: {
                             Text("Cancelar")
@@ -226,6 +229,7 @@ struct PrescriptionFilter: View {
 
                     // Limpiar filtros
                     Button {
+                        HapticManager.selection()
                         clearFilter()
                     } label: {
                         Text("Limpiar filtros")
@@ -290,11 +294,12 @@ struct PrescriptionFilter: View {
             errorMessage = "Complete ambas fechas!"
             return
         }
-        if dateUntil! < dateFrom! {
+        guard let from = dateFrom, let until = dateUntil else { return }
+        if until < from {
             errorMessage = "La fecha \"Hasta\" debe ser posterior a la fecha \"Desde\"!"
             return
         }
-        let days = abs(Calendar.current.dateComponents([.day], from: dateFrom!, to: dateUntil!).day ?? 0)
+        let days = abs(Calendar.current.dateComponents([.day], from: from, to: until).day ?? 0)
         if days > 365 {
             errorMessage = "No es posible filtrar más de 1 año!"
             return
@@ -308,8 +313,8 @@ struct PrescriptionFilter: View {
 
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("🔍 [PrescriptionFilter] APLICAR FILTRO")
-        print("   dateFrom: \(dateFrom != nil ? formatDate(dateFrom!) : "nil")")
-        print("   dateUntil: \(dateUntil != nil ? formatDate(dateUntil!) : "nil")")
+        print("   dateFrom: \(dateFrom.map { formatDate($0) } ?? "nil")")
+        print("   dateUntil: \(dateUntil.map { formatDate($0) } ?? "nil")")
         print("   hasDates: \(hasDates)")
         print("   errorMessage: \"\(errorMessage)\"")
 
@@ -334,7 +339,8 @@ struct PrescriptionFilter: View {
         // CASO 3: Fechas válidas → llamar servicio con fechas
         print("   → CASO 3: Fechas válidas → onApplyWithDates")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        onApplyWithDates?(dateFrom!, dateUntil!)
+        guard let from = dateFrom, let until = dateUntil else { return }
+        onApplyWithDates?(from, until)
         showFilterView = false
     }
 

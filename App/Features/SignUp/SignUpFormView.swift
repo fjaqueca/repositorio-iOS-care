@@ -100,12 +100,15 @@ struct SignUpFormView: View {
             
             Spacer()
             PrimaryButton(title: "Enviar", UIStateBtn: UIState.singUpFormUIState.btnSend) {
+                HapticManager.impact(style: .medium)
                 registerUser()
             }
+            .bounceOnTap()
             .disabled(!isValid)
             .padding(.bottom, .margin)
         }
         .padding(.horizontal, .margin)
+        .slideInFromRight()
         .background(
             Group {
                     if UIState.singUpFormUIState.imageBackground != "" {

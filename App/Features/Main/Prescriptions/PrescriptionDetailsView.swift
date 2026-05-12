@@ -100,6 +100,7 @@ struct PrescriptionDetailsView: View {
                     }
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
+                            HapticManager.impact(style: .light)
                             dismiss()
                         } label: {
                             Image("back")
@@ -151,6 +152,7 @@ struct PrescriptionDetailsView: View {
                     }
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
+                            HapticManager.impact(style: .light)
                             showWebView = false
                         } label: {
                             Image("back")
@@ -322,7 +324,7 @@ struct PrescriptionDetailsView: View {
             return
         }
 
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
             switch result {
             case let .success(response):

@@ -56,6 +56,7 @@ struct ElementDetailsView: View {
     // resumeToFirstUnansweredInChain(), que detecta todas las actividades completadas
     // y llama loadFirstActivityOfFlow() — manteniendo el usuario atascado en la vista.
     @State private var isDismissingAfterComplete: Bool = false
+    @State private var showConfetti: Bool = false
 
     // ✅ NUEVO: baseline para detectar cambios reales
     @State private var originalCompletionResponse: [String: String] = [:]
@@ -272,9 +273,11 @@ struct ElementDetailsView: View {
                     // - Hay historial (segunda pregunta en adelante en concatenación)
                     if !activityHistory.isEmpty {
                         PrimaryButton(title: "Anterior", backgroundColor: .gray) {
+                            HapticManager.impact(style: .light)
                             print("⬅️ [UI] Tap en Anterior")
                             handleBackNavigation()
                         }
+                        .bounceOnTap()
                     }
 
                     // ✅ LÓGICA DEL TÍTULO DEL BOTÓN:
@@ -297,15 +300,18 @@ struct ElementDetailsView: View {
                     }()
                     
                     PrimaryButton(title: nextTitle) {
+                        HapticManager.impact(style: .medium)
                         print("➡️ [UI] Tap en \(nextTitle)")
                         handleComplete()
                     }
+                    .bounceOnTap()
                     .disabled(!isSubmitEnabled)
                     .opacity(isSubmitEnabled ? 1 : 0.5)
                 }
             }
             .padding(.horizontal, .margin)
             .padding(.bottom, .margin)
+            .slideInFromRight()
             .opacity((isLoading || isCheckingProgress) ? 0 : 1)
             
             // ✅ NAVEGACIÓN A SIGUIENTE ACTIVIDAD EN CONCATENACIÓN (no se usa en el nuevo flujo, se mantiene por compatibilidad)
@@ -368,6 +374,7 @@ struct ElementDetailsView: View {
                     .transition(.identity) // ⭐️ Sin animación de transición para evitar flash
             }
         }
+        .confettiLight(isActive: $showConfetti)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -1515,8 +1522,11 @@ struct ElementDetailsView: View {
         DispatchQueue.main.async {
             self.isLoading = false
             self.isCheckingProgress = true // ⭐️ Activar overlay ANTES del alert para evitar flash
+            HapticManager.success()
+            self.showConfetti = true
             self.alertAuthEvent = .SuccesSendData
             self.showAlert = true
+            ReviewManager.shared.requestReviewIfNeeded()
             print("🔔 [Complete] Mostrando Alert de éxito con overlay activo")
         }
     }

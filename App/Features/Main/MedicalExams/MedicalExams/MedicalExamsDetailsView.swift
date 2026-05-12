@@ -290,7 +290,9 @@ struct MedicalExamsDetailsView: View {
                 ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
             })
             .sheet(isPresented: $showWebView) {
-                WebView(url: self.urlToShare!)
+                if let urlToShare = self.urlToShare {
+                    WebView(url: urlToShare)
+                }
             }
             .alert("Examen descargado correctamente", isPresented: $showDownloadSuccessDialog) {
                 Button("Aceptar") {
@@ -553,7 +555,7 @@ struct MedicalExamsDetailsView: View {
     func changeFavorite(){
         let data = !isFavorite
         self.isLoading = true
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.postFavorite(registerId: exam.Id ?? "", objet: exam.attributes?.type ?? "", data: data)
             switch result {
                 case .success:

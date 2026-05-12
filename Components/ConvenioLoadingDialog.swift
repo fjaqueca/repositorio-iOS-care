@@ -25,6 +25,7 @@ struct ConvenioLoadingDialog: View {
     /// Acción a ejecutar después de cerrar el dialog.
     var onDismissed: (() -> Void)?
 
+    @State private var isActive = true
     @State private var gearScale: CGFloat = 0.0
     @State private var gearRotation: Double = 0.0
     @State private var loadingProgress: CGFloat = 0.0
@@ -102,6 +103,7 @@ struct ConvenioLoadingDialog: View {
             startLoadingProgress()
         }
         .onDisappear {
+            isActive = false
             stopTimers()
         }
         // Interceptar loading global mientras este dialog esté visible
@@ -132,20 +134,24 @@ struct ConvenioLoadingDialog: View {
         }
         pulseTimer?.invalidate()
         pulseTimer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { _ in
+            guard isActive else { return }
             withAnimation(.easeInOut(duration: 0.6)) {
                 gearScale = 1.12
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                guard isActive else { return }
                 withAnimation(.easeInOut(duration: 0.6)) {
                     gearScale = 1.0
                 }
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            guard isActive else { return }
             withAnimation(.easeInOut(duration: 0.6)) {
                 gearScale = 1.12
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                guard isActive else { return }
                 withAnimation(.easeInOut(duration: 0.6)) {
                     gearScale = 1.0
                 }
@@ -172,6 +178,7 @@ struct ConvenioLoadingDialog: View {
             loadingProgress = 1.0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            guard isActive else { return }
             stopTimers()
             AppStatusManager.setLoading(false)
             shouldComplete = false

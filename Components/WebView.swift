@@ -26,7 +26,10 @@ struct SafariWebView: UIViewControllerRepresentable {
     let url: String
     
     func makeUIViewController(context: Context) -> SFSafariViewController {
-        return SFSafariViewController(url: URL(string: url)!)
+        guard let parsedURL = URL(string: url) else {
+            return SFSafariViewController(url: URL(string: "about:blank")!)
+        }
+        return SFSafariViewController(url: parsedURL)
     }
     func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context){
         

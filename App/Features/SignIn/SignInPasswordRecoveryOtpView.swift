@@ -17,20 +17,23 @@ struct SignInPasswordRecoveryOtpView: View {
     @State private var navigation: Navigation?
     @State private var popup: Popup?
     @State private var resendButtonEnabled = true
-    
+    @State private var otpBoxScales: [CGFloat] = Array(repeating: 1.0, count: 6)
+
     enum Navigation {
         case passwordCreation
         case cancelation
     }
-    
+
     enum FocusField: Hashable {
         case field
     }
     @FocusState private var focusedField: FocusField?
     @State var otpCode: String = ""
-    
+
     @Binding var UIState: PreLoginUIState
     @Binding var isPresenting: Bool
+    @Environment(\.presentationMode) var presentation
+
     var body: some View {
         ZStack(alignment: .center) {
             TextField("", text: $otpCode)
@@ -39,6 +42,7 @@ struct SignInPasswordRecoveryOtpView: View {
                 .accentColor(.clear)
                 .foregroundColor(.clear)
                 .multilineTextAlignment(.center)
+                .keyboardType(.numberPad)
                 .onReceive(Just(otpCode)) { _ in textDidUpdate() }
                 .focused($focusedField, equals: .field)
                 .task {
@@ -85,7 +89,7 @@ struct SignInPasswordRecoveryOtpView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     private var contentView: some View {
         VStack(spacing: .margin * 1.5) {
             if UIState.singInPasswordRecoveryOtpUIState.image != "" {
@@ -131,59 +135,132 @@ struct SignInPasswordRecoveryOtpView: View {
                     .foregroundColor(subColor))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            HStack(spacing: 7) {
-                ForEach(0..<6) { index in
-                    ZStack {
-                        Color.otp
-                            .frame(height: 50)
-                            .cornerRadius(.cornerRadius)
-                        Text(self.getPin(at: index))
-                            .font(Font.custom("FiraSans-Semibold", size: CGFloat(Int(UIState.singInPasswordRecoveryOtpUIState.code.sizeText) ?? 16)))
-                            .foregroundColor(UIState.singInPasswordRecoveryOtpUIState.code.colorText != "" ? Color(hex: UIState.singInPasswordRecoveryOtpUIState.code.colorText) : .primaryText)
-                            .textCase(.uppercase)
-                    }
-                }
-            }
-            .onTapGesture {
-                self.focusedField = .field
-            }
-            
+
+            // MARK: - OTP Boxes modernizadas
+            otpBoxes
+
             Spacer()
-            Button {
-                resendOtp()
-                resendButtonEnabled = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 180) {
-                    resendButtonEnabled = true
+
+            // MARK: - Reenviar código
+            resendButton
+
+            // MARK: - Botones Cancelar + Continuar
+            HStack(spacing: 12) {
+                // Cancelar
+                Button {
+                    HapticManager.impact(style: .light)
+                    self.presentation.wrappedValue.dismiss()
+                } label: {
+                    Text("Cancelar")
+                        .font(Font.custom("FiraSans-Bold", size: 18))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: .buttonTitleHeight)
                 }
-            } label: {
-                Text(UIState.singInPasswordRecoveryOtpUIState.btnReSend.text != "" ? UIState.singInPasswordRecoveryOtpUIState.btnReSend.text : "Reenviar código")
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(UIState.singInPasswordRecoveryOtpUIState.btnReSend.colorText != "" ? Color(hex:UIState.singInPasswordRecoveryOtpUIState.btnReSend.colorText) : .secondaryText)
+                .buttonStyle(.borderedProminent)
+                .tint(Color(hex: "#E74C3C"))
+                .bounceOnTap()
+
+                // Continuar
+                PrimaryButton(title: "Continuar", UIStateBtn: UIState.singInPasswordRecoveryOtpUIState.btnContinue) {
+                    HapticManager.impact(style: .medium)
+                    checkValidationCode()
+                }
+                .bounceOnTap()
+                .disabled(isLoading || otpCode.count != 6)
             }
-            .disabled(!resendButtonEnabled)
-           
-            PrimaryButton(title: "Continuar", UIStateBtn: UIState.singInPasswordRecoveryOtpUIState.btnContinue) {
-                checkValidationCode()
-            }
-            .disabled(otpCode.count != 6)
         }
         .padding(.horizontal, .margin)
+        .slideInFromRight()
         .isLoading(isLoading)
     }
-    
+
+    // MARK: - OTP Boxes
+
+    private var otpBoxes: some View {
+        HStack(spacing: 10) {
+            ForEach(0..<6) { index in
+                let hasFilled = otpCode.count > index
+                let isActive = otpCode.count == index
+
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white.opacity(0.85))
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(
+                            hasFilled ? Color(hex: "#00BBDC") :
+                            isActive ? Color(hex: "#00BBDC") :
+                            Color(hex: "#C8CDD2"),
+                            lineWidth: isActive ? 2 : (hasFilled ? 1.5 : 1)
+                        )
+
+                    Text(self.getPin(at: index))
+                        .font(Font.custom("FiraSans-Bold", size: 22))
+                        .foregroundColor(Color(hex: "#2C3E50"))
+                        .textCase(.uppercase)
+                }
+                .frame(height: 52)
+                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
+                .scaleEffect(otpBoxScales[index])
+            }
+        }
+        .onTapGesture {
+            self.focusedField = .field
+        }
+        .animation(.easeInOut(duration: 0.15), value: otpCode)
+    }
+
+    // MARK: - Reenviar código
+
+    private var resendButton: some View {
+        Button {
+            resendOtp()
+            resendButtonEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 180) {
+                resendButtonEnabled = true
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 13, weight: .medium))
+                Text(UIState.singInPasswordRecoveryOtpUIState.btnReSend.text != "" ? UIState.singInPasswordRecoveryOtpUIState.btnReSend.text : "Reenviar código")
+                    .font(Font.custom("FiraSans-Medium", size: 14))
+                    .underline(resendButtonEnabled)
+            }
+            .foregroundColor(resendButtonEnabled ? Color(hex: "#00BBDC") : Color(hex: "#C8CDD2"))
+            .frame(maxWidth: .infinity)
+        }
+        .disabled(!resendButtonEnabled)
+        .animation(.easeInOut(duration: 0.2), value: resendButtonEnabled)
+    }
+
+    // MARK: - Helpers
+
     private func getPin(at index: Int) -> String {
         guard otpCode.count > index else {
             return ""
         }
         return otpCode[index]
     }
-    
+
     private func textDidUpdate() {
         if otpCode.count > 6 {
             otpCode = String(otpCode.prefix(6))
         }
+        // Bounce en la caja que acaba de recibir dígito
+        let filledIndex = otpCode.count - 1
+        if filledIndex >= 0 && filledIndex < 6 {
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.5, blendDuration: 0.1)) {
+                otpBoxScales[filledIndex] = 1.15
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation(.spring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.1)) {
+                    otpBoxScales[filledIndex] = 1.0
+                }
+            }
+        }
     }
-    
+
     private func resendOtp() {
         Task {
             let result = await Network.shared.sendValidationCode(rut: rut.filter { $0.isLetter || $0.isNumber })
@@ -195,7 +272,7 @@ struct SignInPasswordRecoveryOtpView: View {
             }
         }
     }
-    
+
     public func checkValidationCode() {
         isLoading = true
         if otpCode.count == 6 {
@@ -216,7 +293,7 @@ struct SignInPasswordRecoveryOtpView: View {
             }
         }
     }
-    
+
     var codePopup: Popup {
         .init(
             title: "El código de validación fue enviado nuevamente",

@@ -103,8 +103,8 @@ struct CompanySelectionView: View {
     var contentView: some View {
         switch state {
             case .loading:
-                ProgressView()
-                    .frame(height: 200.0)
+                SkeletonList(rows: 3)
+                    .padding(.top, 20)
             case .empty:
                 noEnterpriseView
             case .allAgreementsInFalse:
@@ -233,8 +233,10 @@ struct CompanySelectionView: View {
             .listStyle(.plain)
             
             PrimaryButton(title: buttonText, UIStateBtn: UIState.selectAgreementUIState.btnGetInto) {
+                HapticManager.impact(style: .medium)
                 selectEnterprise()
             }
+            .bounceOnTap()
             .disabled(AppStatusManager.selectedEnterprise == selectedAgreement)
             
             if style == .initial {
@@ -295,7 +297,9 @@ struct CompanySelectionView: View {
                         if filterAgreements.isEmpty && agreementsInFalseCount == 0{
                             self.agreements = []
                         }else if filterAgreements.isEmpty && agreementsInFalseCount > 0{
-                            self.agreements = [recordsAgreement.first!]
+                            if let first = recordsAgreement.first {
+                                self.agreements = [first]
+                            }
                             break
                         }else{
                             if style == .initial {
@@ -314,7 +318,9 @@ struct CompanySelectionView: View {
                         }
                     }else{
                         if agreementsSuccess.isEmpty && agreementsInFalseCount > 0{
-                            agreementsSuccess.append(recordsAgreement.first!)
+                            if let first = recordsAgreement.first {
+                                agreementsSuccess.append(first)
+                            }
                             self.agreements = agreementsSuccess
                             break
                         }
@@ -380,7 +386,7 @@ struct CompanySelectionView: View {
         convenioLoadingComplete = false
         showConvenioLoading = true
 
-        Task {
+        Task { @MainActor in
             // 1) Enviar selección a Salesforce
             let result = await Network.shared.sendCompanyToSalesforce(accountId: accountId, agreementId: agreementId)
             switch result {
@@ -395,11 +401,15 @@ struct CompanySelectionView: View {
             let brandResult = await Network.shared.getBrandAccount(agreementId: brandAgreementId)
             switch brandResult {
             case .success(let brands):
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    let oldItems = realm.objects(BrandAccounts.self)
-                    realm.delete(oldItems)
-                    realm.add(brands, update: .all)
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        let oldItems = realm.objects(BrandAccounts.self)
+                        realm.delete(oldItems)
+                        realm.add(brands, update: .all)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en CompanySelectionView.selectEnterprise: \(error.localizedDescription)")
                 }
                 ClinicManager().generateClinics(from: brands)
                 print("✅ [CompanySelectionView] BrandAccount cargado: \(brands.records.count) records")
@@ -666,13 +676,9 @@ struct CompanySelectionDialog: View {
                     // Body
                     Group {
                         if agreements == nil {
-                            VStack {
-                                Spacer()
-                                ProgressView()
-                                    .scaleEffect(1.1)
-                                Spacer()
-                            }
-                            .frame(height: 320)
+                            SkeletonList(rows: 3)
+                                .padding(.vertical, 20)
+                                .frame(height: 320)
                         } else if (agreements ?? []).isEmpty {
                             VStack(spacing: 8) {
                                 Image(systemName: "building.2")
@@ -723,6 +729,7 @@ struct CompanySelectionDialog: View {
                     // Footer — Cancelar / Seleccionar
                     HStack(spacing: 12) {
                         Button {
+                            HapticManager.impact(style: .light)
                             if !isSelecting { close() }
                         } label: {
                             Text("Cancelar")
@@ -737,6 +744,7 @@ struct CompanySelectionDialog: View {
                         .disabled(isSelecting)
 
                         Button {
+                            HapticManager.impact(style: .medium)
                             selectEnterprise()
                         } label: {
                             Text("Seleccionar")
@@ -750,6 +758,7 @@ struct CompanySelectionDialog: View {
                                 )
                         }
                         .buttonStyle(.plain)
+                        .bounceOnTap()
                         .disabled(!canSubmit || isSelecting)
                     }
                     .padding(.horizontal, 18)
@@ -866,7 +875,7 @@ struct CompanySelectionDialog: View {
             return
         }
 
-        Task {
+        Task { @MainActor in
             // 1) Enviar selección a Salesforce
             let result = await Network.shared.sendCompanyToSalesforce(
                 accountId: accountId,
@@ -884,11 +893,15 @@ struct CompanySelectionDialog: View {
             let brandResult = await Network.shared.getBrandAccount(agreementId: brandAgreementId)
             switch brandResult {
             case .success(let brands):
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    let oldItems = realm.objects(BrandAccounts.self)
-                    realm.delete(oldItems)
-                    realm.add(brands, update: .all)
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        let oldItems = realm.objects(BrandAccounts.self)
+                        realm.delete(oldItems)
+                        realm.add(brands, update: .all)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en CompanySelectionDialog.selectEnterprise: \(error.localizedDescription)")
                 }
                 ClinicManager().generateClinics(from: brands)
                 print("✅ [CompanySelectionDialog] BrandAccount cargado: \(brands.records.count) records")

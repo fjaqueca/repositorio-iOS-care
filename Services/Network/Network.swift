@@ -61,7 +61,12 @@ struct Network {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = endpoint.keyEncodingStrategy
 
-        var urlRequest = try! URLRequest(url: url, method: method, headers: headers)
+        var urlRequest: URLRequest
+        do {
+            urlRequest = try URLRequest(url: url, method: method, headers: headers)
+        } catch {
+            return .failure(AppError(id: "api.error.urlRequest", name: "Network", message: error.localizedDescription))
+        }
         urlRequest.httpBody = jsonData
 
         let response = await manager

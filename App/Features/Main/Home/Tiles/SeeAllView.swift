@@ -21,19 +21,24 @@ struct SeeAllView: View {
     var body: some View {
             VStack {
                 Divider()
-                    ForEach(brandItems) { brands in
-                        ForEach(brands.records) { brand in
-                            if brand.Name == subHomeName{
-                                TileObjetcView(brand: brand, UIState: $UIState, UIStateAppoint: $UIStateAppoint, totalSubHomes: $totalSubHomes, currentSubHome: $currentSubHome,tipeSubHome: $tipeSubHome, isGrid: isGrid, selectedTab: $selectedTab)
+                ScrollView {
+                    VStack(spacing: 12) {
+                        ForEach(brandItems) { brands in
+                            ForEach(Array(brands.records.enumerated()), id: \.element.id) { index, brand in
+                                if brand.Name == subHomeName{
+                                    TileObjetcView(brand: brand, UIState: $UIState, UIStateAppoint: $UIStateAppoint, totalSubHomes: $totalSubHomes, currentSubHome: $currentSubHome,tipeSubHome: $tipeSubHome, isGrid: isGrid, selectedTab: $selectedTab)
+                                        .pressable()
+                                        .staggeredAppear(index: index)
+                                }
                             }
-                            
                         }
                     }
                     .padding(.top, .margin)
                     .padding(.horizontal, .margin)
+                }
                 Spacer()
-                
             }
+            .slideInFromRight()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

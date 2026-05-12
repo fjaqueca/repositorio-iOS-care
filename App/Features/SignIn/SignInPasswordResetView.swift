@@ -34,8 +34,10 @@ struct SignInPasswordResetView: View {
                 Spacer()
                 
                 PrimaryButton(title: "Aceptar", UIStateBtn: UIState.singInPasswordResetUIState.btnSend) {
+                    HapticManager.impact(style: .medium)
                     renewPassword()
                 }
+                .bounceOnTap()
                 .disabled(isLoading || passwordField.value != passwordConfirmField.value || ((passwordField.value?.isEmpty) == nil) || !passwordField.isValid)
 
             }
@@ -45,6 +47,7 @@ struct SignInPasswordResetView: View {
             
         }
         .padding(.margin)
+        .slideInFromRight()
         .background(
             Group {
                     if UIState.singInPasswordResetUIState.imageBackground != "" {
@@ -110,6 +113,7 @@ struct SignInPasswordResetView: View {
                         .multilineTextAlignment(popupData.popupAtr.alignment == "center" ? .center : .leading)
                         .padding(.bottom)
                     Button {
+                        HapticManager.impact(style: .light)
                         self.showCustomPopup = false
                         self.isPresenting = false
                     } label: {

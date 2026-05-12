@@ -26,13 +26,19 @@ struct ProfileChangePassword: View {
     @State private var successIconScale: CGFloat = 0.0
 
     private var userFirstName: String {
-        users.first?.records.first?.FirstName ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first else { return "" }
+        return record.FirstName ?? ""
     }
     private var userLastName: String {
-        users.first?.records.first?.LastName ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first else { return "" }
+        return record.LastName ?? ""
     }
     private var userEmail: String {
-        users.first?.records.first?.PersonEmail ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first else { return "" }
+        return record.PersonEmail ?? ""
     }
     private var userInitials: String {
         let first = userFirstName.prefix(1).uppercased()
@@ -94,6 +100,7 @@ struct ProfileChangePassword: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    HapticManager.impact(style: .light)
                     presentation.wrappedValue.dismiss()
                 } label: {
                     Image("back")
@@ -270,6 +277,7 @@ struct ProfileChangePassword: View {
             }
         }
         .buttonStyle(.plain)
+        .bounceOnTap()
         .disabled(!passwordConfirmField.isValid || isLoading)
     }
 
@@ -330,6 +338,7 @@ struct ProfileChangePassword: View {
                         .padding(.horizontal, 12)
 
                     Button {
+                        HapticManager.success()
                         dismissSuccessModal()
                     } label: {
                         Text("Aceptar")
@@ -340,6 +349,7 @@ struct ProfileChangePassword: View {
                             .background(RoundedRectangle(cornerRadius: 25).fill(Color(hex: "#00BBDC")))
                     }
                     .buttonStyle(.plain)
+                    .bounceOnTap()
                     .padding(.top, 4)
                     .padding(.bottom, 18)
                 }
@@ -365,6 +375,7 @@ struct ProfileChangePassword: View {
 
     public func changePassword() {
         guard let oldPassword = oldPasswordField.value, let newPassword = passwordConfirmField.value else {
+            isLoading = false
             return
         }
         isLoading = true

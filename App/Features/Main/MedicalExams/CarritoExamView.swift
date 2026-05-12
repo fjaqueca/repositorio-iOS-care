@@ -168,6 +168,7 @@ struct CarritoExamView: View {
                         // Botón Ver Resumen
                         let btnResumen = carritoConfig.btnVerResumen
                         Button {
+                            HapticManager.impact(style: .medium)
                             onVerResumen()
                         } label: {
                             Text(btnResumen.texto.isEmpty ? "Ver Resumen" : btnResumen.texto)
@@ -183,11 +184,13 @@ struct CarritoExamView: View {
                                         .fill(Color(hex: btnResumen.colorFondo.isEmpty ? carritoConfig.carritoColor : btnResumen.colorFondo))
                                 )
                         }
+                        .bounceOnTap()
 
                         // Botón Limpiar Todo
                         let btnLimpiar = carritoConfig.btnLimpiar
                         if !btnLimpiar.texto.isEmpty {
                             Button {
+                                HapticManager.warning()
                                 onLimpiarTodo()
                             } label: {
                                 Text(btnLimpiar.texto)
@@ -197,6 +200,7 @@ struct CarritoExamView: View {
                                     ))
                                     .foregroundColor(Color(hex: btnLimpiar.colorTexto.isEmpty ? "#333F48" : btnLimpiar.colorTexto))
                             }
+                            .bounceOnTap()
                         }
                     }
                     .padding(.horizontal, .margin)
@@ -217,6 +221,7 @@ struct CarritoExamView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         onDismiss()
                     } label: {
                         Image("back")

@@ -43,19 +43,26 @@ struct AppointmentsView: View {
             VStack(spacing: 0.0) {
                     Divider()
                     
-                    switch displayMode {
-                    case .list:
-                        AppointmentsListView(UIStateAppoint: $UIStateAppoint)
-                    case .calendar:
-                        AppointmentsCalendarView(UIStateAppoint: $UIStateAppoint)
+                    Group {
+                        switch displayMode {
+                        case .list:
+                            AppointmentsListView(UIStateAppoint: $UIStateAppoint)
+                        case .calendar:
+                            AppointmentsCalendarView(UIStateAppoint: $UIStateAppoint)
+                        }
                     }
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.3), value: displayMode)
                     Spacer()
                     PrimaryButton(title: "Nueva cita",UIStateBtn: UIStateAppoint.appointmentUIState.btnNew) {
+                        HapticManager.impact(style: .medium)
                         isPresentingNewAppointment = true
                     }
+                    .bounceOnTap()
                     .padding(.horizontal, .margin)
                     .padding(.bottom, .margin)
                 }
+                .fadeSlideIn(delay: 0.05, from: .bottom)
                 .navigationLink(isActive: $isPresentingNewAppointment) {
                         NewAppointmentSelectClinicView(UIStateAppoint: $UIStateAppoint, selectedTab: $selectedTab)
                             .rootPresentation {
@@ -72,6 +79,7 @@ struct AppointmentsView: View {
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
+                            HapticManager.selection()
                             displayMode.toggle()
                         } label: {
                             Image(displayMode.toggleIcon)

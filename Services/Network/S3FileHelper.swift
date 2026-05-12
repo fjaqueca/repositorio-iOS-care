@@ -56,7 +56,11 @@ struct S3FileHelper {
 
     /// Directorio de documentos de la app para caché de archivos.
     static var documentsDirectory: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("❌ [S3Helper] No se pudo obtener el directorio de documentos")
+            return FileManager.default.temporaryDirectory
+        }
+        return url
     }
 
     /// Verifica si un archivo existe en el caché local (Documents).

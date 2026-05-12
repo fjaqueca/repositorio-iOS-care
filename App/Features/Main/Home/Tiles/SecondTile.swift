@@ -30,12 +30,23 @@ struct SecondTile: View {
                 Spacer()
                 if tipeSubHome.count == 0{
                     Button {
+                        HapticManager.selection()
                         showAll = true
                     } label: {
-                        Text(UIState.labelSeeAllUIState.text)
-                            .font(Font.custom(UIState.labelSeeAllUIState.font, size: CGFloat(Int(UIState.labelSeeAllUIState.size) ?? 16)))
-                            .foregroundColor(Color(hex: UIState.labelSeeAllUIState.color))
+                        HStack(spacing: 4) {
+                            Text(UIState.labelSeeAllUIState.text.isEmpty ? "Ver todo" : UIState.labelSeeAllUIState.text)
+                                .font(Font.custom(UIState.labelSeeAllUIState.font, size: CGFloat(Int(UIState.labelSeeAllUIState.size) ?? 13)))
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10, weight: .semibold))
+                        }
+                        .foregroundColor(Color(hex: UIState.labelSeeAllUIState.color))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule().fill(Color(hex: UIState.labelSeeAllUIState.color).opacity(0.1))
+                        )
                     }
+                    .bounceOnTap()
                     .padding(.trailing, .margin)
                 }
             }

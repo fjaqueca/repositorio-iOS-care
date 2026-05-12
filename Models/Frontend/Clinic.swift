@@ -170,7 +170,7 @@ class ClinicInit: Object, Identifiable {
 
 
 class ClinicManager {
-    private let realm = try! Realm()
+    private let realm: Realm? = try? Realm()
     
     func generateClinics(from brand: BrandAccounts) {
         for records in brand.records {
@@ -262,8 +262,10 @@ class ClinicManager {
                     continue
                 }
                 
-                let clinicName = infoArray.first!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                let clinicId = infoArray.last!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                guard let clinicName = infoArray.first?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
+                      let clinicId = infoArray.last?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
+                    continue
+                }
                 
                 // Aplicar filtros adicionales (WTW, beneficYapp) aquí si corresponde
                 
@@ -273,10 +275,18 @@ class ClinicManager {
             }
             
             // Guardamos en Realm (reemplazo simple)
-            try! realm.write {
-                let oldClinics = realm.objects(ClinicInit.self)
-                realm.delete(oldClinics)
-                realm.add(clinics)
+            guard let realm = realm else {
+                print("❌ [Realm] Error en ClinicManager.generateClinics: Realm no disponible")
+                return
+            }
+            do {
+                try realm.write {
+                    let oldClinics = realm.objects(ClinicInit.self)
+                    realm.delete(oldClinics)
+                    realm.add(clinics)
+                }
+            } catch {
+                print("❌ [Realm] Error en ClinicManager.generateClinics: \(error.localizedDescription)")
             }
             print("Clinics guardadas para records.Name=\(records.Name ?? "nil"): \(clinics.count)")
             

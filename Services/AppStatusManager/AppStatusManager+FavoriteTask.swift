@@ -16,12 +16,16 @@ extension AppStatusManager {
             let favoriteTaskResult = await Network.shared.getFavoriteTask(accountId: accountId)
             switch favoriteTaskResult {
                 case let .success(tasks):
-                    let realm = try! Realm(queue: nil)
-                    try! realm.write {
-                        let oldItems = realm.objects(FavoriteTasksTotal.self)
-                        // Delete stored items
-                        realm.delete(oldItems)
-                        realm.add(tasks, update: .all)
+                    do {
+                        let realm = try Realm(queue: nil)
+                        try realm.write {
+                            let oldItems = realm.objects(FavoriteTasksTotal.self)
+                            // Delete stored items
+                            realm.delete(oldItems)
+                            realm.add(tasks, update: .all)
+                        }
+                    } catch {
+                        print("❌ [Realm] Error en loadFavoriteTask: \(error.localizedDescription)")
                     }
                     AppStatusManager.setLoading(false)
                     return

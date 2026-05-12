@@ -20,7 +20,7 @@ extension NewAppointmentSelectDetailsView {
                             self.popupConsent.append(popup)
                         }
                     } else {
-                        let idClinic = (i == 1) ? ba.value(forKey: "Valor_1_10__c") as? String : nil
+                        let idClinic = (i == 1) ? ba.safeValue(forKey: "Valor_1_10__c") as? String : nil
                         if let popup = buildPopupConsent(prefix: "valor", base: i, ba: ba, idClinic: idClinic) {
                             self.popupConsent.append(popup)
                         }

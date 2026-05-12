@@ -40,9 +40,11 @@ struct SignUpView: View {
                 Spacer()
                 
                 PrimaryButton(title: "Registrarme", UIStateBtn: UIState.singUpUIState.btnRegister) {
+                    HapticManager.impact(style: .medium)
                     signUp()
                     self.hideKeyboard()
                 }
+                .bounceOnTap()
                 .disabled(!rutField.isValid)
                 .isLoading(isLoading)
                 Button {
@@ -64,9 +66,12 @@ struct SignUpView: View {
             }
             .padding(.horizontal, .margin)
             .padding(.bottom, .margin)
+            .slideInFromRight()
             .blur(radius: showPopup ? 3 : 0.00001)
-            if showCustomPopup{
+            if showCustomPopup {
                 CustomPopupSignUp(back: $back, showCustomPopup: $showCustomPopup, popupData: UIState.singUpUIState)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    .zIndex(1)
             }
             if showPopup{
                 EmailValidationPopup(back: $back, showCustomPopup: $showPopup, popupData: UIState.popupWithoutEmailUIState)
@@ -123,22 +128,27 @@ struct SignUpView: View {
             return
         }
         isLoading = true
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.checkRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             isLoading = false
             switch result {
                 case let .success(response):
                     userMail = response.mail ?? ""
                     sendOtp()
-                
-                    
+
+
                 case let .failure(error):
                     if error.httpCode == 404 {
                         if UIState.singUpUIState.enabledRegister == "Si"{
                             self.navigationInSingUp = .registration(rut: rut)
                         }else{
-                            withAnimation {
-                                self.showCustomPopup = true
+                            // Diferimos al siguiente run loop para evitar
+                            // "setting value during update" cuando el popup
+                            // se monta justo después de isLoading=false.
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(response: 0.45, dampingFraction: 0.78)) {
+                                    self.showCustomPopup = true
+                                }
                             }
                         }
                     } else {
@@ -173,29 +183,63 @@ struct SignUpView: View {
         @Binding var back: Bool
         @Binding var showCustomPopup: Bool
         let popupData: SingUpUIState
+
+        private var msgFont: String {
+            popupData.textPopup.font.isEmpty ? "FiraSans-Regular" : popupData.textPopup.font
+        }
+        private var msgSize: CGFloat {
+            CGFloat(Int(popupData.textPopup.sizeText) ?? 14)
+        }
+        private var msgColor: Color {
+            popupData.textPopup.colorText.isEmpty ? Color(hex: "#333F48") : Color(hex: popupData.textPopup.colorText)
+        }
+        private var msgAlignment: TextAlignment {
+            popupData.textPopup.alignment == "center" ? .center : .leading
+        }
+        private var btnBgColor: Color {
+            popupData.btnPopup.backgroundBtn.isEmpty ? Color(hex: "#00BBDC") : Color(hex: popupData.btnPopup.backgroundBtn)
+        }
+        private var btnTextColor: Color {
+            popupData.btnPopup.colorTextBtn.isEmpty ? Color.white : Color(hex: popupData.btnPopup.colorTextBtn)
+        }
+
         var body: some View {
-            ZStack{
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .shadow(color: .gray, radius: 10)
-                VStack(spacing: 5){
+            ZStack {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+
+                VStack(spacing: 0) {
+                    LottieView(animationName: "Empty_box_alert", loopMode: .loop)
+                        .frame(width: 140, height: 140)
+                        .padding(.top, 8)
+
                     Text(popupData.textPopup.text.htmlToString())
-                        .font(Font.custom(popupData.textPopup.font, size: CGFloat(Int(popupData.textPopup.sizeText) ?? 18)))
-                        .foregroundColor(Color(hex: popupData.textPopup.colorText))
-                        .multilineTextAlignment(popupData.textPopup.alignment == "center" ? .center : .leading)
-                        .padding(.bottom)
+                        .font(Font.custom(msgFont, size: msgSize))
+                        .foregroundColor(msgColor)
+                        .multilineTextAlignment(msgAlignment)
+                        .lineSpacing(3)
+                        .padding(.top, 8)
+                        .padding(.horizontal, 4)
+
                     Button {
+                        HapticManager.impact(style: .medium)
                         self.showCustomPopup = false
                         self.back = true
                     } label: {
-                        Text(popupData.btnPopup.textBtn)
-                            .font(Font.custom(popupData.btnPopup.font, size: CGFloat(Int(popupData.btnPopup.size) ?? 18)))
-                            .foregroundColor(Color(hex: popupData.btnPopup.colorTextBtn))
+                        Text(popupData.btnPopup.textBtn.isEmpty ? "Aceptar" : popupData.btnPopup.textBtn)
+                            .font(Font.custom("FiraSans-Bold", size: 15))
+                            .foregroundColor(btnTextColor)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48)
+                            .background(RoundedRectangle(cornerRadius: 24).fill(btnBgColor))
                     }
+                    .padding(.top, 20)
                 }
-                .padding()
+                .padding(24)
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.92)
+                .background(RoundedRectangle(cornerRadius: 20).fill(Color.white))
+                .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 8)
             }
-            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     struct EmailValidationPopup: View {
@@ -221,9 +265,11 @@ struct SignUpView: View {
                         .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
                         .foregroundColor(Color(hex: popupData.msg.colorText))
                         .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-                    Link(popupData.email != "" ? popupData.email : "contacto@careassistance.com", destination: URL(string: "mailto:\(popupData.email != "" ? popupData.email : "contacto@careassistance.com")")!)
-                        .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
-                        .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
+                    if let mailURL = URL(string: "mailto:\(popupData.email != "" ? popupData.email : "contacto@careassistance.com")") {
+                        Link(popupData.email != "" ? popupData.email : "contacto@careassistance.com", destination: mailURL)
+                            .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
+                            .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
+                    }
                         
 
                     Text(popupData.msg3 != "" ? popupData.msg3 : "¡Te esperamos!")
@@ -232,6 +278,7 @@ struct SignUpView: View {
                         .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
                         .padding(.bottom)
                     Button {
+                        HapticManager.impact(style: .light)
                         self.showCustomPopup = false
                         self.back = true
                     } label: {

@@ -44,21 +44,14 @@ struct EducationalMaterialDetailsView: View {
                         headerCard
                         if materialData.isEmpty {
                             VStack(spacing: 12) {
-                                Spacer()
-                                    .frame(height: 40)
-
-                                Image(systemName: "folder")
-                                    .font(.system(size: 50, weight: .light))
-                                    .foregroundColor(Color(.systemGray3))
-
-                                Text("Sin documentos cargados...")
+                                LottieView(animationName: "Empty_Box")
+                                    .frame(width: 180, height: 180)
+                                Text("Sin documentos cargados")
                                     .font(Font.custom("FiraSans-Bold", size: 19))
                                     .foregroundColor(Color(hex: "#5B6770"))
-
-                                Spacer()
-                                    .frame(height: 40)
                             }
                             .frame(maxWidth: .infinity)
+                            .popIn()
                         } else {
                             materialsCard
                             buttonsBottom
@@ -71,6 +64,7 @@ struct EducationalMaterialDetailsView: View {
                     getMaterialData()
                 }
             }
+            .slideInFromRight()
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(UIState.materialList.title.text != "" ? UIState.materialList.title.text : "Material Educativo")
@@ -80,6 +74,7 @@ struct EducationalMaterialDetailsView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
+                        HapticManager.impact(style: .light)
                         changeFavorite()
                     }) {
                         Image(systemName: isFavorite ? "star.fill" : "star")
@@ -118,14 +113,9 @@ struct EducationalMaterialDetailsView: View {
                         urlWebView = ""
                     }
             }
-            .blur(radius: isLoading ? 3 : 0.000001)
-
             if isLoading {
-                ProgressView()
-                    .scaleEffect(1.2)
-                    .padding(24)
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(12)
+                SkeletonList(rows: 3)
+                    .padding(.top, 20)
             }
         }
         .navigationBarBackButtonHidden()
@@ -344,7 +334,7 @@ struct EducationalMaterialDetailsView: View {
     func shareEducationalMaterial(){
         self.stringShare = ""
         self.isLoading = true
-        if let urls = material.url1C?.components(separatedBy: ";") {
+        if let urls = material.url1C?.components(separatedBy: ";"), !urls.isEmpty {
             for url in urls {
                 self.stringShare += "\(url)\n"
             }
@@ -352,6 +342,8 @@ struct EducationalMaterialDetailsView: View {
                 self.isLoading = false
                 self.showSheetShare.toggle()
             }
+        } else {
+            self.isLoading = false
         }
     }
     func changeFavorite(){
@@ -379,7 +371,7 @@ struct EducationalMaterialDetailsView: View {
         DispatchQueue.global(qos: .background).async  {
             if let url = URL(string: urlString) {
                 let pdfData = try? Data.init(contentsOf: url)
-                let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
+                guard let resourceDocPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
                 let pdfNameFromUrl = "\(material.Name ?? "")-\(fileName).pdf"
                 let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
                 DispatchQueue.main.async {
@@ -413,9 +405,11 @@ struct EducationalMaterialDetailsView: View {
             }
         }
         if let names = material.nombresC?.components(separatedBy: ";") {
-            if let icons = material.iconosC?.components(separatedBy: ";") {
-                for index in names.indices {
-                    materialData[index].name = names[index]
+            let icons = material.iconosC?.components(separatedBy: ";")
+            for index in names.indices {
+                guard index < materialData.count else { break }
+                materialData[index].name = names[index]
+                if let icons = icons, index < icons.count {
                     materialData[index].icon = icons[index]
                 }
             }

@@ -157,12 +157,15 @@ struct SignUpOtpView: View {
             }
             .disabled(!resendButtonEnabled)
             PrimaryButton(title: "Continuar", UIStateBtn: UIState.singUpOtpUIState.btnContinue) {
+                HapticManager.impact(style: .medium)
                 checkValidationCode()
             }
+            .bounceOnTap()
             .disabled(isLoading || otpCode.count != 6)
         }
         .padding(.horizontal, .margin)
         .padding(.bottom, .margin)
+        .slideInFromRight()
     }
 
     private func getPin(at index: Int) -> String {

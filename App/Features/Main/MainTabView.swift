@@ -93,7 +93,10 @@ struct MainTabView: View {
             update = "ForcedUpdate"
         }
         .onChange(of: UIState.greetingUIState.text) { _ in
-            if (users.first?.records.first?.PersonEmail == nil || users.first?.records.first?.PersonEmail == "") || (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == "") {
+            guard let user = users.first, !user.isInvalidated,
+                  let record = user.records.first, !record.isInvalidated else { return }
+            if (record.PersonEmail == nil || record.PersonEmail == "") ||
+               (record.Phone == nil || record.Phone == "") {
                 self.showEmailPhone = true
             }
         }
@@ -328,6 +331,7 @@ struct MainTabView: View {
                         .padding(.horizontal, 8)
 
                     Button {
+                        HapticManager.selection()
                         item.action()
                     } label: {
                         HStack(spacing: 9) {

@@ -25,6 +25,7 @@ struct SignInView: View {
     @State var showPopup: Bool = false
     @State var showCustomPopupCreatePassword: Bool = false
     @State private var back: Bool = false
+    @FocusState private var isRutFocused: Bool
     @Environment(\.presentationMode) var presentation
     @State private var navigationInSingUp: NavigationInSignUp?
     @State var codeGenerateResponse: String = ""
@@ -40,10 +41,12 @@ struct SignInView: View {
             VStack(spacing: .margin) {
                 ScrollView{
                     title
+                        .padding(.bottom, 6)
                     subtitle
+                        .padding(.bottom, 6)
                     subText
-                        .padding(.vertical)
-                    FieldView(field: $rutField, textRut: UIState.loginUIState.lblTextFieldRut)
+                        .padding(.bottom, 24)
+                    rutInputField
                     //FieldView(field: $passwordField)
                     
     //                Button {
@@ -59,8 +62,10 @@ struct SignInView: View {
                 Spacer()
                 
                 PrimaryButton(title: "Continuar", UIStateBtn: UIState.loginUIState.btnContinue) {
+                    HapticManager.impact(style: .medium)
                     isUserInSalesforce()
                 }
+                .bounceOnTap()
                 .disabled(!rutField.isValid)
                 .padding(.bottom, .margin)
     //            Button {
@@ -76,6 +81,7 @@ struct SignInView: View {
             }
             .padding(.horizontal, .margin)
             .padding(.bottom, .margin)
+            .slideInFromRight()
             .navigationBarTitleDisplayMode(.inline)
             .background(
                 Group {
@@ -105,8 +111,10 @@ struct SignInView: View {
                 }
             }
             .blur(radius: showCustomPopup || showPopup || showCustomPopupCreatePassword ? 3 : 0.00001)
-            if showCustomPopup{
+            if showCustomPopup {
                 CustomPopupSignUp(back: $back, showCustomPopup: $showCustomPopup, popupData: UIState.singUpUIState)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    .zIndex(1)
             }
             if showPopup{
                 EmailValidationPopup(back: $back, showCustomPopup: $showPopup, popupData: UIState.popupWithoutEmailUIState)
@@ -152,6 +160,83 @@ struct SignInView: View {
             .foregroundColor(UIState.loginUIState.subTextRut.colorText != "" ? Color(hex: UIState.loginUIState.subTextRut.colorText) : .primaryText)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
+
+    private var rutInputField: some View {
+        let hasValue = !(rutField.value ?? "").isEmpty
+        let isError = rutField.validationErrorMessage != nil
+        let placeholder = UIState.loginUIState.lblTextFieldRut != "" ? UIState.loginUIState.lblTextFieldRut : "Ej: 12345678-9"
+        let accentColor = Color(hex: "#00BBDC")
+        let borderColor = isError ? Color(hex: "#E74C3C") :
+                          (isRutFocused || hasValue) ? accentColor :
+                          Color(hex: "#C8CDD2")
+
+        return VStack(alignment: .leading, spacing: 6) {
+            // Input container con label incrustado en el borde
+            ZStack(alignment: .topLeading) {
+                // Input
+                HStack(spacing: 12) {
+                    Image(systemName: "person.text.rectangle")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(isRutFocused ? accentColor : Color(hex: "#8A9199"))
+
+                    TextField(placeholder, text: Binding(
+                        get: { rutField.value ?? "" },
+                        set: { rutField.value = $0 }
+                    ))
+                    .font(Font.custom("FiraSans-Regular", size: 16))
+                    .foregroundColor(Color(hex: "#2C3E50"))
+                    .focused($isRutFocused)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+
+                    if isError {
+                        Image(systemName: "exclamationmark.circle.fill")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(Color(hex: "#E74C3C"))
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.white.opacity(0.85))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(borderColor, lineWidth: isRutFocused ? 1.5 : 1)
+                )
+
+                // Label flotante incrustado en el borde
+                Text(" Número de identificación ")
+                    .font(Font.custom("FiraSans-Medium", size: 12))
+                    .foregroundColor(isRutFocused ? accentColor : Color(hex: "#6B7680"))
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white.opacity(0.97))
+                    )
+                    .padding(.leading, 14)
+                    .offset(y: -8)
+            }
+            .animation(.easeInOut(duration: 0.2), value: isRutFocused)
+            .animation(.easeInOut(duration: 0.2), value: isError)
+
+            // Error message
+            if let error = rutField.validationErrorMessage {
+                HStack(spacing: 4) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 12))
+                    Text(error)
+                        .font(Font.custom("FiraSans-Regular", size: 12))
+                }
+                .foregroundColor(Color(hex: "#E74C3C"))
+                .padding(.leading, 4)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .padding(.horizontal, 2)
+        .animation(.easeInOut(duration: 0.25), value: rutField.validationErrorMessage != nil)
+    }
     
 //    public func signIn() {
 //        guard let rut = rutField.value, let password = passwordField.value else {
@@ -182,7 +267,7 @@ struct SignInView: View {
         FirebaseLogger.shared.log("🔑 Checking RUT in Salesforce")
         AppStatusManager.setLoading(true)
 
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.checkRut(rut: rut.filter { $0.isLetter || $0.isNumber })
             AppStatusManager.setLoading(false)
             switch result {
@@ -206,13 +291,20 @@ struct SignInView: View {
                             self.navigationInSingUp = .registration(rut: rut)
                         }else{
                                 print("   → Registro NO habilitado → Mostrando popup CustomPopupSignUp")
-                                self.showCustomPopup = true
                                 FirebaseLogger.shared.logErrorPopup(
                                     title: "Usuario no encontrado",
                                     message: "El RUT no está registrado",
                                     source: "SignInView"
                                 )
-
+                                // Diferimos el set del @State al siguiente run loop
+                                // para evitar "setting value during update" cuando
+                                // SwiftUI todavía está procesando el cambio anterior
+                                // (setLoading(false) + dismiss de teclado).
+                                DispatchQueue.main.async {
+                                    withAnimation(.spring(response: 0.45, dampingFraction: 0.78)) {
+                                        self.showCustomPopup = true
+                                    }
+                                }
                         }
                     } else {
                         print("   ❌ Error checkRut: httpCode=\(error.httpCode ?? -1) message=\(error.message)")
@@ -307,28 +399,62 @@ struct SignInView: View {
         @Binding var back: Bool
         @Binding var showCustomPopup: Bool
         let popupData: SingUpUIState
+
+        private var msgFont: String {
+            popupData.textPopup.font.isEmpty ? "FiraSans-Regular" : popupData.textPopup.font
+        }
+        private var msgSize: CGFloat {
+            CGFloat(Int(popupData.textPopup.sizeText) ?? 14)
+        }
+        private var msgColor: Color {
+            popupData.textPopup.colorText.isEmpty ? Color(hex: "#333F48") : Color(hex: popupData.textPopup.colorText)
+        }
+        private var msgAlignment: TextAlignment {
+            popupData.textPopup.alignment == "center" ? .center : .leading
+        }
+        private var btnBgColor: Color {
+            popupData.btnPopup.backgroundBtn.isEmpty ? Color(hex: "#00BBDC") : Color(hex: popupData.btnPopup.backgroundBtn)
+        }
+        private var btnTextColor: Color {
+            popupData.btnPopup.colorTextBtn.isEmpty ? Color.white : Color(hex: popupData.btnPopup.colorTextBtn)
+        }
+
         var body: some View {
-            ZStack{
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .shadow(color: .gray, radius: 10)
-                VStack(spacing: 5){
+            ZStack {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+
+                VStack(spacing: 0) {
+                    LottieView(animationName: "Empty_box_alert", loopMode: .loop)
+                        .frame(width: 140, height: 140)
+                        .padding(.top, 8)
+
                     Text(popupData.textPopup.text.htmlToString())
-                        .font(Font.custom(popupData.textPopup.font, size: CGFloat(Int(popupData.textPopup.sizeText) ?? 18)))
-                        .foregroundColor(Color(hex: popupData.textPopup.colorText))
-                        .multilineTextAlignment(popupData.textPopup.alignment == "center" ? .center : .leading)
-                        .padding(.bottom)
+                        .font(Font.custom(msgFont, size: msgSize))
+                        .foregroundColor(msgColor)
+                        .multilineTextAlignment(msgAlignment)
+                        .lineSpacing(3)
+                        .padding(.top, 8)
+                        .padding(.horizontal, 4)
+
                     Button {
+                        HapticManager.impact(style: .medium)
                         self.showCustomPopup = false
                     } label: {
-                        Text(popupData.btnPopup.textBtn)
-                            .font(Font.custom(popupData.btnPopup.font, size: CGFloat(Int(popupData.btnPopup.size) ?? 18)))
-                            .foregroundColor(Color(hex: popupData.btnPopup.colorTextBtn))
+                        Text(popupData.btnPopup.textBtn.isEmpty ? "Aceptar" : popupData.btnPopup.textBtn)
+                            .font(Font.custom("FiraSans-Bold", size: 15))
+                            .foregroundColor(btnTextColor)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48)
+                            .background(RoundedRectangle(cornerRadius: 24).fill(btnBgColor))
                     }
+                    .padding(.top, 20)
                 }
-                .padding()
+                .padding(24)
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.92)
+                .background(RoundedRectangle(cornerRadius: 20).fill(Color.white))
+                .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 8)
             }
-            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 250)
         }
     }
     struct EmailValidationPopup: View {
@@ -354,9 +480,11 @@ struct SignInView: View {
                         .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
                         .foregroundColor(Color(hex: popupData.msg.colorText))
                         .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-                    Link(popupData.email != "" ? popupData.email : "contacto@careassistance.com", destination: URL(string: "mailto:\(popupData.email != "" ? popupData.email : "contacto@careassistance.com")")!)
-                        .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
-                        .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
+                    if let mailURL = URL(string: "mailto:\(popupData.email != "" ? popupData.email : "contacto@careassistance.com")") {
+                        Link(popupData.email != "" ? popupData.email : "contacto@careassistance.com", destination: mailURL)
+                            .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.sizeText) ?? 18)))
+                            .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
+                    }
                         
 
                     Text(popupData.msg3 != "" ? popupData.msg3 : "¡Te esperamos!")
@@ -365,6 +493,7 @@ struct SignInView: View {
                         .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
                         .padding(.bottom)
                     Button {
+                        HapticManager.impact(style: .light)
                         self.showCustomPopup = false
                         self.back = true
                     } label: {

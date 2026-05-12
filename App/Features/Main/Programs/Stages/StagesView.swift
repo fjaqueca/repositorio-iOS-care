@@ -75,7 +75,7 @@ struct StagesView: View {
                             }
                             
                             if let stages = stages {
-                                ForEach(stages.records, id: \.self) { stage in
+                                ForEach(Array(stages.records.enumerated()), id: \.element) { index, stage in
                                     StageRowView(
                                         stage: stage,
                                         programID: programId,
@@ -85,7 +85,9 @@ struct StagesView: View {
                                         puntosObtenerEtapa: stage.puntosAObtenerC ?? 0.0,
                                         puntosAcumuladosEtapa: stage.puntosAcumuladosC ?? 0.0
                                     )
-                                    .environmentObject(navigationState)  // ✅ PASAR ESTADO A StageRowView
+                                    .environmentObject(navigationState)
+                                    .pressable()
+                                    .springOnAppear(delay: Double(index) * 0.05)
                                 }
                             }
                         }
@@ -112,11 +114,16 @@ struct StagesView: View {
                         }
                     }
                 }
+                .slideInFromRight()
             }
-            
-            // ✅ LOADING: Pantalla completa con solo el spinner, SIN contenido debajo
+
+            // ✅ LOADING: Skeleton mientras carga
             if isLoading || showOverlay {
-                CenteredLoadingView()
+                VStack {
+                    SkeletonList(rows: 3)
+                        .padding(.top, 20)
+                    Spacer(minLength: 0)
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)

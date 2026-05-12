@@ -21,6 +21,8 @@ struct SignInWithPasswordView: View {
     @Binding var UIState: PreLoginUIState
     @State private var showCustomPopup: Bool = false
     @State private var back: Bool = false
+    @State private var isPasswordVisible: Bool = false
+    @FocusState private var isPasswordFocused: Bool
     @Environment(\.presentationMode) var presentation
     
     var body: some View {
@@ -28,10 +30,12 @@ struct SignInWithPasswordView: View {
             VStack(spacing: .margin) {
                 ScrollView{
                     title
+                        .padding(.bottom, 6)
                     subtitle
+                        .padding(.bottom, 6)
                     subText
-                        .padding(.vertical)
-                    FieldView(field: $passwordField)
+                        .padding(.bottom, 24)
+                    passwordInputField
                     
                     Button {
                         isPresenting = true
@@ -46,14 +50,17 @@ struct SignInWithPasswordView: View {
                 Spacer()
                 
                 PrimaryButton(title: "Iniciar Sesion", UIStateBtn: UIState.loginUIState.btnLogin) {
+                    HapticManager.impact(style: .medium)
                     signIn()
                 }
-                .disabled(passwordField.value?.isEmpty ?? true || isLoading)  // 🔒 Deshabilitar si está cargando
-                .opacity(isLoading ? 0.6 : 1.0)  // 🎨 Feedback visual
+                .bounceOnTap()
+                .disabled(passwordField.value?.isEmpty ?? true || isLoading)
+                .opacity(isLoading ? 0.6 : 1.0)
                 .padding(.bottom, .margin)
             }
             .padding(.horizontal, .margin)
             .padding(.bottom, .margin)
+            .slideInFromRight()
             .navigationBarTitleDisplayMode(.inline)
             .background(
                 Group {
@@ -126,7 +133,91 @@ struct SignInWithPasswordView: View {
             .foregroundColor(UIState.loginUIState.subTextPassword.colorText != "" ? Color(hex: UIState.loginUIState.subTextPassword.colorText) : .primaryText)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
+    private var passwordInputField: some View {
+        let hasValue = !(passwordField.value ?? "").isEmpty
+        let isError = passwordField.validationErrorMessage != nil
+        let accentColor = Color(hex: "#00BBDC")
+        let borderColor = isError ? Color(hex: "#E74C3C") :
+                          (isPasswordFocused || hasValue) ? accentColor :
+                          Color(hex: "#C8CDD2")
+
+        return VStack(alignment: .leading, spacing: 6) {
+            ZStack(alignment: .topLeading) {
+                HStack(spacing: 12) {
+                    Image(systemName: "lock")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(isPasswordFocused ? accentColor : Color(hex: "#8A9199"))
+
+                    if isPasswordVisible {
+                        TextField("Contraseña", text: Binding(
+                            get: { passwordField.value ?? "" },
+                            set: { passwordField.value = $0 }
+                        ))
+                        .font(Font.custom("FiraSans-Regular", size: 16))
+                        .foregroundColor(Color(hex: "#2C3E50"))
+                        .focused($isPasswordFocused)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                    } else {
+                        SecureField("Contraseña", text: Binding(
+                            get: { passwordField.value ?? "" },
+                            set: { passwordField.value = $0 }
+                        ))
+                        .font(Font.custom("FiraSans-Regular", size: 16))
+                        .foregroundColor(Color(hex: "#2C3E50"))
+                        .focused($isPasswordFocused)
+                    }
+
+                    Button {
+                        isPasswordVisible.toggle()
+                    } label: {
+                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(isPasswordFocused ? accentColor : Color(hex: "#8A9199"))
+                    }
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.white.opacity(0.85))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(borderColor, lineWidth: isPasswordFocused ? 1.5 : 1)
+                )
+
+                // Label flotante incrustado en el borde
+                Text(" Contraseña ")
+                    .font(Font.custom("FiraSans-Medium", size: 12))
+                    .foregroundColor(isPasswordFocused ? accentColor : Color(hex: "#6B7680"))
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white.opacity(0.97))
+                    )
+                    .padding(.leading, 14)
+                    .offset(y: -8)
+            }
+            .animation(.easeInOut(duration: 0.2), value: isPasswordFocused)
+            .animation(.easeInOut(duration: 0.2), value: isError)
+
+            if let error = passwordField.validationErrorMessage {
+                HStack(spacing: 4) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 12))
+                    Text(error)
+                        .font(Font.custom("FiraSans-Regular", size: 12))
+                }
+                .foregroundColor(Color(hex: "#E74C3C"))
+                .padding(.leading, 4)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .padding(.horizontal, 2)
+        .animation(.easeInOut(duration: 0.25), value: passwordField.validationErrorMessage != nil)
+    }
+
     public func signIn() {
         guard let password = passwordField.value else {
             return

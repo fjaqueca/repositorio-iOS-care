@@ -15,14 +15,18 @@ extension AppStatusManager {
         print(agreementId)
         switch clinicsResponse {
             case let .success(clinics):
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    let oldItems = realm.objects(ClinicR1.self)
-                    // Delete stored items
-                    realm.delete(oldItems)
-                    // Save the updated clinics
-                    print(clinics)
-                    realm.add(clinics, update: .modified)
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        let oldItems = realm.objects(ClinicR1.self)
+                        // Delete stored items
+                        realm.delete(oldItems)
+                        // Save the updated clinics
+                        print(clinics)
+                        realm.add(clinics, update: .modified)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en loadClinics: \(error.localizedDescription)")
                 }
                 return
             case let .failure(error):
@@ -32,11 +36,16 @@ extension AppStatusManager {
     }
     
     static func loadTelemedicinaClinic() async {
-        let realm = try! Realm(queue: nil)
-//        guard let telemedicina = realm.objects(Clinic.self).first(where: { $0.records.first?.Name == "Telemedicina" }) else {
-//            return
-//        }
-        //await Self.loadClinicDetails(id: telemedicina.id)
+        do {
+            let realm = try Realm(queue: nil)
+            _ = realm // Realm instance available for future use
+//            guard let telemedicina = realm.objects(Clinic.self).first(where: { $0.records.first?.Name == "Telemedicina" }) else {
+//                return
+//            }
+            //await Self.loadClinicDetails(id: telemedicina.id)
+        } catch {
+            print("❌ [Realm] Error en loadTelemedicinaClinic: \(error.localizedDescription)")
+        }
     }
 
     static func loadClinicDetails(id: String) async {
@@ -44,9 +53,13 @@ extension AppStatusManager {
 
         switch clinicDetailsResponse {
             case let .success(clinicDetails):
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    realm.add(clinicDetails, update: .modified)
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        realm.add(clinicDetails, update: .modified)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en loadClinicDetails: \(error.localizedDescription)")
                 }
                 return
             case let .failure(error):

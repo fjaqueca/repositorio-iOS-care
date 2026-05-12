@@ -57,6 +57,7 @@ struct AutomatedExamsView: View {
     @State private var isDownloadingPdf = false
     @State private var showWebView = false
     @State private var downloadedFileURL: URL?
+    @State private var showConfetti: Bool = false
 
     // Datos del paciente desde ProfileCache (cargados en ExamsView via getProfileFields)
     @State private var accountFirstName = ""
@@ -439,6 +440,7 @@ struct AutomatedExamsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
@@ -450,6 +452,7 @@ struct AutomatedExamsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        HapticManager.impact(style: .medium)
                         print("🛒 [Paso 5] Click icono carrito → items: \(cartItems.count)")
                         logCarritoConfig()
                         if !cartItems.isEmpty {
@@ -513,6 +516,7 @@ struct AutomatedExamsView: View {
                     WebView(url: fileURL)
                 }
             }
+            .confetti(isActive: $showConfetti)
             .configureNavigation()
             .onAppear {
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -540,14 +544,14 @@ struct AutomatedExamsView: View {
         Group {
             if config.categorias.isEmpty {
                 VStack(spacing: 12) {
-                    Image(systemName: "tray")
-                        .font(.system(size: 40))
-                        .foregroundColor(.gray.opacity(0.4))
-                    Text("No hay categorias disponibles")
+                    LottieView(animationName: "Empty_Box")
+                        .frame(width: 180, height: 180)
+                    Text("No hay categorías disponibles")
                         .font(Font.custom("FiraSans-Regular", size: 14))
                         .foregroundColor(.gray)
                 }
                 .padding(.top, 30)
+                .popIn()
             } else {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(config.categorias) { categoria in
@@ -562,6 +566,7 @@ struct AutomatedExamsView: View {
     // MARK: - Categoria Card
     private func categoriaCard(_ categoria: CategoriaExamen) -> some View {
         Button {
+            HapticManager.selection()
             onCategoriaClick(categoria)
         } label: {
             if !categoria.iconURL.isEmpty, let url = URL(string: categoria.iconURL) {
@@ -592,6 +597,7 @@ struct AutomatedExamsView: View {
     // MARK: - Floating Cart Button
     private var cartButton: some View {
         Button {
+            HapticManager.impact(style: .medium)
             print("🛒 [Paso 5] Click boton flotante carrito → items: \(cartItems.count)")
             logCarritoConfig()
             showCart = true
@@ -668,6 +674,7 @@ struct AutomatedExamsView: View {
                 HStack(spacing: 12) {
                     // Boton Volver al Home (solo cierra el dialog)
                     Button {
+                        HapticManager.impact(style: .light)
                         print("🏠 [Paso 11] Volver al Home → cerrando dialog")
                         showExitoOrdenes = false
                     } label: {
@@ -684,6 +691,7 @@ struct AutomatedExamsView: View {
                     // Boton Descargar Documento (oculto si URL vacía, como Android)
                     if !urlOrdenMedicaPdf.isEmpty {
                         Button {
+                            HapticManager.impact(style: .medium)
                             downloadExamPdf()
                         } label: {
                             let btn = config.popupExamenRealizado.btnAceptar
@@ -754,7 +762,7 @@ struct AutomatedExamsView: View {
 
         print("📥 [Paso 11] Archivo NO en caché, llamando a getPresignedUrl...")
 
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.getPresignedUrl(objectKey: objectKey, filename: fileName)
             switch result {
             case let .success(response):
@@ -1006,7 +1014,7 @@ struct AutomatedExamsView: View {
             // Insertar _ antes del numero: "Categoria1" → "Categoria_1"
             var result = ""
             for char in claveApi {
-                if char.isNumber && !result.isEmpty && !result.last!.isNumber {
+                if char.isNumber && !result.isEmpty && result.last.map({ !$0.isNumber }) == true {
                     result += "_"
                 }
                 result.append(char)
@@ -1367,7 +1375,9 @@ struct AutomatedExamsView: View {
                     urlOrdenMedicaPdf = pdfUrl
                     print("   → Mostrando Exito (Paso 11)")
                     printPopupExitoConfig()
+                    self.showConfetti = true
                     showExitoOrdenes = true
+                    ReviewManager.shared.requestReviewIfNeeded()
                 case .failure(let error):
                     print("❌ [Paso 10] generateExamOrder ERROR")
                     print("   Error: \(error.name) - \(error.message)")
@@ -1381,18 +1391,4 @@ struct AutomatedExamsView: View {
     }
 }
 
-// MARK: - Shake Animation Effect
-/// Animación de shake suave con amortiguación (no rígido)
-/// Usa rotación oscilante que se atenúa gradualmente con sin()
-struct ShakeEffect: GeometryEffect {
-    var shakes: Int
-    var animatableData: CGFloat {
-        get { CGFloat(shakes) }
-        set { shakes = Int(newValue) }
-    }
-
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        let offset = sin(animatableData * .pi * 2) * 6
-        return ProjectionTransform(CGAffineTransform(translationX: offset, y: 0))
-    }
-}
+// ShakeEffect movido a Components/SpringModifiers.swift

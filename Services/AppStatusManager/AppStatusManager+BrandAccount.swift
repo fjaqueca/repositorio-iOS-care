@@ -16,12 +16,16 @@ extension AppStatusManager {
             let brandAccountResult = await Network.shared.getBrandAccount(agreementId: agreementId ?? "")
             switch brandAccountResult {
                 case let .success(brands):
-                    let realm = try! Realm(queue: nil)
-                    try! realm.write {
-                        let oldItems = realm.objects(BrandAccounts.self)
-                        // Delete stored items
-                        realm.delete(oldItems)
-                        realm.add(brands, update: .all)
+                    do {
+                        let realm = try Realm(queue: nil)
+                        try realm.write {
+                            let oldItems = realm.objects(BrandAccounts.self)
+                            // Delete stored items
+                            realm.delete(oldItems)
+                            realm.add(brands, update: .all)
+                        }
+                    } catch {
+                        print("❌ [Realm] Error en loadBrandAccount: \(error.localizedDescription)")
                     }
                     ClinicManager().generateClinics(from: brands)
                     AppStatusManager.setLoading(false)

@@ -56,8 +56,10 @@ struct SignUpCreatePassword: View {
             }
 
             PrimaryButton(title: "Registrarme", UIStateBtn: UIState.singUpCreatePassUIState.btnRegister) {
+                HapticManager.impact(style: .medium)
                 signUp()
             }
+            .bounceOnTap()
             .disabled(isLoading || passwordField.value != passwordConfirmField.value || isOn == false || ((passwordField.value?.isEmpty) == nil) || !passwordField.isValid)
             Button {
                 showPrivacyPolicies = true

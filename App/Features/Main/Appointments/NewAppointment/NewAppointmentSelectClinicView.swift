@@ -26,16 +26,18 @@ struct NewAppointmentSelectClinicView: View {
         ScrollView {
             LazyVGrid(columns: gridItemLayout, spacing: 10) {
                 // Recorremos directamente las clínicas persistidas en Realm
-                ForEach(clinicObjects) { clinic in
+                ForEach(Array(clinicObjects.enumerated()), id: \.element.id) { index, clinic in
                     // clinicButtonView devuelve AnyView? (nil si debe ocultarse por WTW)
                     if let view = clinicButtonView(clinic) {
                         view
+                            .staggeredAppear(index: index)
                     }
                 }
             }
             .padding(.top, .margin)
             .padding(.horizontal, .margin)
         }
+        .slideInFromRight()
         .navigationLink(isActive: $showNewAppointmentSelected) {
             NewAppointmentSelectDetailsView(UIStateAppoint: $UIStateAppoint, id: clinicInfo.id, clinic: clinicInfo, selectedTab: $selectedTab)
         }
@@ -49,6 +51,7 @@ struct NewAppointmentSelectClinicView: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    HapticManager.impact(style: .light)
                     self.dismiss()
                 } label: {
                     Image("back")
@@ -74,8 +77,8 @@ struct NewAppointmentSelectClinicView: View {
         }
 
         // Obtenemos typeId (id) y name (primera parte)
-        let typeId = (infoArray.count >= 2 ? infoArray.last!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) : clinic.id)
-        let displayName = (infoArray.count >= 1 ? infoArray.first!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) : clinic.name)
+        let typeId = (infoArray.count >= 2 ? infoArray.last?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? clinic.id : clinic.id)
+        let displayName = (infoArray.count >= 1 ? infoArray.first?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? clinic.name : clinic.name)
 
         // 🔍 Lógica de ocultamiento WTW (idéntica a la anterior)
         if isWTW() {
@@ -107,6 +110,8 @@ struct NewAppointmentSelectClinicView: View {
 
         return AnyView(
             Button {
+                HapticManager.selection()
+
                 // Seteamos clinicInfo tal como antes para pasar a la pantalla de detalles
                 self.clinicInfo.name = displayName
                 self.clinicInfo.id = typeId
@@ -147,6 +152,7 @@ struct NewAppointmentSelectClinicView: View {
                         .minimumScaleFactor(0.5)
                 }
             }
+            .pressable()
         )
     }
 

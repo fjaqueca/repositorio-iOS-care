@@ -48,6 +48,7 @@ struct NotificationPermissionRationaleView: View {
                 VStack(spacing: 12) {
                     // Botón "Permitir" (como Android)
                     Button {
+                        HapticManager.impact(style: .light)
                         isPresented = false
                         onAllow()  // Lanza el diálogo del sistema
                     } label: {
@@ -62,6 +63,7 @@ struct NotificationPermissionRationaleView: View {
                     
                     // Botón "Ahora no" (como Android)
                     Button {
+                        HapticManager.impact(style: .light)
                         isPresented = false
                         onDismiss()  // Continúa sin solicitar permisos
                     } label: {

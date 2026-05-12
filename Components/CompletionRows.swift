@@ -1209,13 +1209,7 @@ struct FlowLayout<T: Identifiable, V: View>: View {
 }
 
 // MARK: - 6. Utilidades (Haptics & Modifiers)
-struct HapticManager {
-    static func impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        let generator = UIImpactFeedbackGenerator(style: style)
-        generator.prepare()
-        generator.impactOccurred()
-    }
-}
+// HapticManager movido a HapticManager.swift
 
 struct SheetCompatibilityModifier: ViewModifier {
     func body(content: Content) -> some View {

@@ -94,7 +94,6 @@ struct ElementsView: View {
                                                     isSingleCompletion: true,
                                                     completionResponse: $completionResponse,
                                                     isLoadingTasks: $isLoadingTasks,
-                                                    //showAlertActivityReady: $showAlertActivityReady,
                                                     alertAuthEvent: $alertAuthEvent,
                                                     publisher: self.publisher,
                                                     isQuestionnaire: $isQuestionnaire,
@@ -104,13 +103,13 @@ struct ElementsView: View {
                                                     puntosObtener: puntosObtener,
                                                     puntosAcumulados: puntosAcumulados
                                                 )
-                                                .environmentObject(navigationState)  // ✅ PASAR ESTADO
+                                                .environmentObject(navigationState)
+                                                .pressable()
                                             } else {
                                                 ElementRowView(
                                                     activity: activity,
                                                     completionResponse: $completionResponse,
                                                     isLoadingTasks: $isLoadingTasks,
-                                                    //showAlertActivityReady: $showAlert,
                                                     alertAuthEvent: $alertAuthEvent,
                                                     publisher: self.publisher,
                                                     isQuestionnaire: $isQuestionnaire,
@@ -120,7 +119,8 @@ struct ElementsView: View {
                                                     puntosObtener: puntosObtener,
                                                     puntosAcumulados: puntosAcumulados
                                                 )
-                                                .environmentObject(navigationState)  // ✅ PASAR ESTADO
+                                                .environmentObject(navigationState)
+                                                .pressable()
                                             }
                                         }
                                     }
@@ -130,10 +130,8 @@ struct ElementsView: View {
                     } else if !isLoading {
                         VStack(spacing: 12) {
                             Spacer()
-                            Spacer()
-                            Image(systemName: "doc.text.magnifyingglass")
-                                .font(.system(size: 50, weight: .light))
-                                .foregroundColor(Color(.systemGray3))
+                            LottieView(animationName: "Empty_Box")
+                                .frame(width: 200, height: 200)
                             Text("No se encontraron actividades")
                                 .font(Font.custom("FiraSans-Bold", size: 19))
                                 .foregroundColor(Color(hex: "#5B6770"))
@@ -142,10 +140,9 @@ struct ElementsView: View {
                                 .foregroundColor(Color(hex: "#C4C4C4"))
                                 .multilineTextAlignment(.center)
                             Spacer()
-                            Spacer()
-                            Spacer()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .popIn()
                     }
                     // ⛔️ ELIMINADO: .id(listRefreshId)
                     // Cambiar el ID forzaba a SwiftUI a destruir y recrear la lista entera,
@@ -707,8 +704,8 @@ struct ElementsView: View {
                 for activity in activities {
                     if let totalCom = activity.taskCompletionTemplateR{
                         if totalCom.totalSize == 1{
-                            if let completion = totalCom.records{
-                                if (completionResponse[completion[0].Id ?? ""] != nil) {
+                            if let completion = totalCom.records, let firstCompletion = completion.first {
+                                if (completionResponse[firstCompletion.Id ?? ""] != nil) {
                                     hasDataToSend = true
                                     let result = await Network.shared.postTask(activityData: completion, response: completionResponse)
                                     switch result {

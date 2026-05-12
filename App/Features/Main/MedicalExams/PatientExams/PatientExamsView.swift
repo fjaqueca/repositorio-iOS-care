@@ -32,6 +32,7 @@ struct PatientExamsView: View {
     @State private var sendNewExam = false
     @State private var deleteConfirmExamId: String? = nil
     @State private var deletingLoading: Bool = false
+    @State private var emptyStateReady: Bool = false
 
     // Filter states
     @State private var showFilterView: Bool = false
@@ -92,19 +93,12 @@ struct PatientExamsView: View {
             // Exam list
             ScrollView {
                 if isLoading {
-                    VStack(spacing: 12) {
-                        ProgressView()
-                            .scaleEffect(1.1)
-                        Text("Cargando exámenes...")
-                            .font(Font.custom("FiraSans-Regular", size: 14))
-                            .foregroundColor(.gray)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 50)
+                    SkeletonList(rows: 4)
+                        .padding(.top, 30)
                 } else {
                     if let searchExams = searchExams, !searchExams.isEmpty {
                         LazyVStack(spacing: 10) {
-                            ForEach(searchExams, id: \.self) { exam in
+                            ForEach(Array(searchExams.enumerated()), id: \.element) { index, exam in
                                 PatientExamRowView(
                                     exam: exam,
                                     isLoadingExam: $isLoading,
@@ -122,27 +116,40 @@ struct PatientExamsView: View {
                                         deleteConfirmExamId = examId
                                     }
                                 )
+                                .pressable()
+                                .springOnAppear(delay: Double(index) * 0.05)
                             }
                         }
                         .padding(.horizontal, .margin)
                         .padding(.top, 23)
                         .padding(.bottom, .margin)
                     } else {
-                        VStack(spacing: 16) {
-                            Image(systemName: "folder.badge.questionmark")
-                                .font(.system(size: 48))
-                                .foregroundColor(.gray.opacity(0.35))
-                            Text("No se encontraron exámenes")
-                                .font(Font.custom("FiraSans-Regular", size: 16))
-                                .foregroundColor(.gray)
-                            if !filterExams.isEmpty || hasActiveFilters {
-                                Text("Intenta con otro término de búsqueda o ajusta los filtros")
-                                    .font(Font.custom("FiraSans-Regular", size: 13))
-                                    .foregroundColor(.gray.opacity(0.7))
+                        VStack(spacing: 12) {
+                            Spacer()
+                            LottieView(animationName: "Empty_Box")
+                                .frame(width: 220, height: 220)
+                            if emptyStateReady {
+                                TypewriterText("No se encontraron exámenes",
+                                              font: "FiraSans-Bold", size: 19,
+                                              color: Color(hex: "#5B6770"),
+                                              speed: 0.06, showDots: false, delay: 0.3)
+                                if !filterExams.isEmpty || hasActiveFilters {
+                                    TypewriterText("Intenta con otro término de búsqueda o ajusta los filtros",
+                                                  font: "FiraSans-Regular", size: 13,
+                                                  color: Color(hex: "#C4C4C4"),
+                                                  speed: 0.04, showDots: true, delay: 1.5)
+                                }
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .popIn()
+                        .onAppear {
+                            emptyStateReady = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                emptyStateReady = true
                             }
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 80)
                     }
                 }
             }
@@ -268,6 +275,7 @@ struct PatientExamsView: View {
         let btnSize = Double(botonSubirExamenConfig.size) ?? 15
 
         return Button {
+            HapticManager.impact(style: .medium)
             sendNewExam = true
         } label: {
             HStack(spacing: 8) {
@@ -284,6 +292,7 @@ struct PatientExamsView: View {
                     .fill(Color(hex: btnColorFondo))
             )
         }
+        .bounceOnTap()
     }
 
     // MARK: - Computed

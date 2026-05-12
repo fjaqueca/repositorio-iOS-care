@@ -74,6 +74,78 @@
 		7A1C7BCA2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
 		7A1C7BCB2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
 		7A1C7BCC2F92A9550074BB31 /* FamilyGroupUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */; };
+		7A25D99D2FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D99E2FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D99F2FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A02FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A12FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A22FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A32FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A42FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A52FB22FF900721088 /* Empty_box_alert.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D99C2FB22FF900721088 /* Empty_box_alert.json */; };
+		7A25D9A72FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9A82FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9A92FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AA2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AB2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AC2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AD2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AE2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9AF2FB232F000721088 /* no_citas_para_este_dia.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */; };
+		7A25D9B12FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B22FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B32FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B42FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B52FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B62FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B72FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B82FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9B92FB23A2200721088 /* Medical_App.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9B02FB23A2200721088 /* Medical_App.json */; };
+		7A25D9BB2FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9BC2FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9BD2FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9BE2FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9BF2FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9C02FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9C12FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9C22FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9C32FB23ACF00721088 /* Medical_Frontliners.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */; };
+		7A25D9C52FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9C62FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9C72FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9C82FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9C92FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9CA2FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9CB2FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9CC2FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9CD2FB2499D00721088 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25D9C42FB2499D00721088 /* ReviewManager.swift */; };
+		7A25D9CF2FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D02FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D12FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D22FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D32FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D42FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D52FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D62FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D72FB25EFC00721088 /* medical_cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */; };
+		7A25D9D92FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DA2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DB2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DC2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DD2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DE2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9DF2FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9E02FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9E12FB38BB200721088 /* Doctor_Saludando.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */; };
+		7A25D9E32FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E42FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E52FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E62FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E72FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E82FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9E92FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9EA2FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
+		7A25D9EB2FB38E1800721088 /* Equipo_Medico.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A25D9E22FB38E1800721088 /* Equipo_Medico.json */; };
 		7A2F7A8C2ED8DBA00095661C /* PrescriptionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67C8F742BBDFB1000FDAA1C /* PrescriptionView+Extension.swift */; };
 		7A2F7A8D2ED8DBA00095661C /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879C5B89289C1973005A140D /* Field.swift */; };
 		7A2F7A8E2ED8DBA00095661C /* VideoCallRoomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FB4F0C29B829E4003EE421 /* VideoCallRoomToolbar.swift */; };
@@ -313,6 +385,42 @@
 		7A2F7B882ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F7B812ED8DCB20095661C /* SplashViewPruebaTAM.storyboard */; };
 		7A2F7B892ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F7B812ED8DCB20095661C /* SplashViewPruebaTAM.storyboard */; };
 		7A2F7B8A2ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F7B812ED8DCB20095661C /* SplashViewPruebaTAM.storyboard */; };
+		7A3FAF402FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF412FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF422FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF432FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF442FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF452FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF462FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF472FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF482FAE341D002E87D1 /* Empty_Box.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */; };
+		7A3FAF4A2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF4B2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF4C2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF4D2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF4E2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF4F2FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF502FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF512FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF522FAE38DC002E87D1 /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */; };
+		7A3FAF542FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF552FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF562FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF572FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF582FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF592FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF5A2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF5B2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF5C2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */; };
+		7A3FAF5E2FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF5F2FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF602FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF612FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF622FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF632FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF642FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF652FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
+		7A3FAF662FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */; };
 		7A49A9462EFADECE006F26BB /* CONCATENACION_LOGIC.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A49A9452EFADECE006F26BB /* CONCATENACION_LOGIC.md */; };
 		7A49A9472EFADECE006F26BB /* CONCATENACION_LOGIC.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A49A9452EFADECE006F26BB /* CONCATENACION_LOGIC.md */; };
 		7A49A9482EFADECE006F26BB /* CONCATENACION_LOGIC.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A49A9452EFADECE006F26BB /* CONCATENACION_LOGIC.md */; };
@@ -596,6 +704,51 @@
 		7A9001C42F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9001BD2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md */; };
 		7A9001C52F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9001BD2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md */; };
 		7A9001C62F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7A9001BD2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md */; };
+		7A9544D92FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DA2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DB2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DC2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DD2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DE2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544DF2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544E02FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544E12FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */; };
+		7A9544E42FAD322B00D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544E32FAD322B00D6DF71 /* RiveRuntime */; };
+		7A9544E62FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544E72FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544E82FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544E92FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544EA2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544EB2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544EC2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544ED2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544EE2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */; };
+		7A9544F02FAD335300D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544EF2FAD335300D6DF71 /* RiveRuntime */; };
+		7A9544F22FAD335C00D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544F12FAD335C00D6DF71 /* RiveRuntime */; };
+		7A9544F42FAD336400D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544F32FAD336400D6DF71 /* RiveRuntime */; };
+		7A9544F62FAD336C00D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544F52FAD336C00D6DF71 /* RiveRuntime */; };
+		7A9544F82FAD337200D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544F72FAD337200D6DF71 /* RiveRuntime */; };
+		7A9544FA2FAD337800D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544F92FAD337800D6DF71 /* RiveRuntime */; };
+		7A9544FC2FAD337E00D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544FB2FAD337E00D6DF71 /* RiveRuntime */; };
+		7A9544FE2FAD338500D6DF71 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9544FD2FAD338500D6DF71 /* RiveRuntime */; };
+		7A9545012FAD421C00D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545002FAD421C00D6DF71 /* Lottie */; };
+		7A9545072FAD424800D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545062FAD424800D6DF71 /* Lottie */; };
+		7A95450D2FAD425300D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A95450C2FAD425300D6DF71 /* Lottie */; };
+		7A9545132FAD425D00D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545122FAD425D00D6DF71 /* Lottie */; };
+		7A9545192FAD427F00D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545182FAD427F00D6DF71 /* Lottie */; };
+		7A95451F2FAD428700D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A95451E2FAD428700D6DF71 /* Lottie */; };
+		7A9545252FAD429000D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545242FAD429000D6DF71 /* Lottie */; };
+		7A95452B2FAD429900D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A95452A2FAD429900D6DF71 /* Lottie */; };
+		7A9545312FAD42A300D6DF71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A9545302FAD42A300D6DF71 /* Lottie */; };
+		7A9545372FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A9545382FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A9545392FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453A2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453B2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453C2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453D2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453E2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
+		7A95453F2FAD439700D6DF71 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9545362FAD439700D6DF71 /* LottieView.swift */; };
 		7A9646662F3F7BA8009A9483 /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9646652F3F7BA8009A9483 /* NavigationState.swift */; };
 		7A9646672F3F7BA8009A9483 /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9646652F3F7BA8009A9483 /* NavigationState.swift */; };
 		7A9646682F3F7BA8009A9483 /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9646652F3F7BA8009A9483 /* NavigationState.swift */; };
@@ -1012,6 +1165,69 @@
 		7AE653152F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653162F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653172F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
+		7AFBB36C2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB36D2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB36E2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB36F2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB3702FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB3712FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB3722FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB3732FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB3742FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
+		7AFBB37B2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB37C2FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB37D2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB37E2FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB37F2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3802FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3812FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3822FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3832FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3842FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3852FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3862FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3872FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3882FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3892FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB38A2FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB38B2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB38C2FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB38D2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB38E2FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB38F2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3902FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3912FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3922FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3932FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3942FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3952FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3962FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3972FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3982FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3992FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB39A2FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB39B2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB39C2FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB39D2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB39E2FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB39F2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3A02FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3A12FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3A22FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3A32FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3A42FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3A52FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3A62FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3A72FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3A82FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3A92FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3AA2FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
+		7AFBB3AB2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */; };
+		7AFBB3AC2FAE2AAC006F83EA /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */; };
+		7AFBB3AD2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */; };
+		7AFBB3AE2FAE2AAC006F83EA /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */; };
+		7AFBB3AF2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */; };
+		7AFBB3B02FAE2AAC006F83EA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */; };
 		7AFC12542F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
 		7AFC12552F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
 		7AFC12562F68373E00F59763 /* MarketingCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */; };
@@ -2922,6 +3138,99 @@
 		FE52E4D16F8009F0664A7280 /* FamilyGroupMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FF6893F2AD859A25FD72E3 /* FamilyGroupMember.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7A9545052FAD423C00D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A95450B2FAD424800D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A9545112FAD425300D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A9545172FAD425D00D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A95451D2FAD427F00D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A9545232FAD428700D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A9545292FAD429000D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A95452F2FAD429900D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A9545352FAD42A300D6DF71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		089CA7B6C4ABD182398A154A /* ProfileUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUIState.swift; sourceTree = "<group>"; };
 		400230464505C8E275169DCC /* Profile+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile+Extension.swift"; sourceTree = "<group>"; };
@@ -2929,9 +3238,21 @@
 		7A0E38FD2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIREBASE_LOGGING_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7A0E39072F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMO_SOLUCIONAR_ERRORES_COMPILACION.md; sourceTree = "<group>"; };
 		7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyGroupUIState.swift; sourceTree = "<group>"; };
+		7A25D99C2FB22FF900721088 /* Empty_box_alert.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Empty_box_alert.json; sourceTree = "<group>"; };
+		7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = no_citas_para_este_dia.json; sourceTree = "<group>"; };
+		7A25D9B02FB23A2200721088 /* Medical_App.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Medical_App.json; sourceTree = "<group>"; };
+		7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Medical_Frontliners.json; sourceTree = "<group>"; };
+		7A25D9C42FB2499D00721088 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = medical_cartoon.gif; sourceTree = "<group>"; };
+		7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Doctor_Saludando.json; sourceTree = "<group>"; };
+		7A25D9E22FB38E1800721088 /* Equipo_Medico.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Equipo_Medico.json; sourceTree = "<group>"; };
 		7A2F7B7F2ED8DBA00095661C /* pruebatam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pruebatam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A2F7B802ED8DBA00095661C /* Premedic copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Premedic copy-Info.plist"; path = "/Users/careassistance/care_assistance_ios/Premedic copy-Info.plist"; sourceTree = "<absolute>"; };
 		7A2F7B812ED8DCB20095661C /* SplashViewPruebaTAM.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashViewPruebaTAM.storyboard; sourceTree = "<group>"; };
+		7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Empty_Box.json; sourceTree = "<group>"; };
+		7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypewriterText.swift; sourceTree = "<group>"; };
+		7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = onboarding_lottie_1.json; sourceTree = "<group>"; };
+		7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTransitions.swift; sourceTree = "<group>"; };
 		7A49A9452EFADECE006F26BB /* CONCATENACION_LOGIC.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONCATENACION_LOGIC.md; sourceTree = "<group>"; };
 		7A49A94F2EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CAMBIOS_IMPLEMENTADOS.md; sourceTree = "<group>"; };
 		7A49A9592EFAE6C2006F26BB /* BUG_FIX_EVALUACION_BLOQUEADA.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUG_FIX_EVALUACION_BLOQUEADA.md; sourceTree = "<group>"; };
@@ -2965,6 +3286,9 @@
 		7A9001A92F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LOADING_CHANGES_SUMMARY.md; sourceTree = "<group>"; };
 		7A9001B32F43A46400993F1D /* LoadingStandardizationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStandardizationExample.swift; sourceTree = "<group>"; };
 		7A9001BD2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FIX_LISTA_ACTIVIDADES_DESAPARECE.md; sourceTree = "<group>"; };
+		7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangelogSheetView.swift; sourceTree = "<group>"; };
+		7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pruebaruntimeRive.swift; sourceTree = "<group>"; };
+		7A9545362FAD439700D6DF71 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		7A9646652F3F7BA8009A9483 /* NavigationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationState.swift; sourceTree = "<group>"; };
 		7A96466F2F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = NAVIGATION_FLOW_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7A9646792F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = NAVIGATION_TESTING_GUIDE.md; sourceTree = "<group>"; };
@@ -3010,6 +3334,13 @@
 		7AE652F02F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_ELEMENTSVIEW_FIX.md; sourceTree = "<group>"; };
 		7AE652FA2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ANDROID_IOS_PARITY_VERIFICATION.md; sourceTree = "<group>"; };
 		7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = REVERT_INVISIBLE_FILTER_CHANGE.md; sourceTree = "<group>"; };
+		7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-lottie-1.json"; sourceTree = "<group>"; };
+		7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiModifier.swift; sourceTree = "<group>"; };
+		7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerModifier.swift; sourceTree = "<group>"; };
+		7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
+		7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringModifiers.swift; sourceTree = "<group>"; };
+		7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		7AFC12532F68373E00F59763 /* MarketingCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCloudManager.swift; sourceTree = "<group>"; };
 		7AFC125D2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MARKETING_CLOUD_IOS_IMPLEMENTATION.md; sourceTree = "<group>"; };
 		7AFC12672F6838E600F59763 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
@@ -3256,6 +3587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2F7B5A2ED8DBA00095661C /* RealmSwift in Frameworks */,
+				7A9545312FAD42A300D6DF71 /* Lottie in Frameworks */,
 				7A2F7B5B2ED8DBA00095661C /* CachedAsyncImage in Frameworks */,
 				7A2F7B5C2ED8DBA00095661C /* TwilioConversationsClient in Frameworks */,
 				7A2F7B5D2ED8DBA00095661C /* SDWebImageSVGCoder in Frameworks */,
@@ -3263,6 +3595,7 @@
 				7A2F7B5F2ED8DBA00095661C /* MultiPicker in Frameworks */,
 				7A2F7B602ED8DBA00095661C /* Realm in Frameworks */,
 				7A2F7B612ED8DBA00095661C /* TwilioVideo in Frameworks */,
+				7A9544FE2FAD338500D6DF71 /* RiveRuntime in Frameworks */,
 				7A2F7B622ED8DBA00095661C /* SDWebImageSwiftUI in Frameworks */,
 				7A84EA322F4F86D6006ABDD2 /* FirebaseCrashlytics in Frameworks */,
 				7A2F7B632ED8DBA00095661C /* Alamofire in Frameworks */,
@@ -3279,6 +3612,8 @@
 				7AB09CC32F473A0F00198483 /* MarketingCloudSDK in Frameworks */,
 				7AD367292F4646A9002A4F1C /* FirebaseMessaging in Frameworks */,
 				87A11649299D611A007EB0A6 /* TwilioConversationsClient in Frameworks */,
+				7A9544E42FAD322B00D6DF71 /* RiveRuntime in Frameworks */,
+				7A9545012FAD421C00D6DF71 /* Lottie in Frameworks */,
 				E6E8BCFC2E292EEA0043D657 /* SDWebImageSVGCoder in Frameworks */,
 				8775ACAC2900514B0079D3CF /* Introspect in Frameworks */,
 				E68207272ABB36F500707148 /* MultiPicker in Frameworks */,
@@ -3297,6 +3632,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E636EFAC2BA8C81900A51A87 /* RealmSwift in Frameworks */,
+				7A9545192FAD427F00D6DF71 /* Lottie in Frameworks */,
 				E636EFAD2BA8C81900A51A87 /* CachedAsyncImage in Frameworks */,
 				E636EFAE2BA8C81900A51A87 /* TwilioConversationsClient in Frameworks */,
 				E6E8BD042E292F080043D657 /* SDWebImageSVGCoder in Frameworks */,
@@ -3304,6 +3640,7 @@
 				E636EFB02BA8C81900A51A87 /* MultiPicker in Frameworks */,
 				E636EFB12BA8C81900A51A87 /* Realm in Frameworks */,
 				E636EFB22BA8C81900A51A87 /* TwilioVideo in Frameworks */,
+				7A9544F62FAD336C00D6DF71 /* RiveRuntime in Frameworks */,
 				E6E8BD142E2933FE0043D657 /* SDWebImageSwiftUI in Frameworks */,
 				7A84EA2C2F4F86B9006ABDD2 /* FirebaseCrashlytics in Frameworks */,
 				E636EFB32BA8C81900A51A87 /* Alamofire in Frameworks */,
@@ -3320,6 +3657,8 @@
 				7AD778572F4C999B005C516D /* MarketingCloudSDK in Frameworks */,
 				E643D4312B7170290058D227 /* TwilioConversationsClient in Frameworks */,
 				E6E8BD002E292EFB0043D657 /* SDWebImageSVGCoder in Frameworks */,
+				7A9544F22FAD335C00D6DF71 /* RiveRuntime in Frameworks */,
+				7A95450D2FAD425300D6DF71 /* Lottie in Frameworks */,
 				E643D4322B7170290058D227 /* Introspect in Frameworks */,
 				E643D4332B7170290058D227 /* MultiPicker in Frameworks */,
 				E643D4342B7170290058D227 /* Realm in Frameworks */,
@@ -3342,6 +3681,8 @@
 				7AD778472F4C8218005C516D /* MarketingCloudSDK in Frameworks */,
 				E64AC5EE2D8B04E600B3E521 /* TwilioConversationsClient in Frameworks */,
 				E6E8BD082E292F150043D657 /* SDWebImageSVGCoder in Frameworks */,
+				7A9544FA2FAD337800D6DF71 /* RiveRuntime in Frameworks */,
+				7A9545252FAD429000D6DF71 /* Lottie in Frameworks */,
 				E64AC5EF2D8B04E600B3E521 /* Introspect in Frameworks */,
 				E64AC5F02D8B04E600B3E521 /* MultiPicker in Frameworks */,
 				E64AC5F12D8B04E600B3E521 /* Realm in Frameworks */,
@@ -3360,6 +3701,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E68DD83D2DB7C8D500307982 /* RealmSwift in Frameworks */,
+				7A95452B2FAD429900D6DF71 /* Lottie in Frameworks */,
 				E68DD83E2DB7C8D500307982 /* CachedAsyncImage in Frameworks */,
 				E68DD83F2DB7C8D500307982 /* TwilioConversationsClient in Frameworks */,
 				E6E8BD0A2E292F190043D657 /* SDWebImageSVGCoder in Frameworks */,
@@ -3367,6 +3709,7 @@
 				E68DD8412DB7C8D500307982 /* MultiPicker in Frameworks */,
 				E68DD8422DB7C8D500307982 /* Realm in Frameworks */,
 				E68DD8432DB7C8D500307982 /* TwilioVideo in Frameworks */,
+				7A9544FC2FAD337E00D6DF71 /* RiveRuntime in Frameworks */,
 				E6E8BD1A2E2934110043D657 /* SDWebImageSwiftUI in Frameworks */,
 				7A84EA302F4F86CE006ABDD2 /* FirebaseCrashlytics in Frameworks */,
 				E68DD8442DB7C8D500307982 /* Alamofire in Frameworks */,
@@ -3383,6 +3726,8 @@
 				7AD7783F2F4C81DA005C516D /* MarketingCloudSDK in Frameworks */,
 				E69FED372BA47E61002ADADB /* TwilioConversationsClient in Frameworks */,
 				E6E8BD022E292F020043D657 /* SDWebImageSVGCoder in Frameworks */,
+				7A9544F42FAD336400D6DF71 /* RiveRuntime in Frameworks */,
+				7A9545132FAD425D00D6DF71 /* Lottie in Frameworks */,
 				E69FED382BA47E61002ADADB /* Introspect in Frameworks */,
 				E69FED392BA47E61002ADADB /* MultiPicker in Frameworks */,
 				E69FED3A2BA47E61002ADADB /* Realm in Frameworks */,
@@ -3405,6 +3750,8 @@
 				7AD778372F4C817E005C516D /* MarketingCloudSDK in Frameworks */,
 				E6DC59A62B6C089C00EEC341 /* TwilioConversationsClient in Frameworks */,
 				E6E8BCFE2E292EF50043D657 /* SDWebImageSVGCoder in Frameworks */,
+				7A9544F02FAD335300D6DF71 /* RiveRuntime in Frameworks */,
+				7A9545072FAD424800D6DF71 /* Lottie in Frameworks */,
 				E6DC59A72B6C089C00EEC341 /* Introspect in Frameworks */,
 				E6DC59A82B6C089C00EEC341 /* MultiPicker in Frameworks */,
 				E6DC59A92B6C089C00EEC341 /* Realm in Frameworks */,
@@ -3423,6 +3770,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6F66CBF2C9478ED00B0CE60 /* RealmSwift in Frameworks */,
+				7A95451F2FAD428700D6DF71 /* Lottie in Frameworks */,
 				E6F66CC02C9478ED00B0CE60 /* CachedAsyncImage in Frameworks */,
 				E6F66CC12C9478ED00B0CE60 /* TwilioConversationsClient in Frameworks */,
 				E6E8BD062E292F0D0043D657 /* SDWebImageSVGCoder in Frameworks */,
@@ -3430,6 +3778,7 @@
 				E6F66CC32C9478ED00B0CE60 /* MultiPicker in Frameworks */,
 				E6F66CC42C9478ED00B0CE60 /* Realm in Frameworks */,
 				E6F66CC52C9478ED00B0CE60 /* TwilioVideo in Frameworks */,
+				7A9544F82FAD337200D6DF71 /* RiveRuntime in Frameworks */,
 				E6E8BD162E2934030043D657 /* SDWebImageSwiftUI in Frameworks */,
 				7A84EA2E2F4F86C0006ABDD2 /* FirebaseCrashlytics in Frameworks */,
 				E6F66CC62C9478ED00B0CE60 /* Alamofire in Frameworks */,
@@ -3452,6 +3801,23 @@
 			children = (
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		7AFBB36B2FAE1C70006F83EA /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				7A25D9E22FB38E1800721088 /* Equipo_Medico.json */,
+				7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */,
+				7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */,
+				7A25D9BA2FB23ACF00721088 /* Medical_Frontliners.json */,
+				7A25D9B02FB23A2200721088 /* Medical_App.json */,
+				7A25D9A62FB232F000721088 /* no_citas_para_este_dia.json */,
+				7A25D99C2FB22FF900721088 /* Empty_box_alert.json */,
+				7A3FAF532FAE8129002E87D1 /* onboarding_lottie_1.json */,
+				7A3FAF3F2FAE341D002E87D1 /* Empty_Box.json */,
+				7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		8702545B28B37EBC0038B753 /* Tiles */ = {
@@ -3732,6 +4098,16 @@
 		879C5B88289BC031005A140D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				7A25D9C42FB2499D00721088 /* ReviewManager.swift */,
+				7A3FAF5D2FAE8E6A002E87D1 /* NavigationTransitions.swift */,
+				7A3FAF492FAE38DC002E87D1 /* TypewriterText.swift */,
+				7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */,
+				7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */,
+				7AFBB3772FAE2AAC006F83EA /* ShimmerModifier.swift */,
+				7AFBB3782FAE2AAC006F83EA /* SkeletonView.swift */,
+				7AFBB3792FAE2AAC006F83EA /* SpringModifiers.swift */,
+				7AFBB37A2FAE2AAC006F83EA /* TooltipView.swift */,
+				7A9545362FAD439700D6DF71 /* LottieView.swift */,
 				E6B282122D10D12D00D31621 /* VisualEffectView.swift */,
 				879269BE29F0363A00361152 /* CheckToggleRoundedStyle.swift */,
 				879269BB29F0363A00361152 /* CheckToggleSquareStyle.swift */,
@@ -3968,6 +4344,7 @@
 		87D3AEE52897E05B0089A2C8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				7A9544D82FACFA8A00D6DF71 /* ChangelogSheetView.swift */,
 				7A8C4F5B2FA2A586000FF230 /* LogoutConfirmationDialog.swift */,
 				7A1C7BC32F92A9550074BB31 /* FamilyGroupUIState.swift */,
 				879C5B9B289E17D6005A140D /* ProfileView.swift */,
@@ -3984,7 +4361,9 @@
 		87D3AEE62897E0DA0089A2C8 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				7AFBB36B2FAE1C70006F83EA /* Lottie */,
 				7AD3671A2F46294A002A4F1C /* AppDelegate.swift */,
+				7A9544E52FAD324F00D6DF71 /* pruebaruntimeRive.swift */,
 				87D3AECE2897DEEF0089A2C8 /* App.swift */,
 				87D3AED02897DEEF0089A2C8 /* AppView.swift */,
 				87D3AEDF2897DFBA0089A2C8 /* Features */,
@@ -4101,6 +4480,7 @@
 				7A2F7A8B2ED8DBA00095661C /* Sources */,
 				7A2F7B592ED8DBA00095661C /* Frameworks */,
 				7A2F7B652ED8DBA00095661C /* Resources */,
+				7A9545352FAD42A300D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4120,6 +4500,8 @@
 				7A2F7A872ED8DBA00095661C /* SDWebImageSVGCoder */,
 				7A2F7A892ED8DBA00095661C /* SDWebImageSwiftUI */,
 				7A84EA312F4F86D6006ABDD2 /* FirebaseCrashlytics */,
+				7A9544FD2FAD338500D6DF71 /* RiveRuntime */,
+				7A9545302FAD42A300D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = 7A2F7B7F2ED8DBA00095661C /* pruebatam.app */;
@@ -4133,6 +4515,7 @@
 				87D3AEC82897DEEF0089A2C8 /* Frameworks */,
 				87D3AEC92897DEEF0089A2C8 /* Resources */,
 				7A84EA332F4F87DF006ABDD2 /* ShellScript */,
+				7A9545052FAD423C00D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4155,6 +4538,8 @@
 				7AD367282F4646A9002A4F1C /* FirebaseMessaging */,
 				7AB09CC22F473A0F00198483 /* MarketingCloudSDK */,
 				7AB09CC52F473B2700198483 /* SFMCSDK */,
+				7A9544E32FAD322B00D6DF71 /* RiveRuntime */,
+				7A9545002FAD421C00D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = 87D3AECB2897DEEF0089A2C8 /* CareAssistance.app */;
@@ -4167,6 +4552,7 @@
 				E636EEFB2BA8C81900A51A87 /* Sources */,
 				E636EFAB2BA8C81900A51A87 /* Frameworks */,
 				E636EFB42BA8C81900A51A87 /* Resources */,
+				7A95451D2FAD427F00D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4186,6 +4572,8 @@
 				E6E8BD032E292F080043D657 /* SDWebImageSVGCoder */,
 				E6E8BD132E2933FE0043D657 /* SDWebImageSwiftUI */,
 				7A84EA2B2F4F86B9006ABDD2 /* FirebaseCrashlytics */,
+				7A9544F52FAD336C00D6DF71 /* RiveRuntime */,
+				7A9545182FAD427F00D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E636EFC72BA8C81900A51A87 /* VC Contigo.app */;
@@ -4198,6 +4586,7 @@
 				E643D3822B7170290058D227 /* Sources */,
 				E643D42E2B7170290058D227 /* Frameworks */,
 				E643D4372B7170290058D227 /* Resources */,
+				7A9545112FAD425300D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4220,6 +4609,8 @@
 				7AD778542F4C998F005C516D /* FirebaseMessaging */,
 				7AD778562F4C999B005C516D /* MarketingCloudSDK */,
 				7AD778582F4C99A7005C516D /* SFMCSDK */,
+				7A9544F12FAD335C00D6DF71 /* RiveRuntime */,
+				7A95450C2FAD425300D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E643D4462B7170290058D227 /* BCI Seguros.app */;
@@ -4232,6 +4623,7 @@
 				E64AC52B2D8B04E600B3E521 /* Sources */,
 				E64AC5EB2D8B04E600B3E521 /* Frameworks */,
 				E64AC5F52D8B04E600B3E521 /* Resources */,
+				7A9545292FAD429000D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4254,6 +4646,8 @@
 				7AD778442F4C820B005C516D /* FirebaseMessaging */,
 				7AD778462F4C8218005C516D /* MarketingCloudSDK */,
 				7AD778482F4C8220005C516D /* SFMCSDK */,
+				7A9544F92FAD337800D6DF71 /* RiveRuntime */,
+				7A9545242FAD429000D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E64AC60B2D8B04E600B3E521 /* PremedicBienestar.app */;
@@ -4266,6 +4660,7 @@
 				E68DD7782DB7C8D500307982 /* Sources */,
 				E68DD83C2DB7C8D500307982 /* Frameworks */,
 				E68DD8462DB7C8D500307982 /* Resources */,
+				7A95452F2FAD429900D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4285,6 +4680,8 @@
 				E6E8BD092E292F190043D657 /* SDWebImageSVGCoder */,
 				E6E8BD192E2934110043D657 /* SDWebImageSwiftUI */,
 				7A84EA2F2F4F86CE006ABDD2 /* FirebaseCrashlytics */,
+				7A9544FB2FAD337E00D6DF71 /* RiveRuntime */,
+				7A95452A2FAD429900D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E68DD85E2DB7C8D500307982 /* ContigoSalud.app */;
@@ -4297,6 +4694,7 @@
 				E69FEC842BA47E61002ADADB /* Sources */,
 				E69FED342BA47E61002ADADB /* Frameworks */,
 				E69FED3D2BA47E61002ADADB /* Resources */,
+				7A9545172FAD425D00D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4319,6 +4717,8 @@
 				7AD7783C2F4C81C9005C516D /* FirebaseMessaging */,
 				7AD7783E2F4C81DA005C516D /* MarketingCloudSDK */,
 				7AD778402F4C81E6005C516D /* SFMCSDK */,
+				7A9544F32FAD336400D6DF71 /* RiveRuntime */,
+				7A9545122FAD425D00D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E69FED4F2BA47E61002ADADB /* PHB Care.app */;
@@ -4331,6 +4731,7 @@
 				E6DC58F72B6C089C00EEC341 /* Sources */,
 				E6DC59A32B6C089C00EEC341 /* Frameworks */,
 				E6DC59AC2B6C089C00EEC341 /* Resources */,
+				7A95450B2FAD424800D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4353,6 +4754,8 @@
 				7AD778342F4C8172005C516D /* FirebaseMessaging */,
 				7AD778362F4C817E005C516D /* MarketingCloudSDK */,
 				7AD778382F4C8193005C516D /* SFMCSDK */,
+				7A9544EF2FAD335300D6DF71 /* RiveRuntime */,
+				7A9545062FAD424800D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E6DC59B92B6C089C00EEC341 /* Wellbeing.app */;
@@ -4365,6 +4768,7 @@
 				E6F66C042C9478ED00B0CE60 /* Sources */,
 				E6F66CBE2C9478ED00B0CE60 /* Frameworks */,
 				E6F66CC72C9478ED00B0CE60 /* Resources */,
+				7A9545232FAD428700D6DF71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4384,6 +4788,8 @@
 				E6E8BD052E292F0D0043D657 /* SDWebImageSVGCoder */,
 				E6E8BD152E2934030043D657 /* SDWebImageSwiftUI */,
 				7A84EA2D2F4F86C0006ABDD2 /* FirebaseCrashlytics */,
+				7A9544F72FAD337200D6DF71 /* RiveRuntime */,
+				7A95451E2FAD428700D6DF71 /* Lottie */,
 			);
 			productName = CareAssistance;
 			productReference = E6F66CDC2C9478ED00B0CE60 /* CareAssistanceMX.app */;
@@ -4427,6 +4833,8 @@
 				7AD367252F4646A9002A4F1C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				7AB09CC12F473A0F00198483 /* XCRemoteSwiftPackageReference "MarketingCloudSDK-iOS" */,
 				7AB09CC42F473B2600198483 /* XCRemoteSwiftPackageReference "sfmc-sdk-ios" */,
+				7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */,
+				7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 87D3AECC2897DEEF0089A2C8 /* Products */;
 			projectDirPath = "";
@@ -4452,14 +4860,19 @@
 			files = (
 				7A49A9532EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				7A2F7B662ED8DBA00095661C /* SplashView.storyboard in Resources */,
+				7A25D99D2FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DD2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646752F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF452FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9692EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D772F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9A72FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12E2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652AD2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A22F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				7A2F7B672ED8DBA00095661C /* SplashViewBCI.storyboard in Resources */,
 				7AE652CB2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF562FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DE2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				7A2F7B682ED8DBA00095661C /* Assets.xcassets in Resources */,
 				7AD367302F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4492,6 +4905,8 @@
 				7A9646BC2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8F2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				7A2F7B6F2ED8DBA00095661C /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB36E2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D22FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F82F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C02F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB13F2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4512,8 +4927,11 @@
 				7AE652C02F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C42F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D0A2F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B22FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9C22FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390A2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1322F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E32FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AF2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646902F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				7A2F7B722ED8DBA00095661C /* SplashViewWTW.storyboard in Resources */,
@@ -4527,14 +4945,19 @@
 			files = (
 				7A49A9502EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				879C5B90289C1E91005A140D /* SplashView.storyboard in Resources */,
+				7A25D9A02FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DC2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646772F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF422FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9672EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7B2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AE2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1272F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652B02F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646AA2F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E643D4482B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CC2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF572FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DD2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				87D3AEEC2897E1D30089A2C8 /* Assets.xcassets in Resources */,
 				7AD3672B2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4567,6 +4990,8 @@
 				7A9646B82F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D932F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC712BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB3712FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D42FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F22F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001BF2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB1402F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4587,8 +5012,11 @@
 				7AE652C22F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C02F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D082F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B42FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9C12FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390B2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1382F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E92FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AA2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646912F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E65D87D02B6C05F6001DB7ED /* SplashViewWTW.storyboard in Resources */,
@@ -4602,14 +5030,19 @@
 			files = (
 				7A49A9572EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E636EFB52BA8C81900A51A87 /* SplashView.storyboard in Resources */,
+				7A25D9A12FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DA2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646712F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF442FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9662EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7A2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AC2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12F2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652AB2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A42F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E636EFB62BA8C81900A51A87 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CD2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF5C2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E02F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E636EFB72BA8C81900A51A87 /* Assets.xcassets in Resources */,
 				7AD367312F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4642,6 +5075,8 @@
 				7A9646B72F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D902F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E636EFBB2BA8C81900A51A87 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB3742FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D02FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F72F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C52F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB13C2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4662,8 +5097,11 @@
 				7AE652C12F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C62F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D062F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B92FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9BB2FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390D2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1342F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E62FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B12F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646962F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E636EFBE2BA8C81900A51A87 /* SplashViewWTW.storyboard in Resources */,
@@ -4677,14 +5115,19 @@
 			files = (
 				7A49A9562EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E643D4382B7170290058D227 /* SplashView.storyboard in Resources */,
+				7A25D99F2FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DE2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646732F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF412FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A96B2EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7E2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9A92FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12B2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652AF2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A62F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E643D44A2B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CA2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF5B2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E32F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E643D4392B7170290058D227 /* Assets.xcassets in Resources */,
 				7AD3672F2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4717,6 +5160,8 @@
 				7A9646B92F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8B2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC732BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB3732FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D62FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F52F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C32F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB13E2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4737,8 +5182,11 @@
 				7AE652C52F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C22F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D042F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B12FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9BD2FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E39102F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1332F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E72FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AE2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646952F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E643D43F2B7170290058D227 /* SplashViewWTW.storyboard in Resources */,
@@ -4752,14 +5200,19 @@
 			files = (
 				7A49A9582EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E64AC5F62D8B04E600B3E521 /* SplashView.storyboard in Resources */,
+				7A25D9A22FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DB2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646762F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF482FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9682EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D782F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AF2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12C2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652B22F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A92F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E64AC5F72D8B04E600B3E521 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CE2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF582FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E52F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E64AC5F82D8B04E600B3E521 /* Assets.xcassets in Resources */,
 				7AD367332F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4792,6 +5245,8 @@
 				7A9646B62F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8D2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E64AC5FD2D8B04E600B3E521 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB36F2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D72FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F32F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C22F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB1412F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4812,8 +5267,11 @@
 				7AE652C32F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C72F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D052F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B52FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9BC2FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390C2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1372F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E82FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AD2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A96468E2F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E64AC6002D8B04E600B3E521 /* SplashViewWTW.storyboard in Resources */,
@@ -4827,14 +5285,19 @@
 			files = (
 				7A49A9512EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E68DD8472DB7C8D500307982 /* SplashView.storyboard in Resources */,
+				7A25D9A52FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9DF2FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646782F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF472FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9652EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7D2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9A82FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12A2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652AE2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A82F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E68DD8482DB7C8D500307982 /* SplashViewBCI.storyboard in Resources */,
 				7AE652D12F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF592FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E42F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E68DD8492DB7C8D500307982 /* Assets.xcassets in Resources */,
 				7AD3672C2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4867,6 +5330,8 @@
 				7A9646BA2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8C2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E68DD84F2DB7C8D500307982 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB36C2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D12FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F62F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C42F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB13D2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4887,8 +5352,11 @@
 				7AE652C62F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C52F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D072F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B32FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9BF2FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390F2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1312F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E52FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AC2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646932F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E68DD8522DB7C8D500307982 /* SplashViewWTW.storyboard in Resources */,
@@ -4902,14 +5370,19 @@
 			files = (
 				7A49A9522EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E69FED3E2BA47E61002ADADB /* SplashView.storyboard in Resources */,
+				7A25D99E2FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9E02FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646722F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF462FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A9642EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7F2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AD2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12D2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652B12F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A32F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E69FED3F2BA47E61002ADADB /* SplashViewBCI.storyboard in Resources */,
 				7AE652C92F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF552FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DF2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E69FED402BA47E61002ADADB /* Assets.xcassets in Resources */,
 				7AD367322F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -4942,6 +5415,8 @@
 				7A9646BE2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D922F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FED442BA47E61002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB3702FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D32FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F42F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001BE2F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB1432F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -4962,8 +5437,11 @@
 				7AE652C42F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C12F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D022F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B72FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9C32FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E39092F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1392F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9EB2FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AB2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A96468F2F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E69FED472BA47E61002ADADB /* SplashViewWTW.storyboard in Resources */,
@@ -4977,14 +5455,19 @@
 			files = (
 				7A49A9552EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E6DC59AD2B6C089C00EEC341 /* SplashView.storyboard in Resources */,
+				7A25D9A32FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9D92FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646742F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF402FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A96A2EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D7C2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AB2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1292F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652B32F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A52F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E643D4492B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652D02F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF542FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E22F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6DC59AE2B6C089C00EEC341 /* Assets.xcassets in Resources */,
 				7AD3672E2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -5017,6 +5500,8 @@
 				7A9646BD2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8E2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC722BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB3722FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9D52FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F12F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C62F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB1422F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -5037,8 +5522,11 @@
 				7AE652BF2F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C82F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D032F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B62FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9C02FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E39082F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1352F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9EA2FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B22F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646922F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E6DC59B42B6C089C00EEC341 /* SplashViewWTW.storyboard in Resources */,
@@ -5052,14 +5540,19 @@
 			files = (
 				7A49A9542EFAE083006F26BB /* CAMBIOS_IMPLEMENTADOS.md in Resources */,
 				E6F66CC82C9478ED00B0CE60 /* SplashView.storyboard in Resources */,
+				7A25D9A42FB22FF900721088 /* Empty_box_alert.json in Resources */,
+				7A25D9E12FB38BB200721088 /* Doctor_Saludando.json in Resources */,
 				7A9646702F3F7C9B009A9483 /* NAVIGATION_FLOW_IMPLEMENTATION.md in Resources */,
+				7A3FAF432FAE341D002E87D1 /* Empty_Box.json in Resources */,
 				7A49A96C2EFAEAB1006F26BB /* SISTEMA_POPUPS_CONCATENACION.md in Resources */,
 				7A550D792F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
+				7A25D9AA2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1282F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
 				7AE652AC2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A72F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
 				E6F66CC92C9478ED00B0CE60 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CF2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7A3FAF5A2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E12F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6F66CCA2C9478ED00B0CE60 /* Assets.xcassets in Resources */,
 				7AD3672D2F4647F6002A4F1C /* GoogleService-Info.plist in Resources */,
@@ -5092,6 +5585,8 @@
 				7A9646BB2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D912F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E6F66CCF2C9478ED00B0CE60 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AFBB36D2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
+				7A25D9CF2FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F92F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
 				7A9001C12F43AEC200993F1D /* FIX_LISTA_ACTIVIDADES_DESAPARECE.md in Resources */,
 				7A9CB13B2F3E1B3C007FA976 /* PICKLIST_DYNAMIC_HEIGHT_SUMMARY.md in Resources */,
@@ -5112,8 +5607,11 @@
 				7AE652C72F43B80300115A40 /* ELEMENTSVIEW_TEST_PLAN.md in Resources */,
 				7A9646C32F3FB183009A9483 /* FIX_EMPTY_ACTIVITIES_LIST.md in Resources */,
 				7A8A5D092F68614700C332C5 /* SOLUCION_BUG_LOGIN_NOTIFICACIONES.md in Resources */,
+				7A25D9B82FB23A2200721088 /* Medical_App.json in Resources */,
+				7A25D9BE2FB23ACF00721088 /* Medical_Frontliners.json in Resources */,
 				7A0E390E2F4F8E7800D43CEF /* COMO_SOLUCIONAR_ERRORES_COMPILACION.md in Resources */,
 				7A9CB1362F3E19F4007FA976 /* PICKLIST_SIMPLE_DYNAMIC_HEIGHT.md in Resources */,
+				7A25D9E42FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B02F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646942F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
 				E6F66CD22C9478ED00B0CE60 /* SplashViewWTW.storyboard in Resources */,
@@ -5161,6 +5659,7 @@
 				7A2F7A942ED8DBA00095661C /* PrimaryButton.swift in Sources */,
 				7A2F7A952ED8DBA00095661C /* Label+Extensions.swift in Sources */,
 				7A2F7A962ED8DBA00095661C /* AppointmentsView.swift in Sources */,
+				7A25D9CB2FB2499D00721088 /* ReviewManager.swift in Sources */,
 				7A2F7A972ED8DBA00095661C /* TaskTile.swift in Sources */,
 				7A2F7A982ED8DBA00095661C /* View+Toolbar.swift in Sources */,
 				7A2F7A992ED8DBA00095661C /* PickerPopupViewModifier.swift in Sources */,
@@ -5180,12 +5679,19 @@
 				7A2F7AA32ED8DBA00095661C /* MedicalExamsRowView.swift in Sources */,
 				7A2F7AA42ED8DBA00095661C /* CustomTextEditor.swift in Sources */,
 				7A2F7AA52ED8DBA00095661C /* HomeView.swift in Sources */,
+				7AFBB3992FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB39A2FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB39B2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB39C2FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB39D2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB39E2FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				7A2F7AA62ED8DBA00095661C /* DocumentPickerView.swift in Sources */,
 				7A2F7AA72ED8DBA00095661C /* Appointment+Extension.swift in Sources */,
 				7A2F7AA82ED8DBA00095661C /* Environment+CustomKeys.swift in Sources */,
 				7A2F7AA92ED8DBA00095661C /* Network+JWT.swift in Sources */,
 				7A2F7AAA2ED8DBA00095661C /* AppointmentRowView.swift in Sources */,
 				7A9A8B8B2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF662FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				7A2F7AAB2ED8DBA00095661C /* ProgramsView.swift in Sources */,
 				7A2F7AAC2ED8DBA00095661C /* Network+Exams.swift in Sources */,
 				7A2F7AAD2ED8DBA00095661C /* CGFloat+Constants.swift in Sources */,
@@ -5249,6 +5755,7 @@
 				7A2F7ADE2ED8DBA00095661C /* BrandAccount.swift in Sources */,
 				7A2F7ADF2ED8DBA00095661C /* ElementDetailsView.swift in Sources */,
 				7A2F7AE02ED8DBA00095661C /* PDFBase64.swift in Sources */,
+				7A3FAF4D2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				7A2F7AE12ED8DBA00095661C /* CompletionRows.swift in Sources */,
 				7A2F7AE22ED8DBA00095661C /* CheckValidationCodeResponse.swift in Sources */,
 				7A2F7AE32ED8DBA00095661C /* PostTaskResponse.swift in Sources */,
@@ -5285,6 +5792,7 @@
 				7A2F7AFA2ED8DBA00095661C /* Network+Profile.swift in Sources */,
 				7A2F7AFB2ED8DBA00095661C /* ProfileView.swift in Sources */,
 				7A2F7AFC2ED8DBA00095661C /* FunctionFilter.swift in Sources */,
+				7A95453B2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				7A2F7AFD2ED8DBA00095661C /* PatientExamsView.swift in Sources */,
 				7A2F7AFE2ED8DBA00095661C /* PopUpUploadMediaView.swift in Sources */,
 				7A2F7AFF2ED8DBA00095661C /* ElementsView.swift in Sources */,
@@ -5314,6 +5822,7 @@
 				7A2F7B172ED8DBA00095661C /* Task.swift in Sources */,
 				7A2F7B182ED8DBA00095661C /* Network+SignUp.swift in Sources */,
 				7A2F7B192ED8DBA00095661C /* View+Extensions.swift in Sources */,
+				7A9544DA2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				7A2F7B1A2ED8DBA00095661C /* SendNewExamView.swift in Sources */,
 				7AB87AD32F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				7A2F7B1B2ED8DBA00095661C /* SignInView.swift in Sources */,
@@ -5350,6 +5859,7 @@
 				7A2F7B352ED8DBA00095661C /* Network+Favorite.swift in Sources */,
 				7A2F7B362ED8DBA00095661C /* SecondaryButton.swift in Sources */,
 				7A2F7B372ED8DBA00095661C /* SignInPasswordResetView.swift in Sources */,
+				7A9544E62FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				7A2F7B382ED8DBA00095661C /* SignInPasswordRecovery.swift in Sources */,
 				7A2F7B392ED8DBA00095661C /* AppointmentVideoCallView.swift in Sources */,
 				7A2F7B3A2ED8DBA00095661C /* MedicalExamsDetailsView.swift in Sources */,
@@ -5410,6 +5920,7 @@
 				879C5B86289BC017005A140D /* PrimaryButton.swift in Sources */,
 				8741E25E28C938EC00A15C06 /* Label+Extensions.swift in Sources */,
 				879C5B9A289E17B9005A140D /* AppointmentsView.swift in Sources */,
+				7A25D9CA2FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E6CA7E732B113F3300C2279F /* TaskTile.swift in Sources */,
 				8775ACAE290058C70079D3CF /* View+Toolbar.swift in Sources */,
 				87AD0C73290C5853003C2858 /* PickerPopupViewModifier.swift in Sources */,
@@ -5429,12 +5940,19 @@
 				879269B729F0360300361152 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D02E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				879C5B98289E1712005A140D /* HomeView.swift in Sources */,
+				7AFBB3AB2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3AC2FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3AD2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3AE2FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3AF2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3B02FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E6FCB0BC2AE1A71A00C264E1 /* DocumentPickerView.swift in Sources */,
 				E61B184D2C758BB200034300 /* Appointment+Extension.swift in Sources */,
 				87ABA3E028FEDF4100410133 /* Environment+CustomKeys.swift in Sources */,
 				87097C5A28E33ADB004C2DF0 /* Network+JWT.swift in Sources */,
 				87F2284828B7FB8D0031199F /* AppointmentRowView.swift in Sources */,
 				7A9A8B8E2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF5E2FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				879269B629F0360300361152 /* ProgramsView.swift in Sources */,
 				E6FCC7752ACF30EB00C9E673 /* Network+Exams.swift in Sources */,
 				87D3AEF22897E9AA0089A2C8 /* CGFloat+Constants.swift in Sources */,
@@ -5498,6 +6016,7 @@
 				E69FCE9D2AFD1BBE00C6147E /* BrandAccount.swift in Sources */,
 				879269B029F0360300361152 /* ElementDetailsView.swift in Sources */,
 				E63B0B3F2D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF4B2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E6AB328F2AD73BD1002A122E /* CompletionRows.swift in Sources */,
 				87216B9F28D94C9F00B4CDB9 /* CheckValidationCodeResponse.swift in Sources */,
 				E6AB328B2AD7204F002A122E /* PostTaskResponse.swift in Sources */,
@@ -5534,6 +6053,7 @@
 				8776860C28F5B0DD007C67F0 /* Network+Profile.swift in Sources */,
 				879C5B9C289E17D6005A140D /* ProfileView.swift in Sources */,
 				E606D7792D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A9545372FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D902E211B0200871886 /* PatientExamsView.swift in Sources */,
 				879269C229F0363A00361152 /* PopUpUploadMediaView.swift in Sources */,
 				879269B229F0360300361152 /* ElementsView.swift in Sources */,
@@ -5563,6 +6083,7 @@
 				E6341A9F2A730A34005E6607 /* Task.swift in Sources */,
 				8796B10B28D2578D004BA02B /* Network+SignUp.swift in Sources */,
 				870722B12911B125007AB753 /* View+Extensions.swift in Sources */,
+				7A9544DE2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA12E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD82F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				879C5B96289D730C005A140D /* SignInView.swift in Sources */,
@@ -5599,6 +6120,7 @@
 				E6FCB0BE2AE2E82900C264E1 /* Network+Favorite.swift in Sources */,
 				879269C129F0363A00361152 /* SecondaryButton.swift in Sources */,
 				8776861028F63024007C67F0 /* SignInPasswordResetView.swift in Sources */,
+				7A9544E92FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				873013DA28EE7847005A80BB /* SignInPasswordRecovery.swift in Sources */,
 				87DCAB46293E9FC200AB75DB /* AppointmentVideoCallView.swift in Sources */,
 				879269B829F0360300361152 /* MedicalExamsDetailsView.swift in Sources */,
@@ -5659,6 +6181,7 @@
 				E636EF042BA8C81900A51A87 /* Label+Extensions.swift in Sources */,
 				E636EF052BA8C81900A51A87 /* AppointmentsView.swift in Sources */,
 				E636EF062BA8C81900A51A87 /* TaskTile.swift in Sources */,
+				7A25D9C92FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E636EF072BA8C81900A51A87 /* View+Toolbar.swift in Sources */,
 				E636EF082BA8C81900A51A87 /* PickerPopupViewModifier.swift in Sources */,
 				E636EF092BA8C81900A51A87 /* Validation.swift in Sources */,
@@ -5678,12 +6201,19 @@
 				E636EF122BA8C81900A51A87 /* HomeView.swift in Sources */,
 				E67AF9D12E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E636EF132BA8C81900A51A87 /* DocumentPickerView.swift in Sources */,
+				7AFBB38D2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB38E2FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB38F2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3902FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3912FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3922FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E636EF142BA8C81900A51A87 /* Environment+CustomKeys.swift in Sources */,
 				E61B18512C758BB200034300 /* Appointment+Extension.swift in Sources */,
 				E636EF152BA8C81900A51A87 /* Network+JWT.swift in Sources */,
 				E636EF162BA8C81900A51A87 /* AppointmentRowView.swift in Sources */,
 				E636EF172BA8C81900A51A87 /* ProgramsView.swift in Sources */,
 				7A9A8B902F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF652FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E636EF182BA8C81900A51A87 /* Network+Exams.swift in Sources */,
 				E636EF192BA8C81900A51A87 /* CGFloat+Constants.swift in Sources */,
 				E636EF1A2BA8C81900A51A87 /* AppStatusManager.swift in Sources */,
@@ -5747,6 +6277,7 @@
 				E636EF432BA8C81900A51A87 /* BrandAccount.swift in Sources */,
 				E636EF442BA8C81900A51A87 /* ElementDetailsView.swift in Sources */,
 				E63B0B402D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF512FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E636EF452BA8C81900A51A87 /* CompletionRows.swift in Sources */,
 				E636EF462BA8C81900A51A87 /* CheckValidationCodeResponse.swift in Sources */,
 				E636EF472BA8C81900A51A87 /* PostTaskResponse.swift in Sources */,
@@ -5783,6 +6314,7 @@
 				E636EF5B2BA8C81900A51A87 /* ProfileView.swift in Sources */,
 				E636EF5C2BA8C81900A51A87 /* PopUpUploadMediaView.swift in Sources */,
 				E606D77C2D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A95453E2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D8F2E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E636EF5D2BA8C81900A51A87 /* ElementsView.swift in Sources */,
 				E636EF5E2BA8C81900A51A87 /* Network+Stages.swift in Sources */,
@@ -5812,6 +6344,7 @@
 				E636EF712BA8C81900A51A87 /* Network+SignUp.swift in Sources */,
 				E636EF722BA8C81900A51A87 /* View+Extensions.swift in Sources */,
 				E636EF732BA8C81900A51A87 /* SignInView.swift in Sources */,
+				7A9544E02FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA42E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD52F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E636EF742BA8C81900A51A87 /* SignUpFormView.swift in Sources */,
@@ -5848,6 +6381,7 @@
 				E636EF8A2BA8C81900A51A87 /* Network+Favorite.swift in Sources */,
 				E636EF8B2BA8C81900A51A87 /* SecondaryButton.swift in Sources */,
 				E636EF8C2BA8C81900A51A87 /* SignInPasswordResetView.swift in Sources */,
+				7A9544EC2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E636EF8D2BA8C81900A51A87 /* SignInPasswordRecovery.swift in Sources */,
 				E636EF8E2BA8C81900A51A87 /* AppointmentVideoCallView.swift in Sources */,
 				E636EF8F2BA8C81900A51A87 /* MedicalExamsDetailsView.swift in Sources */,
@@ -5908,6 +6442,7 @@
 				E643D38A2B7170290058D227 /* PrimaryButton.swift in Sources */,
 				E643D38B2B7170290058D227 /* Label+Extensions.swift in Sources */,
 				E643D38C2B7170290058D227 /* AppointmentsView.swift in Sources */,
+				7A25D9C62FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E643D38D2B7170290058D227 /* TaskTile.swift in Sources */,
 				E643D38E2B7170290058D227 /* View+Toolbar.swift in Sources */,
 				E643D38F2B7170290058D227 /* PickerPopupViewModifier.swift in Sources */,
@@ -5927,12 +6462,19 @@
 				E643D3982B7170290058D227 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D22E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E643D3992B7170290058D227 /* HomeView.swift in Sources */,
+				7AFBB3872FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3882FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3892FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB38A2FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB38B2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB38C2FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E643D39A2B7170290058D227 /* DocumentPickerView.swift in Sources */,
 				E61B184F2C758BB200034300 /* Appointment+Extension.swift in Sources */,
 				E643D39B2B7170290058D227 /* Environment+CustomKeys.swift in Sources */,
 				E643D39C2B7170290058D227 /* Network+JWT.swift in Sources */,
 				E643D39D2B7170290058D227 /* AppointmentRowView.swift in Sources */,
 				7A9A8B892F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF642FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E643D39E2B7170290058D227 /* ProgramsView.swift in Sources */,
 				E643D39F2B7170290058D227 /* Network+Exams.swift in Sources */,
 				E643D3A02B7170290058D227 /* CGFloat+Constants.swift in Sources */,
@@ -5996,6 +6538,7 @@
 				E643D3C92B7170290058D227 /* BrandAccount.swift in Sources */,
 				E643D3CA2B7170290058D227 /* ElementDetailsView.swift in Sources */,
 				E63B0B412D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF522FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E643D3CB2B7170290058D227 /* CompletionRows.swift in Sources */,
 				E643D3CC2B7170290058D227 /* CheckValidationCodeResponse.swift in Sources */,
 				E643D3CD2B7170290058D227 /* PostTaskResponse.swift in Sources */,
@@ -6032,6 +6575,7 @@
 				E643D3E02B7170290058D227 /* Network+Profile.swift in Sources */,
 				E643D3E12B7170290058D227 /* ProfileView.swift in Sources */,
 				E606D77B2D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A95453D2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D8D2E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E643D3E22B7170290058D227 /* PopUpUploadMediaView.swift in Sources */,
 				E643D3E32B7170290058D227 /* ElementsView.swift in Sources */,
@@ -6061,6 +6605,7 @@
 				E643D3F42B7170290058D227 /* Task.swift in Sources */,
 				E643D3F52B7170290058D227 /* Network+SignUp.swift in Sources */,
 				E643D3F62B7170290058D227 /* View+Extensions.swift in Sources */,
+				7A9544DB2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA02E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD42F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E643D3F72B7170290058D227 /* SignInView.swift in Sources */,
@@ -6097,6 +6642,7 @@
 				E643D40E2B7170290058D227 /* Network+Favorite.swift in Sources */,
 				E643D40F2B7170290058D227 /* SecondaryButton.swift in Sources */,
 				E643D4102B7170290058D227 /* SignInPasswordResetView.swift in Sources */,
+				7A9544ED2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E643D4112B7170290058D227 /* SignInPasswordRecovery.swift in Sources */,
 				E643D4122B7170290058D227 /* AppointmentVideoCallView.swift in Sources */,
 				E643D4132B7170290058D227 /* MedicalExamsDetailsView.swift in Sources */,
@@ -6157,6 +6703,7 @@
 				E64AC5342D8B04E600B3E521 /* PrimaryButton.swift in Sources */,
 				E64AC5352D8B04E600B3E521 /* Label+Extensions.swift in Sources */,
 				E64AC5362D8B04E600B3E521 /* AppointmentsView.swift in Sources */,
+				7A25D9CD2FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E64AC5372D8B04E600B3E521 /* TaskTile.swift in Sources */,
 				E64AC5382D8B04E600B3E521 /* View+Toolbar.swift in Sources */,
 				E64AC5392D8B04E600B3E521 /* PickerPopupViewModifier.swift in Sources */,
@@ -6176,12 +6723,19 @@
 				E64AC5432D8B04E600B3E521 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9CF2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E64AC5442D8B04E600B3E521 /* HomeView.swift in Sources */,
+				7AFBB39F2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3A02FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3A12FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3A22FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3A32FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3A42FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E64AC5452D8B04E600B3E521 /* DocumentPickerView.swift in Sources */,
 				E64AC5462D8B04E600B3E521 /* Appointment+Extension.swift in Sources */,
 				E64AC5472D8B04E600B3E521 /* Environment+CustomKeys.swift in Sources */,
 				E64AC5482D8B04E600B3E521 /* Network+JWT.swift in Sources */,
 				E64AC5492D8B04E600B3E521 /* AppointmentRowView.swift in Sources */,
 				7A9A8B8F2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF612FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E64AC54A2D8B04E600B3E521 /* ProgramsView.swift in Sources */,
 				E64AC54B2D8B04E600B3E521 /* Network+Exams.swift in Sources */,
 				E64AC54C2D8B04E600B3E521 /* CGFloat+Constants.swift in Sources */,
@@ -6245,6 +6799,7 @@
 				E64AC57B2D8B04E600B3E521 /* BrandAccount.swift in Sources */,
 				E64AC57C2D8B04E600B3E521 /* ElementDetailsView.swift in Sources */,
 				E64AC57D2D8B04E600B3E521 /* PDFBase64.swift in Sources */,
+				7A3FAF4F2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E64AC57E2D8B04E600B3E521 /* CompletionRows.swift in Sources */,
 				E64AC57F2D8B04E600B3E521 /* CheckValidationCodeResponse.swift in Sources */,
 				E64AC5802D8B04E600B3E521 /* PostTaskResponse.swift in Sources */,
@@ -6281,6 +6836,7 @@
 				E64AC5962D8B04E600B3E521 /* Network+Profile.swift in Sources */,
 				E64AC5972D8B04E600B3E521 /* ProfileView.swift in Sources */,
 				E64AC5982D8B04E600B3E521 /* FunctionFilter.swift in Sources */,
+				7A95453A2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D912E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E64AC5992D8B04E600B3E521 /* PopUpUploadMediaView.swift in Sources */,
 				E64AC59A2D8B04E600B3E521 /* ElementsView.swift in Sources */,
@@ -6310,6 +6866,7 @@
 				E64AC5AF2D8B04E600B3E521 /* Task.swift in Sources */,
 				E64AC5B02D8B04E600B3E521 /* Network+SignUp.swift in Sources */,
 				E64AC5B12D8B04E600B3E521 /* View+Extensions.swift in Sources */,
+				7A9544E12FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799D9F2E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD72F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E64AC5B22D8B04E600B3E521 /* SignInView.swift in Sources */,
@@ -6346,6 +6903,7 @@
 				E64AC5C92D8B04E600B3E521 /* Network+Favorite.swift in Sources */,
 				E64AC5CA2D8B04E600B3E521 /* SecondaryButton.swift in Sources */,
 				E64AC5CB2D8B04E600B3E521 /* SignInPasswordResetView.swift in Sources */,
+				7A9544EB2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E64AC5CC2D8B04E600B3E521 /* SignInPasswordRecovery.swift in Sources */,
 				E64AC5CD2D8B04E600B3E521 /* AppointmentVideoCallView.swift in Sources */,
 				E64AC5CE2D8B04E600B3E521 /* MedicalExamsDetailsView.swift in Sources */,
@@ -6406,6 +6964,7 @@
 				E68DD7812DB7C8D500307982 /* PrimaryButton.swift in Sources */,
 				E68DD7822DB7C8D500307982 /* Label+Extensions.swift in Sources */,
 				E68DD7832DB7C8D500307982 /* AppointmentsView.swift in Sources */,
+				7A25D9CC2FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E68DD7842DB7C8D500307982 /* TaskTile.swift in Sources */,
 				E68DD7852DB7C8D500307982 /* View+Toolbar.swift in Sources */,
 				E68DD7862DB7C8D500307982 /* PickerPopupViewModifier.swift in Sources */,
@@ -6425,12 +6984,19 @@
 				E68DD7902DB7C8D500307982 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9CD2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E68DD7912DB7C8D500307982 /* HomeView.swift in Sources */,
+				7AFBB3A52FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3A62FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3A72FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3A82FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3A92FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3AA2FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E68DD7922DB7C8D500307982 /* DocumentPickerView.swift in Sources */,
 				E68DD7932DB7C8D500307982 /* Appointment+Extension.swift in Sources */,
 				E68DD7942DB7C8D500307982 /* Environment+CustomKeys.swift in Sources */,
 				E68DD7952DB7C8D500307982 /* Network+JWT.swift in Sources */,
 				E68DD7962DB7C8D500307982 /* AppointmentRowView.swift in Sources */,
 				7A9A8B8C2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF632FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E68DD7972DB7C8D500307982 /* ProgramsView.swift in Sources */,
 				E68DD7982DB7C8D500307982 /* Network+Exams.swift in Sources */,
 				E68DD7992DB7C8D500307982 /* CGFloat+Constants.swift in Sources */,
@@ -6494,6 +7060,7 @@
 				E68DD7C92DB7C8D500307982 /* BrandAccount.swift in Sources */,
 				E68DD7CA2DB7C8D500307982 /* ElementDetailsView.swift in Sources */,
 				E68DD7CB2DB7C8D500307982 /* PDFBase64.swift in Sources */,
+				7A3FAF4C2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E68DD7CC2DB7C8D500307982 /* CompletionRows.swift in Sources */,
 				E68DD7CD2DB7C8D500307982 /* CheckValidationCodeResponse.swift in Sources */,
 				E68DD7CE2DB7C8D500307982 /* PostTaskResponse.swift in Sources */,
@@ -6530,6 +7097,7 @@
 				E68DD7E42DB7C8D500307982 /* Network+Profile.swift in Sources */,
 				E68DD7E52DB7C8D500307982 /* ProfileView.swift in Sources */,
 				E68DD7E62DB7C8D500307982 /* FunctionFilter.swift in Sources */,
+				7A9545382FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D8C2E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E68DD7E72DB7C8D500307982 /* PopUpUploadMediaView.swift in Sources */,
 				E68DD7E82DB7C8D500307982 /* ElementsView.swift in Sources */,
@@ -6559,6 +7127,7 @@
 				E68DD7FE2DB7C8D500307982 /* Task.swift in Sources */,
 				E68DD7FF2DB7C8D500307982 /* Network+SignUp.swift in Sources */,
 				E68DD8002DB7C8D500307982 /* View+Extensions.swift in Sources */,
+				7A9544DF2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA22E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD92F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E68DD8012DB7C8D500307982 /* SignInView.swift in Sources */,
@@ -6595,6 +7164,7 @@
 				E68DD8192DB7C8D500307982 /* Network+Favorite.swift in Sources */,
 				E68DD81A2DB7C8D500307982 /* SecondaryButton.swift in Sources */,
 				E68DD81B2DB7C8D500307982 /* SignInPasswordResetView.swift in Sources */,
+				7A9544E72FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E68DD81C2DB7C8D500307982 /* SignInPasswordRecovery.swift in Sources */,
 				E68DD81D2DB7C8D500307982 /* AppointmentVideoCallView.swift in Sources */,
 				E68DD81E2DB7C8D500307982 /* MedicalExamsDetailsView.swift in Sources */,
@@ -6655,6 +7225,7 @@
 				E69FEC8D2BA47E61002ADADB /* Label+Extensions.swift in Sources */,
 				E69FEC8E2BA47E61002ADADB /* AppointmentsView.swift in Sources */,
 				E69FEC8F2BA47E61002ADADB /* TaskTile.swift in Sources */,
+				7A25D9C52FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E69FEC902BA47E61002ADADB /* View+Toolbar.swift in Sources */,
 				E69FEC912BA47E61002ADADB /* PickerPopupViewModifier.swift in Sources */,
 				E69FEC922BA47E61002ADADB /* Validation.swift in Sources */,
@@ -6674,12 +7245,19 @@
 				E69FEC9B2BA47E61002ADADB /* HomeView.swift in Sources */,
 				E67AF9CE2E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E69FEC9C2BA47E61002ADADB /* DocumentPickerView.swift in Sources */,
+				7AFBB3932FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3942FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3952FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3962FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3972FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3982FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E69FEC9D2BA47E61002ADADB /* Environment+CustomKeys.swift in Sources */,
 				E61B18502C758BB200034300 /* Appointment+Extension.swift in Sources */,
 				E69FEC9E2BA47E61002ADADB /* Network+JWT.swift in Sources */,
 				E69FEC9F2BA47E61002ADADB /* AppointmentRowView.swift in Sources */,
 				E69FECA02BA47E61002ADADB /* ProgramsView.swift in Sources */,
 				7A9A8B882F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF622FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E69FECA12BA47E61002ADADB /* Network+Exams.swift in Sources */,
 				E69FECA22BA47E61002ADADB /* CGFloat+Constants.swift in Sources */,
 				E69FECA32BA47E61002ADADB /* AppStatusManager.swift in Sources */,
@@ -6743,6 +7321,7 @@
 				E69FECCC2BA47E61002ADADB /* BrandAccount.swift in Sources */,
 				E69FECCD2BA47E61002ADADB /* ElementDetailsView.swift in Sources */,
 				E63B0B422D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF502FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E69FECCE2BA47E61002ADADB /* CompletionRows.swift in Sources */,
 				E69FECCF2BA47E61002ADADB /* CheckValidationCodeResponse.swift in Sources */,
 				E69FECD02BA47E61002ADADB /* PostTaskResponse.swift in Sources */,
@@ -6779,6 +7358,7 @@
 				E69FECE42BA47E61002ADADB /* ProfileView.swift in Sources */,
 				E69FECE52BA47E61002ADADB /* PopUpUploadMediaView.swift in Sources */,
 				E606D77D2D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A95453F2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D8E2E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E69FECE62BA47E61002ADADB /* ElementsView.swift in Sources */,
 				E69FECE72BA47E61002ADADB /* Network+Stages.swift in Sources */,
@@ -6808,6 +7388,7 @@
 				E69FECFA2BA47E61002ADADB /* Network+SignUp.swift in Sources */,
 				E69FECFB2BA47E61002ADADB /* View+Extensions.swift in Sources */,
 				E69FECFC2BA47E61002ADADB /* SignInView.swift in Sources */,
+				7A9544DD2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA32E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD62F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E69FECFD2BA47E61002ADADB /* SignUpFormView.swift in Sources */,
@@ -6844,6 +7425,7 @@
 				E69FED132BA47E61002ADADB /* Network+Favorite.swift in Sources */,
 				E69FED142BA47E61002ADADB /* SecondaryButton.swift in Sources */,
 				E69FED152BA47E61002ADADB /* SignInPasswordResetView.swift in Sources */,
+				7A9544E82FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E69FED162BA47E61002ADADB /* SignInPasswordRecovery.swift in Sources */,
 				E69FED172BA47E61002ADADB /* AppointmentVideoCallView.swift in Sources */,
 				E69FED182BA47E61002ADADB /* MedicalExamsDetailsView.swift in Sources */,
@@ -6904,6 +7486,7 @@
 				E6DC58FF2B6C089C00EEC341 /* PrimaryButton.swift in Sources */,
 				E6DC59002B6C089C00EEC341 /* Label+Extensions.swift in Sources */,
 				E6DC59012B6C089C00EEC341 /* AppointmentsView.swift in Sources */,
+				7A25D9C72FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E6DC59022B6C089C00EEC341 /* TaskTile.swift in Sources */,
 				E6DC59032B6C089C00EEC341 /* View+Toolbar.swift in Sources */,
 				E6DC59042B6C089C00EEC341 /* PickerPopupViewModifier.swift in Sources */,
@@ -6923,12 +7506,19 @@
 				E6DC590D2B6C089C00EEC341 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D42E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E6DC590E2B6C089C00EEC341 /* HomeView.swift in Sources */,
+				7AFBB3812FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB3822FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB3832FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB3842FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB3852FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3862FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E6DC590F2B6C089C00EEC341 /* DocumentPickerView.swift in Sources */,
 				E61B184E2C758BB200034300 /* Appointment+Extension.swift in Sources */,
 				E6DC59102B6C089C00EEC341 /* Environment+CustomKeys.swift in Sources */,
 				E6DC59112B6C089C00EEC341 /* Network+JWT.swift in Sources */,
 				E6DC59122B6C089C00EEC341 /* AppointmentRowView.swift in Sources */,
 				7A9A8B8A2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF602FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E6DC59132B6C089C00EEC341 /* ProgramsView.swift in Sources */,
 				E6DC59142B6C089C00EEC341 /* Network+Exams.swift in Sources */,
 				E6DC59152B6C089C00EEC341 /* CGFloat+Constants.swift in Sources */,
@@ -6992,6 +7582,7 @@
 				E6DC593E2B6C089C00EEC341 /* BrandAccount.swift in Sources */,
 				E6DC593F2B6C089C00EEC341 /* ElementDetailsView.swift in Sources */,
 				E63B0B3D2D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF4E2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E6DC59402B6C089C00EEC341 /* CompletionRows.swift in Sources */,
 				E6DC59412B6C089C00EEC341 /* CheckValidationCodeResponse.swift in Sources */,
 				E6DC59422B6C089C00EEC341 /* PostTaskResponse.swift in Sources */,
@@ -7028,6 +7619,7 @@
 				E6DC59552B6C089C00EEC341 /* Network+Profile.swift in Sources */,
 				E6DC59562B6C089C00EEC341 /* ProfileView.swift in Sources */,
 				E606D7782D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A95453C2FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D932E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E6DC59572B6C089C00EEC341 /* PopUpUploadMediaView.swift in Sources */,
 				E6DC59582B6C089C00EEC341 /* ElementsView.swift in Sources */,
@@ -7057,6 +7649,7 @@
 				E6DC59692B6C089C00EEC341 /* Task.swift in Sources */,
 				E6DC596A2B6C089C00EEC341 /* Network+SignUp.swift in Sources */,
 				E6DC596B2B6C089C00EEC341 /* View+Extensions.swift in Sources */,
+				7A9544D92FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799D9E2E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD22F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E6DC596C2B6C089C00EEC341 /* SignInView.swift in Sources */,
@@ -7093,6 +7686,7 @@
 				E6DC59832B6C089C00EEC341 /* Network+Favorite.swift in Sources */,
 				E6DC59842B6C089C00EEC341 /* SecondaryButton.swift in Sources */,
 				E6DC59852B6C089C00EEC341 /* SignInPasswordResetView.swift in Sources */,
+				7A9544EA2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E6DC59862B6C089C00EEC341 /* SignInPasswordRecovery.swift in Sources */,
 				E6DC59872B6C089C00EEC341 /* AppointmentVideoCallView.swift in Sources */,
 				E6DC59882B6C089C00EEC341 /* MedicalExamsDetailsView.swift in Sources */,
@@ -7153,6 +7747,7 @@
 				E6F66C0D2C9478ED00B0CE60 /* PrimaryButton.swift in Sources */,
 				E6F66C0E2C9478ED00B0CE60 /* Label+Extensions.swift in Sources */,
 				E6F66C0F2C9478ED00B0CE60 /* AppointmentsView.swift in Sources */,
+				7A25D9C82FB2499D00721088 /* ReviewManager.swift in Sources */,
 				E6F66C102C9478ED00B0CE60 /* TaskTile.swift in Sources */,
 				E6F66C112C9478ED00B0CE60 /* View+Toolbar.swift in Sources */,
 				E6F66C122C9478ED00B0CE60 /* PickerPopupViewModifier.swift in Sources */,
@@ -7172,12 +7767,19 @@
 				E6F66C1C2C9478ED00B0CE60 /* MedicalExamsRowView.swift in Sources */,
 				E67AF9D32E44F1D7001B84F7 /* CustomTextEditor.swift in Sources */,
 				E6F66C1D2C9478ED00B0CE60 /* HomeView.swift in Sources */,
+				7AFBB37B2FAE2AAC006F83EA /* ShimmerModifier.swift in Sources */,
+				7AFBB37C2FAE2AAC006F83EA /* SkeletonView.swift in Sources */,
+				7AFBB37D2FAE2AAC006F83EA /* SpringModifiers.swift in Sources */,
+				7AFBB37E2FAE2AAC006F83EA /* TooltipView.swift in Sources */,
+				7AFBB37F2FAE2AAC006F83EA /* ConfettiModifier.swift in Sources */,
+				7AFBB3802FAE2AAC006F83EA /* HapticManager.swift in Sources */,
 				E6F66C1E2C9478ED00B0CE60 /* DocumentPickerView.swift in Sources */,
 				E6F66C1F2C9478ED00B0CE60 /* Appointment+Extension.swift in Sources */,
 				E6F66C202C9478ED00B0CE60 /* Environment+CustomKeys.swift in Sources */,
 				E6F66C212C9478ED00B0CE60 /* Network+JWT.swift in Sources */,
 				E6F66C222C9478ED00B0CE60 /* AppointmentRowView.swift in Sources */,
 				7A9A8B8D2F96D91900EBE8FB /* ExamDeleteConfirmationModal.swift in Sources */,
+				7A3FAF5F2FAE8E6A002E87D1 /* NavigationTransitions.swift in Sources */,
 				E6F66C232C9478ED00B0CE60 /* ProgramsView.swift in Sources */,
 				E6F66C242C9478ED00B0CE60 /* Network+Exams.swift in Sources */,
 				E6F66C252C9478ED00B0CE60 /* CGFloat+Constants.swift in Sources */,
@@ -7241,6 +7843,7 @@
 				E6F66C522C9478ED00B0CE60 /* BrandAccount.swift in Sources */,
 				E6F66C532C9478ED00B0CE60 /* ElementDetailsView.swift in Sources */,
 				E63B0B3E2D14594B00E16BD4 /* PDFBase64.swift in Sources */,
+				7A3FAF4A2FAE38DC002E87D1 /* TypewriterText.swift in Sources */,
 				E6F66C542C9478ED00B0CE60 /* CompletionRows.swift in Sources */,
 				E6F66C552C9478ED00B0CE60 /* CheckValidationCodeResponse.swift in Sources */,
 				E6F66C562C9478ED00B0CE60 /* PostTaskResponse.swift in Sources */,
@@ -7277,6 +7880,7 @@
 				E6F66C6B2C9478ED00B0CE60 /* Network+Profile.swift in Sources */,
 				E6F66C6C2C9478ED00B0CE60 /* ProfileView.swift in Sources */,
 				E606D77A2D5A9793007DDBA8 /* FunctionFilter.swift in Sources */,
+				7A9545392FAD439700D6DF71 /* LottieView.swift in Sources */,
 				E6799D922E211B0200871886 /* PatientExamsView.swift in Sources */,
 				E6F66C6D2C9478ED00B0CE60 /* PopUpUploadMediaView.swift in Sources */,
 				E6F66C6E2C9478ED00B0CE60 /* ElementsView.swift in Sources */,
@@ -7306,6 +7910,7 @@
 				E6F66C832C9478ED00B0CE60 /* Task.swift in Sources */,
 				E6F66C842C9478ED00B0CE60 /* Network+SignUp.swift in Sources */,
 				E6F66C852C9478ED00B0CE60 /* View+Extensions.swift in Sources */,
+				7A9544DC2FACFA8A00D6DF71 /* ChangelogSheetView.swift in Sources */,
 				E6799DA52E21A62B00871886 /* SendNewExamView.swift in Sources */,
 				7AB87AD12F7ADF4500B3866C /* AutomatedExams+Extension.swift in Sources */,
 				E6F66C862C9478ED00B0CE60 /* SignInView.swift in Sources */,
@@ -7342,6 +7947,7 @@
 				E6F66C9D2C9478ED00B0CE60 /* Network+Favorite.swift in Sources */,
 				E6F66C9E2C9478ED00B0CE60 /* SecondaryButton.swift in Sources */,
 				E6F66C9F2C9478ED00B0CE60 /* SignInPasswordResetView.swift in Sources */,
+				7A9544EE2FAD325900D6DF71 /* pruebaruntimeRive.swift in Sources */,
 				E6F66CA02C9478ED00B0CE60 /* SignInPasswordRecovery.swift in Sources */,
 				E6F66CA12C9478ED00B0CE60 /* AppointmentVideoCallView.swift in Sources */,
 				E6F66CA22C9478ED00B0CE60 /* MedicalExamsDetailsView.swift in Sources */,
@@ -11960,6 +12566,22 @@
 				minimumVersion = 3.1.3;
 			};
 		};
+		7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.20.1;
+			};
+		};
+		7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		7AB09CC12F473A0F00198483 /* XCRemoteSwiftPackageReference "MarketingCloudSDK-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/salesforce-marketingcloud/MarketingCloudSDK-iOS";
@@ -12549,6 +13171,96 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7AD367252F4646A9002A4F1C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		7A9544E32FAD322B00D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544EF2FAD335300D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544F12FAD335C00D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544F32FAD336400D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544F52FAD336C00D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544F72FAD337200D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544F92FAD337800D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544FB2FAD337E00D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9544FD2FAD338500D6DF71 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544E22FAD322B00D6DF71 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+		7A9545002FAD421C00D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A9545062FAD424800D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A95450C2FAD425300D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A9545122FAD425D00D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A9545182FAD427F00D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A95451E2FAD428700D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A9545242FAD429000D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A95452A2FAD429900D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7A9545302FAD42A300D6DF71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A9544FF2FAD421C00D6DF71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		7AB09CC22F473A0F00198483 /* MarketingCloudSDK */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -77,9 +77,9 @@ struct PrescriptionsView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         if isLoading {
-                            ScrollView {
-                                ProgressView()
-                                    .padding()
+                            // Skeleton loading
+                            VStack {
+                                SkeletonList(rows: 5)
                                     .onAppear {
                                         if isInitialLoad {
                                             isInitialLoad = false
@@ -87,17 +87,22 @@ struct PrescriptionsView: View {
                                             getRecetas()
                                         }
                                     }
+                                Spacer(minLength: 0)
                             }
                         } else if let searchPres = searchPres, !searchPres.isEmpty {
                             ScrollView {
                                 VStack {
-                                    ForEach(searchPres, id: \.self) { pres in
+                                    ForEach(Array(searchPres.enumerated()), id: \.element) { index, pres in
                                         if isCurrent {
                                             if stringToDate(pres.hastaC ?? "") >= Date().adding(days: -1) {
                                                 PrescriptionRowView(isSelected: $prescriptionSelectedList, prescription: pres, UIState: $UIState)
+                                                    .pressable()
+                                                    .springOnAppear(delay: Double(index) * 0.05)
                                             }
                                         } else {
                                             PrescriptionRowView(isSelected: $prescriptionSelectedList, prescription: pres, UIState: $UIState)
+                                                .pressable()
+                                                .springOnAppear(delay: Double(index) * 0.05)
                                         }
                                     }
                                 }
@@ -105,11 +110,9 @@ struct PrescriptionsView: View {
                         } else {
                             VStack(spacing: 12) {
                                 Spacer()
-                                Spacer()
 
-                                Image(systemName: "doc.text.magnifyingglass")
-                                    .font(.system(size: 50, weight: .light))
-                                    .foregroundColor(Color(.systemGray3))
+                                LottieView(animationName: "Empty_Box")
+                                    .frame(width: 180, height: 180)
 
                                 Text("No se encontraron documentos")
                                     .font(Font.custom("FiraSans-Bold", size: 19))
@@ -121,13 +124,13 @@ struct PrescriptionsView: View {
                                     .multilineTextAlignment(.center)
 
                                 Spacer()
-                                Spacer()
-                                Spacer()
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .popIn()
                         }
                     }
                     .padding(.margin)
+                    .fadeSlideIn(delay: 0.05, from: .bottom)
                     .toolbar {
                         ToolbarItem(placement: .principal) {
                             Text(UIState.presList.title.text)
@@ -138,6 +141,7 @@ struct PrescriptionsView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {
+                                HapticManager.impact(style: .light)
                                 dismiss()
                             } label: {
                                 Image("back")
@@ -270,6 +274,7 @@ struct PrescriptionsView: View {
         
         HStack{
             Button {
+                HapticManager.impact(style: .medium)
                 self.isLoadingAction = true
                 actionButton = .isDownload
                 filterIsSelected()
@@ -291,7 +296,9 @@ struct PrescriptionsView: View {
                 )
             .disabled(isButtonDownloadEnable ? false : true)
             .opacity(isButtonDownloadEnable ? 1 : 0.5)
+            .bounceOnTap()
             Button {
+                HapticManager.impact(style: .medium)
                 self.isLoadingAction = true
                 actionButton = .isShare
                 filterIsSelected()
@@ -313,7 +320,9 @@ struct PrescriptionsView: View {
                 )
             .disabled(isButtonShareEnable ? false : true)
             .opacity(isButtonShareEnable ? 1 : 0.5)
+            .bounceOnTap()
             Button {
+                HapticManager.selection()
                 checkSelectedList()
             } label: {
                 HStack{
@@ -477,9 +486,15 @@ struct PrescriptionsView: View {
 //    }
     func savePdf(urlString:String, fileName:String, name: String) {
         DispatchQueue.global(qos: .background).async  {
-            let url = URL(string: urlString)
-            let pdfData = try? Data.init(contentsOf: url!)
-            let resourceDocPath = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
+            guard let url = URL(string: urlString) else {
+                DispatchQueue.main.async {
+                    self.count += 1
+                    self.progress = Double(self.count/self.total)
+                }
+                return
+            }
+            let pdfData = try? Data.init(contentsOf: url)
+            guard let resourceDocPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
             let pdfNameFromUrl = "\(name)-\(fileName).pdf"
             let actualPath = resourceDocPath.appendingPathComponent(pdfNameFromUrl)
 
@@ -531,7 +546,7 @@ struct PrescriptionsView: View {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 let data = try Data(contentsOf: remoteURL)
-                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+                guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
                 let safeFileName = S3FileHelper.sanitizeFileName(fileName)
                 let fileURL = documentsURL.appendingPathComponent(safeFileName)
                 try data.write(to: fileURL, options: .atomic)
@@ -554,7 +569,7 @@ struct PrescriptionsView: View {
     /// Crea un archivo .zip a partir de múltiples URLs
     func createZip(from urls: [URL], zipFileName: String) -> URL? {
         // Directorio de documentos
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         let zipURL = documentsURL.appendingPathComponent("\(zipFileName).zip")
         
         do {

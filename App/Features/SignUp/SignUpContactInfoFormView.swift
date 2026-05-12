@@ -26,11 +26,14 @@ struct SignUpContactInfoFormView: View {
             
             Spacer()
             PrimaryButton(title: "Enviar") {
+                HapticManager.impact(style: .medium)
                 setEmailPhone()
             }
+            .bounceOnTap()
             .disabled(!isValid)
         }
         .padding(.horizontal, .margin)
+        .slideInFromRight()
         .onTapGesture {
             self.hideKeyboard()
         }

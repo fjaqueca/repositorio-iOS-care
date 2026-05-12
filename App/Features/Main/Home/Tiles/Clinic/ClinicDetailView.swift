@@ -34,6 +34,7 @@ struct ClinicDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
@@ -199,7 +200,9 @@ struct ClinicDetailView: View {
 
                 if let phone = clinic.phoneNumber, phone != "No" {
                     ClinicContactButton(title: UIState.clinicDetail.btnCall.textBtn, image: UIState.clinicDetail.btnCall.iconBtn, UIState: $UIState) {
-                        UIApplication.shared.open(URL(string: "tel:\(phone)")!)
+                        if let telURL = URL(string: "tel:\(phone)") {
+                            UIApplication.shared.open(telURL)
+                        }
                     }
                 }
 
@@ -307,25 +310,26 @@ struct CustomPreviusVideoCallPopupView: View {
                 HStack(spacing: 5){
                     if popupData.showAppointmentButton == "Si"{
                         ClinicPopupButton(title: popupData.btnAppointmentButton.text, image: popupData.btnAppointmentButton.icon, UIState: popupData.btnAppointmentButton) {
-                            
+                            HapticManager.impact(style: .light)
                                 showNewAppointmentSelectDetails.toggle()
                                 showPopupPreviusVideoCall.toggle()
-                            
+
                         }
                         .frame(width: 75)
                     }
                     if popupData.btnContinueVideoCall.text != "No"{
                         ClinicPopupButton(title: popupData.btnContinueVideoCall.text, image: popupData.btnContinueVideoCall.icon, UIState: popupData.btnContinueVideoCall) {
-                            
+                            HapticManager.impact(style: .light)
                                 showOnDemandVideoCall.toggle()
                                 showPopupPreviusVideoCall.toggle()
-                            
-                            
+
+
                         }
                         .frame(width: 75)
                     }
                     if popupData.whatsAppNumber != "No"{
                         ClinicPopupButton(title: popupData.btnWhatsApp.text, image: popupData.btnWhatsApp.icon, UIState: popupData.btnWhatsApp) {
+                            HapticManager.impact(style: .light)
                             let cleanPhone = popupData.whatsAppNumber.replacingOccurrences(of: "+", with: "")
                             if let url = URL(string: "whatsapp://send?phone=\(cleanPhone)") {
                                 if UIApplication.shared.canOpenURL(url) {
@@ -337,15 +341,16 @@ struct CustomPreviusVideoCallPopupView: View {
                                     }
                                 }
                             }
-                            
+
                         }
                         .frame(width: 75)
-                        
+
                     }
                     if popupData.btnGoOut.text != "No"{
                         ClinicPopupButton(title: popupData.btnGoOut.text, image: popupData.btnGoOut.icon, UIState: popupData.btnGoOut) {
+                            HapticManager.impact(style: .light)
                                showPopupPreviusVideoCall.toggle()
-                            
+
                         }
                         .frame(width: 75)
                     }
@@ -412,12 +417,14 @@ struct CustomPopupDinamicButton: View {
                             let icon = valor[1]
                             let url = valor[2]
                             ClinicContactButton(title: text, image: icon, UIState: $UIState) {
+                                HapticManager.impact(style: .light)
                                 openArchive(myUrl: url)
                             }
                             .frame(width: 75)
                         }
                     }
                         ClinicContactButton(title: btnClose.textBtn, image: btnClose.iconBtn, UIState: $UIState) {
+                            HapticManager.impact(style: .light)
                             self.showPopup.toggle()
                         }
                         .frame(width: 75)

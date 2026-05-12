@@ -24,19 +24,33 @@ struct AppointmentsCalendarView: View {
     var appointmentsView: some View {
         ScrollView {
             VStack(spacing: 0) {
+                Spacer().frame(height: 12)
                 let currentDateAppointments = appointments(for: selectedDate).sorted {
                     $0.date < $1.date
                 }
                 if !currentDateAppointments.isEmpty {
-                    ForEach(currentDateAppointments) { appointment in
+                    ForEach(Array(currentDateAppointments.enumerated()), id: \.element.id) { index, appointment in
                         AppointmentRowView(appointment, UIStateAppoint: $UIStateAppoint)
+                            .pressable()
+                            .springOnAppear(delay: Double(index) * 0.05)
                     }
-                    
+
                 } else {
-                    Text("No hay citas agendadas")
-                        .font(.appCallout)
-                        .foregroundColor(.textSecondary)
-                        .frame(height: 60.0)
+                    VStack(spacing: 12) {
+                        Spacer()
+
+                        LottieView(animationName: "no_citas_para_este_dia")
+                            .frame(width: 180, height: 180)
+
+                        Text("No hay citas para este día")
+                            .font(Font.custom("FiraSans-Regular", size: 15))
+                            .foregroundColor(Color(hex: "#C4C4C4"))
+                            .multilineTextAlignment(.center)
+
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .popIn()
                 }
             }
         }

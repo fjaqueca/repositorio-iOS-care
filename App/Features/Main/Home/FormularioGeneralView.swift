@@ -56,7 +56,10 @@ struct FormularioGeneralView: View {
                     HStack(spacing: 12) {
                         // Botón "Cerrar" - Solo se muestra si isCloseable == true
                         if isCloseable {
-                            Button(action: onClose) {
+                            Button(action: {
+                                HapticManager.impact(style: .light)
+                                onClose()
+                            }) {
                                 Text("Cerrar")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(.white)
@@ -65,10 +68,14 @@ struct FormularioGeneralView: View {
                             .frame(height: 50)
                             .background(Color(red: 0.0, green: 0.75, blue: 0.85)) // Cyan como en la imagen
                             .cornerRadius(25)
+                            .bounceOnTap()
                         }
-                        
+
                         // Botón "Completar"
-                        Button(action: submitFormulario) {
+                        Button(action: {
+                            HapticManager.impact(style: .medium)
+                            submitFormulario()
+                        }) {
                             if isSubmitting {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -82,6 +89,7 @@ struct FormularioGeneralView: View {
                         .frame(height: 50)
                         .background(isFormularioCompleto() ? Color(red: 0.2, green: 0.5, blue: 0.85) : Color.gray.opacity(0.4))
                         .cornerRadius(25)
+                        .bounceOnTap()
                         .disabled(isSubmitting || !isFormularioCompleto())
                     }
                     .padding(.horizontal, 16)

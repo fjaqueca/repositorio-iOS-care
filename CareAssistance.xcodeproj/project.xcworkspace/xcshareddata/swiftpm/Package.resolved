@@ -1,5 +1,5 @@
 {
-  "originHash" : "a5d6e5d15d1f902935a929b621aacc4324cab8246dace23cd2a27408782fb294",
+  "originHash" : "1eb32eaf2819605b3ef4499b1d009d4030e058465251c528bf6bae51032ad096",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -128,6 +128,15 @@
       }
     },
     {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios",
+      "state" : {
+        "revision" : "0cb03fd7564d27345bcd96144b811e56212949c6",
+        "version" : "4.6.0"
+      }
+    },
+    {
       "identity" : "marketingcloudsdk-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/salesforce-marketingcloud/MarketingCloudSDK-iOS",
@@ -179,6 +188,15 @@
       "state" : {
         "revision" : "569c656a8494ad03d790fd1075338c1da92d495a",
         "version" : "10.45.2"
+      }
+    },
+    {
+      "identity" : "rive-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rive-app/rive-ios",
+      "state" : {
+        "revision" : "d066bd3b711b09c3f9820d9a52685b3f1d88e03e",
+        "version" : "6.20.1"
       }
     },
     {

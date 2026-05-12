@@ -143,8 +143,8 @@ class CameraConfigFactory {
     }
     
     private func selectVideoFormatBySize(captureDevice: AVCaptureDevice, targetSize: CMVideoDimensions) -> VideoFormat {
-        let supportedFormats = Array(CameraSource.supportedFormats(captureDevice: captureDevice)) as! [VideoFormat]
-        
+        let supportedFormats = (CameraSource.supportedFormats(captureDevice: captureDevice) as? [VideoFormat]) ?? []
+
         // Cropping might be used if there is not an exact match
         for format in supportedFormats {
             guard
@@ -154,9 +154,14 @@ class CameraConfigFactory {
                 else {
                     continue
             }
-            
+
             return format
         }
-        fatalError()
+        // Fallback: devolver el primer formato disponible en vez de crashear
+        if let fallback = supportedFormats.first {
+            return fallback
+        }
+        // Último recurso: formato por defecto
+        return VideoFormat()
     }
 }

@@ -278,40 +278,44 @@ struct AppView: View {
                 print("📋 [ForceUpdate] PASO 2 — BrandAccount recibido OK")
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                 print("   Total records: \(response.records.count)")
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    let oldItems = realm.objects(BrandAccounts.self)
-                    // Delete stored items
-                    realm.delete(oldItems)
-                    realm.add(response, update: .all)
-                    for ba in response.records{
-                        if ba.Name == "PreLogin"{
-                            let rawValor123C = ba.valor123C ?? "nil"
-                            self.iOSVersionBA = Int(ba.valor123C ?? "1") ?? 1
-                            UserDefaults.standard.set(ba.valor121C, forKey: "campanaC")
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        let oldItems = realm.objects(BrandAccounts.self)
+                        // Delete stored items
+                        realm.delete(oldItems)
+                        realm.add(response, update: .all)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en preLoginBrandAccount: \(error.localizedDescription)")
+                }
+                for ba in response.records {
+                    if ba.Name == "PreLogin"{
+                        let rawValor123C = ba.valor123C ?? "nil"
+                        self.iOSVersionBA = Int(ba.valor123C ?? "1") ?? 1
+                        UserDefaults.standard.set(ba.valor121C, forKey: "campanaC")
 
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("📋 [ForceUpdate] PASO 3 — Registro PreLogin encontrado")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("   valor123C (Valor_12_3__c) raw: \"\(rawValor123C)\"")
-                            print("   iOSVersionBA (parseado): \(self.iOSVersionBA)")
-                            print("   valor121C (campaña): \(ba.valor121C ?? "nil")")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("📋 [ForceUpdate] PASO 3 — Registro PreLogin encontrado")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("   valor123C (Valor_12_3__c) raw: \"\(rawValor123C)\"")
+                        print("   iOSVersionBA (parseado): \(self.iOSVersionBA)")
+                        print("   valor121C (campaña): \(ba.valor121C ?? "nil")")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("📋 [ForceUpdate] RESULTADO — Comparación de versiones")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("   iOSVersionApp (hardcoded): \(self.iOSVersionApp)")
-                            print("   iOSVersionBA (Salesforce):  \(self.iOSVersionBA)")
-                            if self.iOSVersionApp >= self.iOSVersionBA {
-                                print("   ✅ \(self.iOSVersionApp) >= \(self.iOSVersionBA) → Versión OK, flujo normal")
-                            } else {
-                                print("   🚨 \(self.iOSVersionApp) < \(self.iOSVersionBA) → FORCE UPDATE ACTIVADO")
-                                print("   📱 Se mostrará popup de actualización forzada")
-                                print("   🔗 URL: itms-apps://itunes.apple.com/app/id\(self.idAppStore)")
-                            }
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("📋 [ForceUpdate] RESULTADO — Comparación de versiones")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("   iOSVersionApp (hardcoded): \(self.iOSVersionApp)")
+                        print("   iOSVersionBA (Salesforce):  \(self.iOSVersionBA)")
+                        if self.iOSVersionApp >= self.iOSVersionBA {
+                            print("   ✅ \(self.iOSVersionApp) >= \(self.iOSVersionBA) → Versión OK, flujo normal")
+                        } else {
+                            print("   🚨 \(self.iOSVersionApp) < \(self.iOSVersionBA) → FORCE UPDATE ACTIVADO")
+                            print("   📱 Se mostrará popup de actualización forzada")
+                            print("   🔗 URL: itms-apps://itunes.apple.com/app/id\(self.idAppStore)")
                         }
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
                     }
                 }
                 case let .failure(error):

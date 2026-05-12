@@ -100,100 +100,177 @@ struct AppointmentDetailsView: View {
         )
     }
     
+    /// Ícono SF Symbol según tipo de cita
+    private var detailTypeIcon: String {
+        switch appointment.appointmentType {
+        case .video: return "video.fill"
+        case .phone: return "phone.fill"
+        default: return "calendar"
+        }
+    }
+
+    /// Color del status como en el row
+    private var statusColor: Color {
+        switch appointment.status {
+        case .confirmado: return Color.darkGreen
+        case .noConfirmado, .programado, .aConfirmar: return Color.orangeText
+        case .cancelado: return Color.negativeSentiment
+        case .realizado, .noRealizado, .reagendado, .failure: return Color.black
+        }
+    }
+
     var body: some View {
-        VStack(spacing: .margin) {
-            Divider()
-            
-            Group {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Cita \(customName != "" ? customName : appointment.clinica)")
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.clinicsAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.clinicsAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.clinicsAtr.color))
-                        .padding(.top, .margin)
-                    Text("\(appointment.date.formatted(dateFormat))hs.")
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.dateAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.dateAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.dateAtr.color))
-                    Text("\(appointment.appointmentType.description)")
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.tipeAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.tipeAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.tipeAtr.color))
-                }
-                
-                Text("\(UIStateAppoint.detaillAppointmentUIState.textVideo1) **\(users.first?.records.first?.FirstName ?? "")**,")
-                    .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 18)))
-                    .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
-                if !isConfirmed {
-                    Text("Usted contará con una consulta con **\(appointment.professionalName)**, por favor confirmar la fecha y hora para mantener la vigencia del turno.")
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
-                } else {
-                    Text(appointment.appointmentType == .video ? "\(UIStateAppoint.detaillAppointmentUIState.textVideo2) **\(appointment.professionalName)** \(UIStateAppoint.detaillAppointmentUIState.textVideo3)" : "\(UIStateAppoint.detaillAppointmentUIState.textPhone1)")
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
-                }
-                if appointment.appointmentType == .phone && (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == "") {
-                    Text("Por favor ingrese su número telefónico. Para hacerlo debe ingresar a perfil, luego a [datos personales](http://user-profile.com). Ingresar su número telefónico y apretar enviar.")
-                        .environment(\.openURL, .init(handler: { _ in
-                            self.showProfileUpdateInformation = true
-                            return .handled
-                        }))
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
-                } else if appointment.appointmentType == .phone {
-                    Text("\(UIStateAppoint.detaillAppointmentUIState.textPhone2) **\(users.first?.records.first?.Phone ?? "")**. \(UIStateAppoint.detaillAppointmentUIState.textPhone3) [\(UIStateAppoint.detaillAppointmentUIState.textPhone4)](http://user-profile.com) \(UIStateAppoint.detaillAppointmentUIState.textPhone5)")
-                        .environment(\.openURL, .init(handler: { _ in
-                            self.showProfileUpdateInformation = true
-                            return .handled
-                        }))
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            
-            if isConfirmed {
-                VStack {
-                    Spacer()
-                        .frame(height: .margin)
-                    if appointment.appointmentType == .video {
-                        PrimaryButton(title: "Comenzar la videollamada", backgroundColor: .primaryText, UIStateBtn: UIStateAppoint.detaillAppointmentUIState.btnVideo, haveImage: true, action: {
-                            showVideoCall = true
-                        })
-                        .disabled(!isVideoCallButtonEnabled)
-                        .background{
-                            if !isVideoCallButtonEnabled{
-                                Color(hex: UIStateAppoint.detaillAppointmentUIState.btnVideo.backgroundPressBtn != "" ? UIStateAppoint.detaillAppointmentUIState.btnVideo.backgroundPressBtn : "#E9E9EB")
-                                    .cornerRadius(5.0)
-                            }
+        VStack(spacing: 0) {
+        ScrollView {
+            VStack(spacing: 16) {
+                // ══════════════════════════════════════
+                // MARK: - Card principal de info
+                // ══════════════════════════════════════
+                VStack(alignment: .leading, spacing: 14) {
+                    // Header: ícono + título + badge status
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(hex: "#00BBDC").opacity(0.12))
+                                .frame(width: 48, height: 48)
+                            Image(systemName: detailTypeIcon)
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundColor(Color(hex: "#00BBDC"))
                         }
-                        .onReceive(timer) { _ in
-                            now = Date()
-                            updateVideoCallButtonStatus()
-                            checkAndUpdateCancelButton() // NUEVO: Revisar botón cancelar cada 5s
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Cita \(customName != "" ? customName : appointment.clinica)")
+                                .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.clinicsAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.clinicsAtr.size) ?? 18)))
+                                .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.clinicsAtr.color))
+                                .lineLimit(2)
+                            Text("\(appointment.date.formatted(dateFormat))hs.")
+                                .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.dateAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.dateAtr.size) ?? 14)))
+                                .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.dateAtr.color))
                         }
+
+                        Spacer()
+
+                        // Badge status
+                        Text(appointment.status.description)
+                            .font(Font.custom("FiraSans-Medium", size: 11))
+                            .foregroundColor(statusColor)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(Capsule().fill(statusColor.opacity(0.12)))
+                    }
+
+                    Divider()
+
+                    // Tipo de cita
+                    HStack(spacing: 8) {
+                        Image(systemName: detailTypeIcon)
+                            .font(.system(size: 13))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.tipeAtr.color))
+                        Text("\(appointment.appointmentType.description)")
+                            .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.tipeAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.tipeAtr.size) ?? 14)))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.tipeAtr.color))
+                    }
+
+                    // Mensaje personalizado
+                    Text("\(UIStateAppoint.detaillAppointmentUIState.textVideo1) **\(users.first?.records.first?.FirstName ?? "")**,")
+                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 15)))
+                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
+
+                    if !isConfirmed {
+                        Text("Usted contará con una consulta con **\(appointment.professionalName)**, por favor confirmar la fecha y hora para mantener la vigencia del turno.")
+                            .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 15)))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
+                    } else {
+                        Text(appointment.appointmentType == .video ? "\(UIStateAppoint.detaillAppointmentUIState.textVideo2) **\(appointment.professionalName)** \(UIStateAppoint.detaillAppointmentUIState.textVideo3)" : "\(UIStateAppoint.detaillAppointmentUIState.textPhone1)")
+                            .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 15)))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
+                    }
+
+                    if appointment.appointmentType == .phone && (users.first?.records.first?.Phone == nil || users.first?.records.first?.Phone == "") {
+                        Text("Por favor ingrese su número telefónico. Para hacerlo debe ingresar a perfil, luego a [datos personales](http://user-profile.com). Ingresar su número telefónico y apretar enviar.")
+                            .environment(\.openURL, .init(handler: { _ in
+                                self.showProfileUpdateInformation = true
+                                return .handled
+                            }))
+                            .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 15)))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
+                    } else if appointment.appointmentType == .phone {
+                        Text("\(UIStateAppoint.detaillAppointmentUIState.textPhone2) **\(users.first?.records.first?.Phone ?? "")**. \(UIStateAppoint.detaillAppointmentUIState.textPhone3) [\(UIStateAppoint.detaillAppointmentUIState.textPhone4)](http://user-profile.com) \(UIStateAppoint.detaillAppointmentUIState.textPhone5)")
+                            .environment(\.openURL, .init(handler: { _ in
+                                self.showProfileUpdateInformation = true
+                                return .handled
+                            }))
+                            .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.textAtr.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.textAtr.size) ?? 15)))
+                            .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.textAtr.color))
                     }
                 }
-                
-                if appointment.appointmentType == .video {
-                    Text(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.text)
-                        .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.size) ?? 18)))
-                        .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.color))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(18)
+                .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(.systemGray5), lineWidth: 1))
+                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
+                .springOnAppear(delay: 0.05)
+
+                // ══════════════════════════════════════
+                // MARK: - Card videollamada (si aplica)
+                // ══════════════════════════════════════
+                Group {
+                    if isConfirmed {
+                        VStack(spacing: 12) {
+                            if appointment.appointmentType == .video {
+                                PrimaryButton(title: "Comenzar la videollamada", backgroundColor: .primaryText, UIStateBtn: UIStateAppoint.detaillAppointmentUIState.btnVideo, haveImage: true, action: {
+                                    HapticManager.impact(style: .medium)
+                                    showVideoCall = true
+                                })
+                                .bounceOnTap()
+                                .disabled(!isVideoCallButtonEnabled)
+                                .opacity(isVideoCallButtonEnabled ? 1.0 : 0.5)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .onReceive(timer) { _ in
+                                    now = Date()
+                                    updateVideoCallButtonStatus()
+                                    checkAndUpdateCancelButton()
+                                }
+
+                                Text(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.text)
+                                    .font(Font.custom(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.font, size: CGFloat(Int(UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.size) ?? 13)))
+                                    .foregroundColor(Color(hex: UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.color.isEmpty ? "#999999" : UIStateAppoint.detaillAppointmentUIState.msgBtnVideo.color))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .padding(16)
+                        .background(RoundedRectangle(cornerRadius: 14).fill(Color.white))
+                        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(.systemGray5), lineWidth: 1))
+                        .shadow(color: Color.black.opacity(0.04), radius: 4, x: 0, y: 2)
+                    }
                 }
+                .springOnAppear(delay: 0.15)
+
             }
-            
-            Spacer()
-            
+            .padding(.horizontal, .margin)
+            .padding(.top, 12)
+            .padding(.bottom, .margin)
+        }
+
+        // ══════════════════════════════════════
+        // MARK: - Botones Confirmar / Cancelar (fijos abajo)
+        // ══════════════════════════════════════
+        VStack(spacing: 0) {
+            Divider()
             buttonsView
+                .padding(.horizontal, .margin)
+                .padding(.top, 12)
+                .springOnAppear(delay: 0.25)
         }
+        .background(Color(.systemGroupedBackground))
+        }
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onAppear {
-            // 📝 NUEVO: Log de la cita cuando se abre el detalle
             logAppointmentDetails()
-            
             updateVideoCallButtonStatus()
-            setupInitialCancelButtonState() // NUEVO: Estado inicial del botón cancelar
-            checkAndUpdateCancelButton() // NUEVO: Ejecutar inmediatamente al aparecer
+            setupInitialCancelButtonState()
+            checkAndUpdateCancelButton()
         }
-        .padding(.horizontal, .margin)
+        .slideInFromRight()
         .overlayView(isLoading)
         .navigationLink(isActive: $showModifyAppointment) {
 //            NewAppointmentSelectDetailsView(previousAppointment: appointment)
@@ -215,6 +292,7 @@ struct AppointmentDetailsView: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    HapticManager.impact(style: .light)
                     rootPresentation.dismiss()
                 } label: {
                     Image("back")
@@ -230,43 +308,61 @@ struct AppointmentDetailsView: View {
     
     @ViewBuilder
     private var buttonsView: some View {
-        PrimaryButton(title: isConfirmed ? UIStateAppoint.detaillAppointmentUIState.btnConfirm2 : UIStateAppoint.detaillAppointmentUIState.btnConfirm1, UIStateBtn: UIStateAppoint.detaillAppointmentUIState.btnConfirmModifier) {
-            confirmAppointment()
-        }
-        .disabled(isConfirmed || isLoading || isCanceled)
-        .background{
-            if isConfirmed || isLoading || isCanceled{
-                Color(hex: UIStateAppoint.detaillAppointmentUIState.btnConfirmModifier.backgroundPressBtn != "" ? UIStateAppoint.detaillAppointmentUIState.btnConfirmModifier.backgroundPressBtn : "#E9E9EB")
-                    .cornerRadius(5.0)
+        let cancelBtnState = UIStateAppoint.detaillAppointmentUIState.btnCancel
+        let confirmBtnState = UIStateAppoint.detaillAppointmentUIState.btnConfirmModifier
+        let isCancelEnabled = !isCanceled && !isLoading && isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime
+        let isConfirmEnabled = !isConfirmed && !isLoading && !isCanceled
+
+        HStack(spacing: 12) {
+            // Cancelar (izquierda)
+            Button {
+                HapticManager.warning()
+                if isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime {
+                    popup = cancellationConfirmationPopup
+                }
+            } label: {
+                Text(cancelBtnState.textBtn.isEmpty ? "Cancelar cita" : cancelBtnState.textBtn)
+                    .font(Font.custom(cancelBtnState.font.isEmpty ? "FiraSans-Bold" : cancelBtnState.font, size: 15))
+                    .foregroundColor(Color(hex: cancelBtnState.colorTextBtn.isEmpty ? "#555555" : cancelBtnState.colorTextBtn))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(hex: "#CCCCCC"), lineWidth: 1)
+                    )
             }
-        }
-        
-        
-//        Button {
-//            showModifyAppointment = true
-//        } label: {
-//            Text("Modificar")
-//                .font(.appBodyBold)
-//                .foregroundColor(.primaryText)
-//                .frame(maxWidth: .infinity)
-//                .frame(height: .buttonHeight)
-//                .background(
-//                    RoundedRectangle(cornerRadius: .cornerRadius)
-//                        .stroke(Color.primaryText, lineWidth: 1)
-//                )
-//        }
-//        .buttonStyle(.plain)
-//        .disabled(isCanceled || isLoading)
-        
-        TransparentButton(title: "Cancelar", UIStateBtn: UIStateAppoint.detaillAppointmentUIState.btnCancel) {
-            // PASO 6 ANDROID: Click listener respeta la bandera
-            if isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime {
-                popup = cancellationConfirmationPopup
+            .buttonStyle(.plain)
+            .bounceOnTap()
+            .disabled(!isCancelEnabled)
+            .opacity(isCancelEnabled ? 1.0 : 0.5)
+
+            // Confirmar (derecha)
+            Button {
+                HapticManager.success()
+                confirmAppointment()
+            } label: {
+                Text(isConfirmed ? (UIStateAppoint.detaillAppointmentUIState.btnConfirm2.isEmpty ? "Confirmada" : UIStateAppoint.detaillAppointmentUIState.btnConfirm2) : (UIStateAppoint.detaillAppointmentUIState.btnConfirm1.isEmpty ? "Confirmar" : UIStateAppoint.detaillAppointmentUIState.btnConfirm1))
+                    .font(Font.custom(confirmBtnState.font.isEmpty ? "FiraSans-Bold" : confirmBtnState.font, size: 15))
+                    .foregroundColor(Color(hex: confirmBtnState.colorTextBtn.isEmpty ? "#FFFFFF" : confirmBtnState.colorTextBtn))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(isConfirmEnabled
+                                ? Color(hex: confirmBtnState.backgroundBtn.isEmpty ? "#00BBDC" : confirmBtnState.backgroundBtn)
+                                : Color(hex: confirmBtnState.backgroundPressBtn.isEmpty ? "#E9E9EB" : confirmBtnState.backgroundPressBtn))
+                    )
             }
+            .buttonStyle(.plain)
+            .bounceOnTap()
+            .disabled(!isConfirmEnabled)
+            .opacity(isConfirmEnabled ? 1.0 : 0.7)
         }
         .padding(.bottom, .margin)
-        .disabled(isCanceled || isLoading || !isCancelButtonEnabledByStatus || !isCancelButtonEnabledByTime)
-        .opacity((isCancelButtonEnabledByStatus && isCancelButtonEnabledByTime) ? 1.0 : 0.5)
     }
 }
 
@@ -315,9 +411,11 @@ extension AppointmentDetailsView {
     
     func updateVideoCallButtonStatus() {
         let currentDate = Date()
-        let tenMinutesBeforeTargetTime = Calendar.current.date(byAdding: .minute, value: -3, to: appointment.date)!
-        let oneHourAfterTargetTime = Calendar.current.date(byAdding: .hour, value: 1, to: appointment.date)!
-        
+        guard let tenMinutesBeforeTargetTime = Calendar.current.date(byAdding: .minute, value: -3, to: appointment.date),
+              let oneHourAfterTargetTime = Calendar.current.date(byAdding: .hour, value: 1, to: appointment.date) else {
+            return
+        }
+
         if currentDate >= tenMinutesBeforeTargetTime && currentDate <= oneHourAfterTargetTime {
             isVideoCallButtonEnabled = true
         } else {
@@ -386,10 +484,10 @@ extension AppointmentDetailsView {
 extension AppointmentDetailsView {
     func confirmAppointment() {
         isLoading = true
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.confirmAppointment(appointment: appointment)
             isLoading = false
-            
+
             switch result {
                 case .success:
                     popup = confirmationSuccessPopup
@@ -398,10 +496,10 @@ extension AppointmentDetailsView {
             }
         }
     }
-    
+
     func cancelAppointment() {
         isLoading = true
-        Task {
+        Task { @MainActor in
             let result = await Network.shared.cancelAppointment(appointment: appointment)
             isLoading = false
             switch result {

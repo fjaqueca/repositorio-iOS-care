@@ -42,7 +42,7 @@ struct PickerSearchButton<S: Hashable & Identifiable & CustomStringConvertible>:
             
             if showPicker {
                 let uniqueItems = Array(Dictionary(grouping: filteredItems, by: { $0.id }).values
-                    .map({ $0.first! }))
+                    .compactMap({ $0.first }))
                     .sorted(by: { $0.description < $1.description })
                 VStack {
                     TextField("Search", text: $searchText)

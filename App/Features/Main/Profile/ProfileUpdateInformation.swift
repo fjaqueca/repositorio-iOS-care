@@ -30,13 +30,19 @@ struct ProfileUpdateInformation: View {
     @State private var successIconScale: CGFloat = 0.0
 
     private var userFirstName: String {
-        users.first?.records.first?.FirstName ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first, !record.isInvalidated else { return "" }
+        return record.FirstName ?? ""
     }
     private var userLastName: String {
-        users.first?.records.first?.LastName ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first, !record.isInvalidated else { return "" }
+        return record.LastName ?? ""
     }
     private var userEmail: String {
-        users.first?.records.first?.PersonEmail ?? ""
+        guard let user = users.first, !user.isInvalidated,
+              let record = user.records.first, !record.isInvalidated else { return "" }
+        return record.PersonEmail ?? ""
     }
     private var userInitials: String {
         let first = userFirstName.prefix(1).uppercased()
@@ -83,10 +89,12 @@ struct ProfileUpdateInformation: View {
             }
         }
         .onAppear {
-            email.value = users.first?.records.first?.PersonEmail ?? ""
-            phone.value = users.first?.records.first?.Phone ?? ""
-            name = users.first?.records.first?.FirstName ?? ""
-            lastName = users.first?.records.first?.LastName ?? ""
+            guard let user = users.first, !user.isInvalidated,
+                  let record = user.records.first, !record.isInvalidated else { return }
+            email.value = record.PersonEmail ?? ""
+            phone.value = record.Phone ?? ""
+            name = record.FirstName ?? ""
+            lastName = record.LastName ?? ""
 
             // Animación cascada campos
             fieldsAnimated = false
@@ -105,8 +113,10 @@ struct ProfileUpdateInformation: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    HapticManager.impact(style: .light)
                     if isObligatori {
-                        exit(0)
+                        // Forzar logout para que el usuario re-ingrese con datos actualizados
+                        AppStatusManager.cleanup()
                     } else {
                         presentation.wrappedValue.dismiss()
                     }
@@ -342,6 +352,7 @@ struct ProfileUpdateInformation: View {
 
     private var submitButton: some View {
         Button {
+            HapticManager.impact(style: .medium)
             updateProfile()
         } label: {
             ZStack {
@@ -363,7 +374,18 @@ struct ProfileUpdateInformation: View {
             }
         }
         .buttonStyle(.plain)
-        .disabled(isLoading || (!phone.isValid && ((users.first?.records.first?.Phone?.isEmpty) == nil)) || (!email.isValid && ((users.first?.records.first?.PersonEmail) == nil)))
+        .bounceOnTap()
+        .disabled({
+            guard !isLoading else { return true }
+            let record: UserR? = {
+                guard let user = users.first, !user.isInvalidated,
+                      let r = user.records.first, !r.isInvalidated else { return nil }
+                return r
+            }()
+            let phoneInvalid = !phone.isValid && (record?.Phone?.isEmpty != false)
+            let emailInvalid = !email.isValid && (record?.PersonEmail == nil)
+            return phoneInvalid || emailInvalid
+        }())
     }
 
     // ══════════════════════════════════════════════════════

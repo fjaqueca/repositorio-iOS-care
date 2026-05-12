@@ -43,7 +43,7 @@ class AppStatusManager {
             let oldValue = selectedEnterprise
             if oldValue != newValue {
                 let defaults = UserDefaults.standard
-                let data = try! JSONEncoder().encode(newValue)
+                guard let data = try? JSONEncoder().encode(newValue) else { return }
                 defaults.set(data, forKey: "enterprise_\(rut)")
 
                 sendOnMain(selectedEnterprisePublisher, newValue)

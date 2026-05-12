@@ -9,7 +9,8 @@ import Foundation
 
 extension String {
     subscript(idx: Int) -> String {
-        String(self[index(startIndex, offsetBy: idx)])
+        guard idx >= 0 && idx < count else { return "" }
+        return String(self[index(startIndex, offsetBy: idx)])
     }
     func fileName() -> String {
         return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
@@ -32,8 +33,12 @@ extension String {
         return nil
      }
     func htmlToString() -> String {
-        return  try! NSAttributedString(data: self.data(using: .utf16)!,
-                                        options: [.documentType: NSAttributedString.DocumentType.html],
-                                        documentAttributes: nil).string
+        guard let data = self.data(using: .utf16),
+              let attributed = try? NSAttributedString(data: data,
+                                                       options: [.documentType: NSAttributedString.DocumentType.html],
+                                                       documentAttributes: nil) else {
+            return self
+        }
+        return attributed.string
     }
 }

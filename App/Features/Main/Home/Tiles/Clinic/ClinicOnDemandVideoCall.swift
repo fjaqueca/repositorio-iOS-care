@@ -70,6 +70,7 @@ struct ClinicOnDemandVideoCall: View {
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         goBack()
                     } label: {
                         Image("back")
@@ -206,7 +207,7 @@ struct ClinicOnDemandVideoCall: View {
     
     /// Add the user to the video call queue (waiting room).
     func enqueueForVideoCall() {
-        Task {
+        Task { @MainActor in
             print("I'm enqueueing for video call")
             FirebaseLogger.shared.log("📹 Enqueueing for video call - Clinic: \(clinic.id)")
             
@@ -642,6 +643,7 @@ extension ClinicOnDemandVideoCall {
                     HStack(spacing: 100){
                         
                         Button {
+                            HapticManager.impact(style: .light)
                             self.exit = true
                         } label: {
                             Text(popupData.btnConfirm.text)
@@ -649,6 +651,7 @@ extension ClinicOnDemandVideoCall {
                                 .foregroundColor(Color(hex: popupData.btnConfirm.color))
                         }
                         Button {
+                            HapticManager.impact(style: .light)
                             self.exit = false
                             self.showCustomPopup = false
                         } label: {
@@ -687,43 +690,39 @@ struct CustomWaitingVideoCallPopupView: View {
                 HStack(spacing: 5){
                     if popupData.showAppointmentButton == "Si"{
                         ClinicPopupButton(title: popupData.btnAppointmentButton.text, image: popupData.btnAppointmentButton.icon, UIState: popupData.btnAppointmentButton) {
-                            
+                            HapticManager.impact(style: .light)
                             exit = true
                             showNewAppointmentSelectDetails = true
                             showPopupPreviusVideoCall.toggle()
-                            
+
                         }
                         .frame(width: 75)
                     }
                     if popupData.btnContinueVideoCall.text != "No"{
                         ClinicPopupButton(title: popupData.btnContinueVideoCall.text, image: popupData.btnContinueVideoCall.icon, UIState: popupData.btnContinueVideoCall) {
-                            
+                            HapticManager.impact(style: .light)
                             showPopupPreviusVideoCall.toggle()
-                            
-                            
-                            
+
                         }
                         .frame(width: 75)
                     }
                     if popupData.whatsAppNumber != "No"{
                         ClinicPopupButton(title: popupData.btnWhatsApp.text, image: popupData.btnWhatsApp.icon, UIState: popupData.btnWhatsApp) {
-                            
+                            HapticManager.impact(style: .light)
                             exit = true
                             showPopupPreviusVideoCall.toggle()
                             whatsappNumber = popupData.whatsAppNumber
-                            
-                            
-                            
+
                         }
                         .frame(width: 75)
-                        
+
                     }
                     if popupData.btnGoOut.text != "No"{
                         ClinicPopupButton(title: popupData.btnGoOut.text, image: popupData.btnGoOut.icon, UIState: popupData.btnGoOut) {
-                            
+                            HapticManager.impact(style: .light)
                             showOnDemandVideoCall.toggle()
                             showPopupPreviusVideoCall.toggle()
-                            
+
                         }
                         .frame(width: 75)
                     }

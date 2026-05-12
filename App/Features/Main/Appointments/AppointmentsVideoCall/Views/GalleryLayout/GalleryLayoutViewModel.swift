@@ -148,11 +148,12 @@ class GalleryLayoutViewModel: ObservableObject {
 
             if participant.isDominantSpeaker {
                 /// Always keep the most recent dominant speakers on the first page
-                let oldestDominantSpeaker = pages[0].participants[1...] // Skip local user at 0
-                    .sorted { $0.dominantSpeakerStartTime < $1.dominantSpeakerStartTime }
-                    .first!
+                guard let oldestDominantSpeaker = pages[0].participants[1...] // Skip local user at 0
+                    .sorted(by: { $0.dominantSpeakerStartTime < $1.dominantSpeakerStartTime })
+                    .first,
+                    let oldestIndex = pages[0].participants.firstIndex(of: oldestDominantSpeaker) else { return }
                 let oldestDominantSpeakerIndexPath = IndexPath(
-                    item: pages[0].participants.firstIndex(of: oldestDominantSpeaker)!,
+                    item: oldestIndex,
                     section: 0
                 )
                 pages.removeParticipant(at: oldestDominantSpeakerIndexPath, shouldShift: false)

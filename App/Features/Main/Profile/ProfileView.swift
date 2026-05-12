@@ -27,6 +27,7 @@ struct ProfileView: View {
     @State private var avatarOpacity: Double = 0.0
     @State private var showCompanyDialog: Bool = false
     @State private var showLogoutDialog: Bool = false
+    @State private var showChangelog: Bool = false
     @State var profileState = ProfileUIState()
 
     public struct AlertConfirmation {
@@ -62,7 +63,11 @@ struct ProfileView: View {
     @ViewBuilder
     private var mainContent: some View {
         ZStack {
-            scrollContent
+            Color(.systemGroupedBackground).ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                scrollContent
+            }
 
             if showCompanyDialog {
                 CompanySelectionDialog(isPresented: $showCompanyDialog)
@@ -95,16 +100,13 @@ struct ProfileView: View {
     @ViewBuilder
     private var scrollContent: some View {
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(spacing: 16) {
                     // MARK: - Header con avatar
                     profileHeader
                         .padding(.top, 24)
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 4)
 
-                    Divider()
-                        .padding(.horizontal, .margin)
-
-                    // MARK: - Menu items
+                    // MARK: - Sección 1: Cuenta
                     VStack(spacing: 0) {
                         if profileState.empresas.isVisible {
                             menuRowAction(
@@ -120,6 +122,7 @@ struct ProfileView: View {
                         }
 
                         if profileState.datosPersonales.isVisible {
+                            Divider().padding(.leading, 52)
                             menuRow(
                                 iconUrl: profileState.datosPersonales.iconUrl,
                                 fallbackIcon: "person.text.rectangle",
@@ -128,8 +131,8 @@ struct ProfileView: View {
                             )
                         }
 
-                        // Grupo Familiar combina visibilidad dinámica + check de relación titular
                         if profileState.grupoFamiliar.isVisible && showGrupoFamiliarMenu() {
+                            Divider().padding(.leading, 52)
                             menuRow(
                                 iconUrl: profileState.grupoFamiliar.iconUrl,
                                 fallbackIcon: "person.2",
@@ -139,6 +142,7 @@ struct ProfileView: View {
                         }
 
                         if profileState.cambiarContrasena.isVisible {
+                            Divider().padding(.leading, 52)
                             menuRow(
                                 iconUrl: profileState.cambiarContrasena.iconUrl,
                                 fallbackIcon: "lock",
@@ -146,8 +150,13 @@ struct ProfileView: View {
                                 item: .password
                             )
                         }
+                    }
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(.systemGray5), lineWidth: 1))
+                    .shadow(color: Color.black.opacity(0.03), radius: 3, x: 0, y: 1)
 
-                        // Información Legal (expandible)
+                    // MARK: - Sección 2: Información
+                    VStack(spacing: 0) {
                         if profileState.informacionLegal.isVisible {
                             Button {
                                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -168,12 +177,15 @@ struct ProfileView: View {
                                 .padding(.vertical, 14)
                             }
                             .buttonStyle(.plain)
+                            .pressable()
 
                             if showButtons {
                                 VStack(spacing: 0) {
+                                    Divider().padding(.leading, 52)
                                     subMenuRow(title: "Términos y condiciones") {
                                         navigation = .termsAndConditions
                                     }
+                                    Divider().padding(.leading, 52)
                                     subMenuRow(title: "Políticas de privacidad") {
                                         navigation = .privacyPolicies
                                     }
@@ -183,6 +195,7 @@ struct ProfileView: View {
                         }
 
                         if profileState.ayuda.isVisible {
+                            Divider().padding(.leading, 52)
                             menuRowAction(
                                 iconUrl: profileState.ayuda.iconUrl,
                                 fallbackIcon: "questionmark.circle",
@@ -192,10 +205,21 @@ struct ProfileView: View {
                             }
                         }
 
-                        Divider()
-                            .padding(.horizontal, .margin)
-                            .padding(.vertical, 6)
+                        Divider().padding(.leading, 52)
+                        menuRowAction(
+                            iconUrl: "",
+                            fallbackIcon: "star.fill",
+                            title: "Calificar la app"
+                        ) {
+                            ReviewManager.shared.openAppStoreForReview()
+                        }
+                    }
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(.systemGray5), lineWidth: 1))
+                    .shadow(color: Color.black.opacity(0.03), radius: 3, x: 0, y: 1)
 
+                    // MARK: - Sección 3: Sesión
+                    VStack(spacing: 0) {
                         menuRowAction(
                             iconUrl: "",
                             fallbackIcon: "rectangle.portrait.and.arrow.right",
@@ -205,8 +229,32 @@ struct ProfileView: View {
                             showLogoutDialog = true
                         }
                     }
-                    .padding(.top, 8)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(.systemGray5), lineWidth: 1))
+                    .shadow(color: Color.black.opacity(0.03), radius: 3, x: 0, y: 1)
+
+                    // MARK: - Versión
+                    Button {
+                        showChangelog = true
+                    } label: {
+                        Text("Versión \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0")")
+                            .font(Font.custom("FiraSans-Medium", size: 14))
+                            .foregroundColor(Color(hex: "#8A9199"))
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 10)
+                            .background(
+                                Capsule()
+                                    .stroke(Color(hex: "#D0D5DA"), lineWidth: 1)
+                            )
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 4)
+                    .padding(.bottom, 20)
+                    .sheet(isPresented: $showChangelog) {
+                        ChangelogSheetView()
+                    }
                 }
+                .padding(.horizontal, .margin)
             }
             .navigationLink(item: $navigation) { item in
                 switch item {
@@ -232,6 +280,7 @@ struct ProfileView: View {
             .navigationLink(isActive: $showPrivacyPolicies) {
                 LegalsView(.privacyPolicies)
             }
+            .fadeSlideIn(delay: 0.05, from: .bottom)
             .onAppear {
                 profileState = loadProfileUIState()
             }
@@ -331,6 +380,7 @@ struct ProfileView: View {
 
     private func menuRow(iconUrl: String, fallbackIcon: String, title: String, item: Item) -> some View {
         Button {
+            HapticManager.selection()
             navigation = item
         } label: {
             HStack(spacing: 14) {
@@ -347,10 +397,12 @@ struct ProfileView: View {
             .padding(.vertical, 14)
         }
         .buttonStyle(.plain)
+        .pressable()
     }
 
     private func menuRowAction(iconUrl: String, fallbackIcon: String, title: String, isDestructive: Bool = false, showChevron: Bool = false, action: @escaping () -> Void) -> some View {
         Button {
+            HapticManager.selection()
             action()
         } label: {
             HStack(spacing: 14) {
@@ -369,6 +421,7 @@ struct ProfileView: View {
             .padding(.vertical, 14)
         }
         .buttonStyle(.plain)
+        .pressable()
     }
 
     private func subMenuRow(title: String, action: @escaping () -> Void) -> some View {

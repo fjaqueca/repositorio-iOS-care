@@ -114,11 +114,8 @@ struct TasksView: View {
                             
                             if goals.isEmpty {
                                 VStack(spacing: 12) {
-                                    Spacer()
-                                        .frame(height: 30)
-                                    Image(systemName: "doc.text.magnifyingglass")
-                                        .font(.system(size: 50, weight: .light))
-                                        .foregroundColor(Color(.systemGray3))
+                                    LottieView(animationName: "Empty_Box")
+                                        .frame(width: 200, height: 200)
                                     Text("No se encontraron tareas")
                                         .font(Font.custom("FiraSans-Bold", size: 19))
                                         .foregroundColor(Color(hex: "#5B6770"))
@@ -126,14 +123,13 @@ struct TasksView: View {
                                         .font(Font.custom("FiraSans-Regular", size: 15))
                                         .foregroundColor(Color(hex: "#C4C4C4"))
                                         .multilineTextAlignment(.center)
-                                    Spacer()
-                                        .frame(height: 30)
                                 }
                                 .frame(maxWidth: .infinity)
+                                .popIn()
                             } else {
                                 ForEach(goals, id: \.self) { tasks in
                                     ForEach(tasks.records, id: \.self) { task in
-                                        ForEach(task.goalsR.records, id: \.self) { t in
+                                        ForEach(Array(task.goalsR.records.enumerated()), id: \.element) { index, t in
                                             TaskRowView(
                                                 task: t,
                                                 isLoadingFavorite: $isLoadingFavorite,
@@ -143,7 +139,9 @@ struct TasksView: View {
                                                 puntosObtener: puntosObtener,
                                                 puntosAcumulados: puntosAcumulados
                                             )
-                                            .environmentObject(navigationState)  // ✅ PASAR ESTADO A TaskRowView
+                                            .environmentObject(navigationState)
+                                            .pressable()
+                                            .springOnAppear(delay: Double(index) * 0.05)
                                             .onAppear {
                                                 self.isFavorite = t.favoritoAppC ?? false
                                             }
@@ -189,9 +187,13 @@ struct TasksView: View {
                 CenteredLoadingView()
             }
             
-            // ✅ Loading centralizado para carga inicial y auto-navegación
+            // ✅ Loading: Skeleton mientras carga tareas
             if isLoadingTasks || shouldAutoNavigate {
-                CenteredLoadingView()
+                VStack {
+                    SkeletonList(rows: 4)
+                        .padding(.top, 20)
+                    Spacer(minLength: 0)
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)

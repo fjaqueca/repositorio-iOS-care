@@ -24,6 +24,7 @@ struct NewAppointmentSelectDetailsView: View {
     @State var clinicName = ""
     @State var isShowingPopupPerHour = false
     @State var isShowingPopupPerClinic = false
+    @State private var shakeAttempts: Int = 0
     @State var isShowConsentPopup = false
     private let isConsent = AppStatusManager.selectedEnterprise?.consentimientoInformadoC
     @State var popupConsent: [PopupConsent] = []
@@ -34,6 +35,10 @@ struct NewAppointmentSelectDetailsView: View {
     @State private var error: AppError?
 
     @State private var isLoading: Bool = false
+    @State private var showConfetti: Bool = false
+    @State private var showSuccessModal: Bool = false
+    @State private var successIconScale: CGFloat = 0.0
+    @State private var successWasReplacement: Bool = false
 
     // NUEVO: Estados para Ficha Clínica General
     @State private var brandAccountResponse: BrandAccounts?
@@ -79,6 +84,7 @@ struct NewAppointmentSelectDetailsView: View {
 
     var body: some View {
         content
+            .confetti(isActive: $showConfetti)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack {
@@ -90,6 +96,7 @@ struct NewAppointmentSelectDetailsView: View {
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
@@ -134,7 +141,9 @@ struct NewAppointmentSelectDetailsView: View {
     var content: some View {
         if professionals.isEmpty {
             VStack {
-                ProgressView()
+                SkeletonList(rows: 3)
+                    .padding(.top, 20)
+                Spacer(minLength: 0)
             }
         } else {
             ZStack{
@@ -148,11 +157,23 @@ struct NewAppointmentSelectDetailsView: View {
                         )
                     }
                 }
-                if isShowingPopupPerHour{
-                    PopupView(showCustomPopup: $isShowingPopupPerHour, clinicName: $clinicName, popupData: UIStateAppoint.popupAllreadyHaveAppointmentPerHour)
+                if isShowingPopupPerHour {
+                    AppointmentAlreadyExistsPopup(
+                        showPopup: $isShowingPopupPerHour,
+                        clinicName: $clinicName,
+                        popupData: UIStateAppoint.popupAllreadyHaveAppointmentPerHour
+                    )
+                    .zIndex(10)
+                    .transition(.opacity)
                 }
-                if isShowingPopupPerClinic{
-                    PopupView(showCustomPopup: $isShowingPopupPerClinic, clinicName: $clinicName, popupData: UIStateAppoint.popupAllreadyHaveAppointmentPerClinic)
+                if isShowingPopupPerClinic {
+                    AppointmentAlreadyExistsPopup(
+                        showPopup: $isShowingPopupPerClinic,
+                        clinicName: $clinicName,
+                        popupData: UIStateAppoint.popupAllreadyHaveAppointmentPerClinic
+                    )
+                    .zIndex(10)
+                    .transition(.opacity)
                 }
 
             }
@@ -172,18 +193,23 @@ struct NewAppointmentSelectDetailsView: View {
                     VStack(spacing: 16) {
                         // Card: Clínica
                         cardClinic
+                            .springOnAppear(delay: 0.05)
 
                         // Card: Primer turno disponible (solo si no hay profesional)
                         if professional == nil {
                             cardFirstAvailable
+                                .springOnAppear(delay: 0.15)
                         }
 
                         // Card: Profesional + Fecha + Hora
                         cardAppointmentDetails
+                            .shake(attempts: shakeAttempts)
+                            .springOnAppear(delay: 0.25)
 
                         // Card: Tipo de cita (solo si hay slot)
                         if slot != nil {
                             cardAppointmentType
+                                .springOnAppear(delay: 0.35)
                         }
                     }
                     .padding(.top, 20)
@@ -194,8 +220,10 @@ struct NewAppointmentSelectDetailsView: View {
                 VStack(spacing: 0) {
                     Divider()
                     PrimaryButton(title: "Agendar cita", UIStateBtn: UIStateAppoint.newAppointmentUIState.btnAgend) {
+                        HapticManager.impact(style: .medium)
                         validatePopupConsent()
                     }
+                    .bounceOnTap()
                     .background{
                         if slot?.appointmentType == nil{
                             Color(hex: UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn != "" ? UIStateAppoint.newAppointmentUIState.btnAgend.backgroundPressBtn : "#E9E9EB")
@@ -268,6 +296,121 @@ struct NewAppointmentSelectDetailsView: View {
 
         }
         .popup(item: $popup)
+        .overlay(
+            Group {
+                if showSuccessModal {
+                    appointmentSuccessModal
+                        .transition(.scale(scale: 0.85).combined(with: .opacity))
+                }
+            }
+            .animation(.spring(response: 0.35, dampingFraction: 0.75), value: showSuccessModal)
+        )
+    }
+
+    // MARK: - Success Modal (estilo premium)
+    private var appointmentSuccessModal: some View {
+        let uiState = UIStateAppoint.popupAppointmentUIState
+        let titleText = successWasReplacement ? uiState.modifier.text1 : uiState.agend.text1
+        let messageText = successWasReplacement
+            ? "Usted ya tenía una cita agendada. La misma fue cancelada y se agendó una nueva cita. Recuerde que debe confirmar su turno 48hs previas para no perder la cita agendada."
+            : uiState.agend.text2
+        let buttonText = uiState.agend.btnOk.isEmpty ? "Aceptar" : uiState.agend.btnOk
+        let titleUIState = uiState.titleTxt
+        let messageUIState = uiState.textAtr
+        let buttonUIState = uiState.btnConfirm
+
+        return GeometryReader { geo in
+            let dialogWidth = min(geo.size.width * 0.85, 340)
+
+            ZStack {
+                Color.black.opacity(0.30)
+                    .ignoresSafeArea()
+
+                VStack(spacing: 16) {
+                    // Ícono de éxito con bounce-in animado
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "#E8F5E9"))
+                            .frame(width: 72, height: 72)
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 44))
+                            .foregroundColor(Color(hex: buttonUIState.color ?? "#00BBDC"))
+                    }
+                    .scaleEffect(successIconScale)
+                    .opacity(Double(successIconScale))
+                    .padding(.top, 24)
+                    .onAppear {
+                        successIconScale = 0.0
+                        withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
+                            successIconScale = 1.0
+                        }
+                    }
+
+                    // Título dinámico
+                    Text(titleText.isEmpty ? "¡Cita agendada!" : titleText)
+                        .font(Font.custom(
+                            titleUIState.font ?? "FiraSans-Bold",
+                            size: CGFloat(Int(titleUIState.size ?? "18") ?? 18)
+                        ))
+                        .foregroundColor(Color(hex: titleUIState.color ?? "#333333"))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
+
+                    // Mensaje dinámico
+                    Text(messageText.isEmpty ? "Su cita se confirmó con éxito." : messageText)
+                        .font(Font.custom(
+                            messageUIState.font ?? "FiraSans-Regular",
+                            size: CGFloat(Int(messageUIState.size ?? "14") ?? 14)
+                        ))
+                        .foregroundColor(Color(hex: messageUIState.color ?? "#777777"))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 16)
+
+                    // Botón Aceptar dinámico
+                    Button {
+                        HapticManager.impact(style: .light)
+                        dismissSuccessModal()
+                    } label: {
+                        Text(buttonText)
+                            .font(Font.custom(
+                                buttonUIState.font ?? "FiraSans-Bold",
+                                size: CGFloat(Int(buttonUIState.size ?? "15") ?? 15)
+                            ))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(Color(hex: buttonUIState.color ?? "#00BBDC"))
+                            )
+                    }
+                    .bounceOnTap()
+                    .padding(.top, 4)
+                    .padding(.bottom, 20)
+                }
+                .padding(.horizontal, 20)
+                .frame(width: dialogWidth)
+                .background(
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(Color.white)
+                )
+                .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 6)
+            }
+            .frame(width: geo.size.width, height: geo.size.height)
+        }
+    }
+
+    private func dismissSuccessModal() {
+        withAnimation(.easeInOut(duration: 0.25)) {
+            showSuccessModal = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.dismiss()
+            self.publisher.send()
+            if selectedTab == .appointments {
+                rootPresentation.dismiss()
+            }
+        }
     }
 
     // MARK: - Card: Clínica
@@ -547,7 +690,10 @@ struct NewAppointmentSelectDetailsView: View {
         labelColor: String,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action) {
+        Button(action: {
+            HapticManager.selection()
+            action()
+        }) {
             VStack(spacing: 8) {
                 CachedAsyncImage(
                     url: URL(string: isSelected ? iconSelected : iconEnabled),
@@ -585,20 +731,22 @@ struct NewAppointmentSelectDetailsView: View {
 extension NewAppointmentSelectDetailsView {
     func selectAvailableSlot() {
         Task {
-            isLoading = true
+            await MainActor.run { isLoading = true }
             let result = await Network.shared.getFirstAvailableAppointment(clinic: clinic, professionals: professionals, monthOffset: calendarMonthOffset)
             switch result {
             case let .success(slots):
                 print(slots)
                 guard let firstSlot = slots.first else {
-                    self.calendarMonthOffset += 1
+                    await MainActor.run { self.calendarMonthOffset += 1 }
                     selectAvailableSlot()
                     return
                 }
 
-                for professional in self.professionals {
-                    if professional.serviceResourceId == firstSlot.resources.first?.id {
-                        self.professional = professional
+                await MainActor.run {
+                    for professional in self.professionals {
+                        if professional.serviceResourceId == firstSlot.resources.first?.id {
+                            self.professional = professional
+                        }
                     }
                 }
                 await getProfessionalAvailableDatesForCurrentMonth()
@@ -626,7 +774,9 @@ extension NewAppointmentSelectDetailsView {
             case let .success(professionals):
                 // 🔥 FIREBASE LOGGING: Éxito
                 FirebaseLogger.shared.log("✅ Profesionales cargados: \(professionals.count)")
-                self.professionals = professionals
+                await MainActor.run {
+                    self.professionals = professionals
+                }
 
             case let .failure(error):
                 // 🔥 FIREBASE LOGGING: Error con contexto de red
@@ -643,7 +793,9 @@ extension NewAppointmentSelectDetailsView {
                     "error_context": "load_professionals"
                 ])
 
-                AppStatusManager.error(error)
+                await MainActor.run {
+                    AppStatusManager.error(error)
+                }
             }
         }
     }
@@ -652,13 +804,12 @@ extension NewAppointmentSelectDetailsView {
         guard let professional else {
             return
         }
-        isLoading = true
+        await MainActor.run { isLoading = true }
 
         // 🔥 FIREBASE LOGGING: Inicio de carga de disponibilidad
         FirebaseLogger.shared.log("🔄 Cargando disponibilidad para: \(professional.name)")
 
         let result = await Network.shared.getProfessionalsAvailability(clinic: clinic, professional: professional, monthOffset: calendarMonthOffset)
-        isLoading = false
         switch result {
         case let .success(slots):
             // 🔥 FIREBASE LOGGING: Éxito
@@ -668,7 +819,10 @@ extension NewAppointmentSelectDetailsView {
                 .filter { !self.slots.contains($0) }
             updatedSlots.append(contentsOf: self.slots)
             updatedSlots.sort()
-            self.slots = updatedSlots
+            await MainActor.run {
+                self.slots = updatedSlots
+                self.isLoading = false
+            }
 
         case let .failure(error):
             // 🔥 FIREBASE LOGGING: Error con contexto de red
@@ -687,7 +841,10 @@ extension NewAppointmentSelectDetailsView {
                 "error_context": "load_availability"
             ])
 
-            AppStatusManager.error(error)
+            await MainActor.run {
+                AppStatusManager.error(error)
+                self.isLoading = false
+            }
         }
     }
 
@@ -696,7 +853,7 @@ extension NewAppointmentSelectDetailsView {
             guard let rut = AppStatusManager.rut, let professional, let slot else {
                 return
             }
-            popup = nil
+            await MainActor.run { popup = nil }
 
             // 🔥 FIREBASE LOGGING: Validación de cita duplicada en clínica
             if checkPreviusAppoitnmentForConfirmedOrScheduledClinic(){
@@ -712,7 +869,15 @@ extension NewAppointmentSelectDetailsView {
                     "clinic_name": clinic.name
                 ])
 
-                self.isShowingPopupPerClinic = true
+                await MainActor.run {
+                    HapticManager.error()
+                    withAnimation(.default) {
+                        shakeAttempts += 1
+                    }
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        self.isShowingPopupPerClinic = true
+                    }
+                }
                 return
             }
 
@@ -729,16 +894,22 @@ extension NewAppointmentSelectDetailsView {
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
 
-                self.isShowingPopupPerHour = true
+                await MainActor.run {
+                    HapticManager.error()
+                    withAnimation(.default) {
+                        shakeAttempts += 1
+                    }
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        self.isShowingPopupPerHour = true
+                    }
+                }
                 return
             }
-            isLoading = true
+            await MainActor.run { isLoading = true }
 
             // 🔍 NUEVA VALIDACIÓN DESDE FUNCIÓN EXTERNA
             let isValid = await validateProfessionalAvailability()
             guard isValid else {
-                isLoading = false
-
                 // 🔥 FIREBASE LOGGING: Popup de disponibilidad no válida
                 let title = UIStateAppoint.popupCantAgendAppointment.title.text
                 let message = UIStateAppoint.popupCantAgendAppointment.msg.text
@@ -757,21 +928,24 @@ extension NewAppointmentSelectDetailsView {
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
 
-                popup = .init(
-                    image: UIStateAppoint.popupCantAgendAppointment.img,
-                    title: title,
-                    message: message,
-                    actionTitle: UIStateAppoint.popupCantAgendAppointment.btn.text,
-                    action: {
-                        self.professional = nil
-                        self.date = nil
-                        self.slot = nil
-                    },
-                    UIStateTitle: UIStateAppoint.popupCantAgendAppointment.title,
-                    UIStateMessage: UIStateAppoint.popupCantAgendAppointment.msg,
-                    UIStateButton: UIStateAppoint.popupCantAgendAppointment.btn,
-                    UIStateCancelButton: nil
-                )
+                await MainActor.run {
+                    isLoading = false
+                    popup = .init(
+                        image: UIStateAppoint.popupCantAgendAppointment.img,
+                        title: title,
+                        message: message,
+                        actionTitle: UIStateAppoint.popupCantAgendAppointment.btn.text,
+                        action: {
+                            self.professional = nil
+                            self.date = nil
+                            self.slot = nil
+                        },
+                        UIStateTitle: UIStateAppoint.popupCantAgendAppointment.title,
+                        UIStateMessage: UIStateAppoint.popupCantAgendAppointment.msg,
+                        UIStateButton: UIStateAppoint.popupCantAgendAppointment.btn,
+                        UIStateCancelButton: nil
+                    )
+                }
                 return
             }
             var previousAppointment = checkPreviusAppoitnment()
@@ -803,7 +977,6 @@ extension NewAppointmentSelectDetailsView {
                     slot: slot
                 )
             }
-            isLoading = false
             switch result {
             case .success:
                 // 🔥 FIREBASE LOGGING: Cita creada exitosamente
@@ -817,26 +990,16 @@ extension NewAppointmentSelectDetailsView {
                     "was_replacement": previousAppointment != nil ? "true" : "false"
                 ])
 
-                popup = .init(
-                    image: UIStateAppoint.popupAppointmentUIState.iconCheck,
-                    title: previousAppointment == nil ? UIStateAppoint.popupAppointmentUIState.agend.text1 : UIStateAppoint.popupAppointmentUIState.modifier.text1,
-                    message: previousAppointment == nil ? UIStateAppoint.popupAppointmentUIState.agend.text2 : "Usted ya tenia una cita agendada. La misma fue cancelada y se agendó una nueva cita. Recuerde que debe confirmar su turno 48hs previas para no perder la cita agendada.",
-                    actionTitle: UIStateAppoint.popupAppointmentUIState.agend.btnOk,
-                    action: {
-
-                        self.dismiss()
-                        self.publisher.send()
-                        if selectedTab == .appointments{
-                            rootPresentation.dismiss()
-                        }
-
-
-                    },
-                    UIStateTitle: UIStateAppoint.popupAppointmentUIState.titleTxt,
-                    UIStateMessage: UIStateAppoint.popupAppointmentUIState.textAtr,
-                    UIStateButton: UIStateAppoint.popupAppointmentUIState.btnConfirm,
-                    UIStateCancelButton: UIStateAppoint.popupAppointmentUIState.btnCancel
-                )
+                await MainActor.run {
+                    self.isLoading = false
+                    self.showConfetti = true
+                    HapticManager.success()
+                    successWasReplacement = previousAppointment != nil
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        showSuccessModal = true
+                    }
+                    ReviewManager.shared.requestReviewIfNeeded()
+                }
 
             case let .failure(error):
                 // 🔥 FIREBASE LOGGING: Error al crear cita con contexto completo
@@ -854,7 +1017,10 @@ extension NewAppointmentSelectDetailsView {
                     "slot_start": slot.startDate.ISO8601Format()
                 ])
 
-                AppStatusManager.error(error)
+                await MainActor.run {
+                    self.isLoading = false
+                    AppStatusManager.error(error)
+                }
             }
         }
         func checkPreviusAppoitnment() -> Appointment? {
@@ -1204,48 +1370,128 @@ extension NewAppointmentSelectDetailsView {
     }
 
 
-    struct PopupView: View {
-        @Binding var showCustomPopup: Bool
+    // ══════════════════════════════════════════════════════
+    // MARK: - Appointment Already Exists Popup (Premium)
+    // ══════════════════════════════════════════════════════
+
+    struct AppointmentAlreadyExistsPopup: View {
+        @Binding var showPopup: Bool
         @Binding var clinicName: String
         let popupData: PopupAllreadyHaveAppointment
+        @State private var iconScale: CGFloat = 0.0
+
         var body: some View {
-            ZStack{
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .shadow(color: .gray, radius: 10)
-                VStack(spacing: 5){
+            ZStack {
+                // Backdrop oscuro
+                Color.black.opacity(0.30)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        dismissPopup()
+                    }
+
+                VStack(spacing: 16) {
+                    // Ícono animado con bounce-in
+                    if !popupData.img.isEmpty, let url = URL(string: popupData.img) {
+                        CachedAsyncImage(
+                            url: url,
+                            content: { image in
+                                image.resizable().scaledToFit().frame(width: 56, height: 56)
+                            },
+                            placeholder: {
+                                ProgressView().frame(width: 56, height: 56)
+                            }
+                        )
+                        .scaleEffect(iconScale)
+                        .padding(.top, 24)
+                        .onAppear { animateIcon() }
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color(hex: "#FFF8E1"))
+                                .frame(width: 64, height: 64)
+                            Image(systemName: "calendar.badge.exclamationmark")
+                                .font(.system(size: 32))
+                                .foregroundColor(Color(hex: "#FFA726"))
+                        }
+                        .scaleEffect(iconScale)
+                        .padding(.top, 24)
+                        .onAppear { animateIcon() }
+                    }
+
+                    // Título
                     Text(popupData.title.text.htmlToString())
-                        .font(Font.custom(popupData.title.font, size: CGFloat(Int(popupData.title.size) ?? 18)))
-                        .foregroundColor(Color(hex: popupData.title.color))
-                        .multilineTextAlignment(popupData.title.alignment == "center" ? .center : .leading)
+                        .font(Font.custom(
+                            popupData.title.font.isEmpty ? "FiraSans-Bold" : popupData.title.font,
+                            size: CGFloat(Int(popupData.title.size) ?? 17)
+                        ))
+                        .foregroundColor(Color(hex: popupData.title.color.isEmpty ? "#333333" : popupData.title.color))
+                        .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding()
-                    if popupData.msg2 != ""{
+
+                    // Mensaje
+                    if popupData.msg2 != "" {
                         Text(.init("\(popupData.msg.text) **\(clinicName)** \(popupData.msg2.htmlToString())"))
-                            .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.size) ?? 18)))
-                            .foregroundColor(Color(hex: popupData.msg.color))
-                            .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-
-                    }else{
+                            .font(Font.custom(
+                                popupData.msg.font.isEmpty ? "FiraSans-Regular" : popupData.msg.font,
+                                size: CGFloat(Int(popupData.msg.size) ?? 14)
+                            ))
+                            .foregroundColor(Color(hex: popupData.msg.color.isEmpty ? "#777777" : popupData.msg.color))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 4)
+                    } else {
                         Text(.init(popupData.msg.text.htmlToString()))
-                            .font(Font.custom(popupData.msg.font, size: CGFloat(Int(popupData.msg.size) ?? 18)))
-                            .foregroundColor(Color(hex: popupData.msg.color))
-                            .multilineTextAlignment(popupData.msg.alignment == "center" ? .center : .leading)
-
+                            .font(Font.custom(
+                                popupData.msg.font.isEmpty ? "FiraSans-Regular" : popupData.msg.font,
+                                size: CGFloat(Int(popupData.msg.size) ?? 14)
+                            ))
+                            .foregroundColor(Color(hex: popupData.msg.color.isEmpty ? "#777777" : popupData.msg.color))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 4)
                     }
 
+                    // Botón "Entendido" estilo pill
                     Button {
-                        self.showCustomPopup = false
+                        dismissPopup()
                     } label: {
-                        Text(popupData.btn.text)
-                            .font(Font.custom(popupData.btn.font, size: CGFloat(Int(popupData.btn.size) ?? 18)))
-                            .foregroundColor(Color(hex: popupData.btn.color))
-                            .padding()
+                        Text(popupData.btn.text.isEmpty ? "Entendido" : popupData.btn.text)
+                            .font(Font.custom(
+                                popupData.btn.font.isEmpty ? "FiraSans-Bold" : popupData.btn.font,
+                                size: CGFloat(Int(popupData.btn.size) ?? 15)
+                            ))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(Color(hex: popupData.btn.color.isEmpty ? "#00BBDC" : popupData.btn.color))
+                            )
                     }
+                    .buttonStyle(.plain)
+                    .bounceOnTap()
+                    .padding(.top, 4)
+                    .padding(.bottom, 18)
                 }
-                .padding()
+                .padding(.horizontal, 28)
+                .frame(maxWidth: 380)
+                .background(RoundedRectangle(cornerRadius: 18).fill(Color.white))
+                .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 6)
+                .popIn()
             }
-            .frame(maxWidth: min(UIScreen.main.bounds.size.width * 0.9, 500), minHeight: 300)
+        }
+
+        private func animateIcon() {
+            iconScale = 0.0
+            // Delay para que empiece después del .popIn() del contenedor (~0.4s)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                withAnimation(.spring(response: 0.8, dampingFraction: 0.5)) {
+                    iconScale = 1.0
+                }
+            }
+        }
+
+        private func dismissPopup() {
+            HapticManager.impact(style: .light)
+            showPopup = false
         }
     }
     struct PopupConsentView: View {

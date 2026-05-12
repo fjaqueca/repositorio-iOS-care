@@ -22,7 +22,7 @@ struct PopupViewModifier<PopupContent: View>: ViewModifier {
                 .zIndex(1)
             Group {
                 if isPresented {
-                    Color(white: 0.0, opacity: 0.2)
+                    Color(white: 0.0, opacity: 0.30)
                         .onTapGesture {
                             if dismissOnTap {
                                 isPresented = false
@@ -34,9 +34,9 @@ struct PopupViewModifier<PopupContent: View>: ViewModifier {
                 }
             }
             .ignoresSafeArea()
-            .transition(.opacity)
+            .transition(.scale(scale: 0.85).combined(with: .opacity))
         }
-        .animation(.easeIn, value: isPresented)
+        .animation(.spring(response: 0.35, dampingFraction: 0.75), value: isPresented)
     }
 }
 
@@ -77,9 +77,11 @@ extension View {
             if addBackground {
                 content()
                     .background(
-                        Color.white
+                        RoundedRectangle(cornerRadius: 18)
+                            .fill(Color.white)
                     )
-                    .cornerRadius(.cornerRadius)
+                    .clipShape(RoundedRectangle(cornerRadius: 18))
+                    .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
                     .padding(.horizontal, .margin)
             } else {
                 content()
@@ -114,29 +116,73 @@ extension View {
                 UIStateButton: item.UIStateButton,
                 UIStateCancelButton: item.UIStateCancelButton
             ) {
-                if item.isCancellable {
-                    Button {
-                        binding.wrappedValue?.cancelAction?()
-                        binding.wrappedValue = nil
-                    } label: {
-                        Text(item.cancelTitle ?? "Cancelar")
-                            .font(Font.custom(item.UIStateCancelButton?.font ?? "FiraSans-Bold", size: CGFloat(Int(item.UIStateCancelButton?.size ?? "18") ?? 18)))
-                            .foregroundColor(item.UIStateCancelButton?.color != "" ? Color(hex: item.UIStateCancelButton?.color ?? "#004A99") : .primaryText)
-                    }
-                    .padding(.horizontal, .margin)
-                } else {
-                    Spacer()
-                }
+                // Botones estilo pill (paridad Grupo Familiar)
+                Group {
+                    if item.isCancellable {
+                        // Dos botones: No (izquierda) + Sí (derecha)
+                        HStack(spacing: 12) {
+                            Button {
+                                HapticManager.impact(style: .light)
+                                binding.wrappedValue?.cancelAction?()
+                                binding.wrappedValue = nil
+                            } label: {
+                                Text(item.cancelTitle ?? "Cancelar")
+                                    .font(Font.custom(item.UIStateCancelButton?.font ?? "FiraSans-Bold", size: 15))
+                                    .foregroundColor(Color(hex: item.UIStateCancelButton?.color.isEmpty == false ? item.UIStateCancelButton!.color : "#555555"))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 25)
+                                            .fill(Color.white)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 25)
+                                            .stroke(Color(hex: "#CCCCCC"), lineWidth: 1)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                            .bounceOnTap()
 
-                Button {
-                    item.action()
-                    binding.wrappedValue = nil
-                } label: {
-                    Text(item.actionTitle)
-                        .font(Font.custom(item.UIStateButton?.font ?? "FiraSans-Bold", size: CGFloat(Int(item.UIStateButton?.size ?? "18") ?? 18)))
-                        .foregroundColor(item.UIStateButton?.color != "" ? Color(hex: item.UIStateButton?.color ?? "#004A99") : .primaryText)
+                            Button {
+                                HapticManager.impact(style: .medium)
+                                item.action()
+                                binding.wrappedValue = nil
+                            } label: {
+                                Text(item.actionTitle)
+                                    .font(Font.custom(item.UIStateButton?.font ?? "FiraSans-Bold", size: 15))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 25)
+                                            .fill(Color(hex: item.UIStateButton?.color.isEmpty == false ? item.UIStateButton!.color : "#00BBDC"))
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                            .bounceOnTap()
+                        }
+                    } else {
+                        // Un solo botón centrado (Aceptar)
+                        Button {
+                            HapticManager.impact(style: .medium)
+                            item.action()
+                            binding.wrappedValue = nil
+                        } label: {
+                            Text(item.actionTitle)
+                                .font(Font.custom(item.UIStateButton?.font ?? "FiraSans-Bold", size: 15))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .fill(Color(hex: item.UIStateButton?.color.isEmpty == false ? item.UIStateButton!.color : "#00BBDC"))
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .bounceOnTap()
+                    }
                 }
-                .padding(.horizontal, .margin)
+                .frame(maxWidth: .infinity)
             }
         }
     }

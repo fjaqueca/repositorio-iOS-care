@@ -304,3 +304,129 @@ VStack(spacing: 12) {
 - Show the empty state only when `!isLoading && items.isEmpty` — never during loading.
 - Each view chooses the SF Symbol icon that mejor represente su contenido.
 - Textos y mensajes deben ser descriptivos y en español.
+
+## Filosofía de Diseño — App con Vida y Feeling Premium (CRÍTICO — aplicar SIEMPRE)
+
+La app debe sentirse **viva, premium y con personalidad propia**. Cada elemento en pantalla debe tener vida, ser interactivo y dar feedback al usuario. Esto aplica a **todo desarrollo nuevo y toda vista que se modifique**.
+
+### Toolkit disponible en `Components/`
+
+| Componente | Archivo | Uso |
+|---|---|---|
+| **Lottie** | `LottieView.swift` | Animaciones vectoriales (empty states, loaders, success, onboarding) |
+| **Shimmer** | `ShimmerModifier.swift` | Efecto destello `.shimmer()` sobre cualquier vista |
+| **Skeleton** | `SkeletonView.swift` | Placeholders de carga: `SkeletonList`, `SkeletonCard`, `SkeletonRow`, `SkeletonTile`, `SkeletonCircle` |
+| **Haptics** | `HapticManager.swift` | Feedback táctil: `.impact()`, `.success()`, `.error()`, `.warning()`, `.selection()` |
+| **Spring** | `SpringModifiers.swift` | Animaciones físicas: `.bounceOnTap()`, `.pressable()`, `.popIn()`, `.springOnAppear()`, `.fadeSlideIn()` |
+| **Tooltip** | `TooltipView.swift` | Tooltips y spotlight: `.tooltip()`, `.spotlight()` |
+| **Confetti** | `ConfettiModifier.swift` | Celebraciones: `.confetti(isActive:)` |
+
+### Reglas obligatorias al desarrollar
+
+1. **Skeleton en vez de ProgressView()**: Toda vista que cargue datos remotos debe usar skeleton loading (`SkeletonList`, `SkeletonCard`, etc.) en lugar del spinner genérico `ProgressView()`. El skeleton imita la forma del contenido real.
+
+2. **Spring animations en toda entrada**: Los elementos no aparecen estáticos — usan `.springOnAppear()`, `.popIn()` o `.fadeSlideIn()` para entrar con vida. Las listas aplican delay escalonado por índice.
+
+3. **Botones y cards interactivos**: Todo botón usa `.bounceOnTap()`. Toda card/tile usa `.pressable()`. El usuario debe sentir que toca algo real.
+
+4. **Haptics en acciones clave**:
+   - `HapticManager.impact(style: .medium)` → tap en botones principales
+   - `HapticManager.success()` → acción completada (agendar cita, enviar examen, completar tarea)
+   - `HapticManager.error()` → error de red o validación
+   - `HapticManager.warning()` → antes de eliminar o acción destructiva
+   - `HapticManager.selection()` → cambiar tab, picker, toggle
+
+5. **Confetti en logros**: Usar `.confetti(isActive:)` al completar un programa, terminar todas las tareas de una etapa, agendar primera cita, o subir primer examen.
+
+6. **Lottie para estados especiales**: Empty states, loaders custom y pantallas de éxito deben usar animaciones Lottie cuando haya un JSON disponible, en lugar de íconos estáticos.
+
+7. **Tooltips para features nuevas**: Al agregar funcionalidad nueva, considerar `.tooltip()` o `.spotlight()` para guiar al usuario la primera vez.
+
+### Ejemplo de vista con todos los elementos
+
+```swift
+// Skeleton mientras carga
+if isLoading {
+    SkeletonList(rows: 4)
+} else if !items.isEmpty {
+    ScrollView {
+        ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+            CardView(item: item)
+                .pressable()                          // interactivo al tocar
+                .springOnAppear(delay: Double(index) * 0.05)  // entrada escalonada
+        }
+    }
+} else {
+    // Empty state con Lottie si hay JSON, o ícono estático
+    EmptyStateView()
+        .popIn()
+}
+
+// Botón principal
+Button("Confirmar") {
+    HapticManager.success()    // feedback táctil
+    showConfetti = true        // celebración si aplica
+}
+.bounceOnTap()
+```
+
+### Principios de animación
+
+1. **Movimiento con propósito**: Cada animación debe comunicar algo (entrada, feedback, celebración). Si no tiene propósito, no se agrega.
+2. **Timing 200–500ms**: Las animaciones deben estar entre 200ms y 500ms. Menos de 200ms no se percibe, más de 500ms se siente lento.
+3. **No saturar**: No todas las vistas necesitan todos los efectos. Si todo brilla, nada destaca. Elegir los momentos clave de cada flujo.
+4. **Coherencia por flujo**: Dentro de un mismo flujo (ej: Exámenes Automatizados), las animaciones deben ser consistentes — mismas curvas, mismos tiempos.
+5. **Performance first**: Las animaciones jamás deben afectar el rendimiento. Si un skeleton o spring causa lag visible, se simplifica o se quita.
+
+### Anti-patrones (NO hacer)
+
+| NO hacer | Hacer en su lugar |
+|---|---|
+| `ProgressView()` genérico como loader | `SkeletonList`, `SkeletonCard`, `SkeletonRow` según la forma del contenido |
+| Elementos que aparecen estáticos de golpe | `.springOnAppear()`, `.popIn()`, `.fadeSlideIn()` |
+| Botones sin feedback al tocar | `.bounceOnTap()` + `HapticManager.impact()` |
+| Cards/tiles sin respuesta al press | `.pressable()` |
+| Empty states con solo ícono gris estático | Lottie animado cuando hay JSON disponible |
+| Transiciones de navegación con corte seco | Transiciones con `.spring()` o `matchedGeometryEffect` |
+| Celebraciones con solo un `Alert("Éxito")` | `.confetti()` + `HapticManager.success()` |
+| Acciones destructivas sin feedback táctil | `HapticManager.warning()` antes de confirmar |
+
+### Excepción: bug fixes y refactors internos
+
+Un fix de bug puntual o un refactor interno **no requiere** rediseñar la vista con el toolkit premium. La regla aplica a:
+- Vistas **nuevas**
+- Vistas que se **modifican visualmente** (cambio de layout, nuevo componente, rediseño)
+- Flujos que se **modernizan** explícitamente
+
+Si solo estás corrigiendo un crash, un cálculo mal hecho, o un endpoint incorrecto, no es necesario agregar animaciones al mismo tiempo.
+
+## Changelog (CRÍTICO — no olvidar)
+
+### Arquitectura
+El changelog tiene 3 piezas:
+1. **`ChangelogSheetView.swift`** (`App/Features/Main/Profile/ChangelogSheetView.swift`) — Fuente de verdad. Contiene el modelo `ChangelogEntry` y el array estático `allEntries` con todas las versiones. Las versiones se ordenan descendente (la más nueva arriba). También contiene la vista del sheet.
+2. **`ProfileView.swift`** — El chip de versión muestra `CFBundleShortVersionString` y al tocarlo abre el sheet via `.sheet(isPresented:)`.
+
+### Cuándo actualizar
+- **Trigger único**: un release efectivo a producción (bump de `MARKETING_VERSION` en Xcode).
+- **Regla de oro**: el changelog refleja lo publicado, no work-in-progress. Mientras la versión está en desarrollo local, NO se toca; al momento de subir a prod, se actualiza en el mismo commit del bump.
+
+### Flujo concreto
+1. Bumpeo `MARKETING_VERSION` en el proyecto Xcode (ej: 2.4.4 → 2.4.5).
+2. En `ChangelogSheetView.swift`, agrego una nueva `ChangelogEntry` **al inicio** del array `allEntries` (antes de la versión actual).
+3. Redacto los `changes` en lenguaje natural, **máx 15 ítems**, sin tecnicismos.
+4. Fecha en formato `"DD de mes, YYYY"` en español (ej. `"15 de mayo, 2026"`).
+5. Mismo commit lleva: bump + entry nueva.
+
+### Caso especial
+Si la versión ya existe en `allEntries` y se acumulan más cambios antes del release efectivo, actualizo la lista `changes` de esa entrada existente en vez de crear una nueva.
+
+### Redacción — ejemplos buenos y malos
+- ✅ `"Mejoras de estabilidad: menos errores y cierres inesperados"`
+- ✅ `"Nuevo diseño visual en citas médicas"`
+- ✅ `"Ahora puedes gestionar tu grupo familiar"`
+- ❌ `"Modernización de FieldView con Material Outlined TextField"`
+- ❌ `"Refactor de Network+Exams.swift para async/await"`
+- ❌ `"Fix crash en AutomatedExamsView por nil unwrap"`
+
+**Regla**: lenguaje natural para usuarios comunes, sin nombres de clases, archivos o patrones técnicos.

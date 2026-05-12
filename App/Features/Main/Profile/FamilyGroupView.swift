@@ -83,6 +83,9 @@ struct FamilyGroupView: View {
     @State private var showDeleteSuccessModal: Bool = false
     @State private var deleteSuccessIconScale: CGFloat = 0.0
 
+    // MARK: - Confetti hearts state
+    @State private var showConfettiHearts: Bool = false
+
     private let maxCargas = 5
 
     // Snapshot para comparación isDirty en el modal de editar
@@ -118,11 +121,9 @@ struct FamilyGroupView: View {
     var body: some View {
         VStack(spacing: 0) {
             if isLoading {
-                Spacer()
-                ProgressView()
-                    .tint(Color(hex: fgConfig.seccionPrincipal.colorSpinner.isEmpty ? "#00BBDC" : fgConfig.seccionPrincipal.colorSpinner))
-                    .scaleEffect(1.1)
-                Spacer()
+                SkeletonList(rows: 3)
+                    .padding(.top, 20)
+                Spacer(minLength: 0)
             } else {
                 memberListView
             }
@@ -180,6 +181,7 @@ struct FamilyGroupView: View {
                 }
             }
         )
+        .confettiHearts(isActive: $showConfettiHearts)
         .onAppear {
             isLoading = true
             loadUIState()
@@ -264,6 +266,7 @@ struct FamilyGroupView: View {
             // Botón agregar (solo si habilitado Y < 5 cargas)
             if isFamilyGroupAddEnabled && members.count < maxCargas {
                 Button {
+                    HapticManager.impact(style: .medium)
                     resetAddForm()
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showAddModal = true
@@ -283,6 +286,7 @@ struct FamilyGroupView: View {
                             .fill(Color(hex: btnAddCfg.colorFondo.isEmpty ? "#00BBDC" : btnAddCfg.colorFondo))
                     )
                 }
+                .bounceOnTap()
                 .padding(.horizontal, .margin)
                 .padding(.bottom, 16)
             }
@@ -328,6 +332,7 @@ struct FamilyGroupView: View {
 
             // Botón editar
             Button {
+                HapticManager.selection()
                 prepareEdit(member: member)
             } label: {
                 Image(systemName: "pencil")
@@ -372,26 +377,8 @@ struct FamilyGroupView: View {
         return VStack(spacing: 16) {
             Spacer().frame(height: 20)
 
-            if !esIconUrl.isEmpty, let url = URL(string: esIconUrl) {
-                CachedAsyncImage(
-                    url: url,
-                    content: { image in
-                        image.resizable().scaledToFit().frame(width: 70, height: 70)
-                    },
-                    placeholder: {
-                        ProgressView().frame(width: 70, height: 70)
-                    }
-                )
-            } else {
-                ZStack {
-                    Circle()
-                        .stroke(Color(hex: "#E0E0E0"), lineWidth: 1.5)
-                        .frame(width: 70, height: 70)
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 30, weight: .light))
-                        .foregroundColor(Color(hex: "#BDBDBD"))
-                }
-            }
+            LottieView(animationName: "Empty_box_alert")
+                .frame(width: 180, height: 180)
 
             Text(fgConfig.seccionPrincipal.textoSinCargas.isEmpty
                  ? "No se encontraron cargas asociadas a tu usuario y esta empresa..."
@@ -405,6 +392,7 @@ struct FamilyGroupView: View {
                 .padding(.horizontal, 32)
         }
         .frame(maxWidth: .infinity)
+        .popIn()
     }
 
     // ══════════════════════════════════════════════════════
@@ -1166,6 +1154,7 @@ struct FamilyGroupView: View {
                 .stroke(Color(.systemGray5), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.04), radius: 3, x: 0, y: 1)
+        .pressable()
         // Animación cascada spring (paridad Android: alpha 0→1, translationY +20→0, scale 0.92→1.0, 650ms, 80ms delay)
         .opacity(membersAnimated ? 1 : 0)
         .offset(y: membersAnimated ? 0 : 20)
@@ -1631,8 +1620,16 @@ struct FamilyGroupView: View {
         let titularRutClean = titularRutNormalized
         let nameTrim = addName.trimmingCharacters(in: .whitespaces)
         let lastNameTrim = addLastName.trimmingCharacters(in: .whitespaces)
-        let titularEmail = users.first?.records.first?.PersonEmail ?? ""
-        let titularPhone = (users.first?.records.first?.Phone ?? "").filter { $0.isNumber }
+        let titularEmail: String = {
+            guard let user = users.first, !user.isInvalidated,
+                  let record = user.records.first else { return "" }
+            return record.PersonEmail ?? ""
+        }()
+        let titularPhone: String = {
+            guard let user = users.first, !user.isInvalidated,
+                  let record = user.records.first else { return "" }
+            return (record.Phone ?? "").filter { $0.isNumber }
+        }()
         let emailFinal = addIsMinor ? titularEmail : addEmail.trimmingCharacters(in: .whitespaces).lowercased()
         let phoneFinal = addIsMinor ? titularPhone : addPhone.trimmingCharacters(in: .whitespaces)
 
@@ -1723,8 +1720,11 @@ struct FamilyGroupView: View {
                     isAddLoading = false
                     showAddModal = false
                     resetAddForm()
+                    showConfettiHearts = true
+                    HapticManager.success()
                     isLoading = true
                     loadMembers()
+                    ReviewManager.shared.requestReviewIfNeeded()
                 }
             case let .failure(error):
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -1943,6 +1943,7 @@ struct FamilyGroupView: View {
     private var toolbarBackButton: some View {
         let backColor = fgConfig.backArrow.colorBackArrow
         return Button {
+            HapticManager.impact(style: .light)
             presentation.wrappedValue.dismiss()
         } label: {
             Image("back")

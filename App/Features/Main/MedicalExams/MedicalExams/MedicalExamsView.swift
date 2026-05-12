@@ -73,6 +73,7 @@ struct MedicalExamsView: View {
     /// disparamos un getRecetas() para refrescar las URLs ya persistidas en backend
     /// y que el botón "Subir" vs "Ver" del detalle refleje el estado real.
     @State private var listNeedsRefresh: Bool = false
+    @State private var emptyStateReady: Bool = false
 
     private var accentColor: Color {
         Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
@@ -126,19 +127,13 @@ struct MedicalExamsView: View {
                     // setea a true, el body se re-evalúa y muestra el spinner SIN flash
                     // de la lista cacheada. Permanece true hasta que getRecetas termina.
                     if isLoading || listNeedsRefresh {
-                        VStack(spacing: 12) {
-                            ProgressView()
-                                .scaleEffect(1.1)
-                            Text("Cargando exámenes...")
-                                .font(Font.custom("FiraSans-Regular", size: 14))
-                                .foregroundColor(.gray)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 50)
+                        // Skeleton loading
+                        SkeletonList(rows: 4)
+                            .padding(.top, 30)
                     } else {
                         if let searchExams = searchExams, !searchExams.isEmpty {
                             LazyVStack(spacing: 10) {
-                                ForEach(searchExams, id: \.self) { exam in
+                                ForEach(Array(searchExams.enumerated()), id: \.element) { index, exam in
                                     MedicalExamsRowView(
                                         isSelected: $examSelectedList,
                                         exam: exam,
@@ -164,22 +159,35 @@ struct MedicalExamsView: View {
                                         listNeedsRefresh: $listNeedsRefresh,
                                         linkedPatientExam: linkedPatientExam(for: exam)
                                     )
+                                    .pressable()
+                                    .springOnAppear(delay: Double(index) * 0.05)
                                 }
                             }
                             .padding(.horizontal, .margin)
                             .padding(.top, 23)
                             .padding(.bottom, .margin)
                         } else {
-                            VStack(spacing: 16) {
-                                Image(systemName: "doc.text.magnifyingglass")
-                                    .font(.system(size: 48))
-                                    .foregroundColor(.gray.opacity(0.35))
-                                Text("No se encontraron exámenes")
-                                    .font(Font.custom("FiraSans-Regular", size: 16))
-                                    .foregroundColor(.gray)
+                            // Empty state con Lottie
+                            VStack(spacing: 12) {
+                                Spacer()
+                                LottieView(animationName: "Empty_Box")
+                                    .frame(width: 220, height: 220)
+                                if emptyStateReady {
+                                    TypewriterText("No se encontraron exámenes",
+                                                  font: "FiraSans-Bold", size: 19,
+                                                  color: Color(hex: "#5B6770"),
+                                                  speed: 0.06, showDots: false, delay: 0.3)
+                                }
+                                Spacer()
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 80)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .popIn()
+                            .onAppear {
+                                emptyStateReady = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    emptyStateReady = true
+                                }
+                            }
                         }
                     }
                 }
@@ -361,6 +369,7 @@ struct MedicalExamsView: View {
                 }
             }
             .buttonStyle(.plain)
+            .bounceOnTap()
             .onChange(of: examSelectedList) { newValue in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     let hasUnselected = newValue.contains { !$0.value }
@@ -426,6 +435,7 @@ struct MedicalExamsView: View {
                             .fill(accentColor)
                     )
                 }
+                .bounceOnTap()
 
                 // Compartir
             Button {
@@ -447,6 +457,7 @@ struct MedicalExamsView: View {
                         .fill(accentColor)
                 )
             }
+            .bounceOnTap()
             }
         }
     }
@@ -933,7 +944,7 @@ struct MedicalExamsView: View {
                 print("📥 [ExamList] Descargando bytes desde: \(remoteURL.absoluteString.prefix(60))...")
                 let data = try Data(contentsOf: remoteURL)
                 print("📥 [ExamList] Bytes recibidos: \(data.count)")
-                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+                guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
                 let safeFileName = S3FileHelper.sanitizeFileName(fileName)
                 let fileURL = documentsURL.appendingPathComponent(safeFileName)
                 try data.write(to: fileURL, options: .atomic)
@@ -947,20 +958,20 @@ struct MedicalExamsView: View {
                         self.urlsToZip.append(fileURL)
                     }
                     self.count += 1
-                    self.progress = Double(self.count / self.total)
+                    self.progress = self.total > 0 ? self.count / self.total : 0
                     print("📊 [ExamList] Progreso: \(Int(self.count))/\(Int(self.total))")
                 }
             } catch {
                 print("❌ [ExamList] Error descargando archivo: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     self.count += 1
-                    self.progress = self.count / self.total
+                    self.progress = self.total > 0 ? self.count / self.total : 0
                 }
             }
         }
     }
     func createZip(from urls: [URL], zipFileName: String) -> URL? {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         let zipURL = documentsURL.appendingPathComponent("\(zipFileName).zip")
         do {
             if FileManager.default.fileExists(atPath: zipURL.path) {

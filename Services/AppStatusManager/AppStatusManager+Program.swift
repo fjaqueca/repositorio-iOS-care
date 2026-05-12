@@ -14,9 +14,13 @@ extension AppStatusManager {
             let programResult = await Network.shared.getPrograms(accountId: accountId)
             switch programResult {
                 case let .success(program):
-                    let realm = try! Realm(queue: nil)
-                    try! realm.write {
-                        realm.add(program, update: .all)
+                    do {
+                        let realm = try Realm(queue: nil)
+                        try realm.write {
+                            realm.add(program, update: .all)
+                        }
+                    } catch {
+                        print("❌ [Realm] Error en loadPrograms: \(error.localizedDescription)")
                     }
                     return
                 case let .failure(error):

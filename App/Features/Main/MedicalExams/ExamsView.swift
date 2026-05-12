@@ -43,6 +43,7 @@ struct ExamsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
@@ -89,18 +90,21 @@ struct ExamsView: View {
                 // Banner carousel (padding 15pt por lado, paridad Android)
                 bannerCarousel
                     .frame(width: screenWidth)
+                    .fadeSlideIn(delay: 0.1, from: .top)
 
                 Spacer().frame(height: 8)
 
                 // Descripcion / Instruccion (margin 20pt por lado, paridad Android)
                 descriptionText
                     .frame(width: screenWidth)
+                    .fadeSlideIn(delay: 0.2, from: .bottom)
 
                 Spacer().frame(height: 20)
 
                 // Option cards
                 optionCards
                     .frame(width: screenWidth)
+                    .springOnAppear(delay: 0.3)
 
                 Spacer()
             }
@@ -126,6 +130,7 @@ struct ExamsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
+                            HapticManager.impact(style: .light)
                             showMedicalExams = false
                         } label: {
                             Image("back")
@@ -158,6 +163,7 @@ struct ExamsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
+                            HapticManager.impact(style: .light)
                             showPatientExams = false
                         } label: {
                             Image("back")
@@ -324,7 +330,10 @@ struct ExamsView: View {
 
     // MARK: - Single Option Card
     private func examOptionCard(title: String, iconURL: String?, systemIcon: String, expandWidth: Bool = true, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button(action: {
+            HapticManager.impact(style: .medium)
+            action()
+        }) {
             if let iconURL = iconURL, let url = URL(string: iconURL) {
                 WebImage(url: url) { image in
                     image.resizable()
@@ -348,6 +357,8 @@ struct ExamsView: View {
             }
         }
         .frame(maxWidth: expandWidth ? .infinity : nil)
+        .pressable()
+        .bounceOnTap()
     }
 
     private func iconForSeccion(_ numero: Int) -> String {

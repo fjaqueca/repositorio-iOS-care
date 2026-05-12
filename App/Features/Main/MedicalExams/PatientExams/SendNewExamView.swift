@@ -44,6 +44,7 @@ struct SendNewExamView: View {
     @State private var showSuccessModal: Bool = false
     @State private var checkScale: CGFloat = 0.0
     @State private var checkOpacity: Double = 0.0
+    @State private var showConfetti: Bool = false
 
     enum AlertAuthEvent: Identifiable {
         var id: Int { hashValue }
@@ -103,6 +104,7 @@ struct SendNewExamView: View {
                     saveButton
                 }
             }
+            .slideInFromRight()
             // Blur del contenido detrás del loading (mismo patrón que el resto de la app).
             .blur(radius: isLoading ? 3 : 0.000001)
             .popup(item: $popup)
@@ -190,6 +192,7 @@ struct SendNewExamView: View {
                 .transition(.opacity)
             }
         }
+        .confetti(isActive: $showConfetti)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -203,6 +206,7 @@ struct SendNewExamView: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    HapticManager.impact(style: .light)
                     dismiss()
                 } label: {
                     Image("back")
@@ -315,10 +319,12 @@ struct SendNewExamView: View {
             }
             .confirmationDialog("Elegí el tipo de archivo", isPresented: $showSourceDialog) {
                 Button("Galería") {
+                    HapticManager.impact(style: .light)
                     selectedSourceType = .camera
                     showFilePicker = true
                 }
                 Button("Seleccionar archivo") {
+                    HapticManager.impact(style: .light)
                     selectedSourceType = .document
                     showFilePicker = true
                 }
@@ -535,6 +541,7 @@ struct SendNewExamView: View {
                         .fill(Color(hex: btnElim.colorFondo.isEmpty ? "#FF3B30" : btnElim.colorFondo))
                 )
         }
+        .bounceOnTap()
         .padding(.horizontal, .margin)
         .padding(.top, 10)
         .padding(.bottom, 14)
@@ -547,6 +554,7 @@ struct SendNewExamView: View {
     // MARK: - Send Button
     private var saveButton: some View {
         Button {
+            HapticManager.impact(style: .medium)
             sendInfo()
         } label: {
             Text("Enviar")
@@ -560,6 +568,7 @@ struct SendNewExamView: View {
                 )
         }
         .disabled(isSendButtonDisabled)
+        .bounceOnTap()
         .padding(.horizontal, .margin)
         .padding(.top, 10)
         .padding(.bottom, 14)
@@ -912,7 +921,9 @@ struct SendNewExamView: View {
                         "files_count": fileExams.filter { !$0.urlImg.isEmpty }.count
                     ])
                     self.isPublished = true
+                    self.showConfetti = true
                     presentSuccessModal()
+                    ReviewManager.shared.requestReviewIfNeeded()
 
                 case let .failure(error):
                     FirebaseLogger.shared.log("Error al enviar examen: \(error.localizedDescription)")

@@ -16,6 +16,7 @@ struct EducationalMaterialView: View {
     @State var material: [EducationalMaterial.EducationalMaterialRecords]? = []
     @State var isLoadingFav: Bool = false
     @State var UIState: EducationalMaterialUIState = EducationalMaterialUIState()
+    @State private var emptyStateReady: Bool = false
     var body: some View {
         NavigationViewCustom {
             ZStack {
@@ -41,18 +42,17 @@ struct EducationalMaterialView: View {
                         }
                         .cornerRadius(10)
                         if isLoading {
-                            ScrollView {
-                                ProgressView()
-                                    .padding()
-                                    .onAppear {
-                                        getEducationalMaterial()
-                                    }
-                            }
+                            SkeletonList(rows: 4)
+                                .onAppear {
+                                    getEducationalMaterial()
+                                }
                         } else if let searchMaterial = searchMaterial, !searchMaterial.isEmpty {
                             ScrollView {
                                 VStack {
-                                    ForEach(searchMaterial, id: \.self) { filterMaterial in
+                                    ForEach(Array(searchMaterial.enumerated()), id: \.element) { index, filterMaterial in
                                         EducationalMaterialRow(material: filterMaterial, isLoadingFavorite: $isLoadingFav, isLoadingMaterial: $isLoading, UIState: $UIState)
+                                            .pressable()
+                                            .springOnAppear(delay: Double(index) * 0.05)
                                     }
                                 }
                             }
@@ -61,8 +61,9 @@ struct EducationalMaterialView: View {
                         }
                     }
                     .padding(.margin)
-                    
+                    Spacer(minLength: 0)
                 }
+                .fadeSlideIn(delay: 0.05, from: .bottom)
                 .blur(radius: isLoadingFav ? 3 : 0.000001)
                 if isLoadingFav{
                     ProgressView()
@@ -83,6 +84,7 @@ struct EducationalMaterialView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
@@ -107,21 +109,24 @@ struct EducationalMaterialView: View {
     private var emptyStateView: some View {
         VStack(spacing: 12) {
             Spacer()
-            Spacer()
-
-            Image(systemName: "folder")
-                .font(.system(size: 50, weight: .light))
-                .foregroundColor(Color(.systemGray3))
-
-            Text("Sin documentos cargados...")
-                .font(Font.custom("FiraSans-Bold", size: 19))
-                .foregroundColor(Color(hex: "#5B6770"))
-
-            Spacer()
-            Spacer()
+            LottieView(animationName: "Empty_Box")
+                .frame(width: 220, height: 220)
+            if emptyStateReady {
+                TypewriterText("Sin documentos cargados",
+                              font: "FiraSans-Bold", size: 19,
+                              color: Color(hex: "#5B6770"),
+                              speed: 0.06, showDots: true, delay: 0.3)
+            }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .popIn()
+        .onAppear {
+            emptyStateReady = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                emptyStateReady = true
+            }
+        }
     }
 
     func getEducationalMaterial() {

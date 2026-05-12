@@ -22,10 +22,10 @@ extension Network {
         let secret = "secret"
         let privateKey = SymmetricKey(data: Data(secret.utf8))
 
-        let headerJSONData = try! JSONEncoder().encode(Header())
+        guard let headerJSONData = try? JSONEncoder().encode(Header()) else { return "" }
         let headerBase64String = headerJSONData.urlSafeBase64EncodedString()
 
-        let payloadJSONData = try! JSONEncoder().encode(Payload())
+        guard let payloadJSONData = try? JSONEncoder().encode(Payload()) else { return "" }
         let payloadBase64String = payloadJSONData.urlSafeBase64EncodedString()
 
         let toSign = Data((headerBase64String + "." + payloadBase64String).utf8)

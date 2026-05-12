@@ -38,9 +38,13 @@ extension AppStatusManager {
                 print("   Records:   \(user.records.count)")
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
-                let realm = try! Realm(queue: nil)
-                try! realm.write {
-                    realm.add(user, update: .all)
+                do {
+                    let realm = try Realm(queue: nil)
+                    try realm.write {
+                        realm.add(user, update: .all)
+                    }
+                } catch {
+                    print("❌ [Realm] Error en loadUser: \(error.localizedDescription)")
                 }
                 UserDefaults.standard.set(record?.id, forKey: "account_id")
                 AppStatusManager.setLoading(false)
