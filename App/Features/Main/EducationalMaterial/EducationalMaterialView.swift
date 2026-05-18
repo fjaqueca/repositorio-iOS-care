@@ -109,8 +109,13 @@ struct EducationalMaterialView: View {
     private var emptyStateView: some View {
         VStack(spacing: 12) {
             Spacer()
-            LottieView(animationName: "Empty_Box")
-                .frame(width: 220, height: 220)
+            // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+            // Para reactivar, comenta el Image y descomenta el LottieView.
+            Image(systemName: "doc.text.magnifyingglass")
+                .font(.system(size: 50, weight: .light))
+                .foregroundColor(Color(.systemGray3))
+            // LottieView(animationName: "Empty_Box")
+            //     .frame(width: 220, height: 220)
             if emptyStateReady {
                 TypewriterText("Sin documentos cargados",
                               font: "FiraSans-Bold", size: 19,

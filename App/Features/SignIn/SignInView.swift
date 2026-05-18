@@ -85,22 +85,28 @@ struct SignInView: View {
             .navigationBarTitleDisplayMode(.inline)
             .background(
                 Group {
-                        if UIState.loginUIState.imageBackground != "" {
-                            CachedAsyncImage(
-                                url: URL(string: UIState.loginUIState.imageBackground ),
-                                content: { image in
-                                    image
-                                        .resizable()
-                                        .edgesIgnoringSafeArea(.all)
-                                        .aspectRatio(contentMode: .fill)
-                                },
-                                placeholder: {
-                                    ProgressView()
-                                }
-                            )
-                            .eraseToAnyView()
-                        }
+                    // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                    // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
+                    if UIState.loginUIState.imageBackground != "" {
+                        CachedAsyncImage(
+                            url: URL(string: UIState.loginUIState.imageBackground ),
+                            content: { image in
+                                image
+                                    .resizable()
+                                    .edgesIgnoringSafeArea(.all)
+                                    .aspectRatio(contentMode: .fill)
+                            },
+                            placeholder: { ProgressView() }
+                        )
+                        .eraseToAnyView()
                     }
+                    // LottieView(
+                    //     animationName: "gradient_background",
+                    //     loopMode: .loop,
+                    //     contentMode: .scaleAspectFill
+                    // )
+                    // .edgesIgnoringSafeArea(.all)
+                }
             )
 //            .navigationLink(isActive: $isPresenting) {
 //                SignInPasswordRecovery(UIState: $UIState, isPresenting: $isPresenting)
@@ -425,9 +431,15 @@ struct SignInView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    LottieView(animationName: "Empty_box_alert", loopMode: .loop)
-                        .frame(width: 140, height: 140)
+                    // TEMPORAL: Lottie Empty_box_alert deshabilitado, se restaura icono SF Symbol.
+                    // Para reactivar, comenta el Image y descomenta el LottieView.
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 60, weight: .light))
+                        .foregroundColor(Color(.systemGray3))
                         .padding(.top, 8)
+                    // LottieView(animationName: "Empty_box_alert", loopMode: .loop)
+                    //     .frame(width: 140, height: 140)
+                    //     .padding(.top, 8)
 
                     Text(popupData.textPopup.text.htmlToString())
                         .font(Font.custom(msgFont, size: msgSize))

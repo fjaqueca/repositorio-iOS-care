@@ -95,7 +95,10 @@ struct BrandScrollView: View {
                     Button(action: {
                         onTap(button)
                     }) {
-                        
+                        // TEMPORAL: Lotties de los 4 primeros pilares (Físico Emocional,
+                        // Financiero, Social, Telemedicina) deshabilitados. Se restaura
+                        // el CachedAsyncImage dinámico que renderiza todos los pilares por igual.
+                        // Para reactivar los Lotties, descomenta el bloque if/else if de abajo.
                         CachedAsyncImage(
                             url: URL(string: button.imageUrl),
                             content: { image in
@@ -112,6 +115,80 @@ struct BrandScrollView: View {
                         .cornerRadius(.cornerRadius)
                         .padding(.horizontal, .margin / 2)
                         .padding(.vertical, .margin / 2)
+
+                        // if index == 0 {
+                        //     VStack(spacing: 4) {
+                        //         LottieView(
+                        //             animationName: "Fisico_Emocional",
+                        //             loopMode: .loop
+                        //         )
+                        //         .frame(width: 100, height: 100)
+                        //         .cornerRadius(.cornerRadius)
+                        //
+                        //         Text("Físico Emocional")
+                        //             .font(Font.custom("FiraSans-Bold", size: 12))
+                        //             .foregroundColor(Color.black)
+                        //             .multilineTextAlignment(.center)
+                        //             .lineLimit(2)
+                        //     }
+                        //     .frame(width: 100, height: 130)
+                        //     .padding(.horizontal, .margin / 2)
+                        //     .padding(.vertical, .margin / 2)
+                        // } else if index == 1 {
+                        //     VStack(spacing: 4) {
+                        //         LottieView(
+                        //             animationName: "Financial",
+                        //             loopMode: .loop
+                        //         )
+                        //         .frame(width: 100, height: 100)
+                        //         .cornerRadius(.cornerRadius)
+                        //
+                        //         Text("Financiero")
+                        //             .font(Font.custom("FiraSans-Bold", size: 12))
+                        //             .foregroundColor(Color.black)
+                        //             .multilineTextAlignment(.center)
+                        //             .lineLimit(2)
+                        //     }
+                        //     .frame(width: 100, height: 130)
+                        //     .padding(.horizontal, .margin / 2)
+                        //     .padding(.vertical, .margin / 2)
+                        // } else if index == 2 {
+                        //     VStack(spacing: 4) {
+                        //         LottieView(
+                        //             animationName: "Social",
+                        //             loopMode: .loop
+                        //         )
+                        //         .frame(width: 100, height: 100)
+                        //         .cornerRadius(.cornerRadius)
+                        //
+                        //         Text("Social")
+                        //             .font(Font.custom("FiraSans-Bold", size: 12))
+                        //             .foregroundColor(Color.black)
+                        //             .multilineTextAlignment(.center)
+                        //             .lineLimit(2)
+                        //     }
+                        //     .frame(width: 100, height: 130)
+                        //     .padding(.horizontal, .margin / 2)
+                        //     .padding(.vertical, .margin / 2)
+                        // } else if index == 3 {
+                        //     VStack(spacing: 4) {
+                        //         LottieView(
+                        //             animationName: "Telemedicina",
+                        //             loopMode: .loop
+                        //         )
+                        //         .frame(width: 100, height: 100)
+                        //         .cornerRadius(.cornerRadius)
+                        //
+                        //         Text("Telemedicina")
+                        //             .font(Font.custom("FiraSans-Bold", size: 12))
+                        //             .foregroundColor(Color.black)
+                        //             .multilineTextAlignment(.center)
+                        //             .lineLimit(2)
+                        //     }
+                        //     .frame(width: 100, height: 130)
+                        //     .padding(.horizontal, .margin / 2)
+                        //     .padding(.vertical, .margin / 2)
+                        // }
                     }
                 }
             }

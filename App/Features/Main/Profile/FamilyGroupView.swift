@@ -377,8 +377,13 @@ struct FamilyGroupView: View {
         return VStack(spacing: 16) {
             Spacer().frame(height: 20)
 
-            LottieView(animationName: "Empty_box_alert")
-                .frame(width: 180, height: 180)
+            // TEMPORAL: Lottie Empty_box_alert deshabilitado, se restaura icono SF Symbol.
+            // Para reactivar, comenta el Image y descomenta el LottieView.
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50, weight: .light))
+                .foregroundColor(Color(.systemGray3))
+            // LottieView(animationName: "Empty_box_alert")
+            //     .frame(width: 180, height: 180)
 
             Text(fgConfig.seccionPrincipal.textoSinCargas.isEmpty
                  ? "No se encontraron cargas asociadas a tu usuario y esta empresa..."

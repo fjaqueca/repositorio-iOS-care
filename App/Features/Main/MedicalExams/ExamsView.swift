@@ -41,14 +41,16 @@ struct ExamsView: View {
                 }
             }
             .toolbar {
+                // Back arrow (2.8 del Elemento 2 — HomeExamenesAutomatizados)
                 ToolbarItem(placement: .navigationBarLeading) {
+                    let raw = automatedExamsState.header.backArrowColor
                     Button {
                         HapticManager.impact(style: .light)
                         dismiss()
                     } label: {
                         Image("back")
                             .renderingMode(.template)
-                            .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
+                            .foregroundColor(Color(hex: raw.isEmpty ? "#00BBDC" : raw))
                     }
                 }
             }
@@ -113,18 +115,17 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    MedicalExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, navTitle: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.nombre ?? "", navTitleAttr: automatedExamsState.secciones.first(where: { $0.numero == 1 })?.tituloAttr ?? TextExamAttributes(), dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, seleccionarTodosTexto: automatedExamsState.seleccionarTodosTexto, seleccionarTodosAttr: automatedExamsState.seleccionarTodosAttr, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica, badgeDetallePrescripciones: automatedExamsState.badgeDetallePrescripciones, badgeDetalleRecetaMedica: automatedExamsState.badgeDetalleRecetaMedica, badgeDetalleExamenMedico: automatedExamsState.badgeDetalleExamenMedico, botonVerDocumentoEnviado: automatedExamsState.botonVerDocumentoEnviado, botonSubirExamen: automatedExamsState.botonSubirExamen, badgeCargadoPorPaciente: automatedExamsState.badgeCargadoPorPaciente, botonesDetalleExamen: automatedExamsState.botonesDetalleExamen)
+                    MedicalExamsView(UIState: $UIState, vistaPrincipal: automatedExamsState.vistaPrincipalPrescripciones, vistaDetalle: automatedExamsState.vistaDetallePrescripciones, vistaSubir: automatedExamsState.vistaSubirExamen, dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, badgeOrdenMedica: automatedExamsState.badgeOrdenMedica, badgeExamenAutomatizado: automatedExamsState.badgeExamenAutomatizado, badgeRecetaMedica: automatedExamsState.badgeRecetaMedica)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        let sec = automatedExamsState.secciones.first(where: { $0.numero == 1 })
-                        let attr = sec?.tituloAttr ?? TextExamAttributes()
-                        Text(sec?.nombre ?? "Prescripciones Médicas")
+                        let vista = automatedExamsState.vistaPrincipalPrescripciones
+                        Text(vista.tituloTexto.isEmpty ? "Prescripciones Médicas" : vista.tituloTexto)
                             .font(Font.custom(
-                                attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
-                                size: CGFloat(Int(attr.size) ?? 20)
+                                vista.tituloAttr.font.isEmpty ? "FiraSans-Bold" : vista.tituloAttr.font,
+                                size: CGFloat(Int(vista.tituloAttr.size) ?? 20)
                             ))
-                            .foregroundColor(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                            .foregroundColor(Color(hex: vista.tituloAttr.color.isEmpty ? "#00BBDC" : vista.tituloAttr.color))
                     }
                 }
                 .toolbar {
@@ -133,9 +134,10 @@ struct ExamsView: View {
                             HapticManager.impact(style: .light)
                             showMedicalExams = false
                         } label: {
+                            let backColor = automatedExamsState.vistaPrincipalPrescripciones.backArrowColor
                             Image("back")
                                 .renderingMode(.template)
-                                .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
+                                .foregroundColor(Color(hex: backColor.isEmpty ? "#00BBDC" : backColor))
                         }
                     }
                 }
@@ -146,21 +148,22 @@ struct ExamsView: View {
             NavigationViewCustom {
                 VStack(spacing: 0) {
                     Divider()
-                    PatientExamsView(UIState: $UIState, backArrowColor: automatedExamsState.backArrowColorSeccion, navTitle: automatedExamsState.secciones.first(where: { $0.numero == 2 })?.nombre ?? "", navTitleAttr: automatedExamsState.secciones.first(where: { $0.numero == 2 })?.tituloAttr ?? TextExamAttributes(), botonSubirExamenConfig: automatedExamsState.botonSubirExamen, badgesMisExamenes: automatedExamsState.badgesMisExamenes, botonesDetalleExamen: automatedExamsState.botonesDetalleExamen, badgeCargadoPorPaciente: automatedExamsState.badgeCargadoPorPaciente, dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, dialogEliminarMiArchivoConfig: automatedExamsState.dialogEliminarMiArchivo)
+                    PatientExamsView(UIState: $UIState, vistaMisArchivos: automatedExamsState.vistaMisArchivos, vistaDetalleMisArchivos: automatedExamsState.vistaDetalleMisArchivos, botonesDetalleExamen: automatedExamsState.botonesDetalleExamen, badgeCargadoPorPaciente: automatedExamsState.badgeCargadoPorPaciente, dialogEliminarConfig: automatedExamsState.dialogEliminarExamen, dialogExamenesEnviadosConfig: automatedExamsState.dialogExamenesEnviados, dialogEliminarDocOrdenConfig: automatedExamsState.dialogEliminarDocOrden, dialogEliminarMiArchivoConfig: automatedExamsState.dialogEliminarMiArchivo, vistaSubir: automatedExamsState.vistaSubirExamen)
                 }
                 .toolbar {
+                    // Título Mis Archivos de Salud (12.9 del Elemento 12)
                     ToolbarItem(placement: .principal) {
-                        let sec = automatedExamsState.secciones.first(where: { $0.numero == 2 })
-                        let attr = sec?.tituloAttr ?? TextExamAttributes()
-                        Text(sec?.nombre ?? "Mis archivos de Salud")
+                        let v = automatedExamsState.vistaMisArchivos
+                        Text(v.tituloTexto.isEmpty ? "Mis archivos de Salud" : v.tituloTexto)
                             .font(Font.custom(
-                                attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
-                                size: CGFloat(Int(attr.size) ?? 20)
+                                v.tituloAttr.font.isEmpty ? "FiraSans-Bold" : v.tituloAttr.font,
+                                size: CGFloat(Int(v.tituloAttr.size) ?? 20)
                             ))
-                            .foregroundColor(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
+                            .foregroundColor(Color(hex: v.tituloAttr.color.isEmpty ? "#00BBDC" : v.tituloAttr.color))
                     }
                 }
                 .toolbar {
+                    // Back arrow (12.8 del Elemento 12)
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
                             HapticManager.impact(style: .light)
@@ -168,7 +171,7 @@ struct ExamsView: View {
                         } label: {
                             Image("back")
                                 .renderingMode(.template)
-                                .foregroundColor(Color(hex: automatedExamsState.backArrowColorSeccion))
+                                .foregroundColor(Color(hex: automatedExamsState.vistaMisArchivos.backArrowColor.isEmpty ? "#00BBDC" : automatedExamsState.vistaMisArchivos.backArrowColor))
                         }
                     }
                 }

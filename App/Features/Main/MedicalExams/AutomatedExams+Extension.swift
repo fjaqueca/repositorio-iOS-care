@@ -18,19 +18,42 @@ private func parseFontName(_ raw: String) -> String {
     }
 }
 
-/// Mapea nombres de iconos de Salesforce a SF Symbols
+/// Mapea nombres de iconos en convención Salesforce a SF Symbols.
+/// Soporta tres convenciones de naming:
+///   - prefix `ic_*` (ic_calendar, ic_heart, etc.)
+///   - inglés/español natural ("Calendar", "Calendario", "Filter", "Filtro")
+///   - identificadores compactos (downloadicon, shareicon, deleteicon)
+/// Fallback: nombre en minúsculas tal cual (intento de match directo con SF Symbol).
 private func parseIconName(_ raw: String) -> String {
-    switch raw.lowercased().trimmingCharacters(in: .whitespaces) {
-    case "ic_stethoscope": return "stethoscope"
-    case "ic_pill", "ic_pills": return "pills.fill"
-    case "ic_doc", "ic_document": return "doc.text"
-    case "ic_heart": return "heart.fill"
-    case "ic_calendar": return "calendar"
-    case "ic_person_datos", "ic_person": return "person.fill"
-    case "downloadicon": return "square.and.arrow.down"
-    case "shareicon": return "square.and.arrow.up"
-    case "deleteicon": return "trash"
-    default: return raw
+    let key = raw.trimmingCharacters(in: .whitespaces).lowercased()
+    switch key {
+    // Convención `ic_*`
+    case "ic_stethoscope":                                  return "stethoscope"
+    case "ic_pill", "ic_pills":                             return "pills.fill"
+    case "ic_doc", "ic_document":                           return "doc.text"
+    case "ic_heart":                                        return "heart.fill"
+    case "ic_calendar":                                     return "calendar"
+    case "ic_person_datos", "ic_person":                    return "person.fill"
+    // Convención natural (es/en)
+    case "calendar", "calendario":                          return "calendar"
+    case "filtro", "filter":                                return "line.3.horizontal.decrease"
+    case "descargar", "download":                           return "square.and.arrow.down"
+    case "compartir", "share":                              return "square.and.arrow.up"
+    case "eliminar", "delete", "trash":                     return "trash"
+    case "estrella", "star":                                return "star"
+    case "stethoscope":                                     return "stethoscope"
+    case "pill", "pills":                                   return "pills.fill"
+    case "heart":                                           return "heart.fill"
+    case "person", "person_datos":                          return "person.fill"
+    // Convención compacta
+    case "downloadicon":                                    return "square.and.arrow.down"
+    case "shareicon":                                       return "square.and.arrow.up"
+    case "deleteicon":                                      return "trash"
+    // Iconos de los containers de subir-examen (Elemento 10.7 / 10.8)
+    case "clip", "ic_clip", "paperclip":                    return "paperclip"
+    case "imagen", "image", "photo", "ic_image":            return "photo"
+    case "cancelar", "cancel", "close", "x", "xmark":       return "xmark.circle.fill"
+    default:                                                return key
     }
 }
 
@@ -237,6 +260,7 @@ extension ExamsView {
             print("   📝 Header descripcion: \"\(state.header.descripcion.prefix(80))\"")
             print("   📝 Header blockPosition: \"\(state.header.blockPosition)\"")
             print("   📝 Header botonVolver: texto=\"\(state.header.botonVolver.texto)\" color=\(state.header.botonVolver.colorTexto)")
+            print("   📝 Header backArrowColor (2.8): \(state.header.backArrowColor)")
             loadSeccionesIniciales(from: custom, into: &state)
             print("   🔘 Secciones cargadas: \(state.secciones.count)")
             for sec in state.secciones {
@@ -276,23 +300,53 @@ extension ExamsView {
             print("      titulo: \"\(state.popupDetalleCarrito.titulo)\"")
             print("      btnAceptar: \"\(state.popupDetalleCarrito.btnAceptar.texto)\"")
             print("      btnCerrar: \"\(state.popupDetalleCarrito.btnCerrar.texto)\"")
-            loadBackArrowColorSeccion(from: custom, into: &state)
-            print("   🔙 BackArrowColorSeccion (Elemento 8): \(state.backArrowColorSeccion)")
-            loadSeleccionarTodosConfig(from: custom, into: &state)
-            print("   ✅ SeleccionarTodos (Elemento 9): texto=\"\(state.seleccionarTodosTexto)\" font=\(state.seleccionarTodosAttr.font) size=\(state.seleccionarTodosAttr.size) color=\(state.seleccionarTodosAttr.color)")
-            loadSeccionMisArchivosDeSalud(from: custom, into: &state)
-            print("   📂 SeccionMisArchivosDeSalud (Elemento 10): botonSubirExamen texto=\"\(state.botonSubirExamen.texto)\" colorTexto=\(state.botonSubirExamen.colorTexto) colorFondo=\(state.botonSubirExamen.colorFondo) font=\(state.botonSubirExamen.font) size=\(state.botonSubirExamen.size)")
-            print("      badgeDetallePrescripciones: texto=\"\(state.badgeDetallePrescripciones.texto)\" icono=\(state.badgeDetallePrescripciones.icono)")
-            print("      badgeDetalleRecetaMedica: texto=\"\(state.badgeDetalleRecetaMedica.texto)\" icono=\(state.badgeDetalleRecetaMedica.icono)")
-            print("      badgeDetalleExamenMedico: texto=\"\(state.badgeDetalleExamenMedico.texto)\" icono=\(state.badgeDetalleExamenMedico.icono)")
-            print("      botonVerDocEnviado: texto=\"\(state.botonVerDocumentoEnviado.texto)\" colorFondo=\(state.botonVerDocumentoEnviado.colorFondo)")
-            print("      badgeCargadoPorPaciente: texto=\"\(state.badgeCargadoPorPaciente.texto)\" icono=\(state.badgeCargadoPorPaciente.icono) colorFondo=\(state.badgeCargadoPorPaciente.colorFondo)")
+            loadVistaDetalleMisArchivos(from: custom, into: &state)
+            let vdma = state.vistaDetalleMisArchivos
+            print("   📁 VistaDetalleMisArchivos (Elemento 8): titulo=\"\(vdma.tituloTexto)\" backArrow=\(vdma.backArrowColor) btnEliminar=\"\(vdma.botonEliminar.texto)\"")
+            // OLD: loadSeleccionarTodosConfig (Custom Elemento 9 era SeleccionarTodos)
+            // NEW: Elemento 9 ahora es VistaDetallePrescripcionesMedicas — config
+            // completa del detalle de una prescripción al hacer click sobre una card.
+            loadVistaDetallePrescripcionesMedicas(from: custom, into: &state)
+            let det = state.vistaDetallePrescripciones
+            print("   📋 VistaDetallePrescripcionesMedicas (Elemento 9):")
+            print("      [9.1] backArrow: \(det.backArrowColor)")
+            print("      [9.2] titulo: \"\(det.tituloTexto)\" font=\(det.tituloAttr.font) size=\(det.tituloAttr.size) color=\(det.tituloAttr.color)")
+            print("      [9.3] iconoEstrella: size=\(det.iconoEstrellaSize) color=\(det.iconoEstrellaColor)")
+            print("      [9.4] tituloCard: font=\(det.tituloCardAttr.font) size=\(det.tituloCardAttr.size) color=\(det.tituloCardAttr.color)")
+            print("      [9.5] badgeCreadoPaciente: texto=\"\(det.badgeCreadoPaciente.texto)\" icono=\(det.badgeCreadoPaciente.icono) colorTexto=\(det.badgeCreadoPaciente.colorTexto) colorFondo=\(det.badgeCreadoPaciente.colorFondo)")
+            print("      [9.6] fecha: font=\(det.fechaAttr.font) size=\(det.fechaAttr.size) color=\(det.fechaAttr.color) formato=\"\(det.fechaFormato)\" icono=\"\(det.fechaIcono)\" colorIcono=\(det.fechaIconoColor)")
+            print("      [9.7] indicacionesTitulo: \"\(det.indicacionesTitulo)\" font=\(det.indicacionesTituloAttr.font) size=\(det.indicacionesTituloAttr.size) color=\(det.indicacionesTituloAttr.color)")
+            print("      [9.8] indicacionesTexto: font=\(det.indicacionesTextoAttr.font) size=\(det.indicacionesTextoAttr.size) color=\(det.indicacionesTextoAttr.color)")
+            print("      [9.9] examenAdjuntoTitulo: \"\(det.examenAdjuntoTitulo)\" font=\(det.examenAdjuntoTituloAttr.font) size=\(det.examenAdjuntoTituloAttr.size) color=\(det.examenAdjuntoTituloAttr.color)")
+            print("      [9.10] examenAdjuntoIcono: color=\(det.examenAdjuntoIconoColor) size=\(det.examenAdjuntoIconoSize)")
+            print("      [9.11] btnDescargar: texto=\"\(det.botonDescargar.texto)\" colorTexto=\(det.botonDescargar.colorTexto) colorFondo=\(det.botonDescargar.colorFondo) icono=\(det.botonDescargar.icono) colorIcono=\(det.botonDescargar.colorIcono) colorBorde=\(det.botonDescargar.colorBorde)")
+            print("      [9.12] btnCompartir: texto=\"\(det.botonCompartir.texto)\" colorTexto=\(det.botonCompartir.colorTexto) colorFondo=\(det.botonCompartir.colorFondo) icono=\(det.botonCompartir.icono) colorIcono=\(det.botonCompartir.colorIcono) colorBorde=\(det.botonCompartir.colorBorde)")
+            print("      [9.13] btnSubirExamen: texto=\"\(det.botonSubirExamen.texto)\" colorTexto=\(det.botonSubirExamen.colorTexto) colorFondo=\(det.botonSubirExamen.colorFondo)")
+            print("      [9.14] badgeRecetaMedica: texto=\"\(det.badgeRecetaMedica.texto)\" icono=\(det.badgeRecetaMedica.icono)")
+            print("      [9.15] badgeExamenMedico: texto=\"\(det.badgeExamenMedico.texto)\" icono=\(det.badgeExamenMedico.icono)")
+            print("      [9.16] btnVerDocumentoEnviado: texto=\"\(det.botonVerDocumentoEnviado.texto)\" size=\(det.botonVerDocumentoEnviado.size) colorTexto=\(det.botonVerDocumentoEnviado.colorTexto) colorFondo=\(det.botonVerDocumentoEnviado.colorFondo) font=\(det.botonVerDocumentoEnviado.font)")
+            // OLD: loadSeccionMisArchivosDeSalud (Custom Elemento 10 era SeccionMisArchivosDeSalud)
+            // NEW: Elemento 10 ahora es VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud
+            //      — config completa de la pantalla "Subir Examen".
+            loadVistaSubirExamenDetalle(from: custom, into: &state)
+            let sub = state.vistaSubirExamen
+            print("   📋 VistaSubirExamenDetalle (Elemento 10):")
+            print("      [10.1] backArrow: \(sub.backArrowColor)")
+            print("      [10.2] titulo: \"\(sub.tituloTexto)\" font=\(sub.tituloAttr.font) size=\(sub.tituloAttr.size) color=\(sub.tituloAttr.color)")
+            print("      [10.3] tipoDocumento: \"\(sub.tipoDocumentoTexto)\" font=\(sub.tipoDocumentoAttr.font) size=\(sub.tipoDocumentoAttr.size) color=\(sub.tipoDocumentoAttr.color) align=\(sub.tipoDocumentoAttr.alignment)")
+            print("      [10.4] badgeCargado: texto=\"\(sub.badgeCargadoPorPaciente.texto)\" icono=\(sub.badgeCargadoPorPaciente.icono) colorFondo=\(sub.badgeCargadoPorPaciente.colorFondo)")
+            print("      [10.5] adjuntarArchivo: \"\(sub.adjuntarArchivoTexto)\" font=\(sub.adjuntarArchivoAttr.font) size=\(sub.adjuntarArchivoAttr.size) color=\(sub.adjuntarArchivoAttr.color)")
+            print("      [10.6] descripcionAdjuntar: \"\(sub.descripcionAdjuntarTexto)\" font=\(sub.descripcionAdjuntarAttr.font) size=\(sub.descripcionAdjuntarAttr.size) color=\(sub.descripcionAdjuntarAttr.color)")
+            print("      [10.7] containerSinArchivo: borde=\(sub.containerSinArchivo.colorBorde) icono=\(sub.containerSinArchivo.icono) colorIcono=\(sub.containerSinArchivo.colorIcono) size=\(sub.containerSinArchivo.sizeIcono) fondo=\(sub.containerSinArchivo.colorFondoContainer)")
+            print("      [10.8] containerConArchivo: borde=\(sub.containerConArchivo.colorBorde) icono=\(sub.containerConArchivo.icono) colorIcono=\(sub.containerConArchivo.colorIcono) size=\(sub.containerConArchivo.sizeIcono) textoFormato=\(sub.containerConArchivo.colorTextoFormato) iconoCancelar=\(sub.containerConArchivo.iconoCancelar) colorFondoBoton=\(sub.containerConArchivo.colorFondoBotonCancelar) colorCruz=\(sub.containerConArchivo.colorCruz) fondoContainer=\(sub.containerConArchivo.colorFondoContainer)")
+            print("      [10.9] textoNota: \"\(sub.notaTexto)\" font=\(sub.notaAttr.font) size=\(sub.notaAttr.size) color=\(sub.notaAttr.color) align=\(sub.notaAttr.alignment)")
+            print("      [10.10] botonEnviar: texto=\"\(sub.botonEnviar.texto)\" size=\(sub.botonEnviar.size) colorTexto=\(sub.botonEnviar.colorTexto) colorFondo=\(sub.botonEnviar.colorFondo) font=\(sub.botonEnviar.font)")
             loadDialogEliminarExamen(from: custom, into: &state)
             let dlg = state.dialogEliminarExamen
             print("   🗑️ DialogEliminarExamen (Elemento 11): titulo=\"\(dlg.titulo)\" descripcion=\"\(dlg.descripcion.prefix(60))\" btnAceptar=\"\(dlg.botonAceptar.texto)\" btnCancelar=\"\(dlg.botonCancelar.texto)\"")
             loadBadgesMisExamenes(from: custom, into: &state)
-            let bdg = state.badgesMisExamenes
-            print("   🏷️ BadgesMisExamenes (Elemento 12): imagen=\"\(bdg.badgeExamenImagen.texto)\" receta=\"\(bdg.badgeRecetaMedica.texto)\" lab=\"\(bdg.badgeExamenLaboratorio.texto)\" orden=\"\(bdg.badgeOrdenExamen.texto)\" informe=\"\(bdg.badgeInformeMedico.texto)\" otros=\"\(bdg.badgeOtros.texto)\"")
+            let bdg = state.vistaMisArchivos
+            print("   🏷️ VistaMisArchivos (Elemento 12): imagen=\"\(bdg.badgeExamenImagen.texto)\" receta=\"\(bdg.badgeRecetaMedica.texto)\" lab=\"\(bdg.badgeExamenLaboratorio.texto)\" orden=\"\(bdg.badgeOrdenExamen.texto)\" informe=\"\(bdg.badgeInformeMedico.texto)\" otros=\"\(bdg.badgeOtros.texto)\"")
             loadBotonesDetalleExamen(from: custom, into: &state)
             let btns = state.botonesDetalleExamen
             print("   🔘 BotonesDetalleExamen (Elemento 13): eliminar=\"\(btns.botonEliminar.texto)\" colorFondo=\(btns.botonEliminar.colorFondo) icono=\(btns.botonEliminar.icono) colorBorde=\(btns.botonEliminar.colorBorde) | descargar=\"\(btns.botonDescargar.texto)\" colorFondo=\(btns.botonDescargar.colorFondo) icono=\(btns.botonDescargar.icono) colorBorde=\(btns.botonDescargar.colorBorde) | compartir=\"\(btns.botonCompartir.texto)\" colorFondo=\(btns.botonCompartir.colorFondo) icono=\(btns.botonCompartir.icono) colorBorde=\(btns.botonCompartir.colorBorde) | titulo=\"\(btns.tituloArchivosAdjuntos)\"")
@@ -359,6 +413,22 @@ extension ExamsView {
             print("   🏷️ BadgesPrescripcionesMedicas (Elemento 13): examenAuto=\"\(state.badgeExamenAutomatizado.texto)\" font=\(state.badgeExamenAutomatizado.font) size=\(state.badgeExamenAutomatizado.size) colorTexto=\(state.badgeExamenAutomatizado.colorTexto) colorFondo=\(state.badgeExamenAutomatizado.colorFondo)")
             print("      examenMedico=\"\(state.badgeOrdenMedica.texto)\" font=\(state.badgeOrdenMedica.font) size=\(state.badgeOrdenMedica.size) colorTexto=\(state.badgeOrdenMedica.colorTexto) colorFondo=\(state.badgeOrdenMedica.colorFondo)")
             print("      recetaMedica=\"\(state.badgeRecetaMedica.texto)\" font=\(state.badgeRecetaMedica.font) size=\(state.badgeRecetaMedica.size) colorTexto=\(state.badgeRecetaMedica.colorTexto) colorFondo=\(state.badgeRecetaMedica.colorFondo)")
+            loadVistaPrincipalPrescripcionesMedicas(from: main, into: &state)
+            let vista = state.vistaPrincipalPrescripciones
+            print("   📋 VistaPrincipalPrescripcionesMedicas (Elemento 13):")
+            print("      [13.1] backArrowColor: \"\(vista.backArrowColor)\"")
+            print("      [13.2] titulo: \"\(vista.tituloTexto)\" font=\(vista.tituloAttr.font) size=\(vista.tituloAttr.size) color=\(vista.tituloAttr.color)")
+            print("      [13.3] placeholder: \"\(vista.placeholderTexto)\" font=\(vista.placeholderAttr.font) size=\(vista.placeholderAttr.size) color=\(vista.placeholderAttr.color)")
+            print("      [13.4] iconoFiltro: nombre=\"\(vista.iconoFiltro.nombre)\" size=\(vista.iconoFiltro.size) color=\(vista.iconoFiltro.color)")
+            print("      [13.5] seleccionarTodos: texto=\"\(vista.seleccionarTodosTexto)\" font=\(vista.seleccionarTodosAttr.font) size=\(vista.seleccionarTodosAttr.size) color=\(vista.seleccionarTodosAttr.color) checkbox=\(vista.seleccionarTodosCheckboxColor)")
+            print("      [13.6] contador: font=\(vista.contadorAttr.font) size=\(vista.contadorAttr.size) color=\(vista.contadorAttr.color)")
+            print("      [13.7] botonDescargar: texto=\"\(vista.botonDescargar.texto)\" colorTexto=\(vista.botonDescargar.colorTexto) colorFondo=\(vista.botonDescargar.colorFondo) icono=\(vista.botonDescargar.icono)")
+            print("      [13.8] botonCompartir: texto=\"\(vista.botonCompartir.texto)\" colorTexto=\(vista.botonCompartir.colorTexto) colorFondo=\(vista.botonCompartir.colorFondo) icono=\(vista.botonCompartir.icono)")
+            print("      [13.9] atributosCard: barraV=\(vista.cardColorBarraVertical) checkbox=\(vista.cardColorCheckboxActivo) borde=\(vista.cardColorBordeActivo) estrella=\(vista.cardColorEstrella)")
+            print("      [13.10] tituloCard: font=\(vista.tituloCardAttr.font) size=\(vista.tituloCardAttr.size) color=\(vista.tituloCardAttr.color)")
+            print("      [13.14] fechaCard: font=\(vista.fechaCardAttr.font) size=\(vista.fechaCardAttr.size) color=\(vista.fechaCardAttr.color) formato=\"\(vista.fechaCardFormato)\" icono=\"\(vista.fechaCardIcono)\" colorIcono=\(vista.fechaCardIconoColor)")
+            print("      [13.15] emptyState: texto=\"\(vista.emptyStateTexto)\" font=\(vista.emptyStateAttr.font) size=\(vista.emptyStateAttr.size) color=\(vista.emptyStateAttr.color)")
+            print("      [13.16] descripcionCard: font=\(vista.descripcionCardAttr.font) size=\(vista.descripcionCardAttr.size) color=\(vista.descripcionCardAttr.color)")
         } else {
             print("⚠️ [ExamenesAutomatizados] Record 'ExamenesAutomatizados' NO encontrado")
         }
@@ -427,14 +497,18 @@ private func loadBannersHub(from record: BrandAccount, into state: inout Automat
 }
 
 private func loadHeaderConfig(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
-    // Elemento 2: Header pantalla principal
+    // Elemento 2: Header pantalla principal (Archivo de Salud / hub)
     for i in 1...16 {
         let atributo = record.getAtributo(section: 2, field: i)
         let valor = record.getValor(section: 2, field: i) ?? ""
         guard let atributo = atributo else { continue }
         let attrLower = atributo.lowercased()
 
-        if attrLower.contains("titulo") && !attrLower.contains("atributo") {
+        // 2.8 BackArrow(Color) — debe ir ANTES del check genérico de "titulo"
+        // porque no contiene esas palabras pero matchea otros patrones.
+        if attrLower.hasPrefix("backarrow") {
+            state.header.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+        } else if attrLower.contains("titulo") && !attrLower.contains("atributo") {
             state.header.titulo = valor
         } else if attrLower.hasPrefix("atributos") && attrLower.contains("titulo") {
             state.header.tituloAttr = parseTextAttributes(valor)
@@ -806,29 +880,444 @@ private func loadPopupDetalleCarrito(from record: BrandAccount, into state: inou
     }
 }
 
-// MARK: - Elemento 8: Color Back Arrow de toda la sección exámenes
-
-private func loadBackArrowColorSeccion(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
-    // Elemento 8: ColorBackArrowSeccionCompleta
-    // 8.1: BackArrowColor → color hex del back arrow para toda la sección de exámenes
+// MARK: - Elemento 9 (Custom): VistaDetallePrescripcionesMedicas
+// Parser de la config completa del DETALLE de una prescripción médica
+// (cuando el usuario hace click sobre una card y navega al detail view).
+// Reemplaza al viejo loadSeleccionarTodosConfig — la config de "Seleccionar
+// Todos" se movió al Elemento 13.5 (VistaPrincipalPrescripcionesMedicas).
+private func loadVistaDetallePrescripcionesMedicas(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    print("📋 [BackArrowColorSeccion] Cargando Elemento 8")
+    print("📋 [VistaDetallePrescripciones] Buscando Elemento 9")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    var matched = false
+    for elemIdx in 1...16 {
+        let raw = record.getNombreElemento(elemIdx)
+        print("   [\(elemIdx)] nombreElemento = \(raw.map { "\"\($0)\"" } ?? "nil")")
+        guard let nombreElemento = raw else { continue }
+        let normalized = nombreElemento.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard normalized.caseInsensitiveCompare("VistaDetallePrescripcionesMedicas") == .orderedSame else { continue }
+        print("   ✅ [\(elemIdx)] MATCH — parseando atributos del Elemento 9")
+        matched = true
+
+        for i in 1...16 {
+            guard let atributo = record.getAtributo(section: elemIdx, field: i), !atributo.isEmpty else { continue }
+            let valor = record.getValor(section: elemIdx, field: i) ?? ""
+            let parts = valor.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
+
+            switch atributo {
+            // 9.1 BackArrow(Color)
+            case "BackArrow(Color)":
+                state.vistaDetallePrescripciones.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+
+            // 9.2 TituloGeneralDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)
+            case "TituloGeneralDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.tituloAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.tituloTexto = parts[1] }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.tituloAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaDetallePrescripciones.tituloAttr.size = parts[3] }
+
+            // 9.3 IconoEstrella(Size;Color)
+            case "IconoEstrella(Size;Color)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.iconoEstrellaSize = parts[0] }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.iconoEstrellaColor = parts[1] }
+
+            // 9.4 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+            case "AtributosTituloCardDetalle(Fuente;ColorTexto;Size)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.tituloCardAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.tituloCardAttr.color = parts[1] }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.tituloCardAttr.size = parts[2] }
+
+            // 9.5 BadgeDetalleTipoPrescripcionesMedicas(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+            case "BadgeDetalleTipoPrescripcionesMedicas(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+                state.vistaDetallePrescripciones.badgeCreadoPaciente = parseDetalleBadge(parts: parts)
+
+            // 9.6 FechaDetallePrescripcion(Fuente;Size;Color;Formato;Icono;ColorIcono)
+            case "FechaDetallePrescripcion(Fuente;Size;Color;Formato;Icono;ColorIcono)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.fechaAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.fechaAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.fechaAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaDetallePrescripciones.fechaFormato = mapSalesforceDateFormatToIOS(parts[3]) }
+                if parts.count >= 5 { state.vistaDetallePrescripciones.fechaIcono = parseIconName(parts[4]) }
+                if parts.count >= 6 { state.vistaDetallePrescripciones.fechaIconoColor = parts[5] }
+
+            // 9.7 DetalleIndicaciones(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+            case "DetalleIndicaciones(TextoTitulo;Fuente;Size;ColorTexto;Posicion)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.indicacionesTitulo = parts[0] }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.indicacionesTituloAttr.font = parseFontName(parts[1]) }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.indicacionesTituloAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaDetallePrescripciones.indicacionesTituloAttr.color = parts[3] }
+                if parts.count >= 5 { state.vistaDetallePrescripciones.indicacionesTituloAttr.alignment = parts[4] }
+
+            // 9.8 AtributosDetalleIndicaciones(Fuente;Size;Color)
+            case "AtributosDetalleIndicaciones(Fuente;Size;Color)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.indicacionesTextoAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.indicacionesTextoAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.indicacionesTextoAttr.color = parts[2] }
+
+            // 9.9 DetalleExamenAdjunto(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+            case "DetalleExamenAdjunto(TextoTitulo;Fuente;Size;ColorTexto;Posicion)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.examenAdjuntoTitulo = parts[0] }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.examenAdjuntoTituloAttr.font = parseFontName(parts[1]) }
+                if parts.count >= 3 { state.vistaDetallePrescripciones.examenAdjuntoTituloAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaDetallePrescripciones.examenAdjuntoTituloAttr.color = parts[3] }
+                if parts.count >= 5 { state.vistaDetallePrescripciones.examenAdjuntoTituloAttr.alignment = parts[4] }
+
+            // 9.10 ColorIconoExamenAdjunto(Color;Size)
+            case "ColorIconoExamenAdjunto(Color;Size)":
+                if parts.count >= 1 { state.vistaDetallePrescripciones.examenAdjuntoIconoColor = parts[0] }
+                if parts.count >= 2 { state.vistaDetallePrescripciones.examenAdjuntoIconoSize = parts[1] }
+
+            // 9.11 BotonDescargarDetalle(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+            case "BotonDescargarDetalle(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+                state.vistaDetallePrescripciones.botonDescargar = parseBotonAccionDetalle(parts: parts)
+
+            // 9.12 BotonCompartirDetalle(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+            case "BotonCompartirDetalle(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+                state.vistaDetallePrescripciones.botonCompartir = parseBotonAccionDetalle(parts: parts)
+
+            // 9.13 BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
+            case "BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
+                var btn = ButtonExamConfig()
+                if parts.count >= 1 { btn.texto = parts[0] }
+                if parts.count >= 2 { btn.colorTexto = parts[1] }
+                if parts.count >= 3 { btn.colorFondo = parts[2] }
+                if parts.count >= 4 { btn.font = parseFontName(parts[3]) }
+                if parts.count >= 5 { btn.size = parts[4] }
+                state.vistaDetallePrescripciones.botonSubirExamen = btn
+
+            // 9.14 BadgeDetalleTipoRecetaMedica(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+            case "BadgeDetalleTipoRecetaMedica(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+                state.vistaDetallePrescripciones.badgeRecetaMedica = parseDetalleBadge(parts: parts)
+
+            // 9.15 BadgeDetalleTipoExamenMedico(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+            case "BadgeDetalleTipoExamenMedico(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+                state.vistaDetallePrescripciones.badgeExamenMedico = parseDetalleBadge(parts: parts)
+
+            // 9.16 BotonVerDocumentoEnviado(Texto;Size;ColorTexto;ColorFondo;TipoFuente)
+            // Botón que reemplaza a `BotonSubirExamen` cuando la prescripción
+            // ya tiene un documento adjunto. Formato distinto al 9.13:
+            // aquí Size va en la 2ª posición, no en la última.
+            case "BotonVerDocumentoEnviado(Texto;Size;ColorTexto;ColorFondo;TipoFuente)":
+                var btn = ButtonExamConfig()
+                if parts.count >= 1 { btn.texto = parts[0] }
+                if parts.count >= 2 { btn.size = parts[1] }
+                if parts.count >= 3 { btn.colorTexto = parts[2] }
+                if parts.count >= 4 { btn.colorFondo = parts[3] }
+                if parts.count >= 5 { btn.font = parseFontName(parts[4]) }
+                state.vistaDetallePrescripciones.botonVerDocumentoEnviado = btn
+
+            default:
+                print("      ⚠️ [VistaDetallePrescripciones] Atributo no reconocido: \"\(atributo)\" valor=\"\(valor.prefix(60))\"")
+            }
+        }
+        break
+    }
+    if !matched {
+        print("   ⚠️ [VistaDetallePrescripciones] NO se encontró ningún Elemento con nombre \"VistaDetallePrescripcionesMedicas\". Config quedó vacía.")
+    }
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
+/// Parser de un BadgeDetalleConfig con formato común:
+/// `Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono` (6 partes).
+/// Usado por 9.5, 9.14, 9.15 y 9.16.
+private func parseDetalleBadge(parts: [String]) -> BadgeDetalleConfig {
+    var badge = BadgeDetalleConfig()
+    if parts.count >= 1 { badge.texto = parts[0] }
+    if parts.count >= 2 { badge.colorTexto = parts[1] }
+    if parts.count >= 3 { badge.colorFondo = parts[2] }
+    if parts.count >= 4 { badge.font = parseFontName(parts[3]) }
+    if parts.count >= 5 { badge.size = parts[4] }
+    if parts.count >= 6 { badge.icono = parseIconName(parts[5]) }
+    return badge
+}
+
+/// Parser de un ButtonExamConfig con formato:
+/// `TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde` (8 partes).
+/// Usado por 9.11 (Descargar) y 9.12 (Compartir).
+private func parseBotonAccionDetalle(parts: [String]) -> ButtonExamConfig {
+    var btn = ButtonExamConfig()
+    if parts.count >= 1 { btn.font = parseFontName(parts[0]) }
+    if parts.count >= 2 { btn.texto = parts[1] }
+    if parts.count >= 3 { btn.colorTexto = parts[2] }
+    if parts.count >= 4 { btn.size = parts[3] }
+    if parts.count >= 5 { btn.colorFondo = parts[4] }
+    if parts.count >= 6 { btn.icono = parseIconName(parts[5]) }
+    if parts.count >= 7 { btn.colorIcono = parts[6] }
+    if parts.count >= 8 { btn.colorBorde = parts[7] }
+    return btn
+}
+
+// MARK: - Elemento 10 (Custom): VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud
+// Parser de la config completa de la pantalla "Subir Examen" (flujo compartido
+// entre Prescripciones Médicas y Mis Archivos de Salud).
+// Reemplaza al viejo loadSeccionMisArchivosDeSalud — los badges del detail
+// view se movieron al Elemento 9.
+private func loadVistaSubirExamenDetalle(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [VistaSubirExamen] Buscando Elemento 10")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    var matched = false
+    for elemIdx in 1...16 {
+        let raw = record.getNombreElemento(elemIdx)
+        print("   [\(elemIdx)] nombreElemento = \(raw.map { "\"\($0)\"" } ?? "nil")")
+        guard let nombreElemento = raw else { continue }
+        let normalized = nombreElemento.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard normalized.caseInsensitiveCompare("VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud") == .orderedSame else { continue }
+        print("   ✅ [\(elemIdx)] MATCH — parseando atributos del Elemento 10")
+        matched = true
+
+        for i in 1...16 {
+            guard let atributo = record.getAtributo(section: elemIdx, field: i), !atributo.isEmpty else { continue }
+            let valor = record.getValor(section: elemIdx, field: i) ?? ""
+            let parts = valor.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
+
+            switch atributo {
+            // 10.1 BackArrow(Color)
+            case "BackArrow(Color)":
+                state.vistaSubirExamen.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+
+            // 10.2 TituloGeneralSubirExamenDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)
+            case "TituloGeneralSubirExamenDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)":
+                if parts.count >= 1 { state.vistaSubirExamen.tituloAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaSubirExamen.tituloTexto = parts[1] }
+                if parts.count >= 3 { state.vistaSubirExamen.tituloAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaSubirExamen.tituloAttr.size = parts[3] }
+
+            // 10.3 TextoListaTipoDocumentoASubir(Fuente;Texto;ColorTexto;Size;Position)
+            case "TextoListaTipoDocumentoASubir(Fuente;Texto;ColorTexto;Size;Position)":
+                if parts.count >= 1 { state.vistaSubirExamen.tipoDocumentoAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaSubirExamen.tipoDocumentoTexto = parts[1] }
+                if parts.count >= 3 { state.vistaSubirExamen.tipoDocumentoAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaSubirExamen.tipoDocumentoAttr.size = parts[3] }
+                if parts.count >= 5 { state.vistaSubirExamen.tipoDocumentoAttr.alignment = parts[4] }
+
+            // 10.4 BadgeCargadoPorElPacienteVerDocumentoEnviado
+            //      (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+            case "BadgeCargadoPorElPacienteVerDocumentoEnviado(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+                state.vistaSubirExamen.badgeCargadoPorPaciente = parseDetalleBadge(parts: parts)
+
+            // 10.5 TextoAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)
+            case "TextoAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)":
+                if parts.count >= 1 { state.vistaSubirExamen.adjuntarArchivoAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaSubirExamen.adjuntarArchivoTexto = parts[1] }
+                if parts.count >= 3 { state.vistaSubirExamen.adjuntarArchivoAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaSubirExamen.adjuntarArchivoAttr.size = parts[3] }
+                if parts.count >= 5 { state.vistaSubirExamen.adjuntarArchivoAttr.alignment = parts[4] }
+
+            // 10.6 DescripcionAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)
+            case "DescripcionAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)":
+                if parts.count >= 1 { state.vistaSubirExamen.descripcionAdjuntarAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaSubirExamen.descripcionAdjuntarTexto = parts[1] }
+                if parts.count >= 3 { state.vistaSubirExamen.descripcionAdjuntarAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaSubirExamen.descripcionAdjuntarAttr.size = parts[3] }
+                if parts.count >= 5 { state.vistaSubirExamen.descripcionAdjuntarAttr.alignment = parts[4] }
+
+            // 10.7 AtributoContainerSinArchivoAdjunto
+            //      (ColorBorde;Icono;ColorIcono;SizeIcono;ColorFondoContainer)
+            // Tolerante: si Salesforce envía solo 4 partes (omite SizeIcono),
+            // detectamos por el formato de la 4ta — si arranca con "#" es color
+            // de fondo del container; si es numérico es el size.
+            case "AtributoContainerSinArchivoAdjunto(ColorBorde;Icono;ColorIcono;SizeIcono;ColorFondoContainer)":
+                if parts.count >= 1 { state.vistaSubirExamen.containerSinArchivo.colorBorde = parts[0] }
+                if parts.count >= 2 { state.vistaSubirExamen.containerSinArchivo.icono = parseIconName(parts[1]) }
+                if parts.count >= 3 { state.vistaSubirExamen.containerSinArchivo.colorIcono = parts[2] }
+                if parts.count == 5 {
+                    state.vistaSubirExamen.containerSinArchivo.sizeIcono = parts[3]
+                    state.vistaSubirExamen.containerSinArchivo.colorFondoContainer = parts[4]
+                } else if parts.count == 4 {
+                    if parts[3].hasPrefix("#") {
+                        state.vistaSubirExamen.containerSinArchivo.colorFondoContainer = parts[3]
+                    } else {
+                        state.vistaSubirExamen.containerSinArchivo.sizeIcono = parts[3]
+                    }
+                }
+
+            // 10.8 AtributoContainerConArchivoAdjunto
+            //      (ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;
+            //       IconoCancelar;ColorFondo;ColorCruz;ColorFondoContainer)
+            case "AtributoContainerConArchivoAdjunto(ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;IconoCancelar;ColorFondo;ColorCruz;ColorFondoContainer)":
+                if parts.count >= 1 { state.vistaSubirExamen.containerConArchivo.colorBorde = parts[0] }
+                if parts.count >= 2 { state.vistaSubirExamen.containerConArchivo.icono = parseIconName(parts[1]) }
+                if parts.count >= 3 { state.vistaSubirExamen.containerConArchivo.colorIcono = parts[2] }
+                if parts.count >= 4 { state.vistaSubirExamen.containerConArchivo.sizeIcono = parts[3] }
+                if parts.count >= 5 { state.vistaSubirExamen.containerConArchivo.colorTextoFormato = parts[4] }
+                if parts.count >= 6 { state.vistaSubirExamen.containerConArchivo.iconoCancelar = parseIconName(parts[5]) }
+                if parts.count >= 7 { state.vistaSubirExamen.containerConArchivo.colorFondoBotonCancelar = normalizeHex(parts[6]) }
+                if parts.count >= 8 { state.vistaSubirExamen.containerConArchivo.colorCruz = parts[7] }
+                if parts.count >= 9 { state.vistaSubirExamen.containerConArchivo.colorFondoContainer = parts[8] }
+
+            // 10.9 TextoNota(Fuente;Texto;ColorTexto;Size;Position)
+            // Parsing tolerante: si Salesforce envía solo 4 partes y la 4ta
+            // parece una posición ("Left"/"Center"/"Right"), la tratamos como
+            // alignment y dejamos size con default.
+            case "TextoNota(Fuente;Texto;ColorTexto;Size;Position)":
+                if parts.count >= 1 { state.vistaSubirExamen.notaAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaSubirExamen.notaTexto = parts[1] }
+                if parts.count >= 3 { state.vistaSubirExamen.notaAttr.color = parts[2] }
+                if parts.count == 5 {
+                    state.vistaSubirExamen.notaAttr.size = parts[3]
+                    state.vistaSubirExamen.notaAttr.alignment = parts[4]
+                } else if parts.count == 4 {
+                    let v = parts[3].lowercased()
+                    if ["left", "center", "right"].contains(v) {
+                        state.vistaSubirExamen.notaAttr.alignment = parts[3]
+                    } else {
+                        state.vistaSubirExamen.notaAttr.size = parts[3]
+                    }
+                }
+
+            // 10.10 BotonEnviar(Texto;Size;ColorTexto;ColorFondo;TipoFuente)
+            case "BotonEnviar(Texto;Size;ColorTexto;ColorFondo;TipoFuente)":
+                var btn = ButtonExamConfig()
+                if parts.count >= 1 { btn.texto = parts[0] }
+                if parts.count >= 2 { btn.size = parts[1] }
+                if parts.count >= 3 { btn.colorTexto = parts[2] }
+                if parts.count >= 4 { btn.colorFondo = parts[3] }
+                if parts.count >= 5 { btn.font = parseFontName(parts[4]) }
+                state.vistaSubirExamen.botonEnviar = btn
+
+            default:
+                print("      ⚠️ [VistaSubirExamen] Atributo no reconocido: \"\(atributo)\" valor=\"\(valor.prefix(60))\"")
+            }
+        }
+        break
+    }
+    if !matched {
+        print("   ⚠️ [VistaSubirExamen] NO se encontró ningún Elemento con nombre \"VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud\". Config quedó vacía → containers usarán fallback verde.")
+    } else {
+        let csa = state.vistaSubirExamen.containerSinArchivo
+        let cca = state.vistaSubirExamen.containerConArchivo
+        print("   📊 RESULTADO containers:")
+        print("      [10.7] sinArchivo: borde=\(csa.colorBorde) icono=\(csa.icono) colorIcono=\(csa.colorIcono) sizeIcono=\(csa.sizeIcono) fondo=\(csa.colorFondoContainer)")
+        print("      [10.8] conArchivo: borde=\(cca.colorBorde) icono=\(cca.icono) colorIcono=\(cca.colorIcono) sizeIcono=\(cca.sizeIcono) textoFormato=\(cca.colorTextoFormato) iconoX=\(cca.iconoCancelar) fondoX=\(cca.colorFondoBotonCancelar) cruz=\(cca.colorCruz) fondoContainer=\(cca.colorFondoContainer)")
+        print("      [10.9] nota: \"\(state.vistaSubirExamen.notaTexto)\" font=\(state.vistaSubirExamen.notaAttr.font) color=\(state.vistaSubirExamen.notaAttr.color)")
+    }
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+}
+
+/// Asegura que un string que parece un color hex tenga "#" al inicio.
+/// Algunos valores en Salesforce vienen sin el `#` (ej: "E06100") — esto
+/// los normaliza para que `Color(hex:)` los interprete correctamente.
+private func normalizeHex(_ raw: String) -> String {
+    let trimmed = raw.trimmingCharacters(in: .whitespaces)
+    if trimmed.isEmpty { return trimmed }
+    if trimmed.hasPrefix("#") { return trimmed }
+    // Si parece un hex válido (3, 6 u 8 chars alfanuméricos), le agregamos #.
+    let hexChars = CharacterSet(charactersIn: "0123456789abcdefABCDEF")
+    let allHex = trimmed.unicodeScalars.allSatisfy { hexChars.contains($0) }
+    if allHex && [3, 6, 8].contains(trimmed.count) {
+        return "#" + trimmed
+    }
+    return trimmed
+}
+
+// MARK: - Elemento 8: VistaDetalleMisArchivosDeSalud
+// Config completa del detalle de un archivo de salud (cuando el usuario toca
+// una card de Mis Archivos de Salud). Reemplaza al viejo uso del Elemento 8
+// (ColorBackArrowSeccionCompleta) — el back arrow global ya no es dinámico.
+
+private func loadVistaDetalleMisArchivos(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [VistaDetalleMisArchivos] Cargando Elemento 8")
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     for i in 1...16 {
         guard let atributo = record.getAtributo(section: 8, field: i),
               !atributo.isEmpty else { continue }
         let valor = record.getValor(section: 8, field: i) ?? ""
+        let parts = valor.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
 
         switch atributo {
-        case "BackArrowColor":
-            if !valor.isEmpty {
-                state.backArrowColorSeccion = valor
-                print("      [8.\(i)] ✅ backArrowColorSeccion = \"\(valor)\"")
-            }
+        // 8.1 BackArrow(Color)
+        case "BackArrow(Color)":
+            state.vistaDetalleMisArchivos.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+
+        // 8.2 TituloGeneralDetalleMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)
+        case "TituloGeneralDetalleMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)":
+            if parts.count >= 1 { state.vistaDetalleMisArchivos.tituloAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaDetalleMisArchivos.tituloTexto = parts[1] }
+            if parts.count >= 3 { state.vistaDetalleMisArchivos.tituloAttr.color = parts[2] }
+            if parts.count >= 4 { state.vistaDetalleMisArchivos.tituloAttr.size = parts[3] }
+
+        // 8.3 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+        case "AtributosTituloCardDetalle(Fuente;ColorTexto;Size)":
+            if parts.count >= 1 { state.vistaDetalleMisArchivos.tituloCardAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaDetalleMisArchivos.tituloCardAttr.color = parts[1] }
+            if parts.count >= 3 { state.vistaDetalleMisArchivos.tituloCardAttr.size = parts[2] }
+
+        // 8.4 BadgeCargadoPorElPacienteVerDocumentoEnviado(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+        case "BadgeCargadoPorElPacienteVerDocumentoEnviado(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
+            state.vistaDetalleMisArchivos.badgeCargadoPorPaciente = parseDetalleBadge(parts: parts)
+
+        // 8.5 FechaDetalleMisArchivosDeSalud(Fuente;Size;Color;Formato;Icono;ColorIcono)
+        case "FechaDetalleMisArchivosDeSalud(Fuente;Size;Color;Formato;Icono;ColorIcono)":
+            if parts.count >= 1 { state.vistaDetalleMisArchivos.fechaAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaDetalleMisArchivos.fechaAttr.size = parts[1] }
+            if parts.count >= 3 { state.vistaDetalleMisArchivos.fechaAttr.color = parts[2] }
+            if parts.count >= 4 { state.vistaDetalleMisArchivos.fechaFormato = mapSalesforceDateFormatToIOS(parts[3]) }
+            if parts.count >= 5 { state.vistaDetalleMisArchivos.fechaIcono = parseIconName(parts[4]) }
+            if parts.count >= 6 { state.vistaDetalleMisArchivos.fechaIconoColor = parts[5] }
+
+        // 8.6 DetalleArchivosAdjuntos(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+        case "DetalleArchivosAdjuntos(TextoTitulo;Fuente;Size;ColorTexto;Posicion)":
+            if parts.count >= 1 { state.vistaDetalleMisArchivos.detalleArchivosTitulo = parts[0] }
+            if parts.count >= 2 { state.vistaDetalleMisArchivos.detalleArchivosAttr.font = parseFontName(parts[1]) }
+            if parts.count >= 3 { state.vistaDetalleMisArchivos.detalleArchivosAttr.size = parts[2] }
+            if parts.count >= 4 { state.vistaDetalleMisArchivos.detalleArchivosAttr.color = parts[3] }
+            if parts.count >= 5 { state.vistaDetalleMisArchivos.detalleArchivosAttr.alignment = parts[4] }
+
+        // 8.7 ContainerArchivoAdjunto(ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;ColorFondoContainer)
+        case "ContainerArchivoAdjunto(ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;ColorFondoContainer)":
+            if parts.count >= 1 { state.vistaDetalleMisArchivos.containerArchivo.colorBorde = parts[0] }
+            if parts.count >= 2 { state.vistaDetalleMisArchivos.containerArchivo.icono = parseIconName(parts[1]) }
+            if parts.count >= 3 { state.vistaDetalleMisArchivos.containerArchivo.colorIcono = parts[2] }
+            if parts.count >= 4 { state.vistaDetalleMisArchivos.containerArchivo.sizeIcono = parts[3] }
+            if parts.count >= 5 { state.vistaDetalleMisArchivos.containerArchivo.colorTextoFormato = parts[4] }
+            if parts.count >= 6 { state.vistaDetalleMisArchivos.containerArchivo.colorFondoContainer = parts[5] }
+
+        // 8.8 BotonDescargarDetalleMisArchivosDeSalud(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+        case "BotonDescargarDetalleMisArchivosDeSalud(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+            state.vistaDetalleMisArchivos.botonDescargar = parseBotonAccionDetalle(parts: parts)
+
+        // 8.9 BotonCompartirDetalleMisArchivosDeSalud (mismo formato que 8.8)
+        case "BotonCompartirDetalleMisArchivosDeSalud(TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)":
+            state.vistaDetalleMisArchivos.botonCompartir = parseBotonAccionDetalle(parts: parts)
+
+        // 8.10 BotonEliminarDetalleMiArchivoDeSalud
+        //      (Texto;ColorTexto;ColorFondo;TipoFuente;Size;SizeIcono;ColorIcono)
+        // El icono es siempre el tacho de basura (SF "trash") — Salesforce
+        // controla su tamaño y color pero no el símbolo. Soporta 5 partes
+        // (formato viejo, sin ícono) o 7 partes (nuevo, con ícono).
+        case "BotonEliminarDetalleMiArchivoDeSalud(Texto;ColorTexto;ColorFondo;TipoFuente;Size;SizeIcono;ColorIcono)",
+             "BotonEliminarDetalleMiArchivoDeSalud(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
+            var btn = ButtonExamConfig()
+            if parts.count >= 1 { btn.texto = parts[0] }
+            if parts.count >= 2 { btn.colorTexto = parts[1] }
+            if parts.count >= 3 { btn.colorFondo = parts[2] }
+            if parts.count >= 4 { btn.font = parseFontName(parts[3]) }
+            if parts.count >= 5 { btn.size = parts[4] }
+            if parts.count >= 6 { btn.iconoSize = parts[5] }
+            if parts.count >= 7 { btn.colorIcono = parts[6] }
+            // El símbolo del tacho viene hardcoded — Salesforce no envía nombre.
+            btn.icono = "trash"
+            state.vistaDetalleMisArchivos.botonEliminar = btn
+
         default:
             print("      [8.\(i)] ⚠️ Atributo no reconocido: \"\(atributo)\" valor=\"\(valor)\"")
         }
     }
+    let v = state.vistaDetalleMisArchivos
+    print("   📊 RESULTADO Elemento 8:")
+    print("      [8.1] backArrow: \(v.backArrowColor)")
+    print("      [8.2] titulo: \"\(v.tituloTexto)\" font=\(v.tituloAttr.font) size=\(v.tituloAttr.size) color=\(v.tituloAttr.color)")
+    print("      [8.3] tituloCard: font=\(v.tituloCardAttr.font) size=\(v.tituloCardAttr.size) color=\(v.tituloCardAttr.color)")
+    print("      [8.4] badge: \"\(v.badgeCargadoPorPaciente.texto)\" icono=\(v.badgeCargadoPorPaciente.icono)")
+    print("      [8.5] fecha: font=\(v.fechaAttr.font) color=\(v.fechaAttr.color) formato=\(v.fechaFormato) icono=\(v.fechaIcono)")
+    print("      [8.6] archivosAdjuntos: \"\(v.detalleArchivosTitulo)\" color=\(v.detalleArchivosAttr.color)")
+    print("      [8.7] container: borde=\(v.containerArchivo.colorBorde) icono=\(v.containerArchivo.icono) fondo=\(v.containerArchivo.colorFondoContainer)")
+    print("      [8.8] btnDescargar: \"\(v.botonDescargar.texto)\" colorTexto=\(v.botonDescargar.colorTexto)")
+    print("      [8.9] btnCompartir: \"\(v.botonCompartir.texto)\" colorTexto=\(v.botonCompartir.colorTexto)")
+    print("      [8.10] btnEliminar: \"\(v.botonEliminar.texto)\" colorTexto=\(v.botonEliminar.colorTexto) colorFondo=\(v.botonEliminar.colorFondo)")
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
@@ -906,72 +1395,6 @@ private func loadSeleccionarTodosConfig(from record: BrandAccount, into state: i
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
-// MARK: - Elemento 10: SeccionMisArchivosDeSalud
-
-private func loadSeccionMisArchivosDeSalud(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
-    for i in 1...16 {
-        guard let atributo = record.getAtributo(section: 10, field: i), !atributo.isEmpty else { continue }
-        let valor = record.getValor(section: 10, field: i) ?? ""
-
-        switch atributo {
-        case "BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.botonSubirExamen.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.botonSubirExamen.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.botonSubirExamen.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.botonSubirExamen.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
-            if parts.count >= 5 { state.botonSubirExamen.size = parts[4].trimmingCharacters(in: .whitespaces) }
-
-        case "BadgeDetalleTipoPrescripcionesMedicas(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.badgeDetallePrescripciones.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.badgeDetallePrescripciones.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.badgeDetallePrescripciones.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.badgeDetallePrescripciones.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
-            if parts.count >= 5 { state.badgeDetallePrescripciones.size = parts[4].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 6 { state.badgeDetallePrescripciones.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
-
-        case "BadgeDetalleTipoRecetaMedica(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.badgeDetalleRecetaMedica.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.badgeDetalleRecetaMedica.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.badgeDetalleRecetaMedica.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.badgeDetalleRecetaMedica.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
-            if parts.count >= 5 { state.badgeDetalleRecetaMedica.size = parts[4].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 6 { state.badgeDetalleRecetaMedica.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
-
-        case "BadgeDetalleTipoExamenMedico(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.badgeDetalleExamenMedico.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.badgeDetalleExamenMedico.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.badgeDetalleExamenMedico.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.badgeDetalleExamenMedico.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
-            if parts.count >= 5 { state.badgeDetalleExamenMedico.size = parts[4].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 6 { state.badgeDetalleExamenMedico.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
-
-        case "BotonVerDocumentoEnviado(Texto;Size;ColorTexto;ColorFondo;TipoFuente)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.botonVerDocumentoEnviado.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.botonVerDocumentoEnviado.size = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.botonVerDocumentoEnviado.colorTexto = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.botonVerDocumentoEnviado.colorFondo = parts[3].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 5 { state.botonVerDocumentoEnviado.font = parseFontName(parts[4].trimmingCharacters(in: .whitespaces)) }
-
-        case "BadgeCargadoPorElPacienteVerDocumentoEnviado(Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.badgeCargadoPorPaciente.texto = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.badgeCargadoPorPaciente.colorTexto = parts[1].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 3 { state.badgeCargadoPorPaciente.colorFondo = parts[2].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 4 { state.badgeCargadoPorPaciente.font = parseFontName(parts[3].trimmingCharacters(in: .whitespaces)) }
-            if parts.count >= 5 { state.badgeCargadoPorPaciente.size = parts[4].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 6 { state.badgeCargadoPorPaciente.icono = parseIconName(parts[5].trimmingCharacters(in: .whitespaces)) }
-
-        default:
-            break
-        }
-    }
-}
-
 // MARK: - Elemento 11: DialogEliminarExamenSubido
 
 private func loadDialogEliminarExamen(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
@@ -1019,31 +1442,109 @@ private func parseBadge(_ valor: String) -> BadgeConfig {
 }
 
 private func loadBadgesMisExamenes(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("📋 [VistaMisArchivos] Cargando Elemento 12")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     for i in 1...16 {
         guard let atributo = record.getAtributo(section: 12, field: i), !atributo.isEmpty else { continue }
         let valor = record.getValor(section: 12, field: i) ?? ""
+        let parts = valor.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
 
         switch atributo {
+        // 12.1–12.6 Badges por tipo
         case "BadgeTipoExamenImagen(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeExamenImagen = parseBadge(valor)
+            state.vistaMisArchivos.badgeExamenImagen = parseBadge(valor)
         case "BadgeTipoRecetaMedica(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeRecetaMedica = parseBadge(valor)
+            state.vistaMisArchivos.badgeRecetaMedica = parseBadge(valor)
         case "BadgeTipoExamenLaboratorio(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeExamenLaboratorio = parseBadge(valor)
+            state.vistaMisArchivos.badgeExamenLaboratorio = parseBadge(valor)
         case "BadgeTipoOrdenExamen(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeOrdenExamen = parseBadge(valor)
+            state.vistaMisArchivos.badgeOrdenExamen = parseBadge(valor)
         case "BadgeTipoInformeMedico(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeInformeMedico = parseBadge(valor)
+            state.vistaMisArchivos.badgeInformeMedico = parseBadge(valor)
         case "BadgeTipoOtros(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
-            state.badgesMisExamenes.badgeOtros = parseBadge(valor)
+            state.vistaMisArchivos.badgeOtros = parseBadge(valor)
+
+        // 12.7 IconoBasuraEliminarMiArchivoSalud(Size;Color)
         case "IconoBasuraEliminarMiArchivoSalud(Size;Color)":
-            let parts = valor.components(separatedBy: ";")
-            if parts.count >= 1 { state.badgesMisExamenes.iconoBasuraSize = parts[0].trimmingCharacters(in: .whitespaces) }
-            if parts.count >= 2 { state.badgesMisExamenes.iconoBasuraColor = parts[1].trimmingCharacters(in: .whitespaces) }
+            if parts.count >= 1 { state.vistaMisArchivos.iconoBasuraSize = parts[0] }
+            if parts.count >= 2 { state.vistaMisArchivos.iconoBasuraColor = parts[1] }
+
+        // 12.8 BackArrow(Color)
+        case "BackArrow(Color)":
+            state.vistaMisArchivos.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+
+        // 12.9 TituloGeneralMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)
+        case "TituloGeneralMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)":
+            if parts.count >= 1 { state.vistaMisArchivos.tituloAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.tituloTexto = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.tituloAttr.color = parts[2] }
+            if parts.count >= 4 { state.vistaMisArchivos.tituloAttr.size = parts[3] }
+
+        // 12.10 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+        case "AtributosTituloCardDetalle(Fuente;ColorTexto;Size)":
+            if parts.count >= 1 { state.vistaMisArchivos.tituloCardAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.tituloCardAttr.color = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.tituloCardAttr.size = parts[2] }
+
+        // 12.11 TextoPlaceholderFiltro(Fuente;Texto;Size;Color)
+        case "TextoPlaceholderFiltro(Fuente;Texto;Size;Color)":
+            if parts.count >= 1 { state.vistaMisArchivos.placeholderAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.placeholderTexto = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.placeholderAttr.size = parts[2] }
+            if parts.count >= 4 { state.vistaMisArchivos.placeholderAttr.color = parts[3] }
+
+        // 12.12 IconoFiltro(Icono;Size;Color)
+        case "IconoFiltro(Icono;Size;Color)":
+            if parts.count >= 1 { state.vistaMisArchivos.iconoFiltro = parseIconName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.iconoFiltroSize = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.iconoFiltroColor = parts[2] }
+
+        // 12.13 FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)
+        case "FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)":
+            if parts.count >= 1 { state.vistaMisArchivos.fechaAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.fechaAttr.size = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.fechaAttr.color = parts[2] }
+            if parts.count >= 4 { state.vistaMisArchivos.fechaFormato = mapSalesforceDateFormatToIOS(parts[3]) }
+            if parts.count >= 5 { state.vistaMisArchivos.fechaIcono = parseIconName(parts[4]) }
+            if parts.count >= 6 { state.vistaMisArchivos.fechaIconoColor = parts[5] }
+
+        // 12.14 TextoEmptyState(Fuente;Texto;Size;Color)
+        case "TextoEmptyState(Fuente;Texto;Size;Color)":
+            if parts.count >= 1 { state.vistaMisArchivos.emptyStateAttr.font = parseFontName(parts[0]) }
+            if parts.count >= 2 { state.vistaMisArchivos.emptyStateTexto = parts[1] }
+            if parts.count >= 3 { state.vistaMisArchivos.emptyStateAttr.size = parts[2] }
+            if parts.count >= 4 { state.vistaMisArchivos.emptyStateAttr.color = parts[3] }
+
+        // 12.15 BarraVerticalCardMisArchivosDeSalud(Color)
+        case "BarraVerticalCardMisArchivosDeSalud(Color)":
+            state.vistaMisArchivos.barraVerticalColor = valor.trimmingCharacters(in: .whitespaces)
+
+        // 12.16 BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
+        case "BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)":
+            var btn = ButtonExamConfig()
+            if parts.count >= 1 { btn.texto = parts[0] }
+            if parts.count >= 2 { btn.colorTexto = parts[1] }
+            if parts.count >= 3 { btn.colorFondo = parts[2] }
+            if parts.count >= 4 { btn.font = parseFontName(parts[3]) }
+            if parts.count >= 5 { btn.size = parts[4] }
+            state.vistaMisArchivos.botonSubirExamen = btn
+
         default:
-            break
+            print("      ⚠️ [VistaMisArchivos] Atributo no reconocido: \"\(atributo)\" valor=\"\(valor.prefix(60))\"")
         }
     }
+    let v = state.vistaMisArchivos
+    print("   📊 RESULTADO Elemento 12:")
+    print("      titulo: \"\(v.tituloTexto)\" font=\(v.tituloAttr.font) size=\(v.tituloAttr.size) color=\(v.tituloAttr.color)")
+    print("      backArrow: \(v.backArrowColor)  barraVertical: \(v.barraVerticalColor)")
+    print("      placeholder: \"\(v.placeholderTexto)\" font=\(v.placeholderAttr.font) color=\(v.placeholderAttr.color)")
+    print("      iconoFiltro: \(v.iconoFiltro) size=\(v.iconoFiltroSize) color=\(v.iconoFiltroColor)")
+    print("      fecha: font=\(v.fechaAttr.font) size=\(v.fechaAttr.size) color=\(v.fechaAttr.color) formato=\(v.fechaFormato) icono=\(v.fechaIcono)")
+    print("      emptyState: \"\(v.emptyStateTexto)\" color=\(v.emptyStateAttr.color)")
+    print("      botonSubir: \"\(v.botonSubirExamen.texto)\" colorTexto=\(v.botonSubirExamen.colorTexto) colorFondo=\(v.botonSubirExamen.colorFondo)")
+    print("      iconoBasura: size=\(v.iconoBasuraSize) color=\(v.iconoBasuraColor)")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }
 
 // MARK: - Elemento 13: BotonesVistaDetalleExamenSubidoMisExamenes
@@ -1423,6 +1924,155 @@ private func loadCarritoFromMain(from record: BrandAccount, into state: inout Au
 }
 
 // MARK: - Main Record Elemento 13: BadgesPrescripcionesMedicas
+
+// MARK: - VistaPrincipalPrescripcionesMedicas (Main Record - Elemento 13)
+// Parser de la config completa de la pantalla "Prescripciones Médicas".
+// Reemplaza por completo la lectura de SecMas para esa vista — ahora todo
+// (titulo, buscador, botones, atributos de card, etc.) viene de aquí.
+private func loadVistaPrincipalPrescripcionesMedicas(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
+    for elemIdx in 1...13 {
+        guard let nombreElemento = record.getNombreElemento(elemIdx) else { continue }
+        guard nombreElemento == "VistaPrincipalPrescripcionesMedicas" else { continue }
+
+        for i in 1...16 {
+            guard let atributo = record.getAtributo(section: elemIdx, field: i), !atributo.isEmpty else { continue }
+            let valor = record.getValor(section: elemIdx, field: i) ?? ""
+            let parts = valor.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
+
+            switch atributo {
+            // 13.1 BackArrow(Color)
+            case "BackArrow(Color)":
+                state.vistaPrincipalPrescripciones.backArrowColor = valor.trimmingCharacters(in: .whitespaces)
+
+            // 13.2 TituloPrescripcionesMedicas(Fuente;Texto;Size;Color)
+            case "TituloPrescripcionesMedicas(Fuente;Texto;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.tituloAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.tituloTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.tituloAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.tituloAttr.color = parts[3] }
+
+            // 13.3 TextoPlaceholderFiltro(Fuente;Texto;Size;Color)
+            case "TextoPlaceholderFiltro(Fuente;Texto;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.placeholderAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.placeholderTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.placeholderAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.placeholderAttr.color = parts[3] }
+
+            // 13.4 IconoFiltro(Icono;Size;Color)
+            case "IconoFiltro(Icono;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.iconoFiltro.nombre = parts[0] }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.iconoFiltro.size = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.iconoFiltro.color = parts[2] }
+
+            // 13.5 TextoSeleccionarTodos(Fuente;Texto;Size;Color;ColorCheckboxActivo)
+            case "TextoSeleccionarTodos(Fuente;Texto;Size;Color;ColorCheckboxActivo)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.seleccionarTodosAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.seleccionarTodosTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.seleccionarTodosAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.seleccionarTodosAttr.color = parts[3] }
+                if parts.count >= 5 { state.vistaPrincipalPrescripciones.seleccionarTodosCheckboxColor = parts[4] }
+
+            // 13.6 TextoContadorExamenesSeleccionados(Fuente;Size;Color)
+            case "TextoContadorExamenesSeleccionados(Fuente;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.contadorAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.contadorAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.contadorAttr.color = parts[2] }
+
+            // 13.7 BotonDescargar(Texto;ColorTexto;ColorBoton;Icono)
+            case "BotonDescargar(Texto;ColorTexto;ColorBoton;Icono)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.botonDescargar.texto = parts[0] }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.botonDescargar.colorTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.botonDescargar.colorFondo = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.botonDescargar.icono = parts[3] }
+
+            // 13.8 BotonCompartir(Texto;ColorTexto;ColorBoton;Icono)
+            case "BotonCompartir(Texto;ColorTexto;ColorBoton;Icono)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.botonCompartir.texto = parts[0] }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.botonCompartir.colorTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.botonCompartir.colorFondo = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.botonCompartir.icono = parts[3] }
+
+            // 13.9 AtributosCard(ColorBarraVertical;ColorCheckboxActivo;ColorBordeActivo;ColorEstrella)
+            case "AtributosCard(ColorBarraVertical;ColorCheckboxActivo;ColorBordeActivo;ColorEstrella)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.cardColorBarraVertical = parts[0] }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.cardColorCheckboxActivo = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.cardColorBordeActivo = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.cardColorEstrella = parts[3] }
+
+            // 13.10 TituloNombreCardExamen(Fuente;Size;Color)
+            case "TituloNombreCardExamen(Fuente;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.tituloCardAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.tituloCardAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.tituloCardAttr.color = parts[2] }
+
+            // 13.11 BadgeTipoExamenAutomatizado(TipoFuente;Texto;ColorTexto;Size;ColorFondo)
+            case "BadgeTipoExamenAutomatizado(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeExamenAutomatizado.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.badgeExamenAutomatizado.texto = parts[1] }
+                if parts.count >= 3 { state.badgeExamenAutomatizado.colorTexto = parts[2] }
+                if parts.count >= 4 { state.badgeExamenAutomatizado.size = parts[3] }
+                if parts.count >= 5 { state.badgeExamenAutomatizado.colorFondo = parts[4] }
+
+            // 13.12 BadgeTipoExamenMedico(TipoFuente;Texto;ColorTexto;Size;ColorFondo)
+            case "BadgeTipoExamenMedico(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeOrdenMedica.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.badgeOrdenMedica.texto = parts[1] }
+                if parts.count >= 3 { state.badgeOrdenMedica.colorTexto = parts[2] }
+                if parts.count >= 4 { state.badgeOrdenMedica.size = parts[3] }
+                if parts.count >= 5 { state.badgeOrdenMedica.colorFondo = parts[4] }
+
+            // 13.13 BadgeTipoRecetaMedica(TipoFuente;Texto;ColorTexto;Size;ColorFondo)
+            case "BadgeTipoRecetaMedica(TipoFuente;Texto;ColorTexto;Size;ColorFondo)":
+                if parts.count >= 1 { state.badgeRecetaMedica.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.badgeRecetaMedica.texto = parts[1] }
+                if parts.count >= 3 { state.badgeRecetaMedica.colorTexto = parts[2] }
+                if parts.count >= 4 { state.badgeRecetaMedica.size = parts[3] }
+                if parts.count >= 5 { state.badgeRecetaMedica.colorFondo = parts[4] }
+
+            // 13.14 FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)
+            case "FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)",
+                 "FechaExamenCard(Fuente;Size;Color;Formato)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.fechaCardAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.fechaCardAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.fechaCardAttr.color = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.fechaCardFormato = mapSalesforceDateFormatToIOS(parts[3]) }
+                if parts.count >= 5 { state.vistaPrincipalPrescripciones.fechaCardIcono = parseIconName(parts[4]) }
+                if parts.count >= 6 { state.vistaPrincipalPrescripciones.fechaCardIconoColor = parts[5] }
+
+            // 13.15 TextoEmptyState(Fuente;Texto;Size;Color)
+            case "TextoEmptyState(Fuente;Texto;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.emptyStateAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.emptyStateTexto = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.emptyStateAttr.size = parts[2] }
+                if parts.count >= 4 { state.vistaPrincipalPrescripciones.emptyStateAttr.color = parts[3] }
+
+            // 13.16 AtributosDescripcionExamenCard(Fuente;Size;Color)
+            case "AtributosDescripcionExamenCard(Fuente;Size;Color)":
+                if parts.count >= 1 { state.vistaPrincipalPrescripciones.descripcionCardAttr.font = parseFontName(parts[0]) }
+                if parts.count >= 2 { state.vistaPrincipalPrescripciones.descripcionCardAttr.size = parts[1] }
+                if parts.count >= 3 { state.vistaPrincipalPrescripciones.descripcionCardAttr.color = parts[2] }
+
+            default:
+                print("      ⚠️ [VistaPrincipalPrescripciones] Atributo no reconocido: \"\(atributo)\" valor=\"\(valor.prefix(60))\"")
+            }
+        }
+        break
+    }
+}
+
+/// Convierte un formato de fecha en notación Salesforce ("DD/MM/AAAA",
+/// "DD/MM/YYYY", "AAAA-MM-DD", etc.) al formato de iOS DateFormatter ("dd/MM/yyyy").
+/// Convención Salesforce: DD=día, MM=mes, AAAA o YYYY=año (4 dígitos), AA o YY=año (2 dígitos).
+/// Convención iOS: dd, MM (igual), yyyy, yy. Importante: usar `yyyy` (calendar year),
+/// no `YYYY` (week-of-year year) — son distintos en iOS DateFormatter.
+private func mapSalesforceDateFormatToIOS(_ sfFormat: String) -> String {
+    return sfFormat
+        .replacingOccurrences(of: "AAAA", with: "yyyy")
+        .replacingOccurrences(of: "YYYY", with: "yyyy")
+        .replacingOccurrences(of: "AA", with: "yy")
+        .replacingOccurrences(of: "YY", with: "yy")
+        .replacingOccurrences(of: "DD", with: "dd")
+}
 
 private func loadBadgesPrescripcionesMedicas(from record: BrandAccount, into state: inout AutomatedExamsUIState) {
     for elemIdx in 1...13 {

@@ -16,22 +16,22 @@ struct MedicalExamsRowView: View {
     @Binding var isLoadingFavorite: Bool
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    // Config de la lista (Elemento 13 del record `ExamenesAutomatizados`).
+    // Se usa para AtributosCard y TituloNombreCardExamen.
+    var vistaPrincipal: VistaPrincipalPrescripcionesConfig = VistaPrincipalPrescripcionesConfig()
+    // Config del detalle (Elemento 9 de `ExamenesAutomatizadosCustom`).
+    // No se consume aquí — solo se reenvía al detail view en el navigationLink.
+    var vistaDetalle: VistaDetallePrescripcionesConfig = VistaDetallePrescripcionesConfig()
+    // Config de la vista Subir Examen (Elemento 10 de `ExamenesAutomatizadosCustom`).
+    // Tampoco se consume aquí — solo se reenvía al detail view (que a su vez
+    // lo pasa a SendNewExamView).
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
-    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
-    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
-    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
-    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
-    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     /// Binding propagado desde MedicalExamsView. Lo seteamos a true desde el detalle
     /// cuando hay upload exitoso, para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -44,26 +44,40 @@ struct MedicalExamsRowView: View {
         isSelected[exam.Id ?? ""] == true
     }
 
-    private var accentColor: Color {
-        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    // AtributosCard (13.9) — 4 colores que se aplican a la fila
+    private var barraVerticalColor: Color {
+        let c = vistaPrincipal.cardColorBarraVertical
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
+    }
+    private var checkboxActivoColor: Color {
+        let c = vistaPrincipal.cardColorCheckboxActivo
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
+    }
+    private var bordeActivoColor: Color {
+        let c = vistaPrincipal.cardColorBordeActivo
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
+    }
+    private var estrellaColor: Color {
+        let c = vistaPrincipal.cardColorEstrella
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
     }
 
     var body: some View {
         HStack(spacing: 0) {
-            // Left accent border
+            // Left accent border (13.9 ColorBarraVertical)
             RoundedRectangle(cornerRadius: 2)
-                .fill(isItemSelected ? accentColor : accentColor.opacity(0.3))
+                .fill(barraVerticalColor)
                 .frame(width: 4)
                 .padding(.vertical, 4)
 
-            // Checkbox inside the card
+            // Checkbox inside the card (13.9 ColorCheckboxActivo)
             ZStack {
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(isItemSelected ? accentColor : Color.gray.opacity(0.4), lineWidth: 1.5)
+                    .stroke(isItemSelected ? checkboxActivoColor : Color.gray.opacity(0.4), lineWidth: 1.5)
                     .frame(width: 20, height: 20)
                 if isItemSelected {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(accentColor)
+                        .fill(checkboxActivoColor)
                         .frame(width: 20, height: 20)
                     Image(systemName: "checkmark")
                         .font(.system(size: 11, weight: .bold))
@@ -78,14 +92,14 @@ struct MedicalExamsRowView: View {
                 }
             }
 
-            // Content area - navigates to detail
+            // Content area - navigates to detail (titulo nombre card — 13.10)
             VStack(alignment: .leading, spacing: 8) {
                 Text((exam.Name ?? "Sin nombre").uppercased())
                     .font(Font.custom(
-                        UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
-                        size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
+                        vistaPrincipal.tituloCardAttr.font.isEmpty ? "FiraSans-Bold" : vistaPrincipal.tituloCardAttr.font,
+                        size: CGFloat(Int(vistaPrincipal.tituloCardAttr.size) ?? 15)
                     ))
-                    .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
+                    .foregroundColor(Color(hex: vistaPrincipal.tituloCardAttr.color.isEmpty ? "#333333" : vistaPrincipal.tituloCardAttr.color))
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
 
@@ -109,16 +123,35 @@ struct MedicalExamsRowView: View {
                         )
                 }
 
+                // Descripción del examen (13.16 AtributosDescripcionExamenCard)
+                // El texto viene del registro individual del examen en Salesforce;
+                // los atributos visuales vienen del Elemento 13 del BrandAccount.
                 if let descripcion = exam.descripcionC, !descripcion.isEmpty {
                     Text(descripcion)
-                        .font(Font.custom("FiraSans-Regular", size: 13))
-                        .foregroundColor(.gray)
+                        .font(Font.custom(
+                            vistaPrincipal.descripcionCardAttr.font.isEmpty ? "FiraSans-Regular" : vistaPrincipal.descripcionCardAttr.font,
+                            size: CGFloat(Int(vistaPrincipal.descripcionCardAttr.size) ?? 13)
+                        ))
+                        .foregroundColor(Color(hex: vistaPrincipal.descripcionCardAttr.color.isEmpty ? "#888888" : vistaPrincipal.descripcionCardAttr.color))
                 }
 
+                // Fecha (13.14 FechaExamenCard) — con icono opcional a la izquierda
                 if let dateStr = exam.desdeC, !dateStr.isEmpty {
-                    Text(formatDateForDisplay(dateStr))
-                        .font(Font.custom("FiraSans-Regular", size: 12))
-                        .foregroundColor(.gray.opacity(0.7))
+                    let fechaColor = Color(hex: vistaPrincipal.fechaCardAttr.color.isEmpty ? "#888888" : vistaPrincipal.fechaCardAttr.color)
+                    let fechaSize = CGFloat(Int(vistaPrincipal.fechaCardAttr.size) ?? 12)
+                    let fechaFont = vistaPrincipal.fechaCardAttr.font.isEmpty ? "FiraSans-Regular" : vistaPrincipal.fechaCardAttr.font
+                    let iconoNombre = vistaPrincipal.fechaCardIcono
+                    let iconoColor = Color(hex: vistaPrincipal.fechaCardIconoColor.isEmpty ? "#888888" : vistaPrincipal.fechaCardIconoColor)
+                    HStack(spacing: 4) {
+                        if !iconoNombre.isEmpty {
+                            Image(systemName: iconoNombre)
+                                .font(.system(size: fechaSize))
+                                .foregroundColor(iconoColor)
+                        }
+                        Text(formatDateForDisplay(dateStr, outputFormat: vistaPrincipal.fechaCardFormato))
+                            .font(Font.custom(fechaFont, size: fechaSize))
+                            .foregroundColor(fechaColor)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -127,10 +160,10 @@ struct MedicalExamsRowView: View {
                 isPresentingDetails = true
             }
 
-            // Favorite star
+            // Favorite star (13.9 ColorEstrella)
             Image(systemName: isFavorite ? "star.fill" : "star")
                 .font(.system(size: 18))
-                .foregroundColor(isFavorite ? .yellow : accentColor.opacity(0.4))
+                .foregroundColor(isFavorite ? .yellow : estrellaColor)
                 .padding(.horizontal, 10)
                 .contentShape(Rectangle())
                 .onTapGesture {
@@ -146,8 +179,9 @@ struct MedicalExamsRowView: View {
                 .fill(Color.white)
         )
         .overlay(
+            // 13.9 ColorBordeActivo cuando la card está seleccionada
             RoundedRectangle(cornerRadius: 10)
-                .stroke(isItemSelected ? accentColor.opacity(0.5) : Color(.systemGray5), lineWidth: isItemSelected ? 1.5 : 1)
+                .stroke(isItemSelected ? bordeActivoColor : Color(.systemGray5), lineWidth: isItemSelected ? 1.5 : 1)
         )
         .shadow(color: Color.black.opacity(0.04), radius: 3, x: 0, y: 1)
         .contextMenu {
@@ -163,17 +197,20 @@ struct MedicalExamsRowView: View {
             }
         }
         .navigationLink(isActive: $isPresentingDetails) {
-            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, badgeDetallePrescripciones: badgeDetallePrescripciones, badgeDetalleRecetaMedica: badgeDetalleRecetaMedica, badgeDetalleExamenMedico: badgeDetalleExamenMedico, botonVerDocumentoEnviado: botonVerDocumentoEnviado, botonSubirExamenConfig: botonSubirExamenConfig, badgeCargadoPorPaciente: badgeCargadoPorPaciente, botonesDetalleExamen: botonesDetalleExamen, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
+            // Config visual del detail view = vistaDetalle (Elemento 9).
+            // Config visual de la vista Subir Examen = vistaSubir (Elemento 10).
+            MedicalExamsDetailsView(exam: exam, isLoadingExam: $isLoadingExam, isFavorite: $isFavorite, UIState: $UIState, vistaDetalle: vistaDetalle, vistaSubir: vistaSubir, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, badgeOrdenMedica: badgeOrdenMedica, badgeExamenAutomatizado: badgeExamenAutomatizado, badgeRecetaMedica: badgeRecetaMedica, listNeedsRefresh: $listNeedsRefresh, linkedPatientExam: linkedPatientExam)
         }
     }
 
-    /// Convierte fecha de yyyy-MM-dd a dd/MM/yyyy para display
-    private func formatDateForDisplay(_ dateStr: String) -> String {
+    /// Convierte fecha de yyyy-MM-dd al formato pedido por el record (13.14).
+    /// Si el formato viene vacío, cae a dd/MM/yyyy.
+    private func formatDateForDisplay(_ dateStr: String, outputFormat: String = "dd/MM/yyyy") -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd"
         guard let date = inputFormatter.date(from: dateStr) else { return dateStr }
         let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd/MM/yyyy"
+        outputFormatter.dateFormat = outputFormat.isEmpty ? "dd/MM/yyyy" : outputFormat
         return outputFormatter.string(from: date)
     }
 

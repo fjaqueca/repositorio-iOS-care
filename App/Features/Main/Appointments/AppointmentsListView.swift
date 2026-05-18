@@ -77,8 +77,13 @@ struct AppointmentsListView: View {
                     VStack(spacing: 12) {
                         Spacer()
 
-                        LottieView(animationName: "no_citas_para_este_dia")
-                            .frame(width: 180, height: 180)
+                        // TEMPORAL: Lottie no_citas_para_este_dia deshabilitado, se restaura icono SF Symbol.
+                        // Para reactivar, comenta el Image y descomenta el LottieView.
+                        Image(systemName: "calendar.badge.exclamationmark")
+                            .font(.system(size: 50, weight: .light))
+                            .foregroundColor(Color(.systemGray3))
+                        // LottieView(animationName: "no_citas_para_este_dia")
+                        //     .frame(width: 180, height: 180)
 
                         Text("No hay citas agendadas")
                             .font(Font.custom("FiraSans-Bold", size: 19))

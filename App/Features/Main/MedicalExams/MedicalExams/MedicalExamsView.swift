@@ -12,24 +12,21 @@ import ZIPFoundation
 
 struct MedicalExamsView: View {
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    // Config dinámica COMPLETA de la lista. Toda la pantalla principal lee
+    // de Elemento 13 del record `ExamenesAutomatizados` (MAIN).
+    var vistaPrincipal: VistaPrincipalPrescripcionesConfig = VistaPrincipalPrescripcionesConfig()
+    // Config dinámica del detalle (Elemento 9 de `ExamenesAutomatizadosCustom`).
+    // No se consume aquí — solo se reenvía al row → detail view.
+    var vistaDetalle: VistaDetallePrescripcionesConfig = VistaDetallePrescripcionesConfig()
+    // Config dinámica de la vista Subir Examen (Elemento 10 del Custom record).
+    // No se consume aquí — solo se reenvía al row → detail view → SendNewExamView.
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
-    var seleccionarTodosTexto: String = "Seleccionar Todos"
-    var seleccionarTodosAttr: TextExamAttributes = TextExamAttributes()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig(texto: "Examen automatizado", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#7B61FF")
     var badgeRecetaMedica: BadgeConfig = BadgeConfig(texto: "Receta médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00B894")
-    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
-    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
-    var botonSubirExamen: ButtonExamConfig = ButtonExamConfig()
-    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
-    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var from: String = ""
     @State var until: String = ""
@@ -75,8 +72,11 @@ struct MedicalExamsView: View {
     @State private var listNeedsRefresh: Bool = false
     @State private var emptyStateReady: Bool = false
 
+    // Color usado para checkbox del "Seleccionar todos" y los botones de
+    // acción Descargar/Compartir. Si el record viene vacío caemos a #387FC2.
     private var accentColor: Color {
-        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+        let c = vistaPrincipal.seleccionarTodosCheckboxColor
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
     }
 
     private var selectedCount: Int {
@@ -140,22 +140,15 @@ struct MedicalExamsView: View {
                                         isLoadingFavorite: $isLoadingFav,
                                         isLoadingExam: $isLoading,
                                         UIState: $UIState,
-                                        backArrowColor: backArrowColor,
-                                        navTitle: navTitle,
-                                        navTitleAttr: navTitleAttr,
+                                        vistaPrincipal: vistaPrincipal,
+                                        vistaDetalle: vistaDetalle,
+                                        vistaSubir: vistaSubir,
                                         dialogEliminarConfig: dialogEliminarConfig,
                                         dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig,
                                         dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig,
                                         badgeOrdenMedica: badgeOrdenMedica,
                                         badgeExamenAutomatizado: badgeExamenAutomatizado,
                                         badgeRecetaMedica: badgeRecetaMedica,
-                                        badgeDetallePrescripciones: badgeDetallePrescripciones,
-                                        badgeDetalleRecetaMedica: badgeDetalleRecetaMedica,
-                                        badgeDetalleExamenMedico: badgeDetalleExamenMedico,
-                                        botonVerDocumentoEnviado: botonVerDocumentoEnviado,
-                                        botonSubirExamenConfig: botonSubirExamen,
-                                        badgeCargadoPorPaciente: badgeCargadoPorPaciente,
-                                        botonesDetalleExamen: botonesDetalleExamen,
                                         listNeedsRefresh: $listNeedsRefresh,
                                         linkedPatientExam: linkedPatientExam(for: exam)
                                     )
@@ -167,15 +160,24 @@ struct MedicalExamsView: View {
                             .padding(.top, 23)
                             .padding(.bottom, .margin)
                         } else {
-                            // Empty state con Lottie
+                            // Empty state con Lottie (13.15 TextoEmptyState)
+                            let emptyTexto = vistaPrincipal.emptyStateTexto.isEmpty ? "No se encontraron exámenes" : vistaPrincipal.emptyStateTexto
+                            let emptyFont = vistaPrincipal.emptyStateAttr.font.isEmpty ? "FiraSans-Bold" : vistaPrincipal.emptyStateAttr.font
+                            let emptySize = CGFloat(Int(vistaPrincipal.emptyStateAttr.size) ?? 19)
+                            let emptyColor = Color(hex: vistaPrincipal.emptyStateAttr.color.isEmpty ? "#5B6770" : vistaPrincipal.emptyStateAttr.color)
                             VStack(spacing: 12) {
                                 Spacer()
-                                LottieView(animationName: "Empty_Box")
-                                    .frame(width: 220, height: 220)
+                                // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+                                // Para reactivar, comenta el Image y descomenta el LottieView.
+                                Image(systemName: "doc.text.magnifyingglass")
+                                    .font(.system(size: 50, weight: .light))
+                                    .foregroundColor(Color(.systemGray3))
+                                // LottieView(animationName: "Empty_Box")
+                                //     .frame(width: 220, height: 220)
                                 if emptyStateReady {
-                                    TypewriterText("No se encontraron exámenes",
-                                                  font: "FiraSans-Bold", size: 19,
-                                                  color: Color(hex: "#5B6770"),
+                                    TypewriterText(emptyTexto,
+                                                  font: emptyFont, size: emptySize,
+                                                  color: emptyColor,
                                                   speed: 0.06, showDots: false, delay: 0.3)
                                 }
                                 Spacer()
@@ -194,7 +196,7 @@ struct MedicalExamsView: View {
             }
 
             .sheet(isPresented: $showSheetView, content: {
-                ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlShare as Any])
+                ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App.\n", self.urlShare as Any])
             })
             .sheet(isPresented: $showWebView) {
                 if let fileURL = downloadedFileURL {
@@ -272,36 +274,24 @@ struct MedicalExamsView: View {
                     .cornerRadius(12)
             }
         }
-        .background(
-            Group {
-                if UIState.examList.imageBackground != "" {
-                    CachedAsyncImage(
-                        url: URL(string: UIState.examList.imageBackground),
-                        content: { image in
-                            image
-                                .resizable()
-                                .edgesIgnoringSafeArea(.all)
-                                .aspectRatio(contentMode: .fill)
-                        },
-                        placeholder: {
-                            ProgressView()
-                        }
-                    )
-                    .eraseToAnyView()
-                }
-            }
-        )
     }
 
     // MARK: - Search Bar
     private var searchBar: some View {
-        HStack(spacing: 10) {
+        let placeholderText = vistaPrincipal.placeholderTexto.isEmpty ? "Buscar exámenes médicos" : vistaPrincipal.placeholderTexto
+        let placeholderFont = vistaPrincipal.placeholderAttr.font.isEmpty ? "FiraSans-Regular" : vistaPrincipal.placeholderAttr.font
+        let placeholderSize = CGFloat(Int(vistaPrincipal.placeholderAttr.size) ?? 15)
+        let placeholderColor = Color(hex: vistaPrincipal.placeholderAttr.color.isEmpty ? "#888888" : vistaPrincipal.placeholderAttr.color)
+        let iconColor = Color(hex: vistaPrincipal.iconoFiltro.color.isEmpty ? "#387FC2" : vistaPrincipal.iconoFiltro.color)
+        let iconSize = CGFloat(Int(vistaPrincipal.iconoFiltro.size) ?? 16)
+
+        return HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
                 .frame(width: 20, height: 20)
 
-            TextField("Buscar exámenes médicos", text: $filterExams)
-                .font(Font.custom("FiraSans-Regular", size: 15))
+            TextField("", text: $filterExams, prompt: Text(placeholderText).foregroundColor(placeholderColor))
+                .font(Font.custom(placeholderFont, size: placeholderSize))
 
             if !filterExams.isEmpty {
                 Button {
@@ -316,8 +306,8 @@ struct MedicalExamsView: View {
                 withAnimation { showFilterView.toggle() }
             } label: {
                 Image(systemName: "line.3.horizontal.decrease")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(accentColor)
+                    .font(.system(size: iconSize, weight: .medium))
+                    .foregroundColor(iconColor)
                     .frame(width: 32, height: 32)
                     .background(Color.grayLight.opacity(0.5))
                     .cornerRadius(8)
@@ -340,7 +330,16 @@ struct MedicalExamsView: View {
     }
 
     private var selectAllRow: some View {
-        HStack {
+        let selTexto = vistaPrincipal.seleccionarTodosTexto.isEmpty ? "Seleccionar Todos" : vistaPrincipal.seleccionarTodosTexto
+        let selFont = vistaPrincipal.seleccionarTodosAttr.font.isEmpty ? "FiraSans-Regular" : vistaPrincipal.seleccionarTodosAttr.font
+        let selSize = CGFloat(Int(vistaPrincipal.seleccionarTodosAttr.size) ?? 14)
+        let selColor = Color(hex: vistaPrincipal.seleccionarTodosAttr.color.isEmpty ? "#333F48" : vistaPrincipal.seleccionarTodosAttr.color)
+        let checkboxColor = accentColor  // 13.5 ColorCheckboxActivo
+        let contadorFont = vistaPrincipal.contadorAttr.font.isEmpty ? "FiraSans-Bold" : vistaPrincipal.contadorAttr.font
+        let contadorSize = CGFloat(Int(vistaPrincipal.contadorAttr.size) ?? 15)
+        let contadorColor = Color(hex: vistaPrincipal.contadorAttr.color.isEmpty ? "#387FC2" : vistaPrincipal.contadorAttr.color)
+
+        return HStack {
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     checkSelectedList()
@@ -349,23 +348,20 @@ struct MedicalExamsView: View {
                 HStack(spacing: 8) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4)
-                            .stroke(isButtonSelectAllFilled ? accentColor : Color.gray.opacity(0.4), lineWidth: 1.5)
+                            .stroke(isButtonSelectAllFilled ? checkboxColor : Color.gray.opacity(0.4), lineWidth: 1.5)
                             .frame(width: 20, height: 20)
                         if isButtonSelectAllFilled {
                             RoundedRectangle(cornerRadius: 4)
-                                .fill(accentColor)
+                                .fill(checkboxColor)
                                 .frame(width: 20, height: 20)
                             Image(systemName: "checkmark")
                                 .font(.system(size: 11, weight: .bold))
                                 .foregroundColor(.white)
                         }
                     }
-                    Text(seleccionarTodosTexto)
-                        .font(Font.custom(
-                            seleccionarTodosAttr.font.isEmpty ? "FiraSans-Regular" : seleccionarTodosAttr.font,
-                            size: CGFloat(Int(seleccionarTodosAttr.size) ?? 14)
-                        ))
-                        .foregroundColor(seleccionarTodosAttr.color.isEmpty ? .primary : Color(hex: seleccionarTodosAttr.color))
+                    Text(selTexto)
+                        .font(Font.custom(selFont, size: selSize))
+                        .foregroundColor(selColor)
                 }
             }
             .buttonStyle(.plain)
@@ -382,8 +378,15 @@ struct MedicalExamsView: View {
 
             Spacer()
 
-            // Badge "Limpiar filtros" — solo visible con filtros activos
-            if hasActiveFilters {
+            // Contador de seleccionadas (paridad Android) — alineado a la derecha
+            // del "Seleccionar todos". Solo visible cuando hay selección.
+            if selectedCount > 0 {
+                Text("\(selectedCount) seleccionada\(selectedCount == 1 ? "" : "s")")
+                    .font(Font.custom(contadorFont, size: contadorSize))
+                    .foregroundColor(contadorColor)
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+            } else if hasActiveFilters {
+                // Badge "Limpiar filtros" — solo visible con filtros activos y sin selección
                 Button {
                     clearAllFilters()
                 } label: {
@@ -405,15 +408,16 @@ struct MedicalExamsView: View {
 
     // MARK: - Action Buttons (visible only when selectedCount > 0)
     private var actionButtonsRow: some View {
-        VStack(spacing: 8) {
-            // Counter
-            HStack {
-                Spacer()
-                Text("\(selectedCount) seleccionada\(selectedCount == 1 ? "" : "s")")
-                    .font(Font.custom("FiraSans-Regular", size: 13))
-                    .foregroundColor(.gray)
-            }
+        let dl = vistaPrincipal.botonDescargar
+        let sh = vistaPrincipal.botonCompartir
+        let dlText = dl.texto.isEmpty ? "Descargar" : dl.texto
+        let dlTextColor = Color(hex: dl.colorTexto.isEmpty ? "#FFFFFF" : dl.colorTexto)
+        let dlBgColor = Color(hex: dl.colorFondo.isEmpty ? "#387FC2" : dl.colorFondo)
+        let shText = sh.texto.isEmpty ? "Compartir" : sh.texto
+        let shTextColor = Color(hex: sh.colorTexto.isEmpty ? "#FFFFFF" : sh.colorTexto)
+        let shBgColor = Color(hex: sh.colorFondo.isEmpty ? "#387FC2" : sh.colorFondo)
 
+        return VStack(spacing: 8) {
             HStack(spacing: 10) {
                 // Descargar
                 Button {
@@ -424,40 +428,40 @@ struct MedicalExamsView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "square.and.arrow.down")
                             .font(.system(size: 13, weight: .medium))
-                        Text(UIState.examList.btnDownload.textBtn.isEmpty ? "Descargar" : UIState.examList.btnDownload.textBtn)
+                        Text(dlText)
                             .font(Font.custom("FiraSans-Medium", size: 14))
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(dlTextColor)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 11)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(accentColor)
+                            .fill(dlBgColor)
                     )
                 }
                 .bounceOnTap()
 
                 // Compartir
-            Button {
-                self.isLoadingAction = true
-                actionButton = .isShare
-                filterIsSelected()
-            } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 13, weight: .medium))
-                    Text(UIState.examList.btnShare.textBtn.isEmpty ? "Compartir" : UIState.examList.btnShare.textBtn)
-                        .font(Font.custom("FiraSans-Medium", size: 14))
+                Button {
+                    self.isLoadingAction = true
+                    actionButton = .isShare
+                    filterIsSelected()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 13, weight: .medium))
+                        Text(shText)
+                            .font(Font.custom("FiraSans-Medium", size: 14))
+                    }
+                    .foregroundColor(shTextColor)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 11)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(shBgColor)
+                    )
                 }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 11)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(accentColor)
-                )
-            }
-            .bounceOnTap()
+                .bounceOnTap()
             }
         }
     }

@@ -62,22 +62,28 @@ struct SignInPasswordRecoveryOtpView: View {
         .popup(item: $popup)
         .background(
             Group {
-                    if UIState.singInPasswordRecoveryOtpUIState.imageBackground != "" {
-                        CachedAsyncImage(
-                            url: URL(string: UIState.singInPasswordRecoveryOtpUIState.imageBackground ),
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .edgesIgnoringSafeArea(.all)
-                                    .aspectRatio(contentMode: .fill)
-                            },
-                            placeholder: {
-                                ProgressView()
-                            }
-                        )
-                        .eraseToAnyView()
-                    }
+                // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
+                if UIState.singInPasswordRecoveryOtpUIState.imageBackground != "" {
+                    CachedAsyncImage(
+                        url: URL(string: UIState.singInPasswordRecoveryOtpUIState.imageBackground ),
+                        content: { image in
+                            image
+                                .resizable()
+                                .edgesIgnoringSafeArea(.all)
+                                .aspectRatio(contentMode: .fill)
+                        },
+                        placeholder: { ProgressView() }
+                    )
+                    .eraseToAnyView()
                 }
+                // LottieView(
+                //     animationName: "gradient_background",
+                //     loopMode: .loop,
+                //     contentMode: .scaleAspectFill
+                // )
+                // .edgesIgnoringSafeArea(.all)
+            }
         )
         .navigationLink(item: $navigation) { value in
             switch value {

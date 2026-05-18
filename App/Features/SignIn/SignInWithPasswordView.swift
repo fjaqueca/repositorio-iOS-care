@@ -64,6 +64,8 @@ struct SignInWithPasswordView: View {
             .navigationBarTitleDisplayMode(.inline)
             .background(
                 Group {
+                    // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                    // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
                     if UIState.loginUIState.imageBackground != "" {
                         CachedAsyncImage(
                             url: URL(string: UIState.loginUIState.imageBackground ),
@@ -73,12 +75,16 @@ struct SignInWithPasswordView: View {
                                     .edgesIgnoringSafeArea(.all)
                                     .aspectRatio(contentMode: .fill)
                             },
-                            placeholder: {
-                                ProgressView()
-                            }
+                            placeholder: { ProgressView() }
                         )
                         .eraseToAnyView()
                     }
+                    // LottieView(
+                    //     animationName: "gradient_background",
+                    //     loopMode: .loop,
+                    //     contentMode: .scaleAspectFill
+                    // )
+                    // .edgesIgnoringSafeArea(.all)
                 }
             )
             .navigationLink(isActive: $isPresenting) {

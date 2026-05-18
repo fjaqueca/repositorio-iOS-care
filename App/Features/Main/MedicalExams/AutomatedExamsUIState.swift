@@ -30,15 +30,22 @@ struct AutomatedExamsUIState {
     // Custom Record - Elemento 7: Popup ver detalle/resumen carrito
     var popupDetalleCarrito = PopupDetalleCarritoConfig()
 
-    // Custom Record - Elemento 8: Color back arrow de toda la sección exámenes
+    // (legacy) Color back arrow del hub de exámenes y de AutomatedExamsView.
+    // Antes se parseaba del Elemento 8, pero ese elemento ahora es
+    // VistaDetalleMisArchivosDeSalud. Este campo queda con default fijo —
+    // si se quisiera dinámico, conviene crear un atributo dedicado en otro elemento.
     var backArrowColorSeccion: String = "#00BBDC"
+
+    // Custom Record - Elemento 8: VistaDetalleMisArchivosDeSalud
+    // Config completa de la pantalla "Detalle de Mi Archivo de Salud"
+    // (al hacer click sobre una card de la lista de Mis Archivos de Salud).
+    var vistaDetalleMisArchivos = VistaDetalleMisArchivosConfig()
 
     // Custom Record - Elemento 10: Sección Mis Archivos de Salud
     var botonSubirExamen = ButtonExamConfig()
     var badgeDetallePrescripciones = BadgeDetalleConfig(texto: "Creado por el paciente", colorTexto: "#D4A017", colorFondo: "#FFF7E6", font: "FiraSans-Regular", size: "15", icono: "stethoscope")
     var badgeDetalleRecetaMedica = BadgeDetalleConfig(texto: "Receta médica", colorTexto: "#1890FF", colorFondo: "#E6F4FF", font: "FiraSans-Regular", size: "15", icono: "pills.fill")
     var badgeDetalleExamenMedico = BadgeDetalleConfig(texto: "Dr/a {ProfesionalResponsable}", colorTexto: "#52C41A", colorFondo: "#F0F9EB", font: "FiraSans-Regular", size: "15", icono: "stethoscope")
-    var botonVerDocumentoEnviado = ButtonExamConfig(texto: "Ver documento enviado", colorTexto: "#FFFFFF", colorFondo: "#00BBDC", font: "FiraSans-Bold", size: "16")
     var badgeCargadoPorPaciente = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
 
     // Custom Record - Elemento 11: Dialog Eliminar Examen Subido
@@ -53,8 +60,8 @@ struct AutomatedExamsUIState {
     // Custom2 Record - Elemento 3: Dialog Confirmar Eliminar Mi Archivo de Salud
     var dialogEliminarMiArchivo = DialogEliminarExamenConfig()
 
-    // Custom Record - Elemento 12: Badges tipo examen subido en Mis Archivos de Salud
-    var badgesMisExamenes = BadgesMisExamenesConfig()
+    // Custom Record - Elemento 12: VistaPrincipalMisArchivosDeSalud (config completa)
+    var vistaMisArchivos = VistaMisArchivosConfig()
 
     // Custom Record - Elemento 13: Botones vista detalle examen subido en Mis Archivos de Salud
     var botonesDetalleExamen = BotonesDetalleExamenConfig()
@@ -65,6 +72,24 @@ struct AutomatedExamsUIState {
     var badgeExamenAutomatizado = BadgeConfig(texto: "Examen automatizado", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#7B61FF")
     var badgeOrdenMedica = BadgeConfig(texto: "Orden médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00BBDC")
     var badgeRecetaMedica = BadgeConfig(texto: "Receta médica", font: "FiraSans-Medium", size: "11", colorTexto: "#FFFFFF", colorFondo: "#00B894")
+
+    // Main Record - Elemento 13: VistaPrincipalPrescripcionesMedicas
+    // Config completa de la pantalla Prescripciones Médicas (lista con badges).
+    // A partir de ahora esta pantalla NO depende de SecMas — toda su UI
+    // dinámica se lee desde Elemento 13 del record ExamenesAutomatizados.
+    var vistaPrincipalPrescripciones = VistaPrincipalPrescripcionesConfig()
+
+    // Custom Record - Elemento 9: VistaDetallePrescripcionesMedicas
+    // Config completa de la pantalla "Detalle de prescripción médica"
+    // (al hacer click sobre una card). Reemplaza por completo al uso anterior
+    // del Elemento 9 (SeleccionarTodos, movido a Elemento 13.5).
+    var vistaDetallePrescripciones = VistaDetallePrescripcionesConfig()
+
+    // Custom Record - Elemento 10: VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud
+    // Config completa de la pantalla "Subir Examen" (compartida entre el flujo
+    // de detalle de prescripción médica y Mis Archivos de Salud). Reemplaza
+    // por completo al uso anterior del Elemento 10 (SeccionMisArchivosDeSalud).
+    var vistaSubirExamen = VistaSubirExamenConfig()
 
     // Main Record - Elementos 1-2: Categorias (hasta 32)
     var categorias: [CategoriaExamen] = []
@@ -114,14 +139,23 @@ struct BannerExamItem: Identifiable, Hashable {
 }
 
 // MARK: - Header pantalla principal (Elemento 2)
+// Config completa de la pantalla hub (Archivo de Salud) donde aparecen las
+// 3 opciones: Exámenes Automatizados, Prescripciones Médicas y Mis Archivos.
 struct ExamHeaderConfig {
+    // 2.1 + 2.2 TituloHome + AtributosTituloHome
     var titulo: String = ""
     var tituloAttr = TextExamAttributes()
+    // 2.3 + 2.4 DescripcionHome + AtributosDescripcionHome
     var descripcion: String = ""
     var descripcionAttr = TextExamAttributes()
+    // 2.5 Block
     var blockPosition: String = "Center"
+    // 2.6 BotonVolverHome
     var botonVolver = ButtonExamConfig()
+    // 2.7 ColorCirculoBannerSeleccionado
     var colorCirculoBannerSeleccionado: String = "#00BBDC"
+    // 2.8 BackArrow(Color)
+    var backArrowColor: String = ""
 }
 
 // MARK: - Seccion inicial (opcion circular)
@@ -327,16 +361,58 @@ struct BotonesDetalleExamenConfig {
     var tituloArchivosAdjuntosAttr = TextExamAttributes()
 }
 
-// MARK: - Badges Tipo Examen Subido en Mis Archivos de Salud (Elemento 12)
-struct BadgesMisExamenesConfig {
+// MARK: - VistaPrincipalMisArchivosDeSalud (Custom Record - Elemento 12)
+// Config completa de la pantalla "Mis Archivos de Salud". Parseada desde
+// el Elemento 12 del record `ExamenesAutomatizadosCustom`
+// (VistaPrincipalMisArchivosDeSalud). Es la ÚNICA fuente dinámica que
+// alimenta esta pantalla — ya no se mezcla con SecMas / secciones / Elemento 8.
+struct VistaMisArchivosConfig {
+    // 12.1–12.6 Badges por tipo de archivo (Tipo_de_Archivo__c de Salesforce)
     var badgeExamenImagen = BadgeConfig(texto: "Examen de Imagen", font: "FiraSans-Medium", size: "11", colorTexto: "#722ed1", colorFondo: "#f9f0ff")
     var badgeRecetaMedica = BadgeConfig(texto: "Receta Médica", font: "FiraSans-Medium", size: "11", colorTexto: "#0183c7", colorFondo: "#e6f4ff")
     var badgeExamenLaboratorio = BadgeConfig(texto: "Examen de Laboratorio", font: "FiraSans-Medium", size: "11", colorTexto: "#52c41a", colorFondo: "#f0f9eb")
     var badgeOrdenExamen = BadgeConfig(texto: "Orden de Exámenes", font: "FiraSans-Medium", size: "11", colorTexto: "#d46b08", colorFondo: "#fff7e6")
     var badgeInformeMedico = BadgeConfig(texto: "Informe Médico", font: "FiraSans-Medium", size: "11", colorTexto: "#13c2c2", colorFondo: "#e6fffb")
     var badgeOtros = BadgeConfig(texto: "Otros", font: "FiraSans-Medium", size: "11", colorTexto: "#8c8c8c", colorFondo: "#f5f5f5")
+
+    // 12.7 IconoBasuraEliminarMiArchivoSalud(Size;Color)
     var iconoBasuraSize: String = "16"
     var iconoBasuraColor: String = "#FF4D4F"
+
+    // 12.8 BackArrow(Color)
+    var backArrowColor: String = ""
+
+    // 12.9 TituloGeneralMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)
+    var tituloTexto: String = ""
+    var tituloAttr = TextExamAttributes()
+
+    // 12.10 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+    var tituloCardAttr = TextExamAttributes()
+
+    // 12.11 TextoPlaceholderFiltro(Fuente;Texto;Size;Color)
+    var placeholderTexto: String = ""
+    var placeholderAttr = TextExamAttributes()
+
+    // 12.12 IconoFiltro(Icono;Size;Color)
+    var iconoFiltro: String = ""
+    var iconoFiltroSize: String = ""
+    var iconoFiltroColor: String = ""
+
+    // 12.13 FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)
+    var fechaAttr = TextExamAttributes()
+    var fechaFormato: String = "dd/MM/yyyy"
+    var fechaIcono: String = ""
+    var fechaIconoColor: String = ""
+
+    // 12.14 TextoEmptyState(Fuente;Texto;Size;Color)
+    var emptyStateTexto: String = ""
+    var emptyStateAttr = TextExamAttributes()
+
+    // 12.15 BarraVerticalCardMisArchivosDeSalud(Color)
+    var barraVerticalColor: String = ""
+
+    // 12.16 BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
+    var botonSubirExamen = ButtonExamConfig()
 }
 
 // MARK: - Atributos de texto reutilizable
@@ -358,6 +434,9 @@ struct ButtonExamConfig: Hashable {
     // Para botones con icono
     var icono: String = ""
     var colorIcono: String = ""
+    // Tamaño dedicado del icono (independiente del size del texto).
+    // Si está vacío, se usa `size` del botón como fallback.
+    var iconoSize: String = ""
     // Para botones con estado activo/inactivo
     var colorTextoActivo: String = ""
     var colorFondoActivo: String = ""
@@ -367,4 +446,266 @@ struct ButtonExamConfig: Hashable {
     var colorHover: String = ""
     // Para botones con borde
     var colorBorde: String = ""
+}
+
+// MARK: - VistaPrincipalPrescripcionesMedicas (Main Record - Elemento 13)
+// Config completa de la pantalla "Prescripciones Médicas" (lista con badges).
+// Parseada desde Elemento 13 del record `ExamenesAutomatizados` (MAIN).
+struct VistaPrincipalPrescripcionesConfig {
+    // 13.1 BackArrow(Color)
+    var backArrowColor: String = ""
+
+    // 13.2 TituloPrescripcionesMedicas(Fuente;Texto;Size;Color)
+    var tituloTexto: String = ""
+    var tituloAttr = TextExamAttributes()
+
+    // 13.3 TextoPlaceholderFiltro(Fuente;Texto;Size;Color)
+    var placeholderTexto: String = ""
+    var placeholderAttr = TextExamAttributes()
+
+    // 13.4 IconoFiltro(Icono;Size;Color)
+    var iconoFiltro = IconConfig()
+
+    // 13.5 TextoSeleccionarTodos(Fuente;Texto;Size;Color;ColorCheckboxActivo)
+    var seleccionarTodosTexto: String = ""
+    var seleccionarTodosAttr = TextExamAttributes()
+    var seleccionarTodosCheckboxColor: String = ""
+
+    // 13.6 TextoContadorExamenesSeleccionados(Fuente;Size;Color)
+    var contadorAttr = TextExamAttributes()
+
+    // 13.7 BotonDescargar(Texto;ColorTexto;ColorBoton;Icono)
+    var botonDescargar = ButtonExamConfig()
+
+    // 13.8 BotonCompartir(Texto;ColorTexto;ColorBoton;Icono)
+    var botonCompartir = ButtonExamConfig()
+
+    // 13.9 AtributosCard(ColorBarraVertical;ColorCheckboxActivo;ColorBordeActivo;ColorEstrella)
+    var cardColorBarraVertical: String = ""
+    var cardColorCheckboxActivo: String = ""
+    var cardColorBordeActivo: String = ""
+    var cardColorEstrella: String = ""
+
+    // 13.10 TituloNombreCardExamen(Fuente;Size;Color)
+    var tituloCardAttr = TextExamAttributes()
+
+    // 13.14 FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)
+    // El "Formato" viene en notación Salesforce (DD/MM/AAAA o DD/MM/YYYY)
+    // y se mapea a formato iOS DateFormatter al parsear.
+    var fechaCardAttr = TextExamAttributes()
+    var fechaCardFormato: String = "dd/MM/yyyy"
+    var fechaCardIcono: String = ""
+    var fechaCardIconoColor: String = ""
+
+    // 13.15 TextoEmptyState(Fuente;Texto;Size;Color)
+    var emptyStateTexto: String = ""
+    var emptyStateAttr = TextExamAttributes()
+
+    // 13.16 AtributosDescripcionExamenCard(Fuente;Size;Color)
+    // Estilo del texto de descripción de cada card (ej: "Examen creado
+    // automáticamente desde la plataforma"). El TEXTO en sí viene del
+    // registro individual del examen (no de esta config) — esto controla
+    // solo la tipografía y color.
+    var descripcionCardAttr = TextExamAttributes()
+}
+
+// MARK: - Icono reutilizable (nombre + size + color)
+struct IconConfig: Hashable {
+    var nombre: String = ""
+    var size: String = ""
+    var color: String = ""
+}
+
+// MARK: - VistaDetallePrescripcionesMedicas (Custom Record - Elemento 9)
+// Config completa de la pantalla "Detalle de prescripción médica".
+// Parseada desde Elemento 9 del record `ExamenesAutomatizadosCustom`.
+struct VistaDetallePrescripcionesConfig {
+    // 9.1 BackArrow(Color)
+    var backArrowColor: String = ""
+
+    // 9.2 TituloGeneralDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)
+    var tituloTexto: String = ""
+    var tituloAttr = TextExamAttributes()
+
+    // 9.3 IconoEstrella(Size;Color)
+    var iconoEstrellaSize: String = ""
+    var iconoEstrellaColor: String = ""
+
+    // 9.4 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+    var tituloCardAttr = TextExamAttributes()
+
+    // 9.5 BadgeDetalleTipoPrescripcionesMedicas
+    //     (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+    var badgeCreadoPaciente = BadgeDetalleConfig()
+
+    // 9.6 FechaDetallePrescripcion(Fuente;Size;Color;Formato;Icono;ColorIcono)
+    var fechaAttr = TextExamAttributes()
+    var fechaFormato: String = "dd/MM/yyyy"
+    var fechaIcono: String = ""
+    var fechaIconoColor: String = ""
+
+    // 9.7 DetalleIndicaciones(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+    var indicacionesTitulo: String = ""
+    var indicacionesTituloAttr = TextExamAttributes()
+
+    // 9.8 AtributosDetalleIndicaciones(Fuente;Size;Color)
+    var indicacionesTextoAttr = TextExamAttributes()
+
+    // 9.9 DetalleExamenAdjunto(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+    var examenAdjuntoTitulo: String = ""
+    var examenAdjuntoTituloAttr = TextExamAttributes()
+
+    // 9.10 ColorIconoExamenAdjunto(Color;Size)
+    var examenAdjuntoIconoColor: String = ""
+    var examenAdjuntoIconoSize: String = ""
+
+    // 9.11 BotonDescargarDetalle
+    //      (TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+    var botonDescargar = ButtonExamConfig()
+
+    // 9.12 BotonCompartirDetalle (mismo formato que 9.11)
+    var botonCompartir = ButtonExamConfig()
+
+    // 9.13 BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
+    // Se muestra cuando la prescripción NO tiene un documento adjunto.
+    var botonSubirExamen = ButtonExamConfig()
+
+    // 9.14 BadgeDetalleTipoRecetaMedica
+    //      (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+    var badgeRecetaMedica = BadgeDetalleConfig()
+
+    // 9.15 BadgeDetalleTipoExamenMedico
+    //      (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+    var badgeExamenMedico = BadgeDetalleConfig()
+
+    // 9.16 BotonVerDocumentoEnviado(Texto;Size;ColorTexto;ColorFondo;TipoFuente)
+    // Se muestra cuando la prescripción YA tiene un documento adjunto
+    // (estado dual con `botonSubirExamen`).
+    var botonVerDocumentoEnviado = ButtonExamConfig()
+}
+
+// MARK: - VistaSubirExamen (Custom Record - Elemento 10)
+// Config completa de la pantalla "Subir Examen". Parseada desde Elemento 10
+// del record `ExamenesAutomatizadosCustom` (VistaSubirExamenDetallePrescripcionesMedicasMisArchivosDeSalud).
+struct VistaSubirExamenConfig {
+    // 10.1 BackArrow(Color)
+    var backArrowColor: String = ""
+
+    // 10.2 TituloGeneralSubirExamenDetallePrescripcionesMedicas(Fuente;Texto;ColorTexto;Size)
+    var tituloTexto: String = ""
+    var tituloAttr = TextExamAttributes()
+
+    // 10.3 TextoListaTipoDocumentoASubir(Fuente;Texto;ColorTexto;Size;Position)
+    var tipoDocumentoTexto: String = ""
+    var tipoDocumentoAttr = TextExamAttributes()
+
+    // 10.4 BadgeCargadoPorElPacienteVerDocumentoEnviado
+    //      (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+    var badgeCargadoPorPaciente = BadgeDetalleConfig()
+
+    // 10.5 TextoAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)
+    var adjuntarArchivoTexto: String = ""
+    var adjuntarArchivoAttr = TextExamAttributes()
+
+    // 10.6 DescripcionAdjuntarArchivo(Fuente;Texto;ColorTexto;Size;Position)
+    var descripcionAdjuntarTexto: String = ""
+    var descripcionAdjuntarAttr = TextExamAttributes()
+
+    // 10.7 AtributoContainerSinArchivoAdjunto
+    //      (ColorBorde;Icono;ColorIcono;SizeIcono;ColorFondoContainer)
+    var containerSinArchivo = ContainerSinArchivoConfig()
+
+    // 10.8 AtributoContainerConArchivoAdjunto
+    //      (ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;
+    //       IconoCancelar;ColorFondo;ColorCruz;ColorFondoContainer)
+    var containerConArchivo = ContainerConArchivoConfig()
+
+    // 10.9 TextoNota(Fuente;Texto;ColorTexto;Size;Position)
+    // El "Size" puede venir ausente en Salesforce — la implementación
+    // parsea de forma tolerante.
+    var notaTexto: String = ""
+    var notaAttr = TextExamAttributes()
+
+    // 10.10 BotonEnviar(Texto;Size;ColorTexto;ColorFondo;TipoFuente)
+    var botonEnviar = ButtonExamConfig()
+}
+
+// MARK: - Container del slot SIN archivo adjunto (10.7)
+struct ContainerSinArchivoConfig {
+    var colorBorde: String = ""
+    var icono: String = ""           // ej: "Clip" → SF "paperclip"
+    var colorIcono: String = ""
+    var sizeIcono: String = ""
+    var colorFondoContainer: String = ""
+}
+
+// MARK: - Container del slot CON archivo adjunto (10.8)
+struct ContainerConArchivoConfig {
+    var colorBorde: String = ""
+    var icono: String = ""           // ej: "Imagen" → SF "photo"
+    var colorIcono: String = ""
+    var sizeIcono: String = ""
+    var colorTextoFormato: String = ""
+    var iconoCancelar: String = ""   // ej: "Cancelar" → SF "xmark.circle.fill"
+    var colorFondoBotonCancelar: String = ""
+    var colorCruz: String = ""
+    var colorFondoContainer: String = ""
+}
+
+// MARK: - VistaDetalleMisArchivosDeSalud (Custom Record - Elemento 8)
+// Config completa de la pantalla "Detalle de un archivo de salud" (al tocar
+// una card de la vista Mis Archivos de Salud). Parseada desde el Elemento 8
+// del record `ExamenesAutomatizadosCustom`. Es la ÚNICA fuente dinámica que
+// alimenta esa pantalla — no se mezcla con otros elementos.
+struct VistaDetalleMisArchivosConfig {
+    // 8.1 BackArrow(Color)
+    var backArrowColor: String = ""
+
+    // 8.2 TituloGeneralDetalleMisArchivosDeSalud(Fuente;Texto;ColorTexto;Size)
+    var tituloTexto: String = ""
+    var tituloAttr = TextExamAttributes()
+
+    // 8.3 AtributosTituloCardDetalle(Fuente;ColorTexto;Size)
+    var tituloCardAttr = TextExamAttributes()
+
+    // 8.4 BadgeCargadoPorElPacienteVerDocumentoEnviado
+    //     (Texto;ColorTexto;ColorFondo;TipoFuente;Size;Icono)
+    var badgeCargadoPorPaciente = BadgeDetalleConfig()
+
+    // 8.5 FechaDetalleMisArchivosDeSalud(Fuente;Size;Color;Formato;Icono;ColorIcono)
+    var fechaAttr = TextExamAttributes()
+    var fechaFormato: String = "dd/MM/yyyy"
+    var fechaIcono: String = ""
+    var fechaIconoColor: String = ""
+
+    // 8.6 DetalleArchivosAdjuntos(TextoTitulo;Fuente;Size;ColorTexto;Posicion)
+    var detalleArchivosTitulo: String = ""
+    var detalleArchivosAttr = TextExamAttributes()
+
+    // 8.7 ContainerArchivoAdjunto
+    //     (ColorBorde;Icono;ColorIcono;SizeIcono;ColorTextoFormato;ColorFondoContainer)
+    // En el detalle de Mis Archivos NO existe estado "sin archivo" ni botón de
+    // cancelar — solo se muestran archivos ya publicados.
+    var containerArchivo = ContainerArchivoSimpleConfig()
+
+    // 8.8 BotonDescargarDetalleMisArchivosDeSalud
+    //     (TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde)
+    var botonDescargar = ButtonExamConfig()
+
+    // 8.9 BotonCompartirDetalleMisArchivosDeSalud (mismo formato que 8.8)
+    var botonCompartir = ButtonExamConfig()
+
+    // 8.10 BotonEliminarDetalleMiArchivoDeSalud(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
+    var botonEliminar = ButtonExamConfig()
+}
+
+// MARK: - Container simple del detalle (8.7)
+// Variante reducida — sin botón cancelar (los archivos ya están publicados).
+struct ContainerArchivoSimpleConfig {
+    var colorBorde: String = ""
+    var icono: String = ""           // ej: "Imagen" → SF "photo"
+    var colorIcono: String = ""
+    var sizeIcono: String = ""
+    var colorTextoFormato: String = ""
+    var colorFondoContainer: String = ""
 }

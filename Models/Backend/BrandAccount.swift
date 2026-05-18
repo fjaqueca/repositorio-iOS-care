@@ -262,6 +262,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
     @Persisted var atributo84C: String?
     @Persisted var atributo85C: String?
     @Persisted var atributo86C: String?
+    @Persisted var atributo87C: String?
+    @Persisted var atributo88C: String?
+    @Persisted var atributo89C: String?
+    @Persisted var atributo810C: String?
+    @Persisted var atributo811C: String?
+    @Persisted var atributo812C: String?
+    @Persisted var atributo813C: String?
+    @Persisted var atributo814C: String?
+    @Persisted var atributo815C: String?
+    @Persisted var atributo816C: String?
     @Persisted var parametrosFront8C: String?
     @Persisted var valor81C: String?
     @Persisted var valor82C: String?
@@ -325,6 +335,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
     @Persisted var atributo104C: String?
     @Persisted var atributo105C: String?
     @Persisted var atributo106C: String?
+    @Persisted var atributo107C: String?
+    @Persisted var atributo108C: String?
+    @Persisted var atributo109C: String?
+    @Persisted var atributo1010C: String?
+    @Persisted var atributo1011C: String?
+    @Persisted var atributo1012C: String?
+    @Persisted var atributo1013C: String?
+    @Persisted var atributo1014C: String?
+    @Persisted var atributo1015C: String?
+    @Persisted var atributo1016C: String?
     @Persisted var parametrosFront10C: String?
     @Persisted var valor101C: String?
     @Persisted var valor102C: String?
@@ -377,6 +397,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
     @Persisted var atributo124C: String?
     @Persisted var atributo125C: String?
     @Persisted var atributo126C: String?
+    @Persisted var atributo127C: String?
+    @Persisted var atributo128C: String?
+    @Persisted var atributo129C: String?
+    @Persisted var atributo1210C: String?
+    @Persisted var atributo1211C: String?
+    @Persisted var atributo1212C: String?
+    @Persisted var atributo1213C: String?
+    @Persisted var atributo1214C: String?
+    @Persisted var atributo1215C: String?
+    @Persisted var atributo1216C: String?
     @Persisted var parametrosFront12C: String?
     @Persisted var valor121C: String?
     @Persisted var valor122C: String?
@@ -403,6 +433,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
     @Persisted var atributo134C: String?
     @Persisted var atributo135C: String?
     @Persisted var atributo136C: String?
+    @Persisted var atributo137C: String?
+    @Persisted var atributo138C: String?
+    @Persisted var atributo139C: String?
+    @Persisted var atributo1310C: String?
+    @Persisted var atributo1311C: String?
+    @Persisted var atributo1312C: String?
+    @Persisted var atributo1313C: String?
+    @Persisted var atributo1314C: String?
+    @Persisted var atributo1315C: String?
+    @Persisted var atributo1316C: String?
     @Persisted var parametrosFront13C: String?
     @Persisted var valor131C: String?
     @Persisted var valor132C: String?
@@ -666,6 +706,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
         case atributo84C = "Atributo_8_4__c"
         case atributo85C = "Atributo_8_5__c"
         case atributo86C = "Atributo_8_6__c"
+        case atributo87C = "Atributo_8_7__c"
+        case atributo88C = "Atributo_8_8__c"
+        case atributo89C = "Atributo_8_9__c"
+        case atributo810C = "Atributo_8_10__c"
+        case atributo811C = "Atributo_8_11__c"
+        case atributo812C = "Atributo_8_12__c"
+        case atributo813C = "Atributo_8_13__c"
+        case atributo814C = "Atributo_8_14__c"
+        case atributo815C = "Atributo_8_15__c"
+        case atributo816C = "Atributo_8_16__c"
         case parametrosFront8C = "Parametros_Front_8__c"
         case valor81C = "Valor_8_1__c"
         case valor82C = "Valor_8_2__c"
@@ -728,6 +778,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
         case atributo104C = "Atributo_10_4__c"
         case atributo105C = "Atributo_10_5__c"
         case atributo106C = "Atributo_10_6__c"
+        case atributo107C = "Atributo_10_7__c"
+        case atributo108C = "Atributo_10_8__c"
+        case atributo109C = "Atributo_10_9__c"
+        case atributo1010C = "Atributo_10_10__c"
+        case atributo1011C = "Atributo_10_11__c"
+        case atributo1012C = "Atributo_10_12__c"
+        case atributo1013C = "Atributo_10_13__c"
+        case atributo1014C = "Atributo_10_14__c"
+        case atributo1015C = "Atributo_10_15__c"
+        case atributo1016C = "Atributo_10_16__c"
         case parametrosFront10C = "Parametros_Front_10__c"
         case valor101C = "Valor_10_1__c"
         case valor102C = "Valor_10_2__c"
@@ -780,6 +840,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
         case atributo124C = "Atributo_12_4__c"
         case atributo125C = "Atributo_12_5__c"
         case atributo126C = "Atributo_12_6__c"
+        case atributo127C = "Atributo_12_7__c"
+        case atributo128C = "Atributo_12_8__c"
+        case atributo129C = "Atributo_12_9__c"
+        case atributo1210C = "Atributo_12_10__c"
+        case atributo1211C = "Atributo_12_11__c"
+        case atributo1212C = "Atributo_12_12__c"
+        case atributo1213C = "Atributo_12_13__c"
+        case atributo1214C = "Atributo_12_14__c"
+        case atributo1215C = "Atributo_12_15__c"
+        case atributo1216C = "Atributo_12_16__c"
         case parametrosFront12C = "Parametros_Front_12__c"
         case valor121C = "Valor_12_1__c"
         case valor122C = "Valor_12_2__c"
@@ -806,6 +876,16 @@ class BrandAccount: Object, ObjectKeyIdentifiable, Codable  {
         case atributo134C = "Atributo_13_4__c"
         case atributo135C = "Atributo_13_5__c"
         case atributo136C = "Atributo_13_6__c"
+        case atributo137C = "Atributo_13_7__c"
+        case atributo138C = "Atributo_13_8__c"
+        case atributo139C = "Atributo_13_9__c"
+        case atributo1310C = "Atributo_13_10__c"
+        case atributo1311C = "Atributo_13_11__c"
+        case atributo1312C = "Atributo_13_12__c"
+        case atributo1313C = "Atributo_13_13__c"
+        case atributo1314C = "Atributo_13_14__c"
+        case atributo1315C = "Atributo_13_15__c"
+        case atributo1316C = "Atributo_13_16__c"
         case parametrosFront13C = "Parametros_Front_13__c"
         case valor131C = "Valor_13_1__c"
         case valor132C = "Valor_13_2__c"

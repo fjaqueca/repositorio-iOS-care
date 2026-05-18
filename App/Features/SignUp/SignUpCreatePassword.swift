@@ -87,22 +87,28 @@ struct SignUpCreatePassword: View {
         }
         .background(
             Group {
-                    if UIState.singUpCreatePassUIState.imageBackground != "" {
-                        CachedAsyncImage(
-                            url: URL(string: UIState.singUpCreatePassUIState.imageBackground ),
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .edgesIgnoringSafeArea(.all)
-                                    .aspectRatio(contentMode: .fill)
-                            },
-                            placeholder: {
-                                ProgressView()
-                            }
-                        )
-                        .eraseToAnyView()
-                    }
+                // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
+                if UIState.singUpCreatePassUIState.imageBackground != "" {
+                    CachedAsyncImage(
+                        url: URL(string: UIState.singUpCreatePassUIState.imageBackground ),
+                        content: { image in
+                            image
+                                .resizable()
+                                .edgesIgnoringSafeArea(.all)
+                                .aspectRatio(contentMode: .fill)
+                        },
+                        placeholder: { ProgressView() }
+                    )
+                    .eraseToAnyView()
                 }
+                // LottieView(
+                //     animationName: "gradient_background",
+                //     loopMode: .loop,
+                //     contentMode: .scaleAspectFill
+                // )
+                // .edgesIgnoringSafeArea(.all)
+            }
         )
     }
     

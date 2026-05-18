@@ -132,8 +132,20 @@ struct AppView: View {
                     postLoginLoadingComplete = false
                     showPostLoginLoading = true
 
-                    await AppStatusManager.fetchData()
+                    // Watchdog: si fetchData tarda > 15s (network muy lento, call
+                    // colgado, etc.), igual cerramos el dialog para que el usuario
+                    // pueda interactuar. Los datos seguirán cargando en background
+                    // y la UI se actualizará reactivamente desde Realm.
+                    let watchdog = Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 15_000_000_000)
+                        if !Task.isCancelled && !postLoginLoadingComplete {
+                            print("⚠️ [AppView] Watchdog 15s: cerrando ConvenioLoadingDialog (fetchData aún corriendo)")
+                            postLoginLoadingComplete = true
+                        }
+                    }
 
+                    await AppStatusManager.fetchData()
+                    watchdog.cancel()
                     postLoginLoadingComplete = true
                 }
             case .onboarding:

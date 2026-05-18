@@ -114,9 +114,15 @@ struct ProgramsView: View {
     // MARK: - Empty State (paridad con Web/Android)
     private var emptyStateView: some View {
         VStack(spacing: 12) {
-            LottieView(animationName: "Empty_Box")
-                .frame(width: 280, height: 280)
+            // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+            // Para reactivar, comenta el Image y descomenta el LottieView.
+            Image(systemName: "doc.text.magnifyingglass")
+                .font(.system(size: 50, weight: .light))
+                .foregroundColor(Color(.systemGray3))
                 .padding(.top, 30)
+            // LottieView(animationName: "Empty_Box")
+            //     .frame(width: 280, height: 280)
+            //     .padding(.top, 30)
 
             if emptyStateReady {
                 TypewriterText("Sin programas asociados",

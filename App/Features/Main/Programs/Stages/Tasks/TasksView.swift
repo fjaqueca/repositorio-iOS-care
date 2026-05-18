@@ -114,8 +114,13 @@ struct TasksView: View {
                             
                             if goals.isEmpty {
                                 VStack(spacing: 12) {
-                                    LottieView(animationName: "Empty_Box")
-                                        .frame(width: 200, height: 200)
+                                    // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+                                    // Para reactivar, comenta el Image y descomenta el LottieView.
+                                    Image(systemName: "doc.text.magnifyingglass")
+                                        .font(.system(size: 50, weight: .light))
+                                        .foregroundColor(Color(.systemGray3))
+                                    // LottieView(animationName: "Empty_Box")
+                                    //     .frame(width: 200, height: 200)
                                     Text("No se encontraron tareas")
                                         .font(Font.custom("FiraSans-Bold", size: 19))
                                         .foregroundColor(Color(hex: "#5B6770"))

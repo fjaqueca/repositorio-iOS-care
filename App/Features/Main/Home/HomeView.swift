@@ -145,57 +145,62 @@ struct HomeView: View {
         }
         .accentColor(.blue)
         .onAppear {
-            // Ejecutar el servicio BrandAccount al entrar a HomeView (doble llamada)
+            // FIX OPTIMIZACIÓN: antes este onAppear hacía DOS network calls
+            // adicionales a getBrandAccount (uno via AppStatusManager y otro
+            // directo) que eran idénticos al que ya hace AppView.fetchData().
+            // Ahora:
+            //   1. Si ya hay BrandAccount en Realm (cargado por fetchData), lo
+            //      reutilizamos para buscar FormularioGeneral — cero network.
+            //   2. checkFichaClinicaGeneralAndDecide corre en paralelo, no
+            //      espera al BrandAccount (son independientes).
+            // Resultado: 2 calls menos al backend y latencia mucho menor.
             Task { @MainActor in
-                print("⏳ [Loading] Iniciando carga de HomeView...")
-                
-                // 1) Mantener flujo actual: persistir en Realm y generar clínicas
-                await AppStatusManager.loadBrandAccount()
-                
-                // 2) Obtener respuesta cruda para print y guardado en brandAccountResponse
-                if let agreementId = AppStatusManager.selectedEnterprise?.empresaC, !agreementId.isEmpty {
-                    print("🔎 Iniciando carga de BrandAccount con agreementId: \(agreementId)")
-                    let result = await Network.shared.getBrandAccount(agreementId: agreementId)
-                    switch result {
-                    case .success(let brands):
-                        // Guardar en variable local de estado
-                        self.brandAccountResponse = brands
-                        print("✅ BrandAccount cargado. totalSize: \(brands.totalSize ?? -1), done: \(brands.done ?? false), records: \(brands.records.count)")
-                        
-                        // ✅ Imprimir JSON legible en consola
-                        do {
-                            let encoder = JSONEncoder()
-                            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-                            let data = try encoder.encode(brands)
-                            if let jsonString = String(data: data, encoding: .utf8) {
-                                //print("✅ BrandAccount JSON (pretty):\n\(jsonString)")
-                            } else {
-                                print("ℹ️ No se pudo convertir a String el JSON de BrandAccount.")
-                            }
-                        } catch {
-                            print("❌ Error al serializar BrandAccount a JSON: \(error)")
-                        }
-                        
-                        // 🔎 Buscar el registro con Name == "FormularioGeneral"
-                        findFormularioGeneral(in: brands)
-                        
-                        // 3) NUEVO: Consultar si el usuario ya tiene Ficha Clínica General
-                        await checkFichaClinicaGeneralAndDecide()
-                        
-                    case .failure(let error):
-                        print("❌ Error al obtener BrandAccount (crudo):", error)
-                        // Aunque falle BrandAccount crudo, intentamos ficha clínica para decidir modal
-                        await checkFichaClinicaGeneralAndDecide()
+                print("⏳ [HomeView] Iniciando aterrizaje en Home...")
+                let t0 = Date()
+
+                // Watchdog: si en 12s isLoading no se apagó (network muy lento,
+                // call que se cuelga, etc.), forzamos la salida del estado loading
+                // para que el usuario pueda interactuar con la app.
+                let watchdog = Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 12_000_000_000)
+                    if !Task.isCancelled && self.isLoading {
+                        print("⚠️ [HomeView] Watchdog 12s: forzando isLoading=false")
+                        self.isLoading = false
                     }
-                } else {
-                    print("ℹ️ No hay agreementId disponible para cargar BrandAccount en HomeView.")
-                    // Sin convenio, igual intentamos ficha clínica por si hay account_id
-                    await checkFichaClinicaGeneralAndDecide()
                 }
-                
-                // ✅ El loading se ocultará DENTRO de applyFinalDecision()
-                // después de tomar la decisión final sobre el modal
-                print("✅ [Loading] Proceso de decisión completado")
+
+                // 1) Buscar FormularioGeneral en lo que ya hay en Realm (no
+                //    requiere network). Si Realm aún no tiene datos, hacemos un
+                //    fetch de respaldo en paralelo a la ficha clínica.
+                async let fichaTask: Void = checkFichaClinicaGeneralAndDecide()
+
+                if let cached = readBrandAccountFromRealm() {
+                    print("✅ [HomeView] BrandAccount tomado de Realm (sin network)")
+                    self.brandAccountResponse = cached
+                    findFormularioGeneral(in: cached)
+                } else if let agreementId = AppStatusManager.selectedEnterprise?.empresaC, !agreementId.isEmpty {
+                    print("ℹ️ [HomeView] Realm sin BrandAccount aún → fetch de respaldo")
+                    let result = await Network.shared.getBrandAccount(agreementId: agreementId)
+                    if case let .success(brands) = result {
+                        self.brandAccountResponse = brands
+                        findFormularioGeneral(in: brands)
+                    } else {
+                        print("❌ [HomeView] Fetch de respaldo de BrandAccount falló")
+                    }
+                }
+
+                await fichaTask
+                watchdog.cancel()
+
+                let elapsed = String(format: "%.2f", Date().timeIntervalSince(t0))
+                print("✅ [HomeView] Aterrizaje completo en \(elapsed)s")
+
+                // Red de seguridad: si por cualquier camino isLoading quedó en
+                // true, lo apagamos acá para evitar blur pegado.
+                if self.isLoading {
+                    print("⚠️ [HomeView] Safety net: forzando isLoading=false")
+                    self.isLoading = false
+                }
             }
         }
         .onChange(of: mostrarFormularioGeneral) { newValue in
@@ -276,6 +281,19 @@ struct HomeView: View {
             withAnimation(.easeInOut(duration: duration * 0.25)) {
                 waveRotation = 0
             }
+        }
+    }
+
+    // MARK: - Lectura de BrandAccount desde Realm
+    /// Retorna el `BrandAccounts` ya persistido localmente (sin network).
+    /// Devuelve nil si Realm aún no tiene datos.
+    private func readBrandAccountFromRealm() -> BrandAccounts? {
+        do {
+            let realm = try Realm(queue: nil)
+            return realm.objects(BrandAccounts.self).first
+        } catch {
+            print("❌ [HomeView] No se pudo abrir Realm para leer BrandAccount: \(error.localizedDescription)")
+            return nil
         }
     }
 

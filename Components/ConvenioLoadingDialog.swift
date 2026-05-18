@@ -174,10 +174,15 @@ struct ConvenioLoadingDialog: View {
     }
 
     private func completeAndDismiss() {
-        withAnimation(.easeInOut(duration: 0.6)) {
+        // Cerrar lo más rápido posible una vez que el work terminó.
+        // Antes: 0.6s bar + 0.8s pausa + 0.2s fade = 1.6s de padding.
+        // Ahora: 0.25s bar + 0.15s pausa + 0.2s fade = 0.6s de padding.
+        // El padding mínimo existe solo para que el ojo perciba el "100%"
+        // antes de que desaparezca — si fuera 0s se vería como un corte seco.
+        withAnimation(.easeInOut(duration: 0.25)) {
             loadingProgress = 1.0
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             guard isActive else { return }
             stopTimers()
             AppStatusManager.setLoading(false)

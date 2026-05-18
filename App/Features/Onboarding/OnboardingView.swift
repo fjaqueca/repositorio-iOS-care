@@ -88,17 +88,27 @@ struct OnboardingView: View {
 
 
                         TabView(selection: $currentSlide) {
+                            // TEMPORAL: carousel Lottie deshabilitado, se restaura item() con URL dinámica desde Salesforce.
+                            // Para reactivar los Lotties, comenta las 3 llamadas a item(...) y descomenta las llamadas a lottieItem(...).
+
                             // Slide 0
-                            lottieItem(text: UIState.onboardingUIState.nav1.textNav.isEmpty ? "Atención virtual fácil e intuitiva con especialistas a tu disposición." : UIState.onboardingUIState.nav1.textNav, animationName: "onboarding_lottie_1", UIStateNav: UIState.onboardingUIState.nav1, slideIndex: 0)
+                            item(text: UIState.onboardingUIState.nav1.textNav.isEmpty ? "Atención virtual fácil e intuitiva con especialistas a tu disposición." : UIState.onboardingUIState.nav1.textNav, imageName: "onboarding-1", UIStateNav: UIState.onboardingUIState.nav1, slideIndex: 0)
                                 .tag(0)
 
                             // Slide 1
-                            lottieItem(text: UIState.onboardingUIState.nav2.textNav.isEmpty ? "Primer ecosistema de salud capaz de generar múltiples interacciones desde la comodidad de tu dispositivo móvil." : UIState.onboardingUIState.nav2.textNav, animationName: "Medical_App", UIStateNav: UIState.onboardingUIState.nav2, slideIndex: 1)
+                            item(text: UIState.onboardingUIState.nav2.textNav.isEmpty ? "Primer ecosistema de salud capaz de generar múltiples interacciones desde la comodidad de tu dispositivo móvil." : UIState.onboardingUIState.nav2.textNav, imageName: "onboarding-2", UIStateNav: UIState.onboardingUIState.nav2, slideIndex: 1)
                                 .tag(1)
 
                             // Slide 2
-                            gifItem(text: UIState.onboardingUIState.nav3.textNav.isEmpty ? "Orientación, asesoría y seguimiento continuo con uno de nuestros profesionales." : UIState.onboardingUIState.nav3.textNav, gifName: "medical_cartoon.gif", UIStateNav: UIState.onboardingUIState.nav3, slideIndex: 2)
+                            item(text: UIState.onboardingUIState.nav3.textNav.isEmpty ? "Orientación, asesoría y seguimiento continuo con uno de nuestros profesionales." : UIState.onboardingUIState.nav3.textNav, imageName: "onboarding-3", UIStateNav: UIState.onboardingUIState.nav3, slideIndex: 2)
                                 .tag(2)
+
+                            // lottieItem(text: UIState.onboardingUIState.nav1.textNav.isEmpty ? "Atención virtual fácil e intuitiva con especialistas a tu disposición." : UIState.onboardingUIState.nav1.textNav, animationName: "onboarding_lottie_1", UIStateNav: UIState.onboardingUIState.nav1, slideIndex: 0)
+                            //     .tag(0)
+                            // lottieItem(text: UIState.onboardingUIState.nav2.textNav.isEmpty ? "Primer ecosistema de salud capaz de generar múltiples interacciones desde la comodidad de tu dispositivo móvil." : UIState.onboardingUIState.nav2.textNav, animationName: "Medical_App", UIStateNav: UIState.onboardingUIState.nav2, slideIndex: 1)
+                            //     .tag(1)
+                            // lottieItem(text: UIState.onboardingUIState.nav3.textNav.isEmpty ? "Orientación, asesoría y seguimiento continuo con uno de nuestros profesionales." : UIState.onboardingUIState.nav3.textNav, animationName: "Front_Line_Doctos", UIStateNav: UIState.onboardingUIState.nav3, slideIndex: 2)
+                            //     .tag(2)
                         }
                         .tabViewStyle(.page)
                         .accentColor(Color.red)
@@ -120,7 +130,11 @@ struct OnboardingView: View {
                                 .frame(height: .buttonTitleHeight)
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(UIState.onboardingUIState.btnLogin.backgroundBtn != "" ? Color(hex: UIState.onboardingUIState.btnLogin.backgroundBtn) : .secondary)
+                        // TEMPORAL: color de fondo dinámico (btnLogin.backgroundBtn) reemplazado
+                        // por hardcode #0857A0 para evaluar contraste sobre el fondo gradiente
+                        // animado del onboarding. Revertir descomentando la línea original.
+                        // .tint(UIState.onboardingUIState.btnLogin.backgroundBtn != "" ? Color(hex: UIState.onboardingUIState.btnLogin.backgroundBtn) : .secondary)
+                        .tint(Color(hex: "#0857A0"))
                         .scaleEffect(buttonScale)
                         .opacity(showButton ? 1 : 0)
                         .offset(y: showButton ? 0 : 30)
@@ -141,26 +155,32 @@ struct OnboardingView: View {
                     .padding(.bottom, .margin * 2)
                     .background(
                         Group {
-                                if UIState.onboardingUIState.imageBackground != "" {
-                                    CachedAsyncImage(
-                                        url: URL(string: UIState.onboardingUIState.imageBackground ),
-                                        content: { image in
-                                            image
-                                                .resizable()
-                                                .edgesIgnoringSafeArea(.all)
-                                        },
-                                        placeholder: {
-                                            ProgressView()
-                                        }
-                                    )
+                            // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                            // Para reactivar el Lottie animado, comenta el bloque if/else y descomenta el LottieView.
+                            if UIState.onboardingUIState.imageBackground != "" {
+                                CachedAsyncImage(
+                                    url: URL(string: UIState.onboardingUIState.imageBackground ),
+                                    content: { image in
+                                        image
+                                            .resizable()
+                                            .edgesIgnoringSafeArea(.all)
+                                    },
+                                    placeholder: { ProgressView() }
+                                )
+                                .eraseToAnyView()
+                            } else {
+                                Image("onboarding-background")
+                                    .resizable()
+                                    .edgesIgnoringSafeArea(.all)
+                                    .aspectRatio(contentMode: .fill)
                                     .eraseToAnyView()
-                                } else {
-                                    Image("onboarding-background")
-                                        .resizable()
-                                        .edgesIgnoringSafeArea(.all)
-                                        .aspectRatio(contentMode: .fill)
-                                        .eraseToAnyView()
-                                }
+                            }
+                            // LottieView(
+                            //     animationName: "gradient_background",
+                            //     loopMode: .loop,
+                            //     contentMode: .scaleAspectFill
+                            // )
+                            // .edgesIgnoringSafeArea(.all)
                         #if Premedic
                             Image("logoPremedic")
                                 .resizable()
@@ -318,11 +338,17 @@ struct OnboardingView: View {
         }
     }
 
+    // TEMPORAL: función lottieItem conservada como referencia, pero LottieView deshabilitado.
+    // No se llama desde el carousel (el carousel usa item() con URL dinámica). Para reactivar,
+    // descomenta el LottieView y reactiva las llamadas en TabView.
     func lottieItem(text: String, animationName: String, UIStateNav: NavUIState, slideIndex: Int) -> some View {
         VStack(spacing: .margin) {
             Spacer()
-            LottieView(animationName: animationName)
-                .frame(width: 320, height: 320)
+            // LottieView(animationName: animationName)
+            //     .frame(width: 350, height: 350)
+            //     .padding(.top, 60)
+            Color.clear
+                .frame(width: 350, height: 350)
                 .padding(.top, 60)
 
             if slideTextReady && currentSlide == slideIndex {
@@ -349,7 +375,7 @@ struct OnboardingView: View {
             AnimatedImage(name: gifName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 320, height: 320)
+                .frame(width: 350, height: 350)
                 .padding(.top, 60)
 
             if slideTextReady && currentSlide == slideIndex {

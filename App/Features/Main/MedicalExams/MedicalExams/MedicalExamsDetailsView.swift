@@ -32,22 +32,19 @@ struct MedicalExamsDetailsView: View {
     @Binding var isFavorite: Bool
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    // Config dinámica COMPLETA del detalle de prescripción.
+    // Viene de Elemento 9 del record `ExamenesAutomatizadosCustom`
+    // (VistaDetallePrescripcionesMedicas).
+    var vistaDetalle: VistaDetallePrescripcionesConfig = VistaDetallePrescripcionesConfig()
+    // Config de la vista "Subir Examen" (Elemento 10 del Custom record).
+    // No se consume aquí — solo se reenvía a SendNewExamView.
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var badgeOrdenMedica: BadgeConfig = BadgeConfig()
     var badgeExamenAutomatizado: BadgeConfig = BadgeConfig()
     var badgeRecetaMedica: BadgeConfig = BadgeConfig()
-    var badgeDetallePrescripciones: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleRecetaMedica: BadgeDetalleConfig = BadgeDetalleConfig()
-    var badgeDetalleExamenMedico: BadgeDetalleConfig = BadgeDetalleConfig()
-    var botonVerDocumentoEnviado: ButtonExamConfig = ButtonExamConfig()
-    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
-    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
-    var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     /// Binding al MedicalExamsView padre. Lo seteamos a true tras un upload exitoso
     /// para que la lista se refresque al volver.
     @Binding var listNeedsRefresh: Bool
@@ -83,8 +80,11 @@ struct MedicalExamsDetailsView: View {
         case SuccessPostExam
         case SendFileError
     }
-    private var accentColor: Color {
-        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    // Color del icono PDF del bloque "Examen adjunto" — viene de 9.10
+    // (ColorIconoExamenAdjunto). Si no hay config, fallback a gris medio.
+    private var examenAdjuntoIconoColor: Color {
+        let c = vistaDetalle.examenAdjuntoIconoColor
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
     }
 
     /// Decisión de UI del botón "Subir/Ver documento enviado" (paridad con Android).
@@ -99,33 +99,40 @@ struct MedicalExamsDetailsView: View {
         ZStack {
             VStack(spacing: 0) {
                 Divider()
+                    .onAppear {
+                        let csa = vistaSubir.containerSinArchivo
+                        let cca = vistaSubir.containerConArchivo
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("📋 [MedicalExamsDetailsView] vistaSubir RECIBIDO")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                        print("   notaTexto: \"\(vistaSubir.notaTexto)\"")
+                        print("   [10.7] sinArchivo: borde=\"\(csa.colorBorde)\" icono=\"\(csa.icono)\" colorIcono=\"\(csa.colorIcono)\" fondo=\"\(csa.colorFondoContainer)\"")
+                        print("   [10.8] conArchivo: borde=\"\(cca.colorBorde)\" fondoContainer=\"\(cca.colorFondoContainer)\"")
+                        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    }
                 ScrollView {
                     VStack(spacing: 20) {
                         // Main card
-                        let _ = {
-                            let btns = botonesDetalleExamen
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("📋 [MedicalExamsDetailsView] CONFIG DINÁMICA BOTONES DETALLE")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                            print("   btnDescargar: texto=\"\(btns.botonDescargar.texto)\" font=\(btns.botonDescargar.font) size=\(btns.botonDescargar.size) colorTexto=\(btns.botonDescargar.colorTexto) colorFondo=\(btns.botonDescargar.colorFondo) icono=\(btns.botonDescargar.icono) colorBorde=\(btns.botonDescargar.colorBorde)")
-                            print("   btnCompartir: texto=\"\(btns.botonCompartir.texto)\" font=\(btns.botonCompartir.font) size=\(btns.botonCompartir.size) colorTexto=\(btns.botonCompartir.colorTexto) colorFondo=\(btns.botonCompartir.colorFondo) icono=\(btns.botonCompartir.icono) colorBorde=\(btns.botonCompartir.colorBorde)")
-                            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-                        }()
                         VStack(alignment: .leading, spacing: 0) {
-                            // Exam name & date
-                            VStack(alignment: .leading, spacing: 6) {
+                            // Exam name & date (spacing aumentado para respirar
+                            // entre título / badge / fecha)
+                            VStack(alignment: .leading, spacing: 10) {
+                                // 9.4 AtributosTituloCardDetalle
                                 Text((exam.Name ?? "Sin nombre").uppercased())
-                                    .font(Font.custom("FiraSans-Bold", size: 16))
-                                    .foregroundColor(Color(hex: "#333333"))
+                                    .font(Font.custom(
+                                        vistaDetalle.tituloCardAttr.font.isEmpty ? "FiraSans-Bold" : vistaDetalle.tituloCardAttr.font,
+                                        size: CGFloat(Int(vistaDetalle.tituloCardAttr.size) ?? 16)
+                                    ))
+                                    .foregroundColor(Color(hex: vistaDetalle.tituloCardAttr.color.isEmpty ? "#333333" : vistaDetalle.tituloCardAttr.color))
                                     .lineLimit(3)
 
-                                // Badge indicador de tipo de documento (dinámico desde Elemento 10)
+                                // Badge indicador de tipo de documento (9.5/9.14/9.15)
                                 if let tipo = exam.tipoDocumento {
                                     let detalleBadge: BadgeDetalleConfig = {
                                         switch tipo {
-                                        case .examenAutomatizado: return badgeDetallePrescripciones
-                                        case .recetaMedica: return badgeDetalleRecetaMedica
-                                        case .ordenMedica: return badgeDetalleExamenMedico
+                                        case .examenAutomatizado: return vistaDetalle.badgeCreadoPaciente
+                                        case .recetaMedica:       return vistaDetalle.badgeRecetaMedica
+                                        case .ordenMedica:        return vistaDetalle.badgeExamenMedico
                                         }
                                     }()
                                     let badgeTexto: String = {
@@ -135,9 +142,11 @@ struct MedicalExamsDetailsView: View {
                                         return detalleBadge.texto
                                     }()
                                     HStack(spacing: 6) {
-                                        Image(systemName: detalleBadge.icono)
-                                            .font(.system(size: CGFloat(Double(detalleBadge.size) ?? 15)))
-                                            .foregroundColor(Color(hex: detalleBadge.colorTexto))
+                                        if !detalleBadge.icono.isEmpty {
+                                            Image(systemName: detalleBadge.icono)
+                                                .font(.system(size: CGFloat(Double(detalleBadge.size) ?? 15)))
+                                                .foregroundColor(Color(hex: detalleBadge.colorTexto))
+                                        }
                                         Text(badgeTexto)
                                             .font(Font.custom(
                                                 detalleBadge.font.isEmpty ? "FiraSans-Regular" : detalleBadge.font,
@@ -150,10 +159,23 @@ struct MedicalExamsDetailsView: View {
                                     .background(Capsule().fill(Color(hex: detalleBadge.colorFondo)))
                                 }
 
+                                // 9.6 FechaDetallePrescripcion (con icono opcional)
                                 if let dateStr = exam.desdeC, !dateStr.isEmpty {
-                                    Text(formatDateDisplay(dateStr))
-                                        .font(Font.custom("FiraSans-Regular", size: 13))
-                                        .foregroundColor(.gray)
+                                    let fechaColor = Color(hex: vistaDetalle.fechaAttr.color.isEmpty ? "#888888" : vistaDetalle.fechaAttr.color)
+                                    let fechaSize = CGFloat(Int(vistaDetalle.fechaAttr.size) ?? 13)
+                                    let fechaFont = vistaDetalle.fechaAttr.font.isEmpty ? "FiraSans-Regular" : vistaDetalle.fechaAttr.font
+                                    let fechaIcono = vistaDetalle.fechaIcono
+                                    let fechaIconoColor = Color(hex: vistaDetalle.fechaIconoColor.isEmpty ? "#888888" : vistaDetalle.fechaIconoColor)
+                                    HStack(spacing: 4) {
+                                        if !fechaIcono.isEmpty {
+                                            Image(systemName: fechaIcono)
+                                                .font(.system(size: fechaSize))
+                                                .foregroundColor(fechaIconoColor)
+                                        }
+                                        Text(formatDateDisplay(dateStr, outputFormat: vistaDetalle.fechaFormato))
+                                            .font(Font.custom(fechaFont, size: fechaSize))
+                                            .foregroundColor(fechaColor)
+                                    }
                                 }
                             }
                             .padding(.horizontal, 16)
@@ -163,15 +185,22 @@ struct MedicalExamsDetailsView: View {
                             Divider()
                                 .padding(.horizontal, 16)
 
-                            // Indicaciones
+                            // Indicaciones (9.7 título + 9.8 texto)
                             VStack(alignment: .leading, spacing: 6) {
-                                Text("Indicaciones")
-                                    .font(Font.custom("FiraSans-Bold", size: 15))
-                                    .foregroundColor(Color(hex: "#333333"))
+                                Text(vistaDetalle.indicacionesTitulo.isEmpty ? "Indicaciones" : vistaDetalle.indicacionesTitulo)
+                                    .font(Font.custom(
+                                        vistaDetalle.indicacionesTituloAttr.font.isEmpty ? "FiraSans-Bold" : vistaDetalle.indicacionesTituloAttr.font,
+                                        size: CGFloat(Int(vistaDetalle.indicacionesTituloAttr.size) ?? 15)
+                                    ))
+                                    .foregroundColor(Color(hex: vistaDetalle.indicacionesTituloAttr.color.isEmpty ? "#333333" : vistaDetalle.indicacionesTituloAttr.color))
+                                    .frame(maxWidth: .infinity, alignment: alignmentFor(vistaDetalle.indicacionesTituloAttr.alignment))
 
                                 Text(exam.descripcionC ?? "Sin descripción")
-                                    .font(Font.custom("FiraSans-Regular", size: 14))
-                                    .foregroundColor(.gray)
+                                    .font(Font.custom(
+                                        vistaDetalle.indicacionesTextoAttr.font.isEmpty ? "FiraSans-Regular" : vistaDetalle.indicacionesTextoAttr.font,
+                                        size: CGFloat(Int(vistaDetalle.indicacionesTextoAttr.size) ?? 14)
+                                    ))
+                                    .foregroundColor(Color(hex: vistaDetalle.indicacionesTextoAttr.color.isEmpty ? "#888888" : vistaDetalle.indicacionesTextoAttr.color))
                             }
                             .padding(.horizontal, 16)
                             .padding(.top, 12)
@@ -180,36 +209,31 @@ struct MedicalExamsDetailsView: View {
                             Divider()
                                 .padding(.horizontal, 16)
 
-                            // Examen adjunto
+                            // Examen adjunto (9.9 título + 9.10 icono)
                             VStack(alignment: .leading, spacing: 10) {
-                                Text("Examen adjunto")
-                                    .font(Font.custom("FiraSans-Medium", size: 14))
-                                    .foregroundColor(Color(hex: "#333333"))
+                                Text(vistaDetalle.examenAdjuntoTitulo.isEmpty ? "Examen adjunto" : vistaDetalle.examenAdjuntoTitulo)
+                                    .font(Font.custom(
+                                        vistaDetalle.examenAdjuntoTituloAttr.font.isEmpty ? "FiraSans-Medium" : vistaDetalle.examenAdjuntoTituloAttr.font,
+                                        size: CGFloat(Int(vistaDetalle.examenAdjuntoTituloAttr.size) ?? 14)
+                                    ))
+                                    .foregroundColor(Color(hex: vistaDetalle.examenAdjuntoTituloAttr.color.isEmpty ? "#333333" : vistaDetalle.examenAdjuntoTituloAttr.color))
+                                    .frame(maxWidth: .infinity, alignment: alignmentFor(vistaDetalle.examenAdjuntoTituloAttr.alignment))
 
+                                // Icono PDF — usa exclusivamente la config 9.10
+                                // (ColorIconoExamenAdjunto). NO se descarga ninguna
+                                // imagen externa porque eso impide aplicar el color
+                                // dinámico del record.
                                 Button {
                                     downloadArchive(action: .isOpen)
                                 } label: {
-                                    VStack {
-                                        if let url = URL(string: UIState.examDetail.svgIconShowArchive) {
-                                            WebImage(url: url) { image in
-                                                image.resizable()
-                                                    .scaledToFit()
-                                                    .frame(height: 42)
-                                            } placeholder: {
-                                                Image(systemName: "doc.richtext")
-                                                    .font(.system(size: 32, weight: .light))
-                                                    .foregroundColor(accentColor)
-                                            }
-                                        } else {
-                                            Image(systemName: "doc.richtext")
-                                                .font(.system(size: 32, weight: .light))
-                                                .foregroundColor(accentColor)
-                                        }
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 14)
-                                    .background(Color(.systemGray6))
-                                    .cornerRadius(10)
+                                    let iconSize = CGFloat(Int(vistaDetalle.examenAdjuntoIconoSize) ?? 32)
+                                    Image(systemName: "doc.richtext")
+                                        .font(.system(size: iconSize, weight: .light))
+                                        .foregroundColor(examenAdjuntoIconoColor)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 14)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(10)
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -248,7 +272,7 @@ struct MedicalExamsDetailsView: View {
             .alert(item: $alertAuthEvent, content: { tipe in
                 switch tipe {
                 case .DownloadSucces:
-                    return Alert(title: Text("Descarga Completa"), message: Text("Archivo guardado en: Archivos > iPhone > \(UIState.examList.textToShare)"), dismissButton: .default(Text("OK")))
+                    return Alert(title: Text("Descarga Completa"), message: Text("Archivo guardado en la app de Archivos"), dismissButton: .default(Text("OK")))
                 case .DownloadError:
                     return Alert(title: Text(""), message: Text("Error en la descarga"), dismissButton: .default(Text("OK")))
                 case .SuccessPostExam:
@@ -260,34 +284,40 @@ struct MedicalExamsDetailsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
+                // 9.2 TituloGeneralDetallePrescripcionesMedicas
                 ToolbarItem(placement: .principal) {
-                    Text(navTitle.isEmpty ? "Prescripciones Médicas" : navTitle)
+                    Text(vistaDetalle.tituloTexto.isEmpty ? "Prescripciones Médicas" : vistaDetalle.tituloTexto)
                         .font(Font.custom(
-                            navTitleAttr.font.isEmpty ? "FiraSans-Bold" : navTitleAttr.font,
-                            size: CGFloat(Int(navTitleAttr.size) ?? 20)
+                            vistaDetalle.tituloAttr.font.isEmpty ? "FiraSans-Bold" : vistaDetalle.tituloAttr.font,
+                            size: CGFloat(Int(vistaDetalle.tituloAttr.size) ?? 18)
                         ))
-                        .foregroundColor(Color(hex: navTitleAttr.color.isEmpty ? "#00BBDC" : navTitleAttr.color))
+                        .foregroundColor(Color(hex: vistaDetalle.tituloAttr.color.isEmpty ? "#00BBDC" : vistaDetalle.tituloAttr.color))
                 }
+                // 9.3 IconoEstrella
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    let estrellaSize = CGFloat(Int(vistaDetalle.iconoEstrellaSize) ?? 18)
+                    let estrellaColor = Color(hex: vistaDetalle.iconoEstrellaColor.isEmpty ? "#333333" : vistaDetalle.iconoEstrellaColor)
                     Button(action: {
                         changeFavorite()
                     }) {
                         Image(systemName: isFavorite ? "star.fill" : "star")
-                            .foregroundColor(isFavorite ? .yellow : Color(hex: UIState.examDetail.title.color.isEmpty ? "#333333" : UIState.examDetail.title.color))
+                            .font(.system(size: estrellaSize))
+                            .foregroundColor(isFavorite ? .yellow : estrellaColor)
                     }
                 }
+                // 9.1 BackArrow
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color(hex: backArrowColor))
+                            .foregroundColor(Color(hex: vistaDetalle.backArrowColor.isEmpty ? "#00BBDC" : vistaDetalle.backArrowColor))
                     }
                 }
             }
             .sheet(isPresented: $showSheetView, content: {
-                ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
+                ShareSheet(activityItems: ["¡Hola! Estos documentos fueron compartidos desde la App.\n", self.urlToShare as Any])
             })
             .sheet(isPresented: $showWebView) {
                 if let urlToShare = self.urlToShare {
@@ -301,7 +331,7 @@ struct MedicalExamsDetailsView: View {
                     }
                 }
             } message: {
-                Text("Tu examen quedó guardado en la aplicación de archivos en la ruta: Archivos > iPhone > \(UIState.examList.textToShare)")
+                Text("Tu examen quedó guardado en la aplicación de archivos")
             }
             .blur(radius: isLoading ? 3 : 0.000001)
 
@@ -317,18 +347,21 @@ struct MedicalExamsDetailsView: View {
         }
         .background(Color(.systemGroupedBackground))
     }
-    // MARK: - Subir Examen Button
+    // MARK: - Subir Examen / Ver documento enviado
+    // Botón dual: si la prescripción ya tiene documento adjunto se muestra
+    // BotonVerDocumentoEnviado (9.16); si no, BotonSubirExamen (9.13). Ambos
+    // vienen del Elemento 9 de ExamenesAutomatizadosCustom.
     private var subExamButton: some View {
         Group {
             if isExamPublish {
-                let btn = botonVerDocumentoEnviado
+                let btn = vistaDetalle.botonVerDocumentoEnviado
                 Button {
                     sendNewExam = true
                 } label: {
                     Text(btn.texto.isEmpty ? "Ver documento enviado" : btn.texto)
                         .font(Font.custom(
-                            btn.font.isEmpty ? "FiraSans-Bold" : btn.font,
-                            size: CGFloat(Double(btn.size) ?? 16)
+                            btn.font.isEmpty ? "FiraSans-Regular" : btn.font,
+                            size: CGFloat(Double(btn.size) ?? 17)
                         ))
                         .foregroundColor(Color(hex: btn.colorTexto.isEmpty ? "#FFFFFF" : btn.colorTexto))
                         .frame(maxWidth: .infinity)
@@ -339,7 +372,7 @@ struct MedicalExamsDetailsView: View {
                         )
                 }
             } else {
-                let btn = botonSubirExamenConfig
+                let btn = vistaDetalle.botonSubirExamen
                 Button {
                     sendNewExam = true
                 } label: {
@@ -375,17 +408,17 @@ struct MedicalExamsDetailsView: View {
         })
         .navigationLink(isActive: $sendNewExam) {
             if isExamPublish {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, vistaSubir: vistaSubir, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, examName: exam.Name ?? "", isPublished: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             } else {
-                SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
+                SendNewExamView(UIState: $UIState, vistaSubir: vistaSubir, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, examName: exam.Name ?? "", fromOrderExam: true, exam: medicExamToPatientExam(), publisher: self.publisher)
             }
         }
     }
 
-    // MARK: - Download & Share Buttons
+    // MARK: - Download & Share Buttons (9.11 + 9.12)
     var buttonsBottom: some View {
         HStack(spacing: 12) {
-            let btnDesc = botonesDetalleExamen.botonDescargar
+            let btnDesc = vistaDetalle.botonDescargar
             Button {
                 downloadArchive(action: .isDownload)
             } label: {
@@ -417,7 +450,7 @@ struct MedicalExamsDetailsView: View {
                 )
             }
 
-            let btnComp = botonesDetalleExamen.botonCompartir
+            let btnComp = vistaDetalle.botonCompartir
             Button {
                 downloadArchive(action: .isShare)
             } label: {
@@ -616,17 +649,27 @@ struct MedicalExamsDetailsView: View {
         return patientExam
     }
 
-    /// Convierte fecha de formato Salesforce (yyyy-MM-dd) a formato display (dd-MM-yyyy)
-    private func formatDateDisplay(_ dateStr: String) -> String {
+    /// Convierte fecha de formato Salesforce (yyyy-MM-dd) al formato pedido por
+    /// el record (9.6 FechaDetallePrescripcion). Default dd-MM-yyyy si no hay config.
+    private func formatDateDisplay(_ dateStr: String, outputFormat: String = "dd-MM-yyyy") -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd"
         inputFormatter.locale = Locale(identifier: "en_US_POSIX")
         let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd-MM-yyyy"
+        outputFormatter.dateFormat = outputFormat.isEmpty ? "dd-MM-yyyy" : outputFormat
         if let date = inputFormatter.date(from: dateStr) {
             return outputFormatter.string(from: date)
         }
         return dateStr
+    }
+
+    /// Convierte la "Posicion" Salesforce ("Left"/"Center"/"Right") a SwiftUI Alignment.
+    private func alignmentFor(_ posicion: String) -> Alignment {
+        switch posicion.lowercased() {
+        case "center":  return .center
+        case "right":   return .trailing
+        default:        return .leading
+        }
     }
 
     /// Consulta puntual al backend para refrescar el PatientExam asociado a ESTA orden,

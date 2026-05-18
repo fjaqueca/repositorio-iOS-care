@@ -1165,6 +1165,105 @@
 		7AE653152F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653162F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
 		7AE653172F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */ = {isa = PBXBuildFile; fileRef = 7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */; };
+		7AF5830C2FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF5830D2FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF5830E2FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF5830F2FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583102FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583112FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583122FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583132FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583142FB4EFE9007561C9 /* Animated_Banner.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */; };
+		7AF583162FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF583172FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF583182FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF583192FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF5831A2FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF5831B2FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF5831C2FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF5831D2FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF5831E2FB51148007561C9 /* Single_Leg.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583152FB51148007561C9 /* Single_Leg.json */; };
+		7AF583202FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583212FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583222FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583232FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583242FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583252FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583262FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583272FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF583282FB51750007561C9 /* Financial.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5831F2FB51750007561C9 /* Financial.json */; };
+		7AF5832A2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF5832B2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF5832C2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF5832D2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF5832E2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF5832F2FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF583302FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF583312FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF583322FB51B1A007561C9 /* Social.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583292FB51B1A007561C9 /* Social.json */; };
+		7AF583342FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF583352FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF583362FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF583372FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF583382FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF583392FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF5833A2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF5833B2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF5833C2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */; };
+		7AF5833E2FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF5833F2FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583402FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583412FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583422FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583432FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583442FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583452FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583462FB51CF9007561C9 /* Telemedicina.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5833D2FB51CF9007561C9 /* Telemedicina.json */; };
+		7AF583482FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF583492FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834A2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834B2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834C2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834D2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834E2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF5834F2FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF583502FB522F7007561C9 /* onboarding_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583472FB522F7007561C9 /* onboarding_background.lottie */; };
+		7AF583522FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583532FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583542FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583552FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583562FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583572FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583582FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF583592FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF5835A2FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */; };
+		7AF5835C2FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF5835D2FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF5835E2FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF5835F2FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583602FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583612FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583622FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583632FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583642FB526FD007561C9 /* gradient_background.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5835B2FB526FD007561C9 /* gradient_background.lottie */; };
+		7AF583662FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF583672FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF583682FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF583692FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF5836A2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF5836B2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF5836C2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF5836D2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF5836E2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */; };
+		7AF583702FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583712FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583722FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583732FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583742FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583752FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583762FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583772FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
+		7AF583782FB52A28007561C9 /* Banner_Dot.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */; };
 		7AFBB36C2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
 		7AFBB36D2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
 		7AFBB36E2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */; };
@@ -3334,6 +3433,17 @@
 		7AE652F02F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_ELEMENTSVIEW_FIX.md; sourceTree = "<group>"; };
 		7AE652FA2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ANDROID_IOS_PARITY_VERIFICATION.md; sourceTree = "<group>"; };
 		7AE6530E2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = REVERT_INVISIBLE_FILTER_CHANGE.md; sourceTree = "<group>"; };
+		7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Animated_Banner.json; sourceTree = "<group>"; };
+		7AF583152FB51148007561C9 /* Single_Leg.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Single_Leg.json; sourceTree = "<group>"; };
+		7AF5831F2FB51750007561C9 /* Financial.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Financial.json; sourceTree = "<group>"; };
+		7AF583292FB51B1A007561C9 /* Social.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Social.json; sourceTree = "<group>"; };
+		7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Fisico_Emocional.json; sourceTree = "<group>"; };
+		7AF5833D2FB51CF9007561C9 /* Telemedicina.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Telemedicina.json; sourceTree = "<group>"; };
+		7AF583472FB522F7007561C9 /* onboarding_background.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = onboarding_background.lottie; sourceTree = "<group>"; };
+		7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = Front_Line_Doctos.lottie; sourceTree = "<group>"; };
+		7AF5835B2FB526FD007561C9 /* gradient_background.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = gradient_background.lottie; sourceTree = "<group>"; };
+		7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = squat_proxima_cita.lottie; sourceTree = "<group>"; };
+		7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = Banner_Dot.lottie; sourceTree = "<group>"; };
 		7AFBB36A2FAE1C70006F83EA /* onboarding-lottie-1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-lottie-1.json"; sourceTree = "<group>"; };
 		7AFBB3752FAE2AAC006F83EA /* ConfettiModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiModifier.swift; sourceTree = "<group>"; };
 		7AFBB3762FAE2AAC006F83EA /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -3806,6 +3916,17 @@
 		7AFBB36B2FAE1C70006F83EA /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				7AF5831F2FB51750007561C9 /* Financial.json */,
+				7AF5833D2FB51CF9007561C9 /* Telemedicina.json */,
+				7AF5835B2FB526FD007561C9 /* gradient_background.lottie */,
+				7AF5836F2FB52A28007561C9 /* Banner_Dot.lottie */,
+				7AF583472FB522F7007561C9 /* onboarding_background.lottie */,
+				7AF583652FB528C7007561C9 /* squat_proxima_cita.lottie */,
+				7AF583292FB51B1A007561C9 /* Social.json */,
+				7AF583512FB5262F007561C9 /* Front_Line_Doctos.lottie */,
+				7AF583332FB51B8D007561C9 /* Fisico_Emocional.json */,
+				7AF583152FB51148007561C9 /* Single_Leg.json */,
+				7AF5830B2FB4EFE9007561C9 /* Animated_Banner.json */,
 				7A25D9E22FB38E1800721088 /* Equipo_Medico.json */,
 				7A25D9D82FB38BB200721088 /* Doctor_Saludando.json */,
 				7A25D9CE2FB25EFC00721088 /* medical_cartoon.gif */,
@@ -4868,10 +4989,13 @@
 				7A550D772F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9A72FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12E2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583212FB51750007561C9 /* Financial.json in Resources */,
 				7AE652AD2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A22F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF583642FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				7A2F7B672ED8DBA00095661C /* SplashViewBCI.storyboard in Resources */,
 				7AE652CB2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583712FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF562FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DE2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				7A2F7B682ED8DBA00095661C /* Assets.xcassets in Resources */,
@@ -4887,6 +5011,8 @@
 				7AE652B52F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				7A2F7B6B2ED8DBA00095661C /* firasans_regular.ttf in Resources */,
 				7AE6530F2F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF583322FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834A2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FE2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CF92F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				7A2F7B6C2ED8DBA00095661C /* fira-sans-medium.ttf in Resources */,
@@ -4895,9 +5021,11 @@
 				7A96468B2F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B8A2ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BBF2F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583532FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				7A2F7B6D2ED8DBA00095661C /* SplashViewPremedic.storyboard in Resources */,
 				7A9001922F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A32F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF583142FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				7A2F7B6E2ED8DBA00095661C /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001892F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469F2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -4905,6 +5033,7 @@
 				7A9646BC2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8F2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				7A2F7B6F2ED8DBA00095661C /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF583192FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB36E2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D22FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F82F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -4915,10 +5044,12 @@
 				7AB6ECC82F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378C2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39002F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF5833E2FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12662F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653012F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBD2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EB2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF5833B2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F22F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1572F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A9646822F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -4934,6 +5065,7 @@
 				7A25D9E32FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AF2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646902F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF583662FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				7A2F7B722ED8DBA00095661C /* SplashViewWTW.storyboard in Resources */,
 				7A2F7B732ED8DBA00095661C /* firasans_italic.ttf in Resources */,
 			);
@@ -4953,10 +5085,13 @@
 				7A550D7B2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AE2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1272F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583222FB51750007561C9 /* Financial.json in Resources */,
 				7AE652B02F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646AA2F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF5835C2FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E643D4482B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CC2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583732FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF572FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DD2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				87D3AEEC2897E1D30089A2C8 /* Assets.xcassets in Resources */,
@@ -4972,6 +5107,8 @@
 				7AE652BA2F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				87D3AF1C28991AA00089A2C8 /* firasans_regular.ttf in Resources */,
 				7AE653102F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832C2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834E2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FF2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614D002F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				87427CC9291C6A4800825976 /* fira-sans-medium.ttf in Resources */,
@@ -4980,9 +5117,11 @@
 				7A9646862F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B882ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BBC2F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF5835A2FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F22D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A9001932F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A72F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF5830E2FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86A2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A90018A2F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469C2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -4990,6 +5129,7 @@
 				7A9646B82F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D932F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC712BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF5831C2FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB3712FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D42FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F22F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5000,10 +5140,12 @@
 				7AB6ECCA2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378B2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39062F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583462FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12642F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653032F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBE2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EC2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583372FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F12F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1512F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467F2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5019,6 +5161,7 @@
 				7A25D9E92FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AA2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646912F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF5836E2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E65D87D02B6C05F6001DB7ED /* SplashViewWTW.storyboard in Resources */,
 				E63FD1992B45C3DF00D73629 /* firasans_italic.ttf in Resources */,
 			);
@@ -5038,10 +5181,13 @@
 				7A550D7A2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AC2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12F2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583202FB51750007561C9 /* Financial.json in Resources */,
 				7AE652AB2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A42F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF583632FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E636EFB62BA8C81900A51A87 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CD2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583772FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF5C2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E02F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E636EFB72BA8C81900A51A87 /* Assets.xcassets in Resources */,
@@ -5057,6 +5203,8 @@
 				7AE652B92F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E636EFB92BA8C81900A51A87 /* firasans_regular.ttf in Resources */,
 				7AE653132F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832A2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834C2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FC2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFE2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E636EFBA2BA8C81900A51A87 /* fira-sans-medium.ttf in Resources */,
@@ -5065,9 +5213,11 @@
 				7A96468A2F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B862ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BC22F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583572FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F72D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A90018E2F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A82F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF5830C2FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86B2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001862F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A9646982F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5075,6 +5225,7 @@
 				7A9646B72F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D902F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E636EFBB2BA8C81900A51A87 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF5831A2FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB3742FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D02FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F72F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5085,10 +5236,12 @@
 				7AB6ECCB2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378F2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39012F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583402FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12652F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FC2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC22F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EA2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583392FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F32F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB14F2F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A9646802F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5104,6 +5257,7 @@
 				7A25D9E62FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B12F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646962F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF5836B2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E636EFBE2BA8C81900A51A87 /* SplashViewWTW.storyboard in Resources */,
 				E636EFBF2BA8C81900A51A87 /* firasans_italic.ttf in Resources */,
 			);
@@ -5123,10 +5277,13 @@
 				7A550D7E2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9A92FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12B2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583282FB51750007561C9 /* Financial.json in Resources */,
 				7AE652AF2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A62F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF583612FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E643D44A2B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CA2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583722FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF5B2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E32F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E643D4392B7170290058D227 /* Assets.xcassets in Resources */,
@@ -5142,6 +5299,8 @@
 				7AE652B72F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E643D43B2B7170290058D227 /* firasans_regular.ttf in Resources */,
 				7AE653142F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832B2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834D2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FB2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFF2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E643D43C2B7170290058D227 /* fira-sans-medium.ttf in Resources */,
@@ -5150,9 +5309,11 @@
 				7A9646892F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B892ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BC02F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583542FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F62D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A9001942F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A22F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF583122FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD8712DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001842F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469D2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5160,6 +5321,7 @@
 				7A9646B92F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8B2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC732BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF583172FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB3732FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D62FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F52F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5170,10 +5332,12 @@
 				7AB6ECCC2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378D2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39032F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583442FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12612F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FF2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBF2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E92F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583352FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F42F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1502F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467A2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5189,6 +5353,7 @@
 				7A25D9E72FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AE2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646952F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF583692FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E643D43F2B7170290058D227 /* SplashViewWTW.storyboard in Resources */,
 				E643D4402B7170290058D227 /* firasans_italic.ttf in Resources */,
 			);
@@ -5208,10 +5373,13 @@
 				7A550D782F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AF2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12C2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583242FB51750007561C9 /* Financial.json in Resources */,
 				7AE652B22F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A92F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF5835F2FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E64AC5F72D8B04E600B3E521 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CE2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583762FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF582FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E52F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E64AC5F82D8B04E600B3E521 /* Assets.xcassets in Resources */,
@@ -5227,6 +5395,8 @@
 				7AE652B82F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E64AC5FB2D8B04E600B3E521 /* firasans_regular.ttf in Resources */,
 				7AE653122F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832E2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834B2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FD2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CF82F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E64AC5FC2D8B04E600B3E521 /* fira-sans-medium.ttf in Resources */,
@@ -5235,9 +5405,11 @@
 				7A9646852F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B832ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BBB2F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583552FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F82D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A90018F2F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A62F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF583102FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86F2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001882F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469E2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5245,6 +5417,7 @@
 				7A9646B62F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8D2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E64AC5FD2D8B04E600B3E521 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF583182FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB36F2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D72FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F32F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5255,10 +5428,12 @@
 				7AB6ECC92F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237902F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39022F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583432FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12622F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FE2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC12F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EF2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF5833A2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319EF2F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1562F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467B2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5274,6 +5449,7 @@
 				7A25D9E82FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AD2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A96468E2F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF583672FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E64AC6002D8B04E600B3E521 /* SplashViewWTW.storyboard in Resources */,
 				E64AC6012D8B04E600B3E521 /* firasans_italic.ttf in Resources */,
 			);
@@ -5293,10 +5469,13 @@
 				7A550D7D2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9A82FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12A2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583262FB51750007561C9 /* Financial.json in Resources */,
 				7AE652AE2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A82F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF583622FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E68DD8482DB7C8D500307982 /* SplashViewBCI.storyboard in Resources */,
 				7AE652D12F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583702FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF592FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E42F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E68DD8492DB7C8D500307982 /* Assets.xcassets in Resources */,
@@ -5312,6 +5491,8 @@
 				7AE652BB2F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E68DD84C2DB7C8D500307982 /* firasans_regular.ttf in Resources */,
 				7AE653172F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832F2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF583502FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A631A002F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFD2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E68DD84D2DB7C8D500307982 /* fira-sans-medium.ttf in Resources */,
@@ -5320,9 +5501,11 @@
 				7A9646882F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B852ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BBD2F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583592FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E68DD84E2DB7C8D500307982 /* SplashViewPremedic.storyboard in Resources */,
 				7A90018C2F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A52F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF5830F2FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86E2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001832F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A9646992F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5330,6 +5513,7 @@
 				7A9646BA2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8C2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E68DD84F2DB7C8D500307982 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF5831B2FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB36C2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D12FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F62F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5340,10 +5524,12 @@
 				7AB6ECC62F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378E2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39042F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583452FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12602F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FD2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC32F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652EE2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583342FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F62F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1552F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A9646812F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5359,6 +5545,7 @@
 				7A25D9E52FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AC2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646932F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF5836A2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E68DD8522DB7C8D500307982 /* SplashViewWTW.storyboard in Resources */,
 				E68DD8532DB7C8D500307982 /* firasans_italic.ttf in Resources */,
 			);
@@ -5378,10 +5565,13 @@
 				7A550D7F2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AD2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB12D2F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583232FB51750007561C9 /* Financial.json in Resources */,
 				7AE652B12F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A32F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF583602FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E69FED3F2BA47E61002ADADB /* SplashViewBCI.storyboard in Resources */,
 				7AE652C92F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583742FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF552FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652DF2F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E69FED402BA47E61002ADADB /* Assets.xcassets in Resources */,
@@ -5397,6 +5587,8 @@
 				7AE652BD2F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E69FED422BA47E61002ADADB /* firasans_regular.ttf in Resources */,
 				7AE653112F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF5832D2FB51B1A007561C9 /* Social.json in Resources */,
+				7AF583482FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319FA2F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFC2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E69FED432BA47E61002ADADB /* fira-sans-medium.ttf in Resources */,
@@ -5405,9 +5597,11 @@
 				7A9646842F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B872ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BC12F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583522FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F52D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A9001902F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A92F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF5830D2FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86D2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001872F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469B2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5415,6 +5609,7 @@
 				7A9646BE2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D922F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FED442BA47E61002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF5831D2FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB3702FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D32FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F42F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5425,10 +5620,12 @@
 				7AB6ECCD2F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237892F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E38FE2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF5833F2FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC125E2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653022F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBC2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E72F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583362FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F72F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1522F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467E2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5444,6 +5641,7 @@
 				7A25D9EB2FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001AB2F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A96468F2F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF5836C2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E69FED472BA47E61002ADADB /* SplashViewWTW.storyboard in Resources */,
 				E69FED482BA47E61002ADADB /* firasans_italic.ttf in Resources */,
 			);
@@ -5463,10 +5661,13 @@
 				7A550D7C2F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AB2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1292F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583272FB51750007561C9 /* Financial.json in Resources */,
 				7AE652B32F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A52F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF5835E2FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E643D4492B7170E30058D227 /* SplashViewBCI.storyboard in Resources */,
 				7AE652D02F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583752FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF542FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E22F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6DC59AE2B6C089C00EEC341 /* Assets.xcassets in Resources */,
@@ -5482,6 +5683,8 @@
 				7AE652BC2F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E6DC59B02B6C089C00EEC341 /* firasans_regular.ttf in Resources */,
 				7AE653152F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF583302FB51B1A007561C9 /* Social.json in Resources */,
+				7AF583492FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A6319F92F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFB2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E6DC59B12B6C089C00EEC341 /* fira-sans-medium.ttf in Resources */,
@@ -5490,9 +5693,11 @@
 				7A9646872F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B822ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BC32F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583582FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F42D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A9001912F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A42F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF583132FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD86C2DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001822F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A9646A02F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5500,6 +5705,7 @@
 				7A9646BD2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D8E2F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E69FEC722BA47929002ADADB /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF5831E2FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB3722FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9D52FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F12F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5510,10 +5716,12 @@
 				7AB6ECC52F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A52378A2F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E39052F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583422FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC125F2F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE652FB2F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECBB2F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652E82F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF583382FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F52F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1542F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467D2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5529,6 +5737,7 @@
 				7A25D9EA2FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B22F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646922F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF583682FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E6DC59B42B6C089C00EEC341 /* SplashViewWTW.storyboard in Resources */,
 				E6DC59B52B6C089C00EEC341 /* firasans_italic.ttf in Resources */,
 			);
@@ -5548,10 +5757,13 @@
 				7A550D792F4F94E10054CDFB /* GUIA_MEJORAS_FIREBASE_LOGGING.md in Resources */,
 				7A25D9AA2FB232F000721088 /* no_citas_para_este_dia.json in Resources */,
 				7A9CB1282F3E0AB9007FA976 /* PICKLIST_MULTIPLE_FIX.md in Resources */,
+				7AF583252FB51750007561C9 /* Financial.json in Resources */,
 				7AE652AC2F43B77400115A40 /* ELEMENTSVIEW_FIX_SUMMARY.md in Resources */,
 				7A9646A72F3F923C009A9483 /* NAVIGATION_STATE_FIX_SUMMARY.md in Resources */,
+				7AF5835D2FB526FD007561C9 /* gradient_background.lottie in Resources */,
 				E6F66CC92C9478ED00B0CE60 /* SplashViewBCI.storyboard in Resources */,
 				7AE652CF2F43B84600115A40 /* ANDROID_VS_IOS_COMPARISON.md in Resources */,
+				7AF583782FB52A28007561C9 /* Banner_Dot.lottie in Resources */,
 				7A3FAF5A2FAE8129002E87D1 /* onboarding_lottie_1.json in Resources */,
 				7AE652E12F43B8BA00115A40 /* CODE_COMPARISON_BEFORE_AFTER.md in Resources */,
 				E6F66CCA2C9478ED00B0CE60 /* Assets.xcassets in Resources */,
@@ -5567,6 +5779,8 @@
 				7AE652B62F43B7B200115A40 /* ELEMENTSVIEW_FLOW_DIAGRAM.md in Resources */,
 				E6F66CCD2C9478ED00B0CE60 /* firasans_regular.ttf in Resources */,
 				7AE653162F43BCA800115A40 /* REVERT_INVISIBLE_FILTER_CHANGE.md in Resources */,
+				7AF583312FB51B1A007561C9 /* Social.json in Resources */,
+				7AF5834F2FB522F7007561C9 /* onboarding_background.lottie in Resources */,
 				7A631A012F631E8F00F6A38B /* LOGS_APPOINTMENTS_DOCUMENTATION.md in Resources */,
 				7A614CFA2F507B690081F575 /* RESUMEN_CAMBIOS_ESTADOS_CITAS.md in Resources */,
 				E6F66CCE2C9478ED00B0CE60 /* fira-sans-medium.ttf in Resources */,
@@ -5575,9 +5789,11 @@
 				7A96468C2F3F7D02009A9483 /* IMPLEMENTATION_SUMMARY.md in Resources */,
 				7A2F7B842ED8DCB20095661C /* SplashViewPruebaTAM.storyboard in Resources */,
 				7A524BBE2F48A8FB00651CE1 /* FIX_PROGRESS_CALCULATION_ANDROID_PARITY.md in Resources */,
+				7AF583562FB5262F007561C9 /* Front_Line_Doctos.lottie in Resources */,
 				E652F2F32D94D96500F85FAB /* SplashViewPremedic.storyboard in Resources */,
 				7A90018D2F435DC200993F1D /* FIX_SUMMARY.md in Resources */,
 				7AE652A12F43B75F00115A40 /* ELEMENTSVIEW_ANDROID_PARITY_FIX.md in Resources */,
+				7AF583112FB4EFE9007561C9 /* Animated_Banner.json in Resources */,
 				E68DD8702DB838A500307982 /* SplashViewContigoSalud.storyboard in Resources */,
 				7A9001852F435DA500993F1D /* FIX_BACK_NAVIGATION_LOOP.md in Resources */,
 				7A96469A2F3F9155009A9483 /* FIX_ELEMENTDETAILSVIEW.md in Resources */,
@@ -5585,6 +5801,7 @@
 				7A9646BB2F3F9C99009A9483 /* FIX_RE_ENTRY_LOOP.md in Resources */,
 				7A550D912F4F97350054CDFB /* RESUMEN_IMPLEMENTACION_FIREBASE.md in Resources */,
 				E6F66CCF2C9478ED00B0CE60 /* SplashViewPharmaBenefits.storyboard in Resources */,
+				7AF583162FB51148007561C9 /* Single_Leg.json in Resources */,
 				7AFBB36D2FAE1C70006F83EA /* onboarding-lottie-1.json in Resources */,
 				7A25D9CF2FB25EFC00721088 /* medical_cartoon.gif in Resources */,
 				7AE652F92F43B92B00115A40 /* README_ELEMENTSVIEW_FIX.md in Resources */,
@@ -5595,10 +5812,12 @@
 				7AB6ECC72F3D21BC009FC56D /* COMPOSITE_KEY_FIX.md in Resources */,
 				7A5237912F61A0E600679765 /* FORMULARIO_GENERAL_README.md in Resources */,
 				7A0E38FF2F4F8C4F00D43CEF /* FIREBASE_LOGGING_IMPLEMENTATION.md in Resources */,
+				7AF583412FB51CF9007561C9 /* Telemedicina.json in Resources */,
 				7AFC12632F68381600F59763 /* MARKETING_CLOUD_IOS_IMPLEMENTATION.md in Resources */,
 				7AE653002F43BA3500115A40 /* ANDROID_IOS_PARITY_VERIFICATION.md in Resources */,
 				7AB6ECC02F3D1720009FC56D /* AUTONAVIGATION_FLOW_DIAGRAM.md in Resources */,
 				7AE652ED2F43B8EF00115A40 /* QUICK_REFERENCE.md in Resources */,
+				7AF5833C2FB51B8D007561C9 /* Fisico_Emocional.json in Resources */,
 				7A6319F02F631C3800F6A38B /* RESUMEN_IMPLEMENTACION_BOTON_CANCELAR.md in Resources */,
 				7A9CB1532F3E1F73007FA976 /* PICKLIST_TRANSITIONS_COMPLETE.md in Resources */,
 				7A96467C2F3F7CCD009A9483 /* NAVIGATION_TESTING_GUIDE.md in Resources */,
@@ -5614,6 +5833,7 @@
 				7A25D9E42FB38E1800721088 /* Equipo_Medico.json in Resources */,
 				7A9001B02F43A44200993F1D /* LOADING_CHANGES_SUMMARY.md in Resources */,
 				7A9646942F3F80D2009A9483 /* FIX_TASKROWVIEW.md in Resources */,
+				7AF5836D2FB528C7007561C9 /* squat_proxima_cita.lottie in Resources */,
 				E6F66CD22C9478ED00B0CE60 /* SplashViewWTW.storyboard in Resources */,
 				E6F66CD32C9478ED00B0CE60 /* firasans_italic.ttf in Resources */,
 			);

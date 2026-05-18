@@ -20,11 +20,20 @@ struct SendNewExamView: View {
     @State var urlImg: [String] = []
     @State private var showWebView = false
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
+    // Config dinámica COMPLETA de esta pantalla. Toda la UI proviene del
+    // Elemento 10 del record `ExamenesAutomatizadosCustom` — no se lee
+    // SecMas ni ningún otro elemento para los textos/estilos visibles.
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
+    // (legacy) botonesDetalleExamen sigue alimentando la vista "publicada"
+    // cuando se navega desde el detalle de Prescripciones Médicas. Para el
+    // flujo de Mis Archivos de Salud usa `vistaDetalleMisArchivos` (Elemento 8)
+    // y este queda con default sin efecto.
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
-    var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
+    // Config completa del detalle de Mis Archivos de Salud — Elemento 8 del
+    // record `ExamenesAutomatizadosCustom`. Se pasa SOLO cuando el origen es
+    // la lista de Mis Archivos de Salud. Si está set y isPublished=true, el
+    // modo lectura usa este struct en lugar de vistaSubir/botonesDetalleExamen.
+    var vistaDetalleMisArchivos: VistaDetalleMisArchivosConfig? = nil
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
@@ -57,14 +66,47 @@ struct SendNewExamView: View {
     @State private var selectedDocumentType: String = ""
     private let documentTypeOptions = ["Examen de Laboratorio", "Examen de Imagen", "Receta Médica", "Orden de Exámenes", "Informe Médico", "Otros"]
 
-    private var accentColor: Color {
-        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+    // Color de fondo del botón Enviar (10.10). Si no hay config, fallback gris.
+    private var sendButtonBackgroundColor: Color {
+        let c = vistaSubir.botonEnviar.colorFondo
+        return Color(hex: c.isEmpty ? "#387FC2" : c)
+    }
+
+    /// Convierte la "Position" de Salesforce ("Left"/"Center"/"Right") a SwiftUI Alignment.
+    private func alignmentFor(_ position: String) -> Alignment {
+        switch position.lowercased() {
+        case "center":  return .center
+        case "right":   return .trailing
+        default:        return .leading
+        }
+    }
+
+    /// Variante para `multilineTextAlignment` — sin esto, el texto multi-línea
+    /// (como la Nota 10.9) no se alinea internamente aunque el frame externo sí.
+    private func textAlignmentFor(_ position: String) -> TextAlignment {
+        switch position.lowercased() {
+        case "center":  return .center
+        case "right":   return .trailing
+        default:        return .leading
+        }
     }
 
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground)
                 .ignoresSafeArea()
+                .onAppear {
+                    let csa = vistaSubir.containerSinArchivo
+                    let cca = vistaSubir.containerConArchivo
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("📋 [SendNewExamView] vistaSubir RECIBIDO en init de body")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    print("   titulo:    \"\(vistaSubir.tituloTexto)\"")
+                    print("   notaTexto: \"\(vistaSubir.notaTexto)\"")
+                    print("   [10.7] sinArchivo: borde=\"\(csa.colorBorde)\" icono=\"\(csa.icono)\" colorIcono=\"\(csa.colorIcono)\" sizeIcono=\"\(csa.sizeIcono)\" fondo=\"\(csa.colorFondoContainer)\"")
+                    print("   [10.8] conArchivo: borde=\"\(cca.colorBorde)\" icono=\"\(cca.icono)\" colorIcono=\"\(cca.colorIcono)\" sizeIcono=\"\(cca.sizeIcono)\" textoFormato=\"\(cca.colorTextoFormato)\" iconoX=\"\(cca.iconoCancelar)\" fondoX=\"\(cca.colorFondoBotonCancelar)\" cruz=\"\(cca.colorCruz)\" fondoContainer=\"\(cca.colorFondoContainer)\"")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                }
 
             VStack(spacing: 0) {
                 Divider()
@@ -109,7 +151,7 @@ struct SendNewExamView: View {
             .blur(radius: isLoading ? 3 : 0.000001)
             .popup(item: $popup)
             .sheet(isPresented: $showSheetView, content: {
-                ShareSheet(activityItems: ["\u{00A1}Hola! Estos documentos fueron compartidos desde la App \(UIState.examList.textToShare).\n", self.urlToShare as Any])
+                ShareSheet(activityItems: ["\u{00A1}Hola! Estos documentos fueron compartidos desde la App.\n", self.urlToShare as Any])
             })
             .sheet(isPresented: $showWebView) {
                 if let url = urlToShare {
@@ -196,55 +238,52 @@ struct SendNewExamView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
+            // Título — si la pantalla está en modo detalle de Mis Archivos
+            // (vistaDetalleMisArchivos set + isPublished), usa 8.2; si no, 10.2.
             ToolbarItem(placement: .principal) {
-                Text(navTitle.isEmpty ? "Exámenes Médicos" : navTitle)
+                let useMisArchivos = (vistaDetalleMisArchivos != nil) && isPublished
+                let texto = useMisArchivos
+                    ? (vistaDetalleMisArchivos!.tituloTexto.isEmpty ? "Mis Archivos de Salud" : vistaDetalleMisArchivos!.tituloTexto)
+                    : (vistaSubir.tituloTexto.isEmpty ? "Exámenes Médicos" : vistaSubir.tituloTexto)
+                let attr = useMisArchivos ? vistaDetalleMisArchivos!.tituloAttr : vistaSubir.tituloAttr
+                Text(texto)
                     .font(Font.custom(
-                        navTitleAttr.font.isEmpty ? "FiraSans-Bold" : navTitleAttr.font,
-                        size: CGFloat(Int(navTitleAttr.size) ?? 20)
+                        attr.font.isEmpty ? "FiraSans-Bold" : attr.font,
+                        size: CGFloat(Int(attr.size) ?? 19)
                     ))
-                    .foregroundColor(Color(hex: navTitleAttr.color.isEmpty ? "#00BBDC" : navTitleAttr.color))
+                    .foregroundColor(Color(hex: attr.color.isEmpty ? "#00BBDC" : attr.color))
             }
+            // Back arrow — 8.1 en modo detalle Mis Archivos, 10.1 en otro caso.
             ToolbarItem(placement: .navigationBarLeading) {
+                let useMisArchivos = (vistaDetalleMisArchivos != nil) && isPublished
+                let raw = useMisArchivos
+                    ? vistaDetalleMisArchivos!.backArrowColor
+                    : vistaSubir.backArrowColor
                 Button {
                     HapticManager.impact(style: .light)
                     dismiss()
                 } label: {
                     Image("back")
                         .renderingMode(.template)
-                        .foregroundColor(Color(hex: backArrowColor))
+                        .foregroundColor(Color(hex: raw.isEmpty ? "#00BBDC" : raw))
                 }
             }
         }
         .task {
             self.isExamPublished()
         }
-        .background(
-            Group {
-                if UIState.examDetail.imageBackground != "" {
-                    CachedAsyncImage(
-                        url: URL(string: UIState.examDetail.imageBackground),
-                        content: { image in
-                            image
-                                .resizable()
-                                .edgesIgnoringSafeArea(.all)
-                                .aspectRatio(contentMode: .fill)
-                        },
-                        placeholder: {
-                            ProgressView()
-                        }
-                    )
-                    .eraseToAnyView()
-                }
-            }
-        )
     }
 
-    // MARK: - Card 1: ¿Qué vas a cargar?
+    // MARK: - Card 1: ¿Qué vas a cargar? (10.3)
     private var documentTypeCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("¿Qué vas a cargar? *")
-                .font(Font.custom("FiraSans-Bold", size: 15))
-                .foregroundColor(Color(hex: "#333333"))
+            Text(vistaSubir.tipoDocumentoTexto.isEmpty ? "¿Qué vas a cargar? *" : vistaSubir.tipoDocumentoTexto)
+                .font(Font.custom(
+                    vistaSubir.tipoDocumentoAttr.font.isEmpty ? "FiraSans-Bold" : vistaSubir.tipoDocumentoAttr.font,
+                    size: CGFloat(Int(vistaSubir.tipoDocumentoAttr.size) ?? 15)
+                ))
+                .foregroundColor(Color(hex: vistaSubir.tipoDocumentoAttr.color.isEmpty ? "#333333" : vistaSubir.tipoDocumentoAttr.color))
+                .frame(maxWidth: .infinity, alignment: alignmentFor(vistaSubir.tipoDocumentoAttr.alignment))
 
             Menu {
                 ForEach(documentTypeOptions, id: \.self) { option in
@@ -288,25 +327,39 @@ struct SendNewExamView: View {
         )
     }
 
-    // MARK: - Card 2: Adjuntar archivo
+    // MARK: - Card 2: Adjuntar archivo (10.5 + 10.6 + 10.9)
     private var fileAttachmentCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Adjuntar archivo")
-                .font(Font.custom("FiraSans-Bold", size: 15))
-                .foregroundColor(Color(hex: "#333333"))
+            // 10.5 TextoAdjuntarArchivo
+            Text(vistaSubir.adjuntarArchivoTexto.isEmpty ? "Adjuntar archivo" : vistaSubir.adjuntarArchivoTexto)
+                .font(Font.custom(
+                    vistaSubir.adjuntarArchivoAttr.font.isEmpty ? "FiraSans-Bold" : vistaSubir.adjuntarArchivoAttr.font,
+                    size: CGFloat(Int(vistaSubir.adjuntarArchivoAttr.size) ?? 15)
+                ))
+                .foregroundColor(Color(hex: vistaSubir.adjuntarArchivoAttr.color.isEmpty ? "#333333" : vistaSubir.adjuntarArchivoAttr.color))
+                .frame(maxWidth: .infinity, alignment: alignmentFor(vistaSubir.adjuntarArchivoAttr.alignment))
 
-            Text("Los formatos permitidos son PDF, JPG, PNG, con un máximo de 4 archivos")
-                .font(Font.custom("FiraSans-Regular", size: 12))
-                .foregroundColor(Color(hex: "#4CAF50"))
+            // 10.6 DescripcionAdjuntarArchivo
+            Text(vistaSubir.descripcionAdjuntarTexto.isEmpty
+                 ? "Los formatos permitidos son PDF, JPG, PNG, con un máximo de 4 archivos"
+                 : vistaSubir.descripcionAdjuntarTexto)
+                .font(Font.custom(
+                    vistaSubir.descripcionAdjuntarAttr.font.isEmpty ? "FiraSans-Regular" : vistaSubir.descripcionAdjuntarAttr.font,
+                    size: CGFloat(Int(vistaSubir.descripcionAdjuntarAttr.size) ?? 12)
+                ))
+                .foregroundColor(Color(hex: vistaSubir.descripcionAdjuntarAttr.color.isEmpty ? "#4CAF50" : vistaSubir.descripcionAdjuntarAttr.color))
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: alignmentFor(vistaSubir.descripcionAdjuntarAttr.alignment))
 
-            // File cards grid (2x2)
+            // File cards grid (2x2) — los containers usan 10.7 / 10.8
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 ForEach($fileExams) { $fileExam in
                     FileRowExam(
                         fileExam: $fileExam,
                         isExamPublish: $isPublished,
                         UIState: $UIState,
+                        containerSinArchivo: vistaSubir.containerSinArchivo,
+                        containerConArchivo: vistaSubir.containerConArchivo,
                         onSelect: { id in
                             selectedFileExamId = id
                             showSourceDialog = true
@@ -330,10 +383,31 @@ struct SendNewExamView: View {
                 }
             }
 
-            Text("Nota: Los archivos cargados serán respaldados en tu ficha de salud.")
-                .font(Font.custom("FiraSans-Regular", size: 11))
-                .foregroundColor(.gray)
-                .padding(.top, 8)
+            // 10.9 TextoNota — soporta markup **bold** y <br> vía parseSalesforceText
+            parseSalesforceText(
+                vistaSubir.notaTexto.isEmpty
+                    ? "**Nota:** Los archivos cargados serán respaldados en tu ficha de salud."
+                    : vistaSubir.notaTexto,
+                font: vistaSubir.notaAttr.font.isEmpty ? "FiraSans-Regular" : vistaSubir.notaAttr.font,
+                size: CGFloat(Int(vistaSubir.notaAttr.size) ?? 11),
+                color: Color(hex: vistaSubir.notaAttr.color.isEmpty ? "#888888" : vistaSubir.notaAttr.color)
+            )
+            .multilineTextAlignment(textAlignmentFor(vistaSubir.notaAttr.alignment))
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: alignmentFor(vistaSubir.notaAttr.alignment))
+            .padding(.top, 8)
+            .onAppear {
+                let nota = vistaSubir.notaAttr
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📋 [SendNewExamView] CONFIG TEXTO NOTA (10.9)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("   texto:     \"\(vistaSubir.notaTexto)\"")
+                print("   font:      \(nota.font)")
+                print("   size:      \(nota.size)")
+                print("   color:     \(nota.color)")
+                print("   alignment: \(nota.alignment)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            }
         }
         .padding(16)
         .background(
@@ -348,6 +422,199 @@ struct SendNewExamView: View {
 
     // MARK: - Published Document View (modo lectura)
     private var publishedDocumentView: some View {
+        // Si la pantalla está mostrando el detalle de un Archivo de Salud, usa
+        // el Elemento 8 (vistaDetalleMisArchivos). Si no, usa el flujo legacy
+        // de prescripciones médicas (Elemento 10 + 13).
+        Group {
+            if let cfg = vistaDetalleMisArchivos {
+                misArchivosDetalleView(cfg: cfg)
+            } else {
+                prescripcionesDetalleView
+            }
+        }
+    }
+
+    // MARK: - Detalle Mis Archivos de Salud (Elemento 8)
+    private func misArchivosDetalleView(cfg: VistaDetalleMisArchivosConfig) -> some View {
+        VStack(spacing: 16) {
+            // Diagnóstico al primer render
+            Color.clear.frame(height: 0).onAppear {
+                let cArc = cfg.containerArchivo
+                let bD = cfg.botonDescargar
+                let bC = cfg.botonCompartir
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("📋 [misArchivosDetalleView] CONFIG RECIBIDA")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                print("   [8.7] container: borde=\"\(cArc.colorBorde)\" icono=\"\(cArc.icono)\" colorIcono=\"\(cArc.colorIcono)\" sizeIcono=\"\(cArc.sizeIcono)\" textoFormato=\"\(cArc.colorTextoFormato)\" fondo=\"\(cArc.colorFondoContainer)\"")
+                print("   [8.8] btnDescargar: font=\(bD.font) texto=\"\(bD.texto)\" colorTexto=\(bD.colorTexto) size=\(bD.size) colorFondo=\(bD.colorFondo) icono=\(bD.icono) colorIcono=\(bD.colorIcono) colorBorde=\(bD.colorBorde)")
+                print("   [8.9] btnCompartir: font=\(bC.font) texto=\"\(bC.texto)\" colorTexto=\(bC.colorTexto) size=\(bC.size) colorFondo=\(bC.colorFondo) icono=\(bC.icono) colorIcono=\(bC.colorIcono) colorBorde=\(bC.colorBorde)")
+                print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            }
+
+            // Card 1 — Nombre + badge "Cargado por el Paciente" + fecha
+            VStack(alignment: .leading, spacing: 10) {
+                // 8.3 AtributosTituloCardDetalle
+                Text((exam?.nombreDelExamenC ?? examName).uppercased())
+                    .font(Font.custom(
+                        cfg.tituloCardAttr.font.isEmpty ? "FiraSans-Bold" : cfg.tituloCardAttr.font,
+                        size: CGFloat(Int(cfg.tituloCardAttr.size) ?? 16)
+                    ))
+                    .foregroundColor(Color(hex: cfg.tituloCardAttr.color.isEmpty ? "#333333" : cfg.tituloCardAttr.color))
+
+                // 8.4 BadgeCargadoPorElPaciente
+                let badge = cfg.badgeCargadoPorPaciente
+                HStack(spacing: 6) {
+                    if !badge.icono.isEmpty {
+                        Image(systemName: badge.icono)
+                            .font(.system(size: CGFloat(Double(badge.size) ?? 11)))
+                            .foregroundColor(Color(hex: badge.colorTexto))
+                    }
+                    Text(badge.texto.isEmpty ? "Cargado por el Paciente" : badge.texto)
+                        .font(Font.custom(
+                            badge.font.isEmpty ? "FiraSans-Medium" : badge.font,
+                            size: CGFloat(Double(badge.size) ?? 11)
+                        ))
+                        .foregroundColor(Color(hex: badge.colorTexto.isEmpty ? "#FFFFFF" : badge.colorTexto))
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(Color(hex: badge.colorFondo.isEmpty ? "#7B61FF" : badge.colorFondo)))
+
+                // 8.5 FechaDetalleMisArchivosDeSalud
+                if let dateStr = exam?.CreatedDate, !dateStr.isEmpty {
+                    let fontFecha = cfg.fechaAttr.font.isEmpty ? "FiraSans-Regular" : cfg.fechaAttr.font
+                    let sizeFecha = CGFloat(Int(cfg.fechaAttr.size) ?? 13)
+                    let colorFecha = Color(hex: cfg.fechaAttr.color.isEmpty ? "#888888" : cfg.fechaAttr.color)
+                    let iconoFecha = cfg.fechaIcono.isEmpty ? "calendar" : cfg.fechaIcono
+                    let colorIcono = Color(hex: cfg.fechaIconoColor.isEmpty
+                        ? (cfg.fechaAttr.color.isEmpty ? "#888888" : cfg.fechaAttr.color)
+                        : cfg.fechaIconoColor)
+                    HStack(spacing: 6) {
+                        Image(systemName: iconoFecha)
+                            .font(.system(size: sizeFecha))
+                            .foregroundColor(colorIcono)
+                        Text(formatDisplayDate(dateStr, formato: cfg.fechaFormato))
+                            .font(Font.custom(fontFecha, size: sizeFecha))
+                            .foregroundColor(colorFecha)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
+
+            // Card 2 — Título "Archivos adjuntos" + grid + botones Descargar/Compartir
+            VStack(alignment: .leading, spacing: 10) {
+                // 8.6 DetalleArchivosAdjuntos
+                let titAttr = cfg.detalleArchivosAttr
+                let tituloAlign = titAttr.alignment.lowercased()
+                let frameAlign: Alignment = tituloAlign == "center" ? .center : (tituloAlign == "right" ? .trailing : .leading)
+                Text(cfg.detalleArchivosTitulo.isEmpty ? "Archivos adjuntos" : cfg.detalleArchivosTitulo)
+                    .font(Font.custom(
+                        titAttr.font.isEmpty ? "FiraSans-Bold" : titAttr.font,
+                        size: CGFloat(Int(titAttr.size) ?? 16)
+                    ))
+                    .foregroundColor(Color(hex: titAttr.color.isEmpty ? "#333333" : titAttr.color))
+                    .frame(maxWidth: .infinity, alignment: frameAlign)
+
+                // 8.7 ContainerArchivoAdjunto — mapeado a FileRowExam vía un
+                // ContainerConArchivoConfig "compatible" (los campos del botón
+                // cancelar no se usan porque isExamPublish=true).
+                let containerCompat: ContainerConArchivoConfig = {
+                    var c = ContainerConArchivoConfig()
+                    c.colorBorde = cfg.containerArchivo.colorBorde
+                    c.icono = cfg.containerArchivo.icono
+                    c.colorIcono = cfg.containerArchivo.colorIcono
+                    c.sizeIcono = cfg.containerArchivo.sizeIcono
+                    c.colorTextoFormato = cfg.containerArchivo.colorTextoFormato
+                    c.colorFondoContainer = cfg.containerArchivo.colorFondoContainer
+                    return c
+                }()
+
+                let activeFileExams = fileExams.filter { !$0.urlImg.isEmpty }
+                let columns: [GridItem] = activeFileExams.count == 1
+                    ? [GridItem(.flexible())]
+                    : [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach($fileExams) { $fileExam in
+                        if !fileExam.urlImg.isEmpty {
+                            FileRowExam(
+                                fileExam: $fileExam,
+                                isExamPublish: $isPublished,
+                                UIState: $UIState,
+                                containerSinArchivo: ContainerSinArchivoConfig(),
+                                containerConArchivo: containerCompat,
+                                onSelect: { _ in },
+                                onDownload: {
+                                    downloadArchive(action: .isOpen, urlParameter: fileExam.urlImg)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // 8.8 BotonDescargar + 8.9 BotonCompartir
+                HStack(spacing: 12) {
+                    accionButton(cfg: cfg.botonDescargar, fallbackText: "Descargar") {
+                        downloadAllFiles()
+                    }
+                    accionButton(cfg: cfg.botonCompartir, fallbackText: "Compartir") {
+                        shareAllFiles()
+                    }
+                }
+                .padding(.top, 4)
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
+        }
+    }
+
+    /// Renderiza un botón Descargar/Compartir con la firma del 8.8/8.9
+    /// (TipoFuente;Texto;ColorTexto;Size;ColorFondo;Icono;ColorIcon;ColorBorde).
+    private func accionButton(cfg btn: ButtonExamConfig, fallbackText: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                if !btn.icono.isEmpty {
+                    Image(systemName: btn.icono)
+                        .font(.system(size: CGFloat(Int(btn.size) ?? 14), weight: .medium))
+                        .foregroundColor(Color(hex: btn.colorIcono.isEmpty ? btn.colorTexto : btn.colorIcono))
+                }
+                Text(btn.texto.isEmpty ? fallbackText : btn.texto)
+                    .font(Font.custom(
+                        btn.font.isEmpty ? "FiraSans-Medium" : btn.font,
+                        size: CGFloat(Int(btn.size) ?? 14)
+                    ))
+            }
+            .foregroundColor(Color(hex: btn.colorTexto.isEmpty ? "#333333" : btn.colorTexto))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color(hex: btn.colorFondo.isEmpty ? "#FFFFFF" : btn.colorFondo))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(hex: btn.colorBorde.isEmpty ? "#D1D1D6" : btn.colorBorde), lineWidth: 1)
+            )
+        }
+    }
+
+    // MARK: - Detalle Prescripciones Médicas (legacy — Elemento 10 + 13)
+    private var prescripcionesDetalleView: some View {
         VStack(spacing: 16) {
             // Card info del documento
             VStack(alignment: .leading, spacing: 10) {
@@ -355,21 +622,24 @@ struct SendNewExamView: View {
                     .font(Font.custom("FiraSans-Bold", size: 16))
                     .foregroundColor(Color(hex: "#333333"))
 
-                // Badge "Cargado por el Paciente" (dinámico desde Elemento 10)
+                // Badge "Cargado por el Paciente" (10.4)
+                let badge = vistaSubir.badgeCargadoPorPaciente
                 HStack(spacing: 6) {
-                    Image(systemName: badgeCargadoPorPaciente.icono)
-                        .font(.system(size: CGFloat(Double(badgeCargadoPorPaciente.size) ?? 11)))
-                        .foregroundColor(Color(hex: badgeCargadoPorPaciente.colorTexto))
-                    Text(badgeCargadoPorPaciente.texto)
+                    if !badge.icono.isEmpty {
+                        Image(systemName: badge.icono)
+                            .font(.system(size: CGFloat(Double(badge.size) ?? 11)))
+                            .foregroundColor(Color(hex: badge.colorTexto))
+                    }
+                    Text(badge.texto.isEmpty ? "Cargado por el Paciente" : badge.texto)
                         .font(Font.custom(
-                            badgeCargadoPorPaciente.font.isEmpty ? "FiraSans-Medium" : badgeCargadoPorPaciente.font,
-                            size: CGFloat(Double(badgeCargadoPorPaciente.size) ?? 11)
+                            badge.font.isEmpty ? "FiraSans-Medium" : badge.font,
+                            size: CGFloat(Double(badge.size) ?? 11)
                         ))
-                        .foregroundColor(Color(hex: badgeCargadoPorPaciente.colorTexto))
+                        .foregroundColor(Color(hex: badge.colorTexto.isEmpty ? "#FFFFFF" : badge.colorTexto))
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background(Capsule().fill(Color(hex: badgeCargadoPorPaciente.colorFondo)))
+                .background(Capsule().fill(Color(hex: badge.colorFondo.isEmpty ? "#7B61FF" : badge.colorFondo)))
 
                 if let dateStr = exam?.CreatedDate, !dateStr.isEmpty {
                     HStack(spacing: 6) {
@@ -428,6 +698,8 @@ struct SendNewExamView: View {
                                 fileExam: $fileExam,
                                 isExamPublish: $isPublished,
                                 UIState: $UIState,
+                                containerSinArchivo: vistaSubir.containerSinArchivo,
+                                containerConArchivo: vistaSubir.containerConArchivo,
                                 onSelect: { _ in },
                                 onDownload: {
                                     downloadArchive(action: .isOpen, urlParameter: fileExam.urlImg)
@@ -439,62 +711,11 @@ struct SendNewExamView: View {
 
                 // Botones Descargar y Compartir (dinámico desde Elemento 13)
                 HStack(spacing: 12) {
-                    let btnDesc = botonesDetalleExamen.botonDescargar
-                    Button {
+                    accionButton(cfg: botonesDetalleExamen.botonDescargar, fallbackText: "Descargar") {
                         downloadAllFiles()
-                    } label: {
-                        HStack(spacing: 6) {
-                            if !btnDesc.icono.isEmpty {
-                                Image(systemName: btnDesc.icono)
-                                    .font(.system(size: CGFloat(Int(btnDesc.size) ?? 14), weight: .medium))
-                                    .foregroundColor(Color(hex: btnDesc.colorIcono.isEmpty ? btnDesc.colorTexto : btnDesc.colorIcono))
-                            }
-                            Text(btnDesc.texto.isEmpty ? "Descargar" : btnDesc.texto)
-                                .font(Font.custom(
-                                    btnDesc.font.isEmpty ? "FiraSans-Medium" : btnDesc.font,
-                                    size: CGFloat(Int(btnDesc.size) ?? 14)
-                                ))
-                        }
-                        .foregroundColor(Color(hex: btnDesc.colorTexto.isEmpty ? "#333333" : btnDesc.colorTexto))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(hex: btnDesc.colorFondo.isEmpty ? "#FFFFFF" : btnDesc.colorFondo))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(hex: btnDesc.colorBorde.isEmpty ? "#D1D1D6" : btnDesc.colorBorde), lineWidth: 1)
-                        )
                     }
-
-                    let btnComp = botonesDetalleExamen.botonCompartir
-                    Button {
+                    accionButton(cfg: botonesDetalleExamen.botonCompartir, fallbackText: "Compartir") {
                         shareAllFiles()
-                    } label: {
-                        HStack(spacing: 6) {
-                            if !btnComp.icono.isEmpty {
-                                Image(systemName: btnComp.icono)
-                                    .font(.system(size: CGFloat(Int(btnComp.size) ?? 14), weight: .medium))
-                                    .foregroundColor(Color(hex: btnComp.colorIcono.isEmpty ? btnComp.colorTexto : btnComp.colorIcono))
-                            }
-                            Text(btnComp.texto.isEmpty ? "Compartir" : btnComp.texto)
-                                .font(Font.custom(
-                                    btnComp.font.isEmpty ? "FiraSans-Medium" : btnComp.font,
-                                    size: CGFloat(Int(btnComp.size) ?? 14)
-                                ))
-                        }
-                        .foregroundColor(Color(hex: btnComp.colorTexto.isEmpty ? "#333333" : btnComp.colorTexto))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(hex: btnComp.colorFondo.isEmpty ? "#FFFFFF" : btnComp.colorFondo))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(hex: btnComp.colorBorde.isEmpty ? "#D1D1D6" : btnComp.colorBorde), lineWidth: 1)
-                        )
                     }
                 }
                 .padding(.top, 4)
@@ -516,16 +737,32 @@ struct SendNewExamView: View {
     @State private var deletingLoading = false
 
     private var publishedButtons: some View {
-        let btnElim = botonesDetalleExamen.botonEliminar
+        // 8.10 BotonEliminarDetalleMiArchivoDeSalud cuando es detalle Mis
+        // Archivos; en otro caso, fallback al Elemento 13 legacy.
+        // Para Mis Archivos: icono "trash" (hardcoded en el parser), sizeIcono
+        // y colorIcono dinámicos. Para el flujo legacy: usa lo que venía del 13.
+        let btnElim: ButtonExamConfig = vistaDetalleMisArchivos?.botonEliminar ?? botonesDetalleExamen.botonEliminar
+        let isMisArchivos = vistaDetalleMisArchivos != nil
 
         return Button {
             showDeleteConfirmation = true
         } label: {
             HStack(spacing: 6) {
                 if !btnElim.icono.isEmpty {
+                    // Si el botón viene del 8.10 con iconoSize dedicado, lo
+                    // usamos; si no, fallback al `size` del texto.
+                    let iconoSize: CGFloat = {
+                        if !btnElim.iconoSize.isEmpty, let s = Double(btnElim.iconoSize) {
+                            return CGFloat(s)
+                        }
+                        return CGFloat(Int(btnElim.size) ?? 16)
+                    }()
+                    let iconoColor = btnElim.colorIcono.isEmpty
+                        ? (btnElim.colorTexto.isEmpty ? "#FFFFFF" : btnElim.colorTexto)
+                        : btnElim.colorIcono
                     Image(systemName: btnElim.icono)
-                        .font(.system(size: CGFloat(Int(btnElim.size) ?? 16), weight: .medium))
-                        .foregroundColor(Color(hex: btnElim.colorIcono.isEmpty ? btnElim.colorTexto : btnElim.colorIcono))
+                        .font(.system(size: iconoSize, weight: .medium))
+                        .foregroundColor(Color(hex: iconoColor))
                 }
                 Text(btnElim.texto.isEmpty ? "Eliminar" : btnElim.texto)
                     .font(Font.custom(
@@ -549,22 +786,42 @@ struct SendNewExamView: View {
             Color(.systemGroupedBackground)
                 .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: -3)
         )
+        .onAppear {
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("📋 [SendNewExamView] publishedButtons RECIBIDO (Eliminar)")
+            print("   modo: \(isMisArchivos ? "Mis Archivos (8.10)" : "Prescripciones (legacy 13)")")
+            print("   texto:     \"\(btnElim.texto)\"")
+            print("   font:      \(btnElim.font)")
+            print("   size:      \(btnElim.size)")
+            print("   colorTexto: \(btnElim.colorTexto)")
+            print("   colorFondo: \(btnElim.colorFondo)")
+            print("   icono:     \(btnElim.icono)")
+            print("   iconoSize: \(btnElim.iconoSize)")
+            print("   colorIcono: \(btnElim.colorIcono)")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        }
     }
 
     // MARK: - Send Button
+    // 10.10 BotonEnviar(Texto;Size;ColorTexto;ColorFondo;TipoFuente)
     private var saveButton: some View {
-        Button {
+        let btn = vistaSubir.botonEnviar
+        let btnTexto = btn.texto.isEmpty ? "Enviar" : btn.texto
+        let btnFont = btn.font.isEmpty ? "FiraSans-Bold" : btn.font
+        let btnSize = CGFloat(Int(btn.size) ?? 16)
+        let btnColorTexto = Color(hex: btn.colorTexto.isEmpty ? "#FFFFFF" : btn.colorTexto)
+        return Button {
             HapticManager.impact(style: .medium)
             sendInfo()
         } label: {
-            Text("Enviar")
-                .font(Font.custom("FiraSans-Bold", size: 16))
-                .foregroundColor(.white)
+            Text(btnTexto)
+                .font(Font.custom(btnFont, size: btnSize))
+                .foregroundColor(btnColorTexto)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(isSendButtonDisabled ? Color.gray.opacity(0.4) : accentColor)
+                        .fill(isSendButtonDisabled ? Color.gray.opacity(0.4) : sendButtonBackgroundColor)
                 )
         }
         .disabled(isSendButtonDisabled)
@@ -984,9 +1241,9 @@ struct SendNewExamView: View {
         }
     }
 
-    private func formatDisplayDate(_ dateStr: String) -> String {
+    private func formatDisplayDate(_ dateStr: String, formato: String = "dd/MM/yyyy") -> String {
         let displayFormatter = DateFormatter()
-        displayFormatter.dateFormat = "dd/MM/yyyy"
+        displayFormatter.dateFormat = formato.isEmpty ? "dd/MM/yyyy" : formato
 
         // Intentar ISO8601 con fracciones
         let isoFormatter = ISO8601DateFormatter()

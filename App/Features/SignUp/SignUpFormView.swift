@@ -111,22 +111,28 @@ struct SignUpFormView: View {
         .slideInFromRight()
         .background(
             Group {
-                    if UIState.singUpFormUIState.imageBackground != "" {
-                        CachedAsyncImage(
-                            url: URL(string: UIState.singUpFormUIState.imageBackground ),
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .edgesIgnoringSafeArea(.all)
-                                    .aspectRatio(contentMode: .fill)
-                            },
-                            placeholder: {
-                                ProgressView()
-                            }
-                        )
-                        .eraseToAnyView()
-                    }
+                // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
+                if UIState.singUpFormUIState.imageBackground != "" {
+                    CachedAsyncImage(
+                        url: URL(string: UIState.singUpFormUIState.imageBackground ),
+                        content: { image in
+                            image
+                                .resizable()
+                                .edgesIgnoringSafeArea(.all)
+                                .aspectRatio(contentMode: .fill)
+                        },
+                        placeholder: { ProgressView() }
+                    )
+                    .eraseToAnyView()
                 }
+                // LottieView(
+                //     animationName: "gradient_background",
+                //     loopMode: .loop,
+                //     contentMode: .scaleAspectFill
+                // )
+                // .edgesIgnoringSafeArea(.all)
+            }
         )
         .onChange(of: selectedAffiliate) { newValue in
             titularRut.value = nil
@@ -240,22 +246,28 @@ struct SignUpFormView: View {
         .navigationBarBackButtonHidden()
         .background(
             Group {
-                    if UIState.popupRegisterSuccessUIState.imageBackground != "" {
-                        CachedAsyncImage(
-                            url: URL(string: UIState.popupRegisterSuccessUIState.imageBackground ),
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .edgesIgnoringSafeArea(.all)
-                                    .aspectRatio(contentMode: .fill)
-                            },
-                            placeholder: {
-                                ProgressView()
-                            }
-                        )
-                        .eraseToAnyView()
-                    }
+                // TEMPORAL: dotLottie deshabilitado, se restaura fondo dinámico desde Salesforce.
+                // Para reactivar el Lottie animado, comenta el bloque CachedAsyncImage y descomenta el LottieView.
+                if UIState.popupRegisterSuccessUIState.imageBackground != "" {
+                    CachedAsyncImage(
+                        url: URL(string: UIState.popupRegisterSuccessUIState.imageBackground ),
+                        content: { image in
+                            image
+                                .resizable()
+                                .edgesIgnoringSafeArea(.all)
+                                .aspectRatio(contentMode: .fill)
+                        },
+                        placeholder: { ProgressView() }
+                    )
+                    .eraseToAnyView()
                 }
+                // LottieView(
+                //     animationName: "gradient_background",
+                //     loopMode: .loop,
+                //     contentMode: .scaleAspectFill
+                // )
+                // .edgesIgnoringSafeArea(.all)
+            }
         )
     }
     

@@ -44,8 +44,13 @@ struct EducationalMaterialDetailsView: View {
                         headerCard
                         if materialData.isEmpty {
                             VStack(spacing: 12) {
-                                LottieView(animationName: "Empty_Box")
-                                    .frame(width: 180, height: 180)
+                                // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+                                // Para reactivar, comenta el Image y descomenta el LottieView.
+                                Image(systemName: "doc.text.magnifyingglass")
+                                    .font(.system(size: 50, weight: .light))
+                                    .foregroundColor(Color(.systemGray3))
+                                // LottieView(animationName: "Empty_Box")
+                                //     .frame(width: 180, height: 180)
                                 Text("Sin documentos cargados")
                                     .font(Font.custom("FiraSans-Bold", size: 19))
                                     .foregroundColor(Color(hex: "#5B6770"))

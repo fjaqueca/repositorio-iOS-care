@@ -52,7 +52,11 @@ struct PrimaryButton: View {
             .frame(height: .buttonTitleHeight)
         }
         .buttonStyle(.borderedProminent)
-        .tint(UIStateBtn?.backgroundBtn != "" ? Color(hex:UIStateBtn?.backgroundBtn ?? "#57BAAF") : backgroundColor)
+        // TEMPORAL: color de fondo dinámico (UIStateBtn.backgroundBtn) reemplazado
+        // por hardcode #0857A0 para evaluar contraste sobre el fondo gradiente
+        // animado en pre-login/onboarding. Revertir descomentando la línea original.
+        // .tint(UIStateBtn?.backgroundBtn != "" ? Color(hex:UIStateBtn?.backgroundBtn ?? "#57BAAF") : backgroundColor)
+        .tint(Color(hex: "#0857A0"))
         .disabled(isLoading)
         
     }

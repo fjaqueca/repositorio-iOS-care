@@ -12,19 +12,25 @@ struct PatientExamRowView: View {
     let exam: FunctionFilterExamResponse.PatientExams
     @Binding var isLoadingExam: Bool
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
-    var badgesMisExamenes: BadgesMisExamenesConfig = BadgesMisExamenesConfig()
+    // Config completa de Mis Archivos de Salud — Elemento 12 del Custom record.
+    var vistaMisArchivos: VistaMisArchivosConfig = VistaMisArchivosConfig()
+    // Config del DETALLE — Elemento 8. Se reenvía a SendNewExamView para que
+    // toda la pantalla de detalle (toolbar, badges, fecha, containers, botones)
+    // use exclusivamente esta config.
+    var vistaDetalleMisArchivos: VistaDetalleMisArchivosConfig = VistaDetalleMisArchivosConfig()
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    // Config dinámica de la vista "Subir Examen" (Elemento 10 del Custom record).
+    // Se reenvía a SendNewExamView al navegar al detalle.
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
     var onDelete: ((String) -> Void)? = nil
 
+    // Color de la franja izquierda — 12.15 BarraVerticalCardMisArchivosDeSalud
     private var accentColor: Color {
-        Color(hex: UIState.examList.iconSelectColor.isEmpty ? "#387FC2" : UIState.examList.iconSelectColor)
+        Color(hex: vistaMisArchivos.barraVerticalColor.isEmpty ? "#387FC2" : vistaMisArchivos.barraVerticalColor)
     }
 
     var body: some View {
@@ -34,18 +40,19 @@ struct PatientExamRowView: View {
             HStack(spacing: 0) {
                 // Left accent border
                 RoundedRectangle(cornerRadius: 2)
-                    .fill(accentColor.opacity(0.3))
+                    .fill(accentColor)
                     .frame(width: 4)
                     .padding(.vertical, 4)
 
-                // Content
+                // Content — Título card: 12.10 AtributosTituloCardDetalle
                 VStack(alignment: .leading, spacing: 4) {
+                    let titleAttr = vistaMisArchivos.tituloCardAttr
                     Text((exam.nombreDelExamenC ?? "Sin nombre").uppercased())
                         .font(Font.custom(
-                            UIState.examList.itemTitle.font.isEmpty ? "FiraSans-Bold" : UIState.examList.itemTitle.font,
-                            size: CGFloat(Int(UIState.examList.itemTitle.size) ?? 15)
+                            titleAttr.font.isEmpty ? "FiraSans-Bold" : titleAttr.font,
+                            size: CGFloat(Int(titleAttr.size) ?? 15)
                         ))
-                        .foregroundColor(Color(hex: UIState.examList.itemTitle.color.isEmpty ? "#333333" : UIState.examList.itemTitle.color))
+                        .foregroundColor(Color(hex: titleAttr.color.isEmpty ? "#333333" : titleAttr.color))
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
 
@@ -64,45 +71,40 @@ struct PatientExamRowView: View {
                             .background(Capsule().fill(Color(hex: badge.colorFondo)))
                     }
 
+                    // Fecha — 12.13 FechaExamenCard(Fuente;Size;Color;Formato;Icono;ColorIcono)
                     if let dateStr = exam.CreatedDate, !dateStr.isEmpty {
+                        let fAttr = vistaMisArchivos.fechaAttr
+                        let fechaColor = Color(hex: fAttr.color.isEmpty ? "#888888" : fAttr.color)
+                        let fechaFont = fAttr.font.isEmpty ? "FiraSans-Regular" : fAttr.font
+                        let fechaSize = CGFloat(Int(fAttr.size) ?? 13)
+                        let icono = vistaMisArchivos.fechaIcono.isEmpty ? "calendar" : vistaMisArchivos.fechaIcono
+                        let iconoColor = Color(hex: vistaMisArchivos.fechaIconoColor.isEmpty
+                            ? (fAttr.color.isEmpty ? "#888888" : fAttr.color)
+                            : vistaMisArchivos.fechaIconoColor)
                         HStack(spacing: 4) {
-                            Image(systemName: "calendar")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray)
-                            Text(formatDate(dateStr))
-                                .font(Font.custom(
-                                    UIState.examList.itemSubTitle.font.isEmpty ? "FiraSans-Regular" : UIState.examList.itemSubTitle.font,
-                                    size: CGFloat(Int(UIState.examList.itemSubTitle.size) ?? 13)
-                                ))
-                                .foregroundColor(Color(hex: UIState.examList.itemSubTitle.color.isEmpty ? "#888888" : UIState.examList.itemSubTitle.color))
+                            Image(systemName: icono)
+                                .font(.system(size: fechaSize - 2))
+                                .foregroundColor(iconoColor)
+                            Text(formatDate(dateStr, formato: vistaMisArchivos.fechaFormato))
+                                .font(Font.custom(fechaFont, size: fechaSize))
+                                .foregroundColor(fechaColor)
                         }
                     }
 
-                    if isExamPublished() {
-                        HStack(spacing: 4) {
-                            Circle()
-                                .fill(Color.green)
-                                .frame(width: 6, height: 6)
-                            Text("Publicado")
-                                .font(Font.custom("FiraSans-Regular", size: 11))
-                                .foregroundColor(.green)
-                        }
-                        .padding(.top, 2)
-                    }
                 }
                 .padding(.leading, 12)
                 .padding(.vertical, 2)
 
                 Spacer()
 
-                // Delete icon
+                // Delete icon — 12.7 IconoBasuraEliminarMiArchivoSalud(Size;Color)
                 if let examId = exam.Id, !examId.isEmpty {
                     Button {
                         onDelete?(examId)
                     } label: {
                         Image(systemName: "trash")
-                            .font(.system(size: CGFloat(Double(badgesMisExamenes.iconoBasuraSize) ?? 16)))
-                            .foregroundColor(Color(hex: badgesMisExamenes.iconoBasuraColor.isEmpty ? "#FF4D4F" : badgesMisExamenes.iconoBasuraColor))
+                            .font(.system(size: CGFloat(Double(vistaMisArchivos.iconoBasuraSize) ?? 16)))
+                            .foregroundColor(Color(hex: vistaMisArchivos.iconoBasuraColor.isEmpty ? "#FF4D4F" : vistaMisArchivos.iconoBasuraColor))
                     }
                     .buttonStyle(.plain)
                     .padding(.trailing, 8)
@@ -128,16 +130,19 @@ struct PatientExamRowView: View {
         }
         .buttonStyle(.plain)
         .navigationLink(isActive: $isPresentingDetails) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
+            // Detalle de un archivo de salud — el modo publicado usa
+            // exclusivamente vistaDetalleMisArchivos (Elemento 8). botonesDetalleExamen
+            // y vistaSubir se pasan por compatibilidad pero no se consumen en este flujo.
+            SendNewExamView(UIState: $UIState, vistaSubir: vistaSubir, botonesDetalleExamen: botonesDetalleExamen, vistaDetalleMisArchivos: vistaDetalleMisArchivos, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: isExamPublished(), exam: isExamPublished() ? exam : nil)
         }
     }
 
-    func formatDate(_ isoString: String) -> String {
+    func formatDate(_ isoString: String, formato: String = "dd/MM/yyyy") -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         inputFormatter.locale = Locale(identifier: "en_US_POSIX")
         let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd/MM/yyyy"
+        outputFormatter.dateFormat = formato.isEmpty ? "dd/MM/yyyy" : formato
         if let date = inputFormatter.date(from: isoString) {
             return outputFormatter.string(from: date)
         } else {
@@ -146,23 +151,23 @@ struct PatientExamRowView: View {
     }
 
     /// Obtiene el badge de tipo de documento usando `Tipo_de_Archivo__c` directo de Salesforce.
-    /// Colores, texto, font y size vienen de la config dinámica (Elemento 12 BrandAccount).
+    /// Colores, texto, font y size vienen del Elemento 12 (12.1–12.6).
     func getDocumentTypeBadge() -> BadgeConfig {
         let tipo = exam.tipoArchivoC ?? ""
 
         switch tipo {
         case "Receta Médica":
-            return badgesMisExamenes.badgeRecetaMedica
+            return vistaMisArchivos.badgeRecetaMedica
         case "Examen de Laboratorio":
-            return badgesMisExamenes.badgeExamenLaboratorio
+            return vistaMisArchivos.badgeExamenLaboratorio
         case "Examen de Imagen":
-            return badgesMisExamenes.badgeExamenImagen
+            return vistaMisArchivos.badgeExamenImagen
         case "Orden de Exámenes":
-            return badgesMisExamenes.badgeOrdenExamen
+            return vistaMisArchivos.badgeOrdenExamen
         case "Informe Médico":
-            return badgesMisExamenes.badgeInformeMedico
+            return vistaMisArchivos.badgeInformeMedico
         default:
-            return badgesMisExamenes.badgeOtros
+            return vistaMisArchivos.badgeOtros
         }
     }
 

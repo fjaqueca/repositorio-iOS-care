@@ -132,6 +132,8 @@ struct AppointmentsTile: View {
         } label: {
             HStack(spacing: 0) {
                 // Panel lateral imagen (esquinas solo izquierda, paridad Android)
+                // TEMPORAL: Lottie squat_proxima_cita deshabilitado, se restaura CachedAsyncImage dinámico.
+                // Para reactivar el Lottie, comenta el CachedAsyncImage y descomenta el LottieView.
                 CachedAsyncImage(
                     url: URL(string: displayIcon),
                     content: { image in
@@ -145,10 +147,14 @@ struct AppointmentsTile: View {
                         Color.clear.frame(width: 65)
                     }
                 )
-                .frame(width: 75)
-                .frame(maxHeight: .infinity)
-                .background(Color(hex: UIState.nextAppointmentUIState.headerOblea))
-                .clipShape(LeftRoundedShape(radius: 18))
+                // LottieView(
+                //     animationName: "squat_proxima_cita",
+                //     loopMode: .loop,
+                //     contentMode: .scaleAspectFill
+                // )
+                // .frame(width: 75)
+                // .frame(maxHeight: .infinity)
+                // .clipShape(LeftRoundedShape(radius: 18))
 
                 // Contenido texto
                 VStack(alignment: .leading, spacing: 5) {

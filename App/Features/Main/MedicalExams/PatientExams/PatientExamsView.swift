@@ -11,17 +11,21 @@ import CachedAsyncImage
 
 struct PatientExamsView: View {
     @Binding var UIState: ExamUIState
-    var backArrowColor: String = "#00BBDC"
-    var navTitle: String = ""
-    var navTitleAttr: TextExamAttributes = TextExamAttributes()
-    var botonSubirExamenConfig: ButtonExamConfig = ButtonExamConfig()
-    var badgesMisExamenes: BadgesMisExamenesConfig = BadgesMisExamenesConfig()
+    // Config completa de la vista — Elemento 12 del record ExamenesAutomatizadosCustom.
+    // Toda la UI dinámica (título, back arrow, badges, búsqueda, fecha, empty
+    // state, botón Subir, ícono basura, barra vertical) viene de este struct.
+    var vistaMisArchivos: VistaMisArchivosConfig = VistaMisArchivosConfig()
+    // Config del DETALLE (al tocar una card) — Elemento 8. Se reenvía a SendNewExamView.
+    var vistaDetalleMisArchivos: VistaDetalleMisArchivosConfig = VistaDetalleMisArchivosConfig()
     var botonesDetalleExamen: BotonesDetalleExamenConfig = BotonesDetalleExamenConfig()
     var badgeCargadoPorPaciente: BadgeDetalleConfig = BadgeDetalleConfig(texto: "Cargado por el Paciente", colorTexto: "#FFFFFF", colorFondo: "#7B61FF", font: "FiraSans-Medium", size: "11", icono: "person.fill")
     var dialogEliminarConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogExamenesEnviadosConfig: DialogExamenesEnviadosConfig = DialogExamenesEnviadosConfig()
     var dialogEliminarDocOrdenConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
     var dialogEliminarMiArchivoConfig: DialogEliminarExamenConfig = DialogEliminarExamenConfig()
+    // Config de la vista "Subir Examen" (Elemento 10 del Custom record).
+    // Se reenvía a SendNewExamView al tocar "+ Subir Examen".
+    var vistaSubir: VistaSubirExamenConfig = VistaSubirExamenConfig()
     var accountId: String = UserDefaults.standard.string(forKey: "account_id") ?? ""
     @State var filterExams: String = ""
     @State private var isLoading: Bool = true
@@ -103,15 +107,14 @@ struct PatientExamsView: View {
                                     exam: exam,
                                     isLoadingExam: $isLoading,
                                     UIState: $UIState,
-                                    backArrowColor: backArrowColor,
-                                    navTitle: navTitle,
-                                    navTitleAttr: navTitleAttr,
-                                    badgesMisExamenes: badgesMisExamenes,
+                                    vistaMisArchivos: vistaMisArchivos,
+                                    vistaDetalleMisArchivos: vistaDetalleMisArchivos,
                                     botonesDetalleExamen: botonesDetalleExamen,
                                     badgeCargadoPorPaciente: badgeCargadoPorPaciente,
                                     dialogEliminarConfig: dialogEliminarConfig,
                                     dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig,
                                     dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig,
+                                    vistaSubir: vistaSubir,
                                     onDelete: { examId in
                                         deleteConfirmExamId = examId
                                     }
@@ -124,14 +127,30 @@ struct PatientExamsView: View {
                         .padding(.top, 23)
                         .padding(.bottom, .margin)
                     } else {
+                        // Empty state — texto, font, size y color vienen del 12.14
+                        let emptyText = vistaMisArchivos.emptyStateTexto.isEmpty
+                            ? "No se encontraron exámenes"
+                            : vistaMisArchivos.emptyStateTexto
+                        let emptyFont = vistaMisArchivos.emptyStateAttr.font.isEmpty
+                            ? "FiraSans-Bold"
+                            : vistaMisArchivos.emptyStateAttr.font
+                        let emptySize = CGFloat(Int(vistaMisArchivos.emptyStateAttr.size) ?? 19)
+                        let emptyColor = Color(hex: vistaMisArchivos.emptyStateAttr.color.isEmpty
+                            ? "#5B6770"
+                            : vistaMisArchivos.emptyStateAttr.color)
                         VStack(spacing: 12) {
                             Spacer()
-                            LottieView(animationName: "Empty_Box")
-                                .frame(width: 220, height: 220)
+                            // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+                            // Para reactivar, comenta el Image y descomenta el LottieView.
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .font(.system(size: 50, weight: .light))
+                                .foregroundColor(Color(.systemGray3))
+                            // LottieView(animationName: "Empty_Box")
+                            //     .frame(width: 220, height: 220)
                             if emptyStateReady {
-                                TypewriterText("No se encontraron exámenes",
-                                              font: "FiraSans-Bold", size: 19,
-                                              color: Color(hex: "#5B6770"),
+                                TypewriterText(emptyText,
+                                              font: emptyFont, size: emptySize,
+                                              color: emptyColor,
                                               speed: 0.06, showDots: false, delay: 0.3)
                                 if !filterExams.isEmpty || hasActiveFilters {
                                     TypewriterText("Intenta con otro término de búsqueda o ajusta los filtros",
@@ -164,7 +183,7 @@ struct PatientExamsView: View {
             getExamsForPatient()
         }
         .navigationLink(isActive: $sendNewExam) {
-            SendNewExamView(UIState: $UIState, backArrowColor: backArrowColor, navTitle: navTitle, navTitleAttr: navTitleAttr, botonesDetalleExamen: botonesDetalleExamen, badgeCargadoPorPaciente: badgeCargadoPorPaciente, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: false, exam: nil)
+            SendNewExamView(UIState: $UIState, vistaSubir: vistaSubir, dialogEliminarConfig: dialogEliminarConfig, dialogExamenesEnviadosConfig: dialogExamenesEnviadosConfig, dialogEliminarDocOrdenConfig: dialogEliminarDocOrdenConfig, isPublished: false, exam: nil)
         }
         .background(
             Group {
@@ -225,14 +244,38 @@ struct PatientExamsView: View {
     }
 
     // MARK: - Search Bar
+    // 12.11 TextoPlaceholderFiltro + 12.12 IconoFiltro
     private var searchBar: some View {
-        HStack(spacing: 10) {
+        let phText = vistaMisArchivos.placeholderTexto.isEmpty
+            ? "Buscar mis exámenes..."
+            : vistaMisArchivos.placeholderTexto
+        let phFont = vistaMisArchivos.placeholderAttr.font.isEmpty
+            ? "FiraSans-Regular"
+            : vistaMisArchivos.placeholderAttr.font
+        let phSize = CGFloat(Int(vistaMisArchivos.placeholderAttr.size) ?? 15)
+        let phColor = Color(hex: vistaMisArchivos.placeholderAttr.color.isEmpty
+            ? "#5B6770"
+            : vistaMisArchivos.placeholderAttr.color)
+
+        let filterIcon = vistaMisArchivos.iconoFiltro.isEmpty
+            ? "line.3.horizontal.decrease"
+            : vistaMisArchivos.iconoFiltro
+        let filterIconSize = CGFloat(Int(vistaMisArchivos.iconoFiltroSize) ?? 16)
+        let filterIconColor = Color(hex: vistaMisArchivos.iconoFiltroColor.isEmpty
+            ? "#00BBDC"
+            : vistaMisArchivos.iconoFiltroColor)
+
+        return HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
                 .frame(width: 20, height: 20)
 
-            TextField("Buscar mis exámenes...", text: $filterExams)
-                .font(Font.custom("FiraSans-Regular", size: 15))
+            TextField("", text: $filterExams, prompt:
+                Text(phText)
+                    .font(Font.custom(phFont, size: phSize))
+                    .foregroundColor(phColor)
+            )
+                .font(Font.custom(phFont, size: phSize))
 
             if !filterExams.isEmpty {
                 Button {
@@ -246,9 +289,9 @@ struct PatientExamsView: View {
             Button {
                 withAnimation { showFilterView.toggle() }
             } label: {
-                Image(systemName: "line.3.horizontal.decrease")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(accentColor)
+                Image(systemName: filterIcon)
+                    .font(.system(size: filterIconSize, weight: .medium))
+                    .foregroundColor(filterIconColor)
                     .frame(width: 32, height: 32)
                     .background(Color.grayLight.opacity(0.5))
                     .cornerRadius(8)
@@ -265,14 +308,14 @@ struct PatientExamsView: View {
     }
 
     // MARK: - Upload Button
+    // 12.16 BotonSubirExamen(Texto;ColorTexto;ColorFondo;TipoFuente;Size)
     private var uploadButton: some View {
-        let btnText = botonSubirExamenConfig.texto.isEmpty
-            ? (UIState.btnAddSeeExam.btnAddExam.textBtn.isEmpty ? "+ Subir Examen" : UIState.btnAddSeeExam.btnAddExam.textBtn)
-            : botonSubirExamenConfig.texto
-        let btnColorTexto = botonSubirExamenConfig.colorTexto.isEmpty ? "#FFFFFF" : botonSubirExamenConfig.colorTexto
-        let btnColorFondo = botonSubirExamenConfig.colorFondo.isEmpty ? "#00BBDC" : botonSubirExamenConfig.colorFondo
-        let btnFont = botonSubirExamenConfig.font.isEmpty ? "FiraSans-Medium" : botonSubirExamenConfig.font
-        let btnSize = Double(botonSubirExamenConfig.size) ?? 15
+        let cfg = vistaMisArchivos.botonSubirExamen
+        let btnText = cfg.texto.isEmpty ? "+ Subir Examen" : cfg.texto
+        let btnColorTexto = cfg.colorTexto.isEmpty ? "#FFFFFF" : cfg.colorTexto
+        let btnColorFondo = cfg.colorFondo.isEmpty ? "#00BBDC" : cfg.colorFondo
+        let btnFont = cfg.font.isEmpty ? "FiraSans-Medium" : cfg.font
+        let btnSize = Double(cfg.size) ?? 15
 
         return Button {
             HapticManager.impact(style: .medium)

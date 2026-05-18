@@ -18,6 +18,11 @@ struct PromotionsTile: View {
 
     var body: some View {
         TabView {
+            // TEMPORAL: Lottie Banner_Dot deshabilitado, se restaura comportamiento original
+            // que itera todos los banners remotos (1 a 6) con itemView.
+            // Para reactivar el Lottie en slide 1, descomenta la línea lottieItemView y cambia el rango a 2...6.
+            // lottieItemView(urlValor: UIState.bannersUIState.URLValor1)
+
             ForEach(1...6, id: \.self) { number in
                 if let urlBanner = urlBanner(for: number),
                    let urlValor = urlValor(for: number),
@@ -89,6 +94,33 @@ struct PromotionsTile: View {
             .frame(height: 120)
             .cornerRadius(.cornerRadius)
             .padding(.horizontal, .margin / 2)
+        }
+    }
+
+    // TEMPORAL: función lottieItemView conservada como referencia, pero LottieView deshabilitado.
+    // No se llama desde el TabView (el slide 1 ahora usa itemView con URL remota).
+    // Para reactivar, descomenta el LottieView y vuelve a invocar lottieItemView en el body.
+    @ViewBuilder
+    func lottieItemView(urlValor: String) -> some View {
+        Button {
+            self.bannerSelected = 1
+            openArchive(myUrl: urlValor)
+        } label: {
+            // LottieView(
+            //     animationName: "Banner_Dot",
+            //     loopMode: .loop,
+            //     contentMode: .scaleAspectFill
+            // )
+            // .frame(maxWidth: .infinity)
+            // .frame(height: 120)
+            // .clipped()
+            // .cornerRadius(.cornerRadius)
+            // .padding(.horizontal, .margin / 2)
+            Color.clear
+                .frame(maxWidth: .infinity)
+                .frame(height: 120)
+                .cornerRadius(.cornerRadius)
+                .padding(.horizontal, .margin / 2)
         }
     }
 }

@@ -544,8 +544,13 @@ struct AutomatedExamsView: View {
         Group {
             if config.categorias.isEmpty {
                 VStack(spacing: 12) {
-                    LottieView(animationName: "Empty_Box")
-                        .frame(width: 180, height: 180)
+                    // TEMPORAL: Lottie Empty_Box deshabilitado, se restaura icono SF Symbol.
+                    // Para reactivar, comenta el Image y descomenta el LottieView.
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .font(.system(size: 50, weight: .light))
+                        .foregroundColor(Color(.systemGray3))
+                    // LottieView(animationName: "Empty_Box")
+                    //     .frame(width: 180, height: 180)
                     Text("No hay categorías disponibles")
                         .font(Font.custom("FiraSans-Regular", size: 14))
                         .foregroundColor(.gray)

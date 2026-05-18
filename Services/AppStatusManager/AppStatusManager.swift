@@ -448,22 +448,26 @@ class AppStatusManager {
 
     static func fetchData() async {
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        print("📦 [fetchData] INICIO - Cargando datos post-login")
+        print("📦 [fetchData] INICIO - Cargando datos post-login en paralelo")
         print("   RUT: '\(self.rut ?? "(nil)")'")
         print("   Empresa: '\(self.selectedEnterprise?.empresaC ?? "(nil)")'")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
-        await AppStatusManager.loadUser()
-        print("   ✅ loadUser completado")
-        await AppStatusManager.loadBrandAccount()
-        print("   ✅ loadBrandAccount completado")
-        await AppStatusManager.loadAppointments()
-        print("   ✅ loadAppointments completado")
-        await AppStatusManager.loadFavoriteTask()
-        print("   ✅ loadFavoriteTask completado")
+        let t0 = Date()
 
+        // Los 4 calls son independientes (no comparten datos previos),
+        // así que corren en paralelo con async let. Antes esto se hacía
+        // secuencial → la suma de latencias podía pasar 30s en redes lentas.
+        async let user:          Void = AppStatusManager.loadUser()
+        async let brandAccount:  Void = AppStatusManager.loadBrandAccount()
+        async let appointments:  Void = AppStatusManager.loadAppointments()
+        async let favoriteTask:  Void = AppStatusManager.loadFavoriteTask()
+
+        _ = await (user, brandAccount, appointments, favoriteTask)
+
+        let elapsed = String(format: "%.2f", Date().timeIntervalSince(t0))
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        print("📦 [fetchData] FIN - Todos los datos cargados")
+        print("📦 [fetchData] FIN - Todos los datos cargados en \(elapsed)s")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     }
 }
