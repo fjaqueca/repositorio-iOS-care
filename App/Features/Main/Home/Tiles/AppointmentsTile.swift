@@ -140,11 +140,12 @@ struct AppointmentsTile: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 65)
                             .frame(maxHeight: .infinity)
+                            .frame(width: 50.0)
+                            .background(Color(hex: UIState.nextAppointmentUIState.headerOblea))
                     },
                     placeholder: {
-                        Color.clear.frame(width: 65)
+                        ProgressView()
                     }
                 )
                 // LottieView(
@@ -209,6 +210,7 @@ struct AppointmentsTile: View {
                 RoundedRectangle(cornerRadius: 18)
                     .fill(Color(hex: UIState.nextAppointmentUIState.backgrounOblea.isEmpty ? "#FFFFFF" : UIState.nextAppointmentUIState.backgrounOblea))
             )
+            .clipShape(RoundedRectangle(cornerRadius: 18))
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
                     .stroke(Color(.systemGray5), lineWidth: 1)

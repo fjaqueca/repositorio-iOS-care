@@ -130,11 +130,7 @@ struct OnboardingView: View {
                                 .frame(height: .buttonTitleHeight)
                         }
                         .buttonStyle(.borderedProminent)
-                        // TEMPORAL: color de fondo dinámico (btnLogin.backgroundBtn) reemplazado
-                        // por hardcode #0857A0 para evaluar contraste sobre el fondo gradiente
-                        // animado del onboarding. Revertir descomentando la línea original.
-                        // .tint(UIState.onboardingUIState.btnLogin.backgroundBtn != "" ? Color(hex: UIState.onboardingUIState.btnLogin.backgroundBtn) : .secondary)
-                        .tint(Color(hex: "#0857A0"))
+                        .tint(UIState.onboardingUIState.btnLogin.backgroundBtn != "" ? Color(hex: UIState.onboardingUIState.btnLogin.backgroundBtn) : .secondary)
                         .scaleEffect(buttonScale)
                         .opacity(showButton ? 1 : 0)
                         .offset(y: showButton ? 0 : 30)
